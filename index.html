@@ -1,366 +1,1600 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent IA Immo — Qualifiez vos prospects 24h/24</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --dark: #0a0f1e;
-    --navy: #111827;
-    --accent: #00d4aa;
-    --gold: #f5a623;
-    --white: #ffffff;
-    --gray: #9ca3af;
-    --card: #1a2235;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Agent IA Immo — Plus aucun prospect ne reste sans réponse</title>
+  <meta name="description" content="Votre agence immobilière répond automatiquement à chaque prospect en moins de 2 minutes, 24h/24, 7j/7. Qualifiez, planifiez et ne perdez plus jamais un lead.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://maximebricepaul-commits.github.io/agent-ia-immo/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Agent IA Immo — Plus aucun prospect ne reste sans réponse">
+  <meta property="og:description" content="Un assistant commercial virtuel répond à vos prospects en moins de 2 minutes, 24h/24. Qualifie, planifie et transmet les leads chauds à votre équipe.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://maximebricepaul-commits.github.io/agent-ia-immo/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Agent IA Immo">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Agent IA Immo — Plus aucun prospect ne reste sans réponse">
+  <meta name="twitter:description" content="Votre agence répond en moins de 2 minutes, même à 22h un dimanche.">
+  <meta name="twitter:image" content="https://maximebricepaul-commits.github.io/agent-ia-immo/og-image.png">
+
+  <!-- OG Image (partage LinkedIn / réseaux sociaux) -->
+  <meta property="og:image" content="https://maximebricepaul-commits.github.io/agent-ia-immo/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Agent IA Immo — Votre assistant commercial qui répond 24h/24">
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Agent IA Immo",
+    "description": "Assistant commercial IA dédié aux agences immobilières — répond aux prospects 24h/24 en moins de 2 minutes",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": [
+      {"@type": "Offer", "name": "Starter", "priceCurrency": "EUR", "price": "290"},
+      {"@type": "Offer", "name": "Pro", "priceCurrency": "EUR", "price": "490"},
+      {"@type": "Offer", "name": "Réseau", "priceCurrency": "EUR", "price": "790"}
+    ]
   }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--dark); color: var(--white); }
+  </script>
 
-  /* NAV */
-  nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 60px; border-bottom: 1px solid #1e2d42; }
-  .logo { font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: -0.5px; }
-  .logo span { color: var(--white); }
-  nav a { color: var(--accent); font-weight: 600; text-decoration: none; background: rgba(0,212,170,0.1); border: 1px solid var(--accent); padding: 10px 24px; border-radius: 8px; transition: all .2s; }
-  nav a:hover { background: var(--accent); color: var(--dark); }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  /* HERO */
-  .hero { text-align: center; padding: 90px 40px 70px; max-width: 860px; margin: 0 auto; }
-  .badge { display: inline-block; background: rgba(0,212,170,0.12); border: 1px solid var(--accent); color: var(--accent); font-size: .8rem; font-weight: 700; letter-spacing: 1.5px; padding: 6px 18px; border-radius: 50px; margin-bottom: 28px; text-transform: uppercase; }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; line-height: 1.15; margin-bottom: 24px; }
-  .hero h1 em { color: var(--accent); font-style: normal; }
-  .hero p { font-size: 1.2rem; color: var(--gray); line-height: 1.7; max-width: 640px; margin: 0 auto 40px; }
-  .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-  .btn-primary { background: var(--accent); color: var(--dark); font-weight: 700; font-size: 1rem; padding: 16px 36px; border-radius: 10px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: transform .2s, box-shadow .2s; }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,212,170,0.35); }
-  .btn-secondary { background: transparent; color: var(--white); font-weight: 600; font-size: 1rem; padding: 16px 36px; border-radius: 10px; text-decoration: none; border: 1px solid #2d3f57; transition: border-color .2s; }
-  .btn-secondary:hover { border-color: var(--accent); }
+  <style>
+    /* ============================================================
+       RESET & VARIABLES
+    ============================================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* STATS */
-  .stats { display: flex; justify-content: center; gap: 60px; padding: 50px 40px; border-top: 1px solid #1e2d42; border-bottom: 1px solid #1e2d42; flex-wrap: wrap; }
-  .stat { text-align: center; }
-  .stat-number { font-size: 2.4rem; font-weight: 800; color: var(--accent); display: block; }
-  .stat-label { font-size: .9rem; color: var(--gray); margin-top: 4px; }
+    :root {
+      --bg:           #080d18;
+      --bg2:          #0d1421;
+      --bg3:          #0f1929;
+      --accent:       #00d4aa;
+      --accent-dim:   rgba(0,212,170,0.10);
+      --accent-glow:  rgba(0,212,170,0.22);
+      --white:        #ffffff;
+      --text:         #e2e8f0;
+      --muted:        #6b7280;
+      --muted2:       #9ca3af;
+      --card:         #111827;
+      --border:       rgba(255,255,255,0.07);
+      --border-a:     rgba(0,212,170,0.28);
+      --red:          #fc8181;
+      --red-bg:       rgba(239,68,68,0.07);
+      --red-border:   rgba(239,68,68,0.22);
+      --radius:       14px;
+      --transition:   all 0.25s cubic-bezier(0.4,0,0.2,1);
+      --shadow-card:  0 4px 28px rgba(0,0,0,0.45);
+      --shadow-glow:  0 0 40px rgba(0,212,170,0.14);
+    }
 
-  /* PROBLEM */
-  .section { padding: 80px 40px; max-width: 1000px; margin: 0 auto; }
-  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; margin-bottom: 16px; }
-  .section-sub { color: var(--gray); font-size: 1.1rem; line-height: 1.7; margin-bottom: 50px; }
-  .problems { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-  .problem-card { background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: 14px; padding: 28px; }
-  .problem-card .icon { font-size: 1.8rem; margin-bottom: 14px; }
-  .problem-card h3 { font-size: 1rem; font-weight: 700; color: #fc8181; margin-bottom: 10px; }
-  .problem-card p { color: var(--gray); font-size: .9rem; line-height: 1.6; }
+    html { scroll-behavior: smooth; }
 
-  /* HOW IT WORKS */
-  .how { background: var(--navy); padding: 80px 40px; }
-  .how-inner { max-width: 1000px; margin: 0 auto; }
-  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-top: 50px; }
-  .step { text-align: center; position: relative; }
-  .step-num { width: 52px; height: 52px; background: var(--accent); color: var(--dark); font-weight: 800; font-size: 1.3rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
-  .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
-  .step p { color: var(--gray); font-size: .9rem; line-height: 1.6; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-  /* FEATURES */
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 20px; }
-  .feature-card { background: var(--card); border: 1px solid #1e2d42; border-radius: 14px; padding: 28px; transition: border-color .2s; }
-  .feature-card:hover { border-color: var(--accent); }
-  .feature-card .icon { font-size: 2rem; margin-bottom: 16px; }
-  .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
-  .feature-card p { color: var(--gray); font-size: .9rem; line-height: 1.6; }
+    /* ============================================================
+       UTILITIES
+    ============================================================ */
+    .container    { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .container-sm { max-width: 780px;  margin: 0 auto; padding: 0 40px; }
+    .section      { padding: 100px 0; }
+    .section-alt  { background: var(--bg2); }
 
-  /* PRICING */
-  .pricing { background: var(--navy); padding: 80px 40px; }
-  .pricing-inner { max-width: 900px; margin: 0 auto; text-align: center; }
-  .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; margin-top: 50px; }
-  .pricing-card { background: var(--card); border: 1px solid #1e2d42; border-radius: 16px; padding: 36px 28px; position: relative; }
-  .pricing-card.featured { border-color: var(--accent); background: linear-gradient(135deg, #0d1f2e, #0a2a20); }
-  .popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--accent); color: var(--dark); font-size: .75rem; font-weight: 800; padding: 5px 18px; border-radius: 50px; white-space: nowrap; }
-  .pricing-card .plan-name { font-size: .85rem; font-weight: 700; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; }
-  .pricing-card .price { font-size: 2.8rem; font-weight: 800; margin-bottom: 6px; }
-  .pricing-card .price span { font-size: 1rem; color: var(--gray); font-weight: 400; }
-  .pricing-card .setup { color: var(--gray); font-size: .85rem; margin-bottom: 28px; }
-  .pricing-card ul { list-style: none; text-align: left; margin-bottom: 32px; }
-  .pricing-card ul li { padding: 8px 0; color: #d1d5db; font-size: .9rem; display: flex; align-items: flex-start; gap: 10px; border-bottom: 1px solid #1e2d42; }
-  .pricing-card ul li:last-child { border-bottom: none; }
-  .pricing-card ul li::before { content: "✓"; color: var(--accent); font-weight: 700; flex-shrink: 0; }
-  .pricing-card .btn-primary { width: 100%; justify-content: center; }
-  .pricing-card .btn-secondary { width: 100%; justify-content: center; border: 1px solid #2d3f57; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--accent-dim); border: 1px solid var(--border-a);
+      color: var(--accent); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 1.5px; padding: 6px 16px; border-radius: 50px;
+      text-transform: uppercase;
+    }
 
-  /* TESTIMONIAL */
-  .testimonial-section { padding: 80px 40px; max-width: 800px; margin: 0 auto; text-align: center; }
-  .quote { font-size: 1.3rem; line-height: 1.8; color: var(--white); font-style: italic; margin-bottom: 24px; }
-  .quote-author { color: var(--accent); font-weight: 700; }
+    .section-heading {
+      font-size: clamp(1.8rem, 3.5vw, 2.7rem); font-weight: 900;
+      text-align: center; margin: 16px 0;
+    }
 
-  /* FAQ */
-  .faq { background: var(--navy); padding: 80px 40px; }
-  .faq-inner { max-width: 760px; margin: 0 auto; }
-  .faq-item { border-bottom: 1px solid #1e2d42; padding: 24px 0; }
-  .faq-q { font-size: 1rem; font-weight: 700; margin-bottom: 12px; color: var(--white); }
-  .faq-a { color: var(--gray); font-size: .95rem; line-height: 1.7; }
+    .section-sub {
+      text-align: center; color: var(--muted2); font-size: 1.05rem;
+      line-height: 1.75; max-width: 600px; margin: 0 auto 60px;
+    }
 
-  /* CTA FINAL */
-  .cta-final { text-align: center; padding: 90px 40px; }
-  .cta-final h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; margin-bottom: 20px; }
-  .cta-final p { color: var(--gray); font-size: 1.1rem; margin-bottom: 40px; }
+    .text-accent { color: var(--accent); }
 
-  /* FOOTER */
-  footer { border-top: 1px solid #1e2d42; padding: 30px 60px; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; }
-  footer p { color: var(--gray); font-size: .85rem; }
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1rem;
+      padding: 14px 32px; border-radius: 10px; border: none;
+      cursor: pointer; text-decoration: none; transition: var(--transition);
+      white-space: nowrap; position: relative;
+    }
+    .btn-primary  { background: var(--accent); color: #080d18; }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px var(--accent-glow);
+      background: #00e8b8;
+    }
+    .btn-outline  { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--border-a); color: var(--accent); }
+    .btn-lg       { font-size: 1.1rem; padding: 17px 42px; }
 
-  @media (max-width: 600px) {
-    nav { padding: 16px 20px; }
-    .stats { gap: 30px; }
-    .section, .how, .pricing, .faq, .cta-final { padding: 60px 20px; }
-  }
-</style>
+    /* ============================================================
+       SCROLL ANIMATIONS
+    ============================================================ */
+    .fade-in {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: 0.10s; }
+    .delay-2 { transition-delay: 0.20s; }
+    .delay-3 { transition-delay: 0.30s; }
+    .delay-4 { transition-delay: 0.40s; }
+    .delay-5 { transition-delay: 0.50s; }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: 66px; display: flex; align-items: center;
+      justify-content: space-between; padding: 0 48px;
+      background: rgba(8,13,24,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-bottom-color: rgba(255,255,255,0.10); }
+
+    .nav-logo {
+      font-size: 1.1rem; font-weight: 900; color: var(--white);
+      text-decoration: none; letter-spacing: -0.5px;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
+    .nav-links a {
+      color: var(--muted2); text-decoration: none; font-size: 0.875rem;
+      font-weight: 500; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      nav { padding: 0 20px; }
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      position: relative; padding: 100px 40px 80px;
+      text-align: center; overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(0,212,170,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 60%,  rgba(0,90,200,0.06)  0%, transparent 55%);
+    }
+
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
+    }
+
+    .hero-content { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; }
+
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900;
+      line-height: 1.1; margin: 22px 0 26px; letter-spacing: -1.5px;
+      color: var(--white);
+    }
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero-sub {
+      font-size: 1.15rem; color: var(--muted2); line-height: 1.75;
+      max-width: 580px; margin: 0 auto 44px;
+    }
+
+    .hero-btns {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;
+    }
+
+    .hero-note {
+      margin-top: 18px; color: var(--muted); font-size: 0.8rem;
+    }
+
+    /* Before / After */
+    .hero-visual { margin: 64px auto 0; max-width: 760px; }
+
+    .baa-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+
+    .baa-card {
+      border-radius: var(--radius); padding: 22px; text-align: left;
+    }
+    .baa-card.bad  { background: var(--red-bg);  border: 1px solid var(--red-border); }
+    .baa-card.good { background: rgba(0,212,170,0.05); border: 1px solid var(--border-a); }
+
+    .baa-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .baa-card.bad  .baa-label { color: var(--red); }
+    .baa-card.good .baa-label { color: var(--accent); }
+
+    .baa-time { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; }
+
+    .bubble {
+      border-radius: 10px; padding: 10px 14px; font-size: 0.82rem;
+      line-height: 1.5; margin-bottom: 8px; color: var(--text);
+    }
+    .bubble.from-prospect { background: rgba(255,255,255,0.07); }
+    .bubble.from-agent    { background: rgba(0,212,170,0.12); border: 1px solid rgba(0,212,170,0.18); }
+    .baa-reply-time { font-size: 0.68rem; color: var(--muted); text-align: right; margin-bottom: 6px; }
+
+    .baa-outcome {
+      display: flex; align-items: center; gap: 8px;
+      border-radius: 8px; padding: 10px 12px;
+      font-size: 0.8rem; margin-top: 10px;
+    }
+    .baa-outcome.bad  { background: var(--red-bg);  color: var(--red);    border: 1px solid var(--red-border); }
+    .baa-outcome.good { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--border-a); }
+
+    @media (max-width: 640px) {
+      .baa-grid { grid-template-columns: 1fr; }
+      .hero { padding: 72px 20px 60px; }
+    }
+
+    /* ============================================================
+       TRUST BAR
+    ============================================================ */
+    .trust-bar {
+      padding: 28px 40px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .trust-bar-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap; justify-content: center;
+    }
+    .trust-label { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+    .trust-sep   { width: 1px; height: 18px; background: var(--border); }
+    .trust-items { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; justify-content: center; }
+    .trust-item  { display: flex; align-items: center; gap: 7px; color: var(--muted2); font-size: 0.82rem; font-weight: 500; }
+
+    /* ============================================================
+       STATS
+    ============================================================ */
+    .stats { padding: 72px 40px; }
+    .stats-grid {
+      max-width: 880px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1px; background: var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .stat-item { background: var(--card); padding: 36px 24px; text-align: center; }
+    .stat-num  { font-size: 2.2rem; font-weight: 900; color: var(--accent); letter-spacing: -1px; display: block; margin-bottom: 8px; }
+    .stat-lbl  { font-size: 0.82rem; color: var(--muted2); line-height: 1.4; }
+
+    @media (max-width: 680px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    /* ============================================================
+       STORY
+    ============================================================ */
+    .story-box {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 48px; position: relative; overflow: hidden;
+      margin-bottom: 36px;
+    }
+    .story-box::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 100% 0%, rgba(239,68,68,0.05) 0%, transparent 60%);
+    }
+    .story-kicker {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
+    }
+    .story-box h2 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); margin-bottom: 16px; }
+    .story-box p  { color: var(--muted2); line-height: 1.85; font-size: 0.97rem; }
+    .story-box p strong { color: var(--white); }
+
+    .story-outcome {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--red-bg); border: 1px solid var(--red-border);
+      border-radius: var(--radius); padding: 22px; margin-top: 26px;
+    }
+    .story-outcome-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .story-outcome p    { color: var(--red); font-size: 0.92rem; line-height: 1.6; margin: 0; }
+    .story-outcome p strong { color: var(--red); }
+
+    .story-bridge { text-align: center; margin-top: 36px; }
+    .story-bridge p { font-size: 1.15rem; font-weight: 600; color: var(--white); line-height: 1.6; }
+    .story-bridge p span { color: var(--accent); }
+
+    @media (max-width: 600px) { .story-box { padding: 28px 22px; } }
+
+    /* ============================================================
+       PROBLEMS
+    ============================================================ */
+    .problems-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px;
+    }
+    .prob-card {
+      background: var(--red-bg); border: 1px solid var(--red-border);
+      border-radius: var(--radius); padding: 30px;
+      transition: var(--transition);
+    }
+    .prob-card:hover { border-color: rgba(239,68,68,0.4); transform: translateY(-2px); }
+    .prob-card .icon { font-size: 1.8rem; margin-bottom: 14px; display: block; }
+    .prob-card h3 { font-size: 0.97rem; font-weight: 700; color: var(--red); margin-bottom: 10px; }
+    .prob-card p  { color: var(--muted2); font-size: 0.875rem; line-height: 1.65; }
+
+    /* ============================================================
+       SOLUTION — ALEX
+    ============================================================ */
+    .solution-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+    }
+    .solution-text h2 { font-size: clamp(1.7rem, 3vw, 2.4rem); margin: 16px 0 18px; }
+    .solution-text > p { color: var(--muted2); line-height: 1.75; margin-bottom: 26px; }
+    .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .check-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.92rem; color: var(--text);
+    }
+    .check-list li::before {
+      content: "✓"; color: var(--accent); font-weight: 800;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    .alex-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 30px; position: relative; overflow: hidden;
+    }
+    .alex-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,170,0.06) 0%, transparent 60%);
+    }
+    .alex-head {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 22px; position: relative;
+    }
+    .alex-avatar {
+      width: 50px; height: 50px;
+      background: linear-gradient(135deg,#00d4aa,#0070f3);
+      border-radius: 14px; display: flex; align-items: center;
+      justify-content: center; font-size: 1.4rem;
+    }
+    .alex-name { font-weight: 800; color: var(--white); font-size: 1rem; }
+    .alex-role { font-size: 0.78rem; color: var(--muted2); margin-top: 2px; }
+    .alex-online {
+      margin-left: auto; display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; color: var(--accent);
+    }
+    .dot {
+      width: 7px; height: 7px; background: var(--accent);
+      border-radius: 50%; animation: pulse 2s infinite; flex-shrink: 0;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    .alex-kpis {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; position: relative;
+    }
+    .kpi {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px;
+    }
+    .kpi-val { font-size: 1.4rem; font-weight: 900; color: var(--accent); }
+    .kpi-lbl { font-size: 0.72rem; color: var(--muted2); margin-top: 3px; }
+
+    @media (max-width: 768px) {
+      .solution-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+
+    /* ============================================================
+       HOW IT WORKS
+    ============================================================ */
+    .steps-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 16px; position: relative;
+    }
+    .steps-grid::before {
+      content: ''; position: absolute;
+      top: 25px; left: 12.5%; right: 12.5%; height: 1px;
+      background: linear-gradient(90deg, var(--accent), rgba(0,212,170,.25), rgba(0,212,170,.25), var(--accent));
+      z-index: 0;
+    }
+    .step-card { text-align: center; padding: 24px 16px; position: relative; z-index: 1; }
+    .step-num {
+      width: 50px; height: 50px; background: var(--accent);
+      color: var(--bg); font-weight: 900; font-size: 1.15rem;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      box-shadow: 0 0 0 8px var(--bg), 0 0 24px var(--accent-glow);
+    }
+    .step-card h3 { font-size: 0.92rem; font-weight: 700; margin-bottom: 8px; }
+    .step-card p  { color: var(--muted2); font-size: 0.82rem; line-height: 1.6; }
+
+    @media (max-width: 680px) {
+      .steps-grid { grid-template-columns: 1fr 1fr; }
+      .steps-grid::before { display: none; }
+    }
+
+    /* ============================================================
+       CHAT DEMO
+    ============================================================ */
+    .demo-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .demo-text h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 14px; }
+    .demo-text > p { color: var(--muted2); line-height: 1.75; margin-bottom: 28px; }
+    .demo-pts { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 34px; }
+    .demo-pts li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; }
+    .demo-pts li .ico { flex-shrink: 0; }
+
+    .chat-mock {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-card);
+    }
+    .chat-mock-head {
+      background: rgba(0,212,170,0.07); border-bottom: 1px solid var(--border);
+      padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+    }
+    .chat-av {
+      width: 34px; height: 34px; background: linear-gradient(135deg,#00d4aa,#0070f3);
+      border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
+    }
+    .chat-av-name { font-weight: 700; font-size: 0.85rem; color: var(--white); }
+    .chat-av-sub  { font-size: 0.7rem; color: var(--accent); }
+    .chat-body    { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .msg          { display: flex; flex-direction: column; gap: 3px; }
+    .msg-t        { font-size: 0.67rem; color: var(--muted); padding: 0 4px; }
+    .msg-b {
+      border-radius: 11px; padding: 10px 14px;
+      font-size: 0.82rem; line-height: 1.5; max-width: 88%;
+    }
+    .msg.left  .msg-b  { background: rgba(255,255,255,0.07); align-self: flex-start; }
+    .msg.left  .msg-t  { align-self: flex-start; }
+    .msg.right .msg-b  { background: rgba(0,212,170,0.12); border: 1px solid rgba(0,212,170,0.2); align-self: flex-end; }
+    .msg.right .msg-t  { align-self: flex-end; }
+    .chat-foot {
+      padding: 14px 18px; border-top: 1px solid var(--border);
+      background: rgba(0,212,170,0.04);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .chat-foot span { font-size: 0.77rem; color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 768px) { .demo-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+    /* ============================================================
+       DEMO PREVIEW
+    ============================================================ */
+    .demo-items { display: flex; flex-direction: column; gap: 14px; margin: 44px 0; }
+    .demo-item {
+      display: flex; align-items: flex-start; gap: 18px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 26px;
+      transition: var(--transition);
+    }
+    .demo-item:hover { border-color: var(--border-a); transform: translateX(4px); }
+    .di-num {
+      width: 34px; height: 34px; background: var(--accent-dim);
+      border: 1px solid var(--border-a); color: var(--accent);
+      font-weight: 800; font-size: 0.82rem; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .di-title { font-weight: 700; font-size: 0.92rem; color: var(--white); margin-bottom: 4px; }
+    .di-desc  { font-size: 0.82rem; color: var(--muted2); line-height: 1.5; }
+
+    /* ============================================================
+       FEATURES
+    ============================================================ */
+    .feat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    }
+    .feat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 30px; transition: var(--transition);
+    }
+    .feat-card:hover {
+      border-color: var(--border-a); transform: translateY(-3px);
+      box-shadow: var(--shadow-glow);
+    }
+    .feat-card .ico { font-size: 1.9rem; margin-bottom: 16px; display: block; }
+    .feat-card h3   { font-size: 0.97rem; font-weight: 700; margin-bottom: 10px; }
+    .feat-card p    { color: var(--muted2); font-size: 0.855rem; line-height: 1.65; }
+
+    @media (max-width: 900px) { .feat-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 580px) { .feat-grid { grid-template-columns: 1fr; } }
+
+    /* ============================================================
+       PROCESS TIMELINE
+    ============================================================ */
+    .timeline {
+      max-width: 620px; margin: 0 auto; padding: 0 40px;
+      position: relative;
+    }
+    .timeline::before {
+      content: ''; position: absolute;
+      left: calc(40px + 17px); top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(to bottom, var(--accent), rgba(0,212,170,.08));
+    }
+    .tl-item { display: flex; gap: 22px; margin-bottom: 36px; position: relative; }
+    .tl-item:last-child { margin-bottom: 0; }
+    .tl-dot {
+      width: 34px; height: 34px; background: var(--card);
+      border: 2px solid var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.95rem; flex-shrink: 0; position: relative; z-index: 1;
+    }
+    .tl-content { padding-top: 4px; }
+    .tl-day     { font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    .tl-content h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .tl-content p  { color: var(--muted2); font-size: 0.855rem; line-height: 1.6; }
+
+    /* ============================================================
+       TRUST CARDS
+    ============================================================ */
+    .trust-cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+    .tc {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 30px;
+    }
+    .tc .ico  { font-size: 1.9rem; margin-bottom: 14px; display: block; }
+    .tc h3    { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+    .tc p     { color: var(--muted2); font-size: 0.855rem; line-height: 1.65; }
+    @media (max-width: 680px) { .trust-cards-grid { grid-template-columns: 1fr; } }
+
+    /* ============================================================
+       FAQ
+    ============================================================ */
+    .faq-list { max-width: 700px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid var(--border); }
+    .faq-btn {
+      width: 100%; background: transparent; border: none; text-align: left;
+      padding: 22px 0; font-family: 'Inter', sans-serif; font-size: 0.97rem;
+      font-weight: 600; color: var(--white); cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      transition: color 0.2s;
+    }
+    .faq-btn:hover { color: var(--accent); }
+    .faq-chev {
+      width: 22px; height: 22px; border: 1.5px solid var(--muted);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.65rem; transition: var(--transition);
+    }
+    .faq-item.open .faq-chev { border-color: var(--accent); color: var(--accent); transform: rotate(180deg); }
+    .faq-ans {
+      color: var(--muted2); font-size: 0.92rem; line-height: 1.75;
+      padding-bottom: 22px; display: none;
+    }
+    .faq-item.open .faq-ans { display: block; }
+
+    /* ============================================================
+       PRICING
+    ============================================================ */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 18px; max-width: 980px; margin: 0 auto;
+    }
+    .pc {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 34px 26px;
+      position: relative; transition: var(--transition);
+    }
+    .pc:hover { transform: translateY(-4px); box-shadow: var(--shadow-card); }
+    .pc.featured {
+      border-color: var(--accent);
+      background: linear-gradient(160deg,#0d1f2e,#081a13);
+      box-shadow: 0 0 0 1px var(--accent), var(--shadow-glow);
+    }
+    .pc-popular {
+      position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: var(--bg);
+      font-size: 0.68rem; font-weight: 800; letter-spacing: 1px;
+      padding: 4px 16px; border-radius: 50px; white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .pc-name    { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .pc-price   { font-size: 2.5rem; font-weight: 900; color: var(--white); letter-spacing: -1px; margin-bottom: 4px; }
+    .pc-price span { font-size: 0.9rem; color: var(--muted2); font-weight: 400; letter-spacing: 0; }
+    .pc-setup   { color: var(--muted); font-size: 0.78rem; margin-bottom: 26px; }
+    .pc-feats   { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
+    .pc-feats li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 0.855rem; color: var(--text);
+      padding-bottom: 9px; border-bottom: 1px solid var(--border);
+    }
+    .pc-feats li:last-child { border-bottom: none; }
+    .pc-feats li::before { content: "✓"; color: var(--accent); font-weight: 800; flex-shrink: 0; }
+    .pc .btn { width: 100%; justify-content: center; }
+
+    .pricing-note { text-align: center; margin-top: 28px; color: var(--muted2); font-size: 0.88rem; }
+    .pricing-note strong { color: var(--accent); }
+
+    @media (max-width: 860px) { .pricing-grid { grid-template-columns: 1fr; max-width: 480px; } }
+    @media (max-width: 520px)  { .pricing-grid { max-width: 100%; } }
+
+    /* ============================================================
+       CTA FINAL
+    ============================================================ */
+    .cta-final {
+      padding: 120px 40px; text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-final::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,212,170,0.06) 0%, transparent 70%);
+    }
+    .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .cta-inner h2 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 900;
+      margin-bottom: 20px; letter-spacing: -1px;
+    }
+    .cta-inner p { color: var(--muted2); font-size: 1.05rem; line-height: 1.75; margin-bottom: 42px; }
+    .cta-btns   { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .cta-pills  { margin-top: 22px; display: flex; align-items: center; justify-content: center; gap: 22px; flex-wrap: wrap; }
+    .cta-pill   { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--muted); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-logo { font-weight: 900; font-size: 1rem; color: var(--white); text-decoration: none; }
+    .footer-logo span { color: var(--accent); }
+    .footer-links { display: flex; gap: 20px; list-style: none; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); }
+    footer .copy { color: var(--muted); font-size: 0.78rem; }
+
+    @media (max-width: 600px) {
+      footer { padding: 22px 20px; flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+      .cta-final { padding: 80px 20px; }
+      .section { padding: 72px 0; }
+      .container, .container-sm { padding: 0 20px; }
+    }
+
+    /* ============================================================
+       ACCESSIBILITY
+    ============================================================ */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .fade-in { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <div class="logo">Argent<span>Libre</span> IA</div>
-  <a href="mailto:maxime@argentlibre.fr">Réserver une démo →</a>
+<!-- ============================================================
+     NAV
+============================================================ -->
+<!-- Skip navigation -->
+<a href="#main-content" class="skip-nav" style="position:absolute;left:-9999px;top:0;z-index:9999;background:var(--accent);color:var(--bg);padding:8px 16px;font-weight:700;border-radius:0 0 8px 0;text-decoration:none" tabindex="1">Aller au contenu principal</a>
+<a href="#main-content" id="skip-link" style="position:absolute;left:-9999px;top:0" tabindex="1" onfocus="this.style.left='0'">Aller au contenu</a>
+
+<nav id="main-nav" role="navigation" aria-label="Navigation principale">
+  <a href="#" class="nav-logo" aria-label="Agent IA Immo — Accueil">
+    Agent <span>IA</span> Immo
+  </a>
+  <ul class="nav-links">
+    <li><a href="#comment">Comment ça marche</a></li>
+    <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+    <li><a href="#tarifs">Tarifs</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+     class="btn btn-primary"
+     aria-label="Demander une démonstration gratuite">
+    Demander une démo →
+  </a>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="badge">🤖 Agent IA pour agences immobilières</div>
-  <h1>Ton agence répond à tes prospects<br><em>en moins de 2 minutes</em><br>même à 22h un dimanche.</h1>
-  <p>Un agent IA sur mesure qui qualifie le budget, le projet et les délais de tes leads — automatiquement, 24h/24, sans recruter.</p>
-  <div class="hero-cta">
-    <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo" class="btn-primary">🎯 Voir une démo gratuite</a>
-    <a href="#comment" class="btn-secondary">Comment ça marche ?</a>
-  </div>
-</div>
+<!-- ============================================================
+     HERO
+============================================================ -->
+<main id="main-content">
+<header class="hero" role="banner">
+  <div class="hero-bg"  aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat">
-    <span class="stat-number">&lt; 2 min</span>
-    <div class="stat-label">Temps de réponse moyen</div>
-  </div>
-  <div class="stat">
-    <span class="stat-number">24h/24</span>
-    <div class="stat-label">Disponibilité 7j/7</div>
-  </div>
-  <div class="stat">
-    <span class="stat-number">5-7 j</span>
-    <div class="stat-label">Délai de mise en place</div>
-  </div>
-  <div class="stat">
-    <span class="stat-number">0€</span>
-    <div class="stat-label">Recrutement nécessaire</div>
-  </div>
-</div>
+  <div class="hero-content">
+    <div class="tag fade-in">🏠 Assistant commercial IA — Spécialiste agences immobilières</div>
 
-<!-- PROBLÈME -->
-<div class="section">
-  <div class="section-title">Tu perds des clients sans le savoir.</div>
-  <div class="section-sub">Un prospect qui ne reçoit pas de réponse dans l'heure contacte un concurrent. C'est aussi simple que ça.</div>
-  <div class="problems">
-    <div class="problem-card">
-      <div class="icon">🌙</div>
-      <h3>Les leads du soir disparaissent</h3>
-      <p>Un prospect envoie un message à 21h30. Ton équipe le voit le lendemain matin. Il a déjà signé ailleurs.</p>
+    <h1 class="fade-in delay-1">
+      Votre concurrent répond<br>
+      <span class="accent">en 90 secondes.</span><br>
+      Et vous ?
+    </h1>
+
+    <p class="hero-sub fade-in delay-2">
+      Un assistant commercial virtuel répond à chacun de vos prospects en moins de 2 minutes, 24h/24, 7j/7. Il qualifie, planifie les visites et transmet uniquement des leads chauds à votre équipe. Sans recruter.
+    </p>
+
+    <div class="hero-btns fade-in delay-3">
+      <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+         class="btn btn-primary btn-lg"
+         aria-label="Réserver une démonstration gratuite de l'Agent IA Immo">
+        🎯 Demander ma démo gratuite
+      </a>
+      <a href="#comment" class="btn btn-outline btn-lg">
+        Voir comment ça marche
+      </a>
     </div>
-    <div class="problem-card">
-      <div class="icon">📞</div>
-      <h3>Tes agents perdent du temps</h3>
-      <p>Ils rappellent des prospects non qualifiés, sans budget, sans projet réel. Énergie gaspillée sur les mauvaises cibles.</p>
-    </div>
-    <div class="problem-card">
-      <div class="icon">📉</div>
-      <h3>Ton taux de conversion stagne</h3>
-      <p>Tu génères des contacts mais peu convertissent. Le problème c'est le délai de réponse et la qualification initiale.</p>
+
+    <p class="hero-note fade-in delay-4">
+      Démo 20 min — sans engagement — aucune carte bancaire
+    </p>
+    <div class="fade-in delay-5" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:8px 18px;font-size:0.78rem;color:#f5a623">
+      ⚡ Offre de lancement — 5 places à 390 €/mois · <strong>Plus que 5 disponibles</strong>
     </div>
   </div>
-</div>
 
-<!-- COMMENT ÇA MARCHE -->
-<div class="how" id="comment">
-  <div class="how-inner">
-    <div style="text-align:center">
-      <div class="section-title">Comment fonctionne l'agent IA ?</div>
-      <div class="section-sub">En 4 étapes automatiques, de la prise de contact au RDV qualifié.</div>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <h3>Le prospect envoie un message</h3>
-        <p>Via ton site, WhatsApp, Facebook, ou formulaire — peu importe le canal.</p>
+  <!-- Before / After -->
+  <div class="hero-visual fade-in delay-5" role="img" aria-label="Comparaison avant/après : sans et avec l'agent IA">
+    <div class="baa-grid">
+      <div class="baa-card bad">
+        <div class="baa-label">😰 Sans l'agent IA</div>
+        <div class="baa-time">Vendredi 22h47 — SeLoger</div>
+        <div class="bubble from-prospect">
+          "Bonjour, j'aimerais visiter le T3 avenue des Acacias. Budget 350 000 €. Est-ce toujours disponible ?"
+        </div>
+        <div class="baa-outcome bad">⏳ Aucune réponse avant lundi matin</div>
+        <p style="margin-top:10px;font-size:.72rem;color:var(--muted)">→ Samedi, le couple visite avec l'agence d'en face.</p>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <h3>L'IA répond en &lt; 2 min</h3>
-        <p>Message personnalisé, professionnel, qui engage la conversation et pose les bonnes questions.</p>
+      <div class="baa-card good">
+        <div class="baa-label">✅ Avec l'agent IA</div>
+        <div class="baa-time">Vendredi 22h47</div>
+        <div class="bubble from-prospect">
+          "Bonjour, j'aimerais visiter le T3 avenue des Acacias. Budget 350 000 €. Est-ce toujours disponible ?"
+        </div>
+        <div class="baa-reply-time">22h48 — Réponse en 1 min 04 sec ✓</div>
+        <div class="bubble from-agent">
+          "Bonsoir ! Je suis l'assistant de l'Agence Martin 😊 Le T3 est disponible ! Êtes-vous primo-accédant ou avez-vous un bien à vendre ?"
+        </div>
+        <div class="baa-outcome good">✅ Lead qualifié · RDV samedi 10h confirmé</div>
       </div>
-      <div class="step">
-        <div class="step-num">3</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================
+     TRUST BAR
+============================================================ -->
+<div class="trust-bar" role="complementary" aria-label="Compatibilité avec vos outils">
+  <div class="trust-bar-inner">
+    <span class="trust-label">Fonctionne avec</span>
+    <div class="trust-sep" aria-hidden="true"></div>
+    <div class="trust-items">
+      <div class="trust-item">💬 WhatsApp Business</div>
+      <div class="trust-item">🌐 Votre site web</div>
+      <div class="trust-item">📘 Facebook Messenger</div>
+      <div class="trust-item">📸 Instagram</div>
+      <div class="trust-item">🗂️ HubSpot · Notion · Airtable</div>
+      <div class="trust-item">📅 Google Calendar</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     STATS
+============================================================ -->
+<section class="stats" aria-label="Chiffres clés">
+  <div class="stats-grid">
+    <div class="stat-item fade-in">
+      <span class="stat-num">&lt; 2 min</span>
+      <div class="stat-lbl">Temps de réponse garanti</div>
+    </div>
+    <div class="stat-item fade-in delay-1">
+      <span class="stat-num">24h / 7j</span>
+      <div class="stat-lbl">Disponibilité sans interruption</div>
+    </div>
+    <div class="stat-item fade-in delay-2">
+      <span class="stat-num">5–7 j</span>
+      <div class="stat-lbl">Délai de mise en place</div>
+    </div>
+    <div class="stat-item fade-in delay-3">
+      <span class="stat-num">0€</span>
+      <div class="stat-lbl">Recrutement nécessaire</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     STORY
+============================================================ -->
+<section class="section section-alt" aria-label="Un scénario que vous connaissez">
+  <div class="container-sm">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">📖 Ça vous est déjà arrivé ?</div>
+    </div>
+
+    <div class="story-box fade-in delay-1">
+      <div class="story-kicker">Vendredi soir — 22h47</div>
+      <h2>Un couple cherche son appartement depuis 6 mois.</h2>
+      <p style="margin-top:14px">
+        Ils consultent SeLoger après le travail. Ils tombent sur <strong>votre annonce</strong>. Le bien correspond exactement à leur budget et à leur projet.<br><br>
+        Ils envoient un message à 22h47. Ils espèrent une réponse rapide. Ils veulent visiter samedi matin.<br><br>
+        Mais votre agence est fermée. Vos agents ont éteint leurs téléphones. Le message reste sans réponse jusqu'au lundi matin.
+      </p>
+      <div class="story-outcome">
+        <span class="story-outcome-icon">📉</span>
+        <p><strong>Ce week-end, le couple visite avec l'agence d'en face.</strong> Ils signent une offre le dimanche. Votre message du lundi arrive trop tard. Une commission s'envole.</p>
+      </div>
+    </div>
+
+    <div class="story-bridge fade-in delay-2">
+      <p>
+        Ce scénario se reproduit chaque semaine dans des centaines d'agences.<br>
+        <span>L'Agent IA Immo est là pour que ça n'arrive plus jamais chez vous.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROBLEMS
+============================================================ -->
+<section class="section" aria-label="Problèmes courants">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">⚠️ Le vrai problème</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">
+      Vous perdez des clients sans le savoir.
+    </h2>
+    <p class="section-sub fade-in delay-2">
+      Chaque heure sans réponse est une commission potentielle qui s'envole. Le prospect le plus motivé choisit l'agence qui répond en premier.
+    </p>
+    <div class="problems-grid">
+      <div class="prob-card fade-in delay-1">
+        <span class="icon">🌙</span>
+        <h3>Les leads du soir disparaissent</h3>
+        <p>Vos meilleurs acheteurs envoient des messages le soir et le week-end. Sans réponse rapide, ils contactent l'agence suivante sur la liste.</p>
+      </div>
+      <div class="prob-card fade-in delay-2">
+        <span class="icon">⏳</span>
+        <h3>Vos agents gaspillent leur énergie</h3>
+        <p>Ils rappellent des contacts sans budget, sans projet réel, sans urgence. Chaque appel inutile est une visite de moins avec un vrai acheteur.</p>
+      </div>
+      <div class="prob-card fade-in delay-3">
+        <span class="icon">📉</span>
+        <h3>Votre taux de transformation stagne</h3>
+        <p>Vous générez des contacts mais peu deviennent des RDV. La cause principale : le délai de réponse et l'absence de qualification immédiate.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SOLUTION — RENCONTREZ ALEX
+============================================================ -->
+<section class="section section-alt" aria-label="La solution">
+  <div class="container">
+    <div class="solution-inner">
+      <div class="solution-text">
+        <div class="tag fade-in">🤝 La solution</div>
+        <h2 class="fade-in delay-1">
+          Pas un chatbot.<br>
+          <span class="text-accent">Un vrai collaborateur.</span>
+        </h2>
+        <p class="fade-in delay-2">
+          Alex est votre assistant commercial virtuel. Il connaît votre agence, votre secteur, votre portefeuille de biens. Il répond comme le ferait votre meilleur négociateur — en moins de 2 minutes, à n'importe quelle heure.
+        </p>
+        <ul class="check-list fade-in delay-3">
+          <li>Répond instantanément, 24h/24 et 7j/7</li>
+          <li>Qualifie le budget, le projet et l'urgence</li>
+          <li>Propose et confirme des créneaux de visite</li>
+          <li>Transmet uniquement des leads chauds, déjà qualifiés</li>
+          <li>S'exprime avec le ton exact de votre agence</li>
+          <li>Ne prend jamais de congés. Ne tombe jamais malade.</li>
+        </ul>
+      </div>
+
+      <div class="alex-card fade-in delay-2">
+        <div class="alex-head">
+          <div class="alex-avatar" aria-hidden="true">🤖</div>
+          <div>
+            <div class="alex-name">Alex</div>
+            <div class="alex-role">Assistant Commercial IA — Immo</div>
+          </div>
+          <div class="alex-online">
+            <div class="dot" aria-hidden="true"></div>
+            En ligne
+          </div>
+        </div>
+        <div class="alex-kpis">
+          <div class="kpi">
+            <div class="kpi-val">&lt; 2 min</div>
+            <div class="kpi-lbl">Temps de réponse</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val">24 / 7</div>
+            <div class="kpi-lbl">Disponibilité</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val">∞</div>
+            <div class="kpi-lbl">Conversations en parallèle</div>
+          </div>
+          <div class="kpi">
+            <div class="kpi-val">0 €</div>
+            <div class="kpi-lbl">Recrutement nécessaire</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     HOW IT WORKS
+============================================================ -->
+<section class="section" id="comment" aria-label="Comment ça marche">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">⚙️ Le processus</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">
+      De l'inconnu au lead chaud — en automatique.
+    </h2>
+    <p class="section-sub fade-in delay-2">
+      En 4 étapes entièrement automatisées, Alex transforme un message anonyme en rendez-vous qualifié transmis à votre équipe.
+    </p>
+    <div class="steps-grid">
+      <div class="step-card fade-in delay-1">
+        <div class="step-num" aria-hidden="true">1</div>
+        <h3>Un prospect vous écrit</h3>
+        <p>Via votre site, WhatsApp, Facebook, ou Instagram — peu importe le canal ou l'heure.</p>
+      </div>
+      <div class="step-card fade-in delay-2">
+        <div class="step-num" aria-hidden="true">2</div>
+        <h3>Alex répond en &lt; 2 min</h3>
+        <p>Message professionnel et personnalisé, au ton de votre agence, qui engage la conversation immédiatement.</p>
+      </div>
+      <div class="step-card fade-in delay-3">
+        <div class="step-num" aria-hidden="true">3</div>
         <h3>Le projet est qualifié</h3>
-        <p>Budget, délai, type de bien, situation actuelle — tout est recueilli automatiquement.</p>
+        <p>Budget, type de bien, délai d'achat, situation personnelle — tout est recueilli naturellement et sans friction.</p>
       </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <h3>Ton agent reçoit la fiche</h3>
-        <p>Récapitulatif complet dans ton CRM + rappel programmé. Ton équipe ne rappelle que des leads chauds.</p>
+      <div class="step-card fade-in delay-4">
+        <div class="step-num" aria-hidden="true">4</div>
+        <h3>Votre agent reçoit la fiche</h3>
+        <p>Récapitulatif complet + RDV déjà confirmé dans l'agenda. Votre équipe n'intervient que sur des dossiers chauds.</p>
       </div>
     </div>
   </div>
+</section>
+
+<!-- ============================================================
+     MID-PAGE CTA BAND
+============================================================ -->
+<div style="background:linear-gradient(135deg,rgba(0,212,170,0.08),rgba(0,70,200,0.06));border-top:1px solid var(--border-a);border-bottom:1px solid var(--border-a);padding:48px 40px;text-align:center" role="complementary">
+  <p style="color:var(--white);font-size:1.15rem;font-weight:700;margin-bottom:18px">
+    Prêt à voir Alex en action sur votre agence ?
+  </p>
+  <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+     class="btn btn-primary"
+     aria-label="Demander une démonstration gratuite">
+    🎯 Demander ma démo gratuite — 20 min
+  </a>
+  <p style="margin-top:12px;color:var(--muted);font-size:0.78rem">Sans engagement · Aucune carte bancaire</p>
 </div>
 
-<!-- FEATURES -->
-<div class="section">
-  <div class="section-title">Ce qui est inclus</div>
-  <div class="section-sub">Un système complet, configuré pour ton agence, opérationnel en moins d'une semaine.</div>
-  <div class="features">
-    <div class="feature-card">
-      <div class="icon">💬</div>
-      <h3>Multi-canal</h3>
-      <p>Fonctionne sur ton site web, WhatsApp Business, Facebook Messenger, Instagram ou formulaire de contact.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🧠</div>
-      <h3>IA personnalisée</h3>
-      <p>Formé sur ton agence, ton secteur géographique, tes typologies de biens et le ton de ta marque.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📋</div>
-      <h3>Qualification complète</h3>
-      <p>Budget, délai, type de projet (achat/vente/location), situation personnelle et niveau d'urgence.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">🔗</div>
-      <h3>Intégration CRM</h3>
-      <p>Compatible avec Notion, HubSpot, Airtable, Google Sheets ou tout CRM avec API.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📅</div>
-      <h3>Prise de RDV automatique</h3>
-      <p>L'agent peut directement proposer un créneau dans l'agenda de tes agents et confirmer le RDV.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📊</div>
-      <h3>Dashboard & rapports</h3>
-      <p>Tableau de bord avec tous les leads, leur statut, et les conversations — accessible à tout moment.</p>
+<!-- ============================================================
+     CONVERSATION DEMO
+============================================================ -->
+<section class="section section-alt" aria-label="Exemple de conversation avec l'agent IA">
+  <div class="container">
+    <div class="demo-inner">
+      <div class="demo-text">
+        <div class="tag fade-in">💬 Exemple réel</div>
+        <h2 class="fade-in delay-1">Voici exactement ce que vos prospects reçoivent.</h2>
+        <p class="fade-in delay-2">
+          Alex répond comme un collaborateur humain — jamais comme un bot. Il pose les bonnes questions, dans le bon ordre, pour qualifier sans friction ni attente.
+        </p>
+        <ul class="demo-pts fade-in delay-3">
+          <li><span class="ico">🎯</span> Qualification complète du projet en quelques échanges</li>
+          <li><span class="ico">📅</span> Prise de RDV directement dans votre agenda</li>
+          <li><span class="ico">📋</span> Fiche prospect transmise instantanément à votre équipe</li>
+          <li><span class="ico">🔔</span> Notification en temps réel à votre agent</li>
+        </ul>
+        <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+           class="btn btn-primary fade-in delay-4"
+           aria-label="Voir la démonstration complète de l'agent IA">
+          Voir la démo complète →
+        </a>
+      </div>
+
+      <div class="chat-mock fade-in delay-2"
+           role="img"
+           aria-label="Conversation exemple entre un prospect et l'assistant IA de l'agence">
+        <div class="chat-mock-head">
+          <div class="chat-av" aria-hidden="true">🤖</div>
+          <div>
+            <div class="chat-av-name">Alex — Assistant Agence Martin</div>
+            <div class="chat-av-sub">● En ligne · Répond instantanément</div>
+          </div>
+        </div>
+        <div class="chat-body">
+          <div class="msg left">
+            <span class="msg-t">Vendredi 22h47</span>
+            <div class="msg-b">Bonsoir, je suis intéressé par le T3 avenue des Acacias. Budget 350 K€. Est-ce toujours disponible ?</div>
+          </div>
+          <div class="msg right">
+            <span class="msg-t">22h48 — Réponse en 1 min 04 sec ✓</span>
+            <div class="msg-b">Bonsoir ! Je suis Alex, l'assistant de l'Agence Martin 😊 Le T3 avenue des Acacias est bien disponible ! Pour mieux vous accompagner — avez-vous un bien à vendre ou êtes-vous en première acquisition ?</div>
+          </div>
+          <div class="msg left">
+            <span class="msg-t">22h50</span>
+            <div class="msg-b">Nous avons un appartement en cours de vente, compromis signé. On peut bouger rapidement.</div>
+          </div>
+          <div class="msg right">
+            <span class="msg-t">22h50</span>
+            <div class="msg-b">C'est une excellente position 🎉 Une visite samedi matin vous conviendrait-elle ? J'ai un créneau à 10h ou 11h30.</div>
+          </div>
+          <div class="msg left">
+            <span class="msg-t">22h51</span>
+            <div class="msg-b">10h c'est parfait !</div>
+          </div>
+        </div>
+        <div class="chat-foot">
+          <span>✅</span>
+          <span>Lead qualifié transmis · RDV confirmé samedi 10h</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- PRICING -->
-<div class="pricing">
-  <div class="pricing-inner">
-    <div class="section-title">Tarifs transparents</div>
-    <div class="section-sub">Pas de surprise. Setup unique + abonnement mensuel. Résiliable à tout moment.</div>
-    <div class="pricing-cards">
+<!-- ============================================================
+     CE QUE VOUS VERREZ DANS LA DÉMO
+============================================================ -->
+<section class="section" aria-label="Contenu de la démonstration">
+  <div class="container-sm" style="text-align:center">
+    <div class="fade-in">
+      <div class="tag">🎯 Votre démo personnalisée</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">En 20 minutes, vous verrez tout.</h2>
+    <p class="section-sub fade-in delay-2">
+      Une démonstration live, adaptée à votre agence et votre secteur. Pas de slides. Pas de PowerPoint. Du concret.
+    </p>
 
-      <div class="pricing-card">
-        <div class="plan-name">Starter</div>
-        <div class="price">290€ <span>/mois</span></div>
-        <div class="setup">+ 490€ de setup (une fois)</div>
-        <ul>
+    <div class="demo-items">
+      <div class="demo-item fade-in delay-1">
+        <div class="di-num">1</div>
+        <div>
+          <div class="di-title">Alex en action sur un vrai scénario</div>
+          <div class="di-desc">Je simule une conversation prospect en direct. Vous voyez exactement ce que vos clients recevraient.</div>
+        </div>
+      </div>
+      <div class="demo-item fade-in delay-2">
+        <div class="di-num">2</div>
+        <div>
+          <div class="di-title">Le parcours complet jusqu'au lead qualifié</div>
+          <div class="di-desc">De la 1ère réponse automatique à la fiche prospect transmise à votre équipe — en temps réel.</div>
+        </div>
+      </div>
+      <div class="demo-item fade-in delay-3">
+        <div class="di-num">3</div>
+        <div>
+          <div class="di-title">La configuration pour votre agence</div>
+          <div class="di-desc">Je vous montre comment Alex s'adapte à votre secteur, votre ton, vos typologies de biens et vos prix.</div>
+        </div>
+      </div>
+      <div class="demo-item fade-in delay-4">
+        <div class="di-num">4</div>
+        <div>
+          <div class="di-title">L'intégration avec vos outils existants</div>
+          <div class="di-desc">WhatsApp, votre site, votre CRM et votre agenda — je vous explique comment tout se connecte, sans friction technique.</div>
+        </div>
+      </div>
+      <div class="demo-item fade-in delay-5">
+        <div class="di-num">5</div>
+        <div>
+          <div class="di-title">Un devis personnalisé, transparent</div>
+          <div class="di-desc">Tarif exact, délai, plan de déploiement — tout est clair avant de vous engager. Aucune surprise.</div>
+        </div>
+      </div>
+    </div>
+
+    <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+       class="btn btn-primary btn-lg fade-in"
+       aria-label="Réserver ma démonstration gratuite de l'Agent IA Immo">
+      🎯 Réserver ma démo gratuite
+    </a>
+    <p style="margin-top:14px;color:var(--muted);font-size:.8rem" class="fade-in delay-1">
+      Démo 20 min · Sans engagement · Aucune carte bancaire
+    </p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FEATURES
+============================================================ -->
+<section class="section section-alt" id="fonctionnalites" aria-label="Fonctionnalités incluses">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">🛠️ Ce qui est inclus</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">Tout ce dont votre agence a besoin.</h2>
+    <p class="section-sub fade-in delay-2">
+      Un système complet, configuré pour votre agence, opérationnel en moins d'une semaine. Rien à installer de votre côté.
+    </p>
+    <div class="feat-grid">
+      <div class="feat-card fade-in delay-1">
+        <span class="ico" aria-hidden="true">💬</span>
+        <h3>Multi-canal</h3>
+        <p>Site web, WhatsApp Business, Facebook Messenger, Instagram — Alex est présent partout où vos prospects vous écrivent.</p>
+      </div>
+      <div class="feat-card fade-in delay-2">
+        <span class="ico" aria-hidden="true">🧠</span>
+        <h3>Formé sur votre agence</h3>
+        <p>Alex connaît votre secteur géographique, vos typologies de biens, vos prix moyens et le ton exact de votre marque.</p>
+      </div>
+      <div class="feat-card fade-in delay-3">
+        <span class="ico" aria-hidden="true">📋</span>
+        <h3>Qualification complète</h3>
+        <p>Budget, délai, type de projet, situation personnelle et motivation — tout est qualifié avant que votre équipe n'intervienne.</p>
+      </div>
+      <div class="feat-card fade-in delay-1">
+        <span class="ico" aria-hidden="true">📅</span>
+        <h3>Prise de RDV automatique</h3>
+        <p>Alex propose directement des créneaux dans votre agenda et confirme les visites — sans aucune intervention humaine.</p>
+      </div>
+      <div class="feat-card fade-in delay-2">
+        <span class="ico" aria-hidden="true">🔗</span>
+        <h3>Connexion CRM</h3>
+        <p>Compatible HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API ou Zapier/Make.</p>
+      </div>
+      <div class="feat-card fade-in delay-3">
+        <span class="ico" aria-hidden="true">📊</span>
+        <h3>Dashboard en temps réel</h3>
+        <p>Tous vos leads, leurs statuts et les conversations — accessibles à tout moment depuis un tableau de bord centralisé.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PROCESS
+============================================================ -->
+<section class="section" aria-label="Processus de mise en place">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">🚀 Mise en place</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">Opérationnel en 5 à 7 jours.</h2>
+    <p class="section-sub fade-in delay-2">
+      Vous n'avez rien à faire techniquement. Je m'occupe de tout.
+    </p>
+  </div>
+  <div class="timeline">
+    <div class="tl-item fade-in delay-1">
+      <div class="tl-dot" aria-hidden="true">📞</div>
+      <div class="tl-content">
+        <div class="tl-day">Jour 1</div>
+        <h3>Appel de découverte — 30 minutes</h3>
+        <p>On échange sur votre agence, votre secteur, vos besoins et vos outils actuels. Je prends note de tout.</p>
+      </div>
+    </div>
+    <div class="tl-item fade-in delay-2">
+      <div class="tl-dot" aria-hidden="true">🧠</div>
+      <div class="tl-content">
+        <div class="tl-day">Jours 2–4</div>
+        <h3>Configuration et personnalisation</h3>
+        <p>Je configure Alex avec votre ton, vos biens, votre secteur géographique et votre processus de qualification.</p>
+      </div>
+    </div>
+    <div class="tl-item fade-in delay-3">
+      <div class="tl-dot" aria-hidden="true">🔗</div>
+      <div class="tl-content">
+        <div class="tl-day">Jours 5–6</div>
+        <h3>Connexion à vos canaux et outils</h3>
+        <p>Intégration WhatsApp, site web, CRM et agenda. Je teste chaque canal en conditions réelles avant le lancement.</p>
+      </div>
+    </div>
+    <div class="tl-item fade-in delay-4">
+      <div class="tl-dot" aria-hidden="true">✅</div>
+      <div class="tl-content">
+        <div class="tl-day">Jour 7</div>
+        <h3>Lancement et formation</h3>
+        <p>Alex est en ligne. Je vous forme en 30 minutes sur le dashboard et les rapports. Vous êtes autonome dès le premier jour.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     TRUST / TRANSPARENCY
+============================================================ -->
+<section class="section section-alt" aria-label="Transparence et sécurité">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">🔐 Transparence totale</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">Honnêteté totale. Zéro surprise.</h2>
+    <p class="section-sub fade-in delay-2">
+      Je suis en phase de lancement et je le dis clairement. Ce que vous obtenez en échange : transparence absolue, tarif préférentiel et suivi personnalisé.
+    </p>
+    <div class="trust-cards-grid">
+      <div class="tc fade-in delay-1">
+        <span class="ico" aria-hidden="true">📁</span>
+        <h3>Vos données vous appartiennent</h3>
+        <p>Tous les contacts et conversations appartiennent à votre agence. Je ne les utilise ni ne les partage. Conformité RGPD garantie.</p>
+      </div>
+      <div class="tc fade-in delay-2">
+        <span class="ico" aria-hidden="true">🔓</span>
+        <h3>Sans engagement</h3>
+        <p>Résiliation à tout moment, sans préavis, sans frais. Si l'agent ne vous convient pas, vous partez sans débourser un euro supplémentaire.</p>
+      </div>
+      <div class="tc fade-in delay-3">
+        <span class="ico" aria-hidden="true">🤝</span>
+        <h3>Accompagnement humain direct</h3>
+        <p>Je suis joignable directement — pas un support anonyme. Si quelque chose ne fonctionne pas, je le corrige sous 24 heures.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FAQ
+============================================================ -->
+<section class="section" id="faq" aria-label="Questions fréquentes">
+  <div class="container-sm">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">❓ FAQ</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">Questions fréquentes</h2>
+
+    <div class="faq-list fade-in delay-2">
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a1">
+          Combien de temps pour mettre en place l'agent ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a1" role="region">
+          Entre 5 et 7 jours ouvrés. On commence par un appel de 30 min pour comprendre votre agence, puis je configure tout de mon côté. Vous n'avez rien à faire techniquement.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a2">
+          Est-ce que ça remplace mes agents immobiliers ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a2" role="region">
+          Non — ça les libère. Alex gère la 1ère prise de contact et la qualification. Vos agents n'interviennent que sur des leads chauds, avec un projet clair et un RDV confirmé. Ils passent leur temps sur ce qui génère réellement des commissions.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a3">
+          Mes prospects sauront-ils qu'ils parlent à une IA ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a3" role="region">
+          C'est votre choix. On peut configurer Alex pour se présenter comme "l'assistant de votre agence" ou être transparent sur sa nature. Je respecte les bonnes pratiques légales et vous conseille sur la meilleure approche selon votre clientèle.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a4">
+          Quels outils sont compatibles ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a4" role="region">
+          HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API, Zapier ou Make. Si vous n'avez pas de CRM, je vous mets en place une solution simple et gratuite (Airtable ou Google Sheets) adaptée à une agence.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a5">
+          Et si je veux arrêter ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a5" role="region">
+          Résiliation à tout moment, sans engagement, sans frais. Vous gardez toutes vos données prospects et l'historique complet des conversations. Aucun blocage, aucune clause cachée.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a6">
+          Alex peut-il vraiment répondre comme un humain ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a6" role="region">
+          Oui. Alex est configuré pour adopter le ton, le vocabulaire et le style de votre agence. Il ne répond pas avec des formules génériques. Lors de la démo, vous verrez des exemples concrets de conversations réelles.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-btn" aria-expanded="false" aria-controls="faq-a7">
+          Vous n'avez pas encore de clients. Pourquoi vous faire confiance ?
+          <span class="faq-chev" aria-hidden="true">▾</span>
+        </button>
+        <div class="faq-ans" id="faq-a7" role="region">
+          C'est une question légitime et je la prends au sérieux. Je suis en phase de lancement et je travaille avec un cercle restreint d'agences pionnières. En échange : tarif préférentiel et suivi très personnalisé. La démo est gratuite, sans engagement. Vous jugez par vous-même avant toute décision.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PRICING
+============================================================ -->
+<section class="section section-alt" id="tarifs" aria-label="Tarifs">
+  <div class="container">
+    <div style="text-align:center" class="fade-in">
+      <div class="tag">💳 Tarifs</div>
+    </div>
+    <h2 class="section-heading fade-in delay-1">Tarifs transparents. Aucune surprise.</h2>
+    <p class="section-sub fade-in delay-2">
+      Setup unique + abonnement mensuel. Résiliable à tout moment.
+    </p>
+    <div class="pricing-grid">
+
+      <div class="pc fade-in delay-1">
+        <div class="pc-name">Starter</div>
+        <div class="pc-price">290 € <span>/mois</span></div>
+        <div class="pc-setup">+ 490 € de setup (une seule fois)</div>
+        <ul class="pc-feats">
           <li>1 canal (site ou WhatsApp)</li>
-          <li>Qualification basique (budget, type, délai)</li>
+          <li>Qualification budget / type / délai</li>
           <li>Récapitulatif email quotidien</li>
           <li>Support par email</li>
-          <li>Mise en place en 5-7 jours</li>
+          <li>Mise en place en 5–7 jours</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Starter Agent IA Immo" class="btn-secondary">Commencer →</a>
+        <a href="mailto:maxime@argentlibre.fr?subject=Offre Starter — Agent IA Immo"
+           class="btn btn-outline"
+           aria-label="Demander une démo pour l'offre Starter à 290€/mois">
+          Demander une démo →
+        </a>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="popular-badge">⚡ Le plus choisi</div>
-        <div class="plan-name">Pro</div>
-        <div class="price">490€ <span>/mois</span></div>
-        <div class="setup">+ 490€ de setup (une fois)</div>
-        <ul>
+      <div class="pc featured fade-in delay-2">
+        <div class="pc-popular">⚡ Recommandé</div>
+        <div class="pc-name">Pro</div>
+        <div class="pc-price">490 € <span>/mois</span></div>
+        <div class="pc-setup">+ 490 € de setup (une seule fois)</div>
+        <ul class="pc-feats">
           <li>3 canaux au choix</li>
           <li>Qualification complète + prise de RDV</li>
           <li>Intégration CRM incluse</li>
-          <li>Dashboard temps réel</li>
+          <li>Dashboard en temps réel</li>
           <li>Support prioritaire (réponse &lt; 4h)</li>
-          <li>Optimisations mensuelles</li>
+          <li>Optimisations mensuelles incluses</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Pro Agent IA Immo" class="btn-primary">Réserver une démo →</a>
+        <a href="mailto:maxime@argentlibre.fr?subject=Offre Pro — Agent IA Immo"
+           class="btn btn-primary"
+           aria-label="Demander une démo pour l'offre Pro à 490€/mois">
+          Demander une démo →
+        </a>
       </div>
 
-      <div class="pricing-card">
-        <div class="plan-name">Réseau</div>
-        <div class="price">790€ <span>/mois</span></div>
-        <div class="setup">Setup offert pour réseau 3+ agences</div>
-        <ul>
+      <div class="pc fade-in delay-3">
+        <div class="pc-name">Réseau</div>
+        <div class="pc-price">790 € <span>/mois</span></div>
+        <div class="pc-setup">Setup offert pour 3 agences et plus</div>
+        <ul class="pc-feats">
           <li>Jusqu'à 5 agences / points de vente</li>
-          <li>Tous les canaux illimités</li>
+          <li>Tous les canaux inclus</li>
           <li>Dashboard centralisé multi-agences</li>
           <li>Rapport de performance mensuel</li>
-          <li>Account manager dédié</li>
+          <li>Interlocuteur dédié</li>
           <li>Personnalisation avancée par agence</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Réseau Agent IA Immo" class="btn-secondary">Nous contacter →</a>
+        <a href="mailto:maxime@argentlibre.fr?subject=Offre Réseau — Agent IA Immo"
+           class="btn btn-outline"
+           aria-label="Nous contacter pour l'offre Réseau">
+          Nous contacter →
+        </a>
       </div>
 
     </div>
-    <p style="color: var(--gray); font-size: .9rem; margin-top: 32px;">🎁 <strong style="color:var(--accent)">Offre lancement :</strong> les 5 premiers clients bénéficient du pack Pro à 390€/mois (au lieu de 490€) pour les 3 premiers mois.</p>
+    <p class="pricing-note fade-in delay-1">
+      🎁 <strong>Offre de lancement :</strong> les 5 premières agences bénéficient du pack Pro à 390 €/mois pendant 3 mois. Places limitées.
+    </p>
   </div>
-</div>
+</section>
 
-<!-- FAQ -->
-<div class="faq">
-  <div class="faq-inner">
-    <div class="section-title" style="text-align:center; margin-bottom:50px">Questions fréquentes</div>
-
-    <div class="faq-item">
-      <div class="faq-q">Combien de temps pour mettre en place l'agent ?</div>
-      <div class="faq-a">Entre 5 et 7 jours ouvrés. On commence par un appel de 30 min pour comprendre ton agence, puis je configure tout de mon côté. Tu n'as rien à faire techniquement.</div>
+<!-- ============================================================
+     CTA FINAL
+============================================================ -->
+<section class="cta-final" aria-label="Appel à l'action final">
+  <div class="cta-inner">
+    <div class="tag fade-in" style="margin-bottom:24px">
+      🏁 Prêt à arrêter de perdre des prospects ?
     </div>
-    <div class="faq-item">
-      <div class="faq-q">Est-ce que ça remplace mes agents immobiliers ?</div>
-      <div class="faq-a">Non — ça les libère. L'agent IA gère la 1ère prise de contact et la qualification. Tes agents humains n'interviennent que sur des leads déjà chauds, avec un projet clair. Ils passent leur temps sur ce qui a de la valeur.</div>
+    <h2 class="fade-in delay-1">
+      Ce soir, un prospect<br>
+      va écrire à votre agence.<br>
+      <span class="text-accent">Qui lui répondra ?</span>
+    </h2>
+    <p class="fade-in delay-2">
+      Demandez une démo gratuite de 20 minutes. Je vous montre Alex en action sur un cas concret adapté à votre agence. Aucun engagement. Aucune carte bancaire requise.
+    </p>
+    <div class="cta-btns fade-in delay-3">
+      <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo — Agence [Votre nom]"
+         class="btn btn-primary btn-lg"
+         aria-label="Réserver ma démonstration gratuite de l'Agent IA Immo">
+        🎯 Réserver ma démo — 20 min offertes
+      </a>
     </div>
-    <div class="faq-item">
-      <div class="faq-q">Est-ce que les prospects savent qu'ils parlent à une IA ?</div>
-      <div class="faq-a">C'est ton choix. On peut configurer l'agent pour se présenter comme un assistant numérique de l'agence, ou rester plus discret. On respecte les bonnes pratiques de transparence.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Quel CRM est compatible ?</div>
-      <div class="faq-a">HubSpot, Notion, Airtable, Google Sheets, Pipedrive, ou tout outil avec une API ou Zapier/Make. Si tu n'as pas de CRM, je peux te mettre en place une solution simple et gratuite.</div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-q">Et si je veux arrêter ?</div>
-      <div class="faq-a">Résiliation à tout moment, sans engagement, sans frais. Tu gardes toutes les données de tes prospects.</div>
+    <div class="cta-pills fade-in delay-4">
+      <div class="cta-pill">✓ Démo gratuite</div>
+      <div class="cta-pill">✓ Sans engagement</div>
+      <div class="cta-pill">✓ Sans carte bancaire</div>
+      <div class="cta-pill">✓ Réponse sous 24h</div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- CTA FINAL -->
-<div class="cta-final">
-  <h2>Prêt à ne plus perdre<br>un seul prospect la nuit ?</h2>
-  <p>Démo gratuite de 20 min — je te montre l'agent en action sur un cas concret.<br>Aucun engagement, aucune carte bancaire.</p>
-  <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo" class="btn-primary" style="font-size: 1.1rem; padding: 18px 44px;">🎯 Réserver ma démo gratuite</a>
+<!-- ============================================================
+     VOICEFLOW LIVE CALLOUT
+============================================================ -->
+<div style="background:var(--bg2);border-top:1px solid var(--border);padding:56px 40px;text-align:center" role="complementary" aria-label="Tester l'agent IA en direct">
+  <div class="tag" style="margin-bottom:16px">🤖 Tester maintenant</div>
+  <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:12px">
+    Alex est déjà là. <span style="color:var(--accent)">Parlez-lui.</span>
+  </h2>
+  <p style="color:var(--muted2);max-width:500px;margin:0 auto 28px;line-height:1.7">
+    Cliquez sur l'icône de chat en bas à droite. Alex vous répond en direct, comme il le ferait pour vos futurs clients.
+  </p>
+  <p style="font-size:0.82rem;color:var(--muted);margin-top:8px">
+    Propulsé par Voiceflow · Données non enregistrées · Démo à titre illustratif
+  </p>
 </div>
+</main>
 
-<!-- FOOTER -->
-<footer>
-  <p>© 2026 ArgentLibre IA — Tous droits réservés</p>
-  <p style="color: var(--gray)">Construit avec ❤️ par Maxime Brice Paul</p>
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer style="background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;text-align:center" role="contentinfo">
+  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">Agent IA Immo</p>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
+    Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique
+  </p>
+  <nav aria-label="Liens du pied de page" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+    <a href="#offre" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Voir l'offre">L'offre</a>
+    <a href="#demo" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Voir la démonstration">Démo</a>
+    <a href="#faq" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Consulter la FAQ">FAQ</a>
+    <a href="mailto:maxime@argentlibre.fr" style="color:var(--accent);font-size:0.85rem;text-decoration:none" aria-label="Contacter par email">maxime@argentlibre.fr</a>
+  </nav>
+  <p style="color:var(--muted);font-size:0.78rem">
+    © 2024 Agent IA Immo · <a href="mailto:maxime@argentlibre.fr" style="color:var(--muted);text-decoration:none">Contact</a>
+  </p>
 </footer>
 
-
-<!-- Widget Alex — Assistant IA Immo (Voiceflow) -->
+<!-- ============================================================
+     VOICEFLOW WIDGET
+============================================================ -->
 <script type="text/javascript">
-  (function(d, t) {
-    var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-    v.onload = function() {
-      window.voiceflow.chat.load({
-        verify: { projectID: '6a3bf733ff3b0cfa9edb25db' },
-        url: 'https://general-runtime.voiceflow.com',
-        versionID: 'production'
-      });
-    }
-    v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-    v.type = "text/javascript";
-    s.parentNode.insertBefore(v, s);
-  })(document, 'script');
+(function(d, t) {
+  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  v.onload = function() {
+    window.voiceflow.chat.load({
+      verify: { projectID: '6a3bf733ff3b0cfa9edb25db' },
+      url: 'https://general-runtime.voiceflow.com',
+      versionID: 'production'
+    });
+  };
+  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+  v.type = "text/javascript";
+  s.parentNode.insertBefore(v, s);
+})(document, 'script');
 </script>
+
+<!-- ============================================================
+     APP JAVASCRIPT
+============================================================ -->
+<script>
+// ── Fade-in on scroll ──────────────────────────────────────────
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.10 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// Hero fades in immediately
+setTimeout(() => {
+  document.querySelectorAll('.hero .fade-in').forEach(el => el.classList.add('visible'));
+}, 80);
+
+// ── Nav scroll shadow ──────────────────────────────────────────
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+
+// ── FAQ accordion ─────────────────────────────────────────────
+document.querySelectorAll('.faq-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-btn').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+// ── Smooth scroll (skip bare # links) ─────────────────────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const href = a.getAttribute('href');
+    if (href === '#') return;
+    const target = document.querySelector(href);
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// ── Stats counter pulse animation ─────────────────────────────
+const statsSection = document.querySelector('.stats');
+let statsAnimated = false;
+const statsObs = new IntersectionObserver((entries) => {
+  if (entries[0].isIntersecting && !statsAnimated) {
+    statsAnimated = true;
+    document.querySelectorAll('.stat-num').forEach((el, i) => {
+      setTimeout(() => {
+        el.style.transition = 'transform 0.3s ease, color 0.3s ease';
+        el.style.transform = 'scale(1.12)';
+        setTimeout(() => { el.style.transform = 'scale(1)'; }, 300);
+      }, i * 120);
+    });
+  }
+}, { threshold: 0.5 });
+if (statsSection) statsObs.observe(statsSection);
+
+// ── Skip-link focus handling ───────────────────────────────────
+const skipLink = document.getElementById('skip-link');
+if (skipLink) {
+  skipLink.addEventListener('blur', () => { skipLink.style.left = '-9999px'; });
+  skipLink.addEventListener('focus', () => { skipLink.style.left = '16px'; });
+}
+</script>
+
 </body>
 </html>
