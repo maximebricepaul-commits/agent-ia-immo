@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenue — Agent IA Immo · Pack Pro</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080d18; --bg2: #0d1421;
+      --accent: #00d4aa; --white: #ffffff;
+      --text: #e2e8f0; --muted: #6b7280; --muted2: #9ca3af;
+      --card: #111827; --border: rgba(255,255,255,0.07);
+      --border-a: rgba(0,212,170,0.28);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      text-align: center;
+    }
+    .logo { font-weight: 900; font-size: 1.1rem; color: var(--white); margin-bottom: 48px; }
+    .logo span { color: var(--accent); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border-a);
+      border-radius: 20px;
+      padding: 52px 48px;
+      max-width: 560px;
+      width: 100%;
+    }
+    .check {
+      width: 72px; height: 72px;
+      background: rgba(0,212,170,0.12);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 28px;
+      font-size: 2rem;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(0,212,170,0.12);
+      border: 1px solid var(--border-a);
+      color: var(--accent);
+      font-size: 0.75rem; font-weight: 800;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 900; color: var(--white); margin-bottom: 12px; }
+    .subtitle { color: var(--muted2); line-height: 1.7; margin-bottom: 36px; font-size: 1rem; }
+    .steps {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+    .steps p { font-size: 0.82rem; color: var(--accent); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+    .step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 14px; }
+    .step:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--accent); color: #080d18;
+      font-size: 0.75rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-text { font-size: 0.9rem; color: var(--text); line-height: 1.5; }
+    .step-text strong { color: var(--white); }
+    .contact-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 32px;
+      font-size: 0.9rem;
+      color: var(--muted2);
+    }
+    .contact-box a { color: var(--accent); text-decoration: none; font-weight: 700; }
+    .contact-box a:hover { text-decoration: underline; }
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #080d18;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      margin-bottom: 16px;
+      width: 100%;
+    }
+    .btn:hover { opacity: 0.88; }
+    .btn-ghost {
+      display: inline-block;
+      color: var(--muted2);
+      font-size: 0.88rem;
+      text-decoration: none;
+    }
+    .btn-ghost:hover { color: var(--white); }
+    footer { margin-top: 48px; color: var(--muted); font-size: 0.8rem; }
+    @media (max-width: 520px) {
+      .card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">Agent <span>IA</span> Immo</div>
+
+  <div class="card">
+    <div class="check">✓</div>
+    <div class="badge">Paiement confirmé · Pack Pro</div>
+    <h1>Bienvenue dans Agent IA Immo !</h1>
+    <p class="subtitle">
+      Merci pour votre confiance. Votre accès au <strong style="color:var(--white)">Pack Pro</strong> est en cours de configuration. Vous recevrez un email de confirmation sous <strong style="color:var(--white)">24h</strong>.
+    </p>
+
+    <div class="steps">
+      <p>Ce qui se passe maintenant</p>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Configuration de votre accès</strong> — je prépare votre agent Alex sur mesure pour votre agence</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Email de confirmation sous 24h</strong> avec vos identifiants et les prochaines étapes</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Mise en route accompagnée</strong> — vous êtes opérationnel en quelques jours, sans effort technique</div>
+      </div>
+    </div>
+
+    <div class="contact-box">
+      Une question en attendant ? Écrivez-moi à<br>
+      <a href="mailto:maximebricepaul@gmail.com">maximebricepaul@gmail.com</a>
+    </div>
+
+    <a href="https://maximebricepaul-commits.github.io/agent-ia-immo/" class="btn">
+      ← Retour à la page
+    </a>
+    <br>
+    <a href="https://www.linkedin.com/in/maxime-brice-paul-6439aa419/" target="_blank" rel="noopener" class="btn-ghost">
+      Me suivre sur LinkedIn →
+    </a>
+  </div>
+
+  <footer>© 2024 Agent IA Immo · maximebricepaul@gmail.com</footer>
+</body>
+</html>
