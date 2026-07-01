@@ -158,7 +158,7 @@
        NAV
     ============================================================ */
     nav {
-      position: sticky; top: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       height: 66px; display: flex; align-items: center;
       justify-content: space-between; padding: 0 48px;
       background: rgba(8,13,24,0.88);
@@ -720,8 +720,8 @@
     <li><a href="#tarifs">Tarifs</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
-     class="btn btn-primary"
+  <a href="#contact"
+         class="btn btn-primary"
      aria-label="Demander une démonstration gratuite">
     Demander une démo →
   </a>
@@ -730,7 +730,7 @@
 <!-- ============================================================
      HERO
 ============================================================ -->
-<main id="main-content">
+<main id="main-content" style="padding-top:66px">
 <header class="hero" role="banner">
   <div class="hero-bg"  aria-hidden="true"></div>
   <div class="hero-grid" aria-hidden="true"></div>
@@ -749,7 +749,7 @@
     </p>
 
     <div class="hero-btns fade-in delay-3">
-      <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
+      <a href="#contact"
          class="btn btn-primary btn-lg"
          aria-label="Réserver une démonstration gratuite de l'Agent IA Immo">
         🎯 Demander ma démo gratuite
@@ -1009,8 +1009,8 @@
   <p style="color:var(--white);font-size:1.15rem;font-weight:700;margin-bottom:18px">
     Prêt à voir Alex en action sur votre agence ?
   </p>
-  <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
-     class="btn btn-primary"
+  <a href="#contact"
+         class="btn btn-primary"
      aria-label="Demander une démonstration gratuite">
     🎯 Demander ma démo gratuite — 20 min
   </a>
@@ -1035,8 +1035,8 @@
           <li><span class="ico">📋</span> Fiche prospect transmise instantanément à votre équipe</li>
           <li><span class="ico">🔔</span> Notification en temps réel à votre agent</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
-           class="btn btn-primary fade-in delay-4"
+        <a href="#contact"
+         class="btn btn-primary fade-in delay-4"
            aria-label="Voir la démonstration complète de l'agent IA">
           Voir la démo complète →
         </a>
@@ -1134,8 +1134,8 @@
       </div>
     </div>
 
-    <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo"
-       class="btn btn-primary btn-lg fade-in"
+    <a href="#contact"
+         class="btn btn-primary btn-lg fade-in"
        aria-label="Réserver ma démonstration gratuite de l'Agent IA Immo">
       🎯 Réserver ma démo gratuite
     </a>
@@ -1384,7 +1384,7 @@
           <li>Support par email</li>
           <li>Mise en place en 5–7 jours</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Offre Starter — Agent IA Immo"
+        <a href="#contact"
            class="btn btn-outline"
            aria-label="Demander une démo pour l'offre Starter à 290€/mois">
           Demander une démo →
@@ -1404,8 +1404,8 @@
           <li>Support prioritaire (réponse &lt; 4h)</li>
           <li>Optimisations mensuelles incluses</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Offre Pro — Agent IA Immo"
-           class="btn btn-primary"
+        <a href="#contact"
+         class="btn btn-primary"
            aria-label="Demander une démo pour l'offre Pro à 490€/mois">
           Demander une démo →
         </a>
@@ -1423,7 +1423,7 @@
           <li>Interlocuteur dédié</li>
           <li>Personnalisation avancée par agence</li>
         </ul>
-        <a href="mailto:maxime@argentlibre.fr?subject=Offre Réseau — Agent IA Immo"
+        <a href="#contact"
            class="btn btn-outline"
            aria-label="Nous contacter pour l'offre Réseau">
           Nous contacter →
@@ -1434,6 +1434,86 @@
     <p class="pricing-note fade-in delay-1">
       🎁 <strong>Offre de lancement :</strong> les 5 premières agences bénéficient du pack Pro à 390 €/mois pendant 3 mois. Places limitées.
     </p>
+  </div>
+</section>
+
+
+<!-- ============================================================
+     FORMULAIRE DEMANDE DE DEMO
+============================================================ -->
+<section id="contact" class="section" aria-label="Formulaire de demande de demo" style="background:var(--bg2)">
+  <div class="container" style="max-width:640px">
+    <div class="tag fade-in" style="margin-bottom:24px;text-align:center">📋 C'est gratuit et sans engagement</div>
+    <h2 class="fade-in delay-1" style="text-align:center;margin-bottom:8px">
+      Réservez votre démo<br><span class="text-accent">de 20 minutes</span>
+    </h2>
+    <p class="fade-in delay-2" style="text-align:center;color:var(--muted2);margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto">
+      Je vous montre Alex en action sur un cas concret adapté à votre agence. Réponse sous 24h.
+    </p>
+
+    <form
+      action="https://formsubmit.co/maxime@argentlibre.fr"
+      method="POST"
+      class="fade-in delay-3"
+      style="display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--border-a);border-radius:20px;padding:40px"
+    >
+      <input type="hidden" name="_subject" value="Nouvelle demande de demo Agent IA Immo">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_next" value="https://maximebricepaul-commits.github.io/agent-ia-immo/">
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <label for="f-prenom" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Prénom *</label>
+          <input type="text" id="f-prenom" name="Prenom" required placeholder="Jean"
+            style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+        <div>
+          <label for="f-nom" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Nom *</label>
+          <input type="text" id="f-nom" name="Nom" required placeholder="Dupont"
+            style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none"
+            onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+      </div>
+
+      <div>
+        <label for="f-agence" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Nom de votre agence *</label>
+        <input type="text" id="f-agence" name="Agence" required placeholder="Agence Dupont Immobilier"
+          style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div>
+        <label for="f-email" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Email professionnel *</label>
+        <input type="email" id="f-email" name="Email" required placeholder="jean@agence-dupont.fr"
+          style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div>
+        <label for="f-tel" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Téléphone <span style="color:var(--muted)">(optionnel)</span></label>
+        <input type="tel" id="f-tel" name="Telephone" placeholder="06 12 34 56 78"
+          style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div>
+        <label for="f-msg" style="display:block;font-size:0.82rem;color:var(--muted2);margin-bottom:7px;font-weight:500">Votre situation <span style="color:var(--muted)">(optionnel)</span></label>
+        <textarea id="f-msg" name="Situation" rows="3"
+          placeholder="Ex: 4 agents, 25 messages/semaine, beaucoup de prospects perdus le week-end..."
+          style="width:100%;box-sizing:border-box;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--white);font-size:0.95rem;outline:none;resize:vertical;font-family:inherit"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1rem;font-weight:700;margin-top:4px">
+        Réserver ma démo gratuite de 20 min
+      </button>
+
+      <p style="text-align:center;font-size:0.78rem;color:var(--muted);margin:0">
+        Sans engagement · Réponse sous 24h · Aucune carte bancaire
+      </p>
+    </form>
   </div>
 </section>
 
@@ -1454,7 +1534,7 @@
       Demandez une démo gratuite de 20 minutes. Je vous montre Alex en action sur un cas concret adapté à votre agence. Aucun engagement. Aucune carte bancaire requise.
     </p>
     <div class="cta-btns fade-in delay-3">
-      <a href="mailto:maxime@argentlibre.fr?subject=Démo Agent IA Immo — Agence [Votre nom]"
+      <a href="#contact"
          class="btn btn-primary btn-lg"
          aria-label="Réserver ma démonstration gratuite de l'Agent IA Immo">
         🎯 Réserver ma démo — 20 min offertes
