@@ -1,0 +1,45 @@
+/* Agent IA Immo — Voiceflow custom styles */
+.vfrc-widget--launcher {
+  background: linear-gradient(135deg, #00F5B4 0%, #00C88F 100%) !important;
+  box-shadow: 0 4px 24px rgba(0, 245, 180, 0.4) !important;
+  border: none !important;
+}
+.vfrc-widget--launcher svg path {
+  fill: #0A0A1A !important;
+}
+.vfrc-header {
+  background: linear-gradient(135deg, #1A1A2E 0%, #0D0D1F 100%) !important;
+  border-bottom: 1px solid rgba(0,245,180,0.2) !important;
+}
+.vfrc-header--title {
+  color: #00F5B4 !important;
+  font-weight: 700 !important;
+}
+.vfrc-message--assistant .vfrc-bubble {
+  background: #1E1E3A !important;
+  color: #E8E8F0 !important;
+  border: 1px solid rgba(0,245,180,0.15) !important;
+  border-radius: 12px !important;
+}
+.vfrc-system-response .vfrc-button {
+  background: transparent !important;
+  border: 1px solid #00F5B4 !important;
+  color: #00F5B4 !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s !important;
+}
+.vfrc-system-response .vfrc-button:hover {
+  background: #00F5B4 !important;
+  color: #0A0A1A !important;
+}
+.vfrc-chat-input textarea {
+  background: #1E1E3A !important;
+  color: #E8E8F0 !important;
+  border: 1px solid rgba(0,245,180,0.2) !important;
+}
+.vfrc-widget--chat {
+  border: 1px solid rgba(0,245,180,0.2) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}

@@ -1446,7 +1446,7 @@
 <section class="section section-alt" aria-label="À propos" style="padding:60px 24px">
   <div class="container" style="max-width:780px">
     <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center">
-      <img src="avatar.png" alt="Maxime Brice Paul — Agent IA Immo"
+      <img src="linkedin_avatar.png" alt="Maxime Brice Paul — Agent IA Immo"
         style="width:110px;height:110px;border-radius:50%;border:3px solid var(--accent);object-fit:cover;flex-shrink:0"
         onerror="this.style.display='none'">
       <div style="flex:1;min-width:260px">
@@ -1654,10 +1654,50 @@
 (function(d, t) {
   var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
   v.onload = function() {
+    var userLang = navigator.language || navigator.userLanguage || 'fr-FR';
+    var langCode = userLang.toLowerCase().startsWith('en') ? 'en'
+                 : userLang.toLowerCase().startsWith('es') ? 'es'
+                 : 'fr';
+
     window.voiceflow.chat.load({
       verify: { projectID: '6a3bf733ff3b0cfa9edb25db' },
       url: 'https://general-runtime.voiceflow.com',
-      versionID: 'production'
+      versionID: 'production',
+      allowedOrigins: ['https://maximebricepaul-commits.github.io'],
+      stylesheet: 'https://maximebricepaul-commits.github.io/agent-ia-immo/vf-custom.css',
+
+      assistant: {
+        name: 'Alex',
+        description: langCode === 'en' ? 'Your real estate AI assistant'
+                    : langCode === 'es' ? 'Tu asistente inmobiliario IA'
+                    : 'Votre assistant immobilier IA',
+        avatar: 'https://maximebricepaul-commits.github.io/agent-ia-immo/linkedin_avatar.png',
+      },
+
+      launch: {
+        event: {
+          type: 'launch',
+          payload: {
+            language: langCode,
+            pageUrl: window.location.href,
+            referrer: document.referrer || 'direct',
+          }
+        }
+      },
+
+      proactive: {
+        delay: 25000,
+        messages: [{
+          type: 'text',
+          payload: {
+            message: langCode === 'en'
+              ? 'Hi! Questions about our real estate AI agent? I\'m here 👋'
+              : langCode === 'es'
+              ? '¡Hola! ¿Preguntas sobre el agente IA inmobiliario? 👋'
+              : 'Bonjour ! Des questions sur Agent IA Immo ? Je suis là 👋'
+          }
+        }]
+      },
     });
   };
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
