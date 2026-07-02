@@ -1667,10 +1667,14 @@
       stylesheet: 'https://maximebricepaul-commits.github.io/agent-ia-immo/vf-custom.css',
 
       assistant: {
-        name: 'Alex',
-        description: langCode === 'en' ? 'Your real estate AI assistant'
-                    : langCode === 'es' ? 'Tu asistente inmobiliario IA'
-                    : 'Votre assistant immobilier IA',
+        color: '#00F5B4',
+        header: { title: 'Alex' },
+        banner: {
+          title: 'Alex',
+          description: langCode === 'en' ? 'Hi! I\'m Alex, your real estate AI assistant. How can I help?'
+                      : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente inmobiliario IA. ¿Cómo puedo ayudarte?'
+                      : 'Bonjour ! Je suis Alex, votre assistant immobilier. Comment puis-je vous aider ?'
+        },
       },
 
       launch: {
