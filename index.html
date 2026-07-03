@@ -47,6 +47,16 @@
   }
   </script>
 
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-WYEYN9DVQB"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-WYEYN9DVQB', { anonymize_ip: true });
+    window.trackEvent = function(a,c,l,v){ gtag('event',a,{event_category:c,event_label:l,value:v||0}); };
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1407,6 +1417,7 @@
         <a href="https://buy.stripe.com/4gM8wId6GcM3doNb319k400"
            class="btn btn-primary"
            target="_blank" rel="noopener"
+           onclick="trackEvent('click_stripe','CTA','stripe_button',390)"
            aria-label="Souscrire à l'offre Pro Agent IA Immo à 390€/mois">
           🔥 Souscrire — offre lancement 390€/mois
         </a>
@@ -1510,6 +1521,7 @@
     <form
       action="https://formsubmit.co/maximebricepaul@gmail.com"
       method="POST"
+      onsubmit="trackEvent('submit_demo','Lead','contact_form',0)"
       class="fade-in delay-3"
       style="display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--border-a);border-radius:20px;padding:40px"
     >
@@ -1593,6 +1605,7 @@
       <a href="https://buy.stripe.com/4gM8wId6GcM3doNb319k400"
          class="btn btn-primary btn-lg"
          target="_blank" rel="noopener"
+         onclick="trackEvent('click_stripe','CTA','stripe_button',390)"
          aria-label="Souscrire à l'Agent IA Immo Pack Pro à 390€/mois">
         🔥 Démarrer maintenant — 390€/mois
       </a>
