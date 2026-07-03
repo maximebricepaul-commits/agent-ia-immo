@@ -47,6 +47,24 @@
   }
   </script>
 
+  <!-- LinkedIn Insight Tag -->
+  <script>
+    _linkedin_partner_id = "LINKEDIN_PARTNER_ID";
+    window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+    window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+    (function(l){if(!l){window.lintrk=function(a,b){window.lintrk.q.push([a,b])};
+    window.lintrk.q=[]}
+    var s=document.getElementsByTagName("script")[0];
+    var b=document.createElement("script");
+    b.type="text/javascript";b.async=true;
+    b.src="https://snap.licdn.com/li.lms-analytics/insight.min.js";
+    s.parentNode.insertBefore(b,s);})(window.lintrk);
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none;" alt=""
+      src="https://px.ads.linkedin.com/collect/?pid=LINKEDIN_PARTNER_ID&fmt=gif"/>
+  </noscript>
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WYEYN9DVQB"></script>
   <script>
@@ -1417,7 +1435,7 @@
         <a href="https://buy.stripe.com/4gM8wId6GcM3doNb319k400"
            class="btn btn-primary"
            target="_blank" rel="noopener"
-           onclick="trackEvent('click_stripe','CTA','stripe_button',390)"
+           onclick="trackEvent('click_stripe','CTA','stripe_button',390);lintrk&&lintrk('track',{conversion_id:'stripe_checkout'})"
            aria-label="Souscrire à l'offre Pro Agent IA Immo à 390€/mois">
           🔥 Souscrire — offre lancement 390€/mois
         </a>
@@ -1605,7 +1623,7 @@
       <a href="https://buy.stripe.com/4gM8wId6GcM3doNb319k400"
          class="btn btn-primary btn-lg"
          target="_blank" rel="noopener"
-         onclick="trackEvent('click_stripe','CTA','stripe_button',390)"
+         onclick="trackEvent('click_stripe','CTA','stripe_button',390);lintrk&&lintrk('track',{conversion_id:'stripe_checkout'})"
          aria-label="Souscrire à l'Agent IA Immo Pack Pro à 390€/mois">
         🔥 Démarrer maintenant — 390€/mois
       </a>
