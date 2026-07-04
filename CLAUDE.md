@@ -86,8 +86,7 @@ CLAUDE.md           — Ce fichier (cerveau de l'agent)
 ### Voiceflow
 - **Bot** : Alex (assistant commercial immobilier)
 - **Dashboard** : https://creator.voiceflow.com
-- **⚠️ PROJECT ID CASSÉ** : `6a3bf733ff3b0cfa9edb25db` → Project not found
-- **Action requise** : creator.voiceflow.com → ouvrir le projet → copier l'ID dans l'URL → remplacer dans index.html
+- **Project ID** : `6a3bf733ff3b0cfa9edb25da` (corrigé dans index.html — ne pas confondre avec `...25db` qui est le versionID)
 - **Runtime** : `https://general-runtime.voiceflow.com`
 - **CSS custom** : `vf-custom.css`
 
