@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+<title>Wellness Natur — Asistente virtual</title>
+<style>
+  :root{
+    --sage:#8a9a7e;
+    --sage-dark:#5f6f54;
+    --sand:#f3ede1;
+    --sand-dark:#e6dcc7;
+    --gold:#bfa06a;
+    --ink:#3a352c;
+    --white:#ffffff;
+    --bubble-user:#eef1e8;
+    --shadow:0 8px 24px rgba(60,50,30,.12);
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    font-family:'Segoe UI',Helvetica,Arial,sans-serif;
+    background:linear-gradient(180deg,var(--sand) 0%, #ece2cd 100%);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{
+    max-width:480px;
+    margin:0 auto;
+    height:100vh;
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+    background:var(--white);
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  header{
+    background:linear-gradient(135deg,var(--sage-dark),var(--sage));
+    color:var(--white);
+    padding:18px 20px 16px;
+    text-align:center;
+    position:relative;
+    flex-shrink:0;
+  }
+  header .logo-row{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+  }
+  header .leaf{
+    width:34px;height:34px;border-radius:50%;
+    background:rgba(255,255,255,.18);
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;
+  }
+  header h1{
+    margin:0;font-size:19px;font-weight:600;letter-spacing:.3px;
+  }
+  header .sub{
+    margin-top:3px;font-size:12px;opacity:.88;letter-spacing:.5px;
+    text-transform:uppercase;
+  }
+  .status{
+    margin-top:8px;font-size:11px;opacity:.85;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .status .dot{
+    width:7px;height:7px;border-radius:50%;background:#7bd88f;
+    box-shadow:0 0 0 0 rgba(123,216,143,.6);
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(123,216,143,.55);}
+    70%{box-shadow:0 0 0 6px rgba(123,216,143,0);}
+    100%{box-shadow:0 0 0 0 rgba(123,216,143,0);}
+  }
+  .lang-bar{
+    display:flex;gap:6px;justify-content:center;padding:8px 12px;
+    background:var(--sand);border-bottom:1px solid var(--sand-dark);
+    flex-shrink:0;
+  }
+  .lang-btn{
+    border:1px solid var(--sand-dark);background:var(--white);
+    color:var(--sage-dark);font-size:12px;font-weight:600;
+    padding:5px 12px;border-radius:16px;cursor:pointer;
+    transition:all .15s;
+  }
+  .lang-btn.active{background:var(--sage-dark);color:var(--white);border-color:var(--sage-dark);}
+
+  .chat{
+    flex:1;overflow-y:auto;padding:16px 14px 8px;
+    display:flex;flex-direction:column;gap:10px;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(138,154,126,.06), transparent 40%),
+      var(--white);
+  }
+  .msg{
+    max-width:82%;
+    padding:10px 14px;
+    border-radius:16px;
+    font-size:14.5px;
+    line-height:1.45;
+    animation:rise .25s ease;
+    white-space:pre-wrap;
+  }
+  @keyframes rise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .msg.bot{
+    align-self:flex-start;
+    background:var(--sand);
+    border-bottom-left-radius:4px;
+    color:var(--ink);
+  }
+  .msg.user{
+    align-self:flex-end;
+    background:var(--sage-dark);
+    color:var(--white);
+    border-bottom-right-radius:4px;
+  }
+  .msg.card{
+    align-self:flex-start;
+    background:var(--white);
+    border:1px solid var(--sand-dark);
+    border-radius:14px;
+    max-width:88%;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .msg.card b{color:var(--sage-dark);}
+  .msg.card hr{border:none;border-top:1px dashed var(--sand-dark);margin:8px 0;}
+  .typing{
+    align-self:flex-start;background:var(--sand);
+    border-radius:16px;border-bottom-left-radius:4px;
+    padding:12px 16px;display:flex;gap:4px;
+  }
+  .typing span{
+    width:6px;height:6px;border-radius:50%;background:var(--sage-dark);
+    opacity:.4;animation:blink 1.2s infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:.9;}}
+
+  .chips{
+    display:flex;flex-wrap:wrap;gap:7px;padding:2px 2px 10px;
+  }
+  .chip{
+    background:var(--white);
+    border:1.4px solid var(--sage);
+    color:var(--sage-dark);
+    font-size:12.5px;font-weight:600;
+    padding:7px 12px;border-radius:18px;
+    cursor:pointer;transition:.15s;
+    white-space:nowrap;
+  }
+  .chip:active{background:var(--sage);color:var(--white);}
+
+  form#inputBar{
+    display:flex;gap:8px;align-items:center;
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--sand-dark);
+    background:var(--white);
+    flex-shrink:0;
+  }
+  #textInput{
+    flex:1;border:1.5px solid var(--sand-dark);border-radius:22px;
+    padding:11px 16px;font-size:14.5px;outline:none;
+    background:var(--sand);color:var(--ink);
+  }
+  #textInput:focus{border-color:var(--sage);}
+  #sendBtn{
+    width:42px;height:42px;border-radius:50%;border:none;
+    background:var(--sage-dark);color:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;flex-shrink:0;font-size:17px;
+    transition:transform .12s;
+  }
+  #sendBtn:active{transform:scale(.9);}
+
+  .footer-tag{
+    text-align:center;font-size:10.5px;color:#9a9382;
+    padding:6px 0 4px;background:var(--white);flex-shrink:0;
+  }
+  .footer-tag b{color:var(--sage-dark);}
+
+  ::-webkit-scrollbar{width:5px;}
+  ::-webkit-scrollbar-thumb{background:var(--sand-dark);border-radius:3px;}
+
+  @media (prefers-color-scheme: dark){
+    html,body{background:#1c1c1c;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo-row">
+      <div class="leaf">🌿</div>
+      <div>
+        <h1>Wellness Natur</h1>
+      </div>
+    </div>
+    <div class="sub">Massage &amp; Beauty · Empuriabrava</div>
+    <div class="status"><span class="dot"></span><span id="statusText">Asistente virtual en línea</span></div>
+  </header>
+
+  <div class="lang-bar">
+    <button class="lang-btn active" data-lang="es" id="btnEs">🇪🇸 Español</button>
+    <button class="lang-btn" data-lang="ca" id="btnCa">CAT Català</button>
+    <button class="lang-btn" data-lang="fr" id="btnFr">🇫🇷 Français</button>
+    <button class="lang-btn" data-lang="en" id="btnEn">🇬🇧 English</button>
+  </div>
+
+  <div class="chat" id="chat"></div>
+
+  <div id="chipsWrap"></div>
+
+  <form id="inputBar">
+    <input type="text" id="textInput" autocomplete="off" placeholder="Escribe tu mensaje..." />
+    <button type="submit" id="sendBtn">➤</button>
+  </form>
+  <div class="footer-tag">Demo <b>Alex AI</b> para Wellness Natur · Empuriabrava</div>
+</div>
+
+<script>
+(function(){
+  const chatEl = document.getElementById('chat');
+  const chipsWrap = document.getElementById('chipsWrap');
+  const form = document.getElementById('inputBar');
+  const input = document.getElementById('textInput');
+  const statusText = document.getElementById('statusText');
+
+  let lang = 'es';
+  let langAutoDetectDone = false;
+  let stage = 'menu'; // menu | booking_treatment | booking_day | booking_time | booking_name | booking_phone | booking_confirm | done
+  let booking = { treatment:null, day:null, time:null, name:null, phone:null };
+
+  const T = {
+    es: {
+      status:'Asistente virtual en línea',
+      placeholder:'Escribe tu mensaje...',
+      greet:'¡Hola! 🌿 Soy el asistente virtual de Wellness Natur, tu centro de masaje y estética en Empuriabrava (edificio Hotel Xon\'s Beach). ¿En qué puedo ayudarte hoy?',
+      menu:['Ver tratamientos','Reservar una cita','Dirección y horarios','Hablar con el equipo'],
+      services_intro:'Estos son nuestros tratamientos, con productos de alta cosmética Ami Iyök Ecosmetics y Germaine de Capuccini:',
+      services_list:'💆 **Rostro**\n· Tratamientos faciales personalizados\n· Dermocosmética avanzada\n\n🧴 **Cuerpo**\n· Tratamientos corporales reafirmantes y relajantes\n· Depilación (incl. láser)\n\n💉 **Medicina estética**\n· Tratamientos anti-edad\n\n💇 **Capilar**\n· Cuidados y rituales capilares\n\n💆‍♀️ **Masajes**\n· Relajante · Deportivo · Tailandés · Reflexología de pies\n\n💅 Manicura y pedicura\n\n¿Quieres más detalle de alguno o prefieres reservar directamente?',
+      ask_which:(t)=>`Perfecto, "${t}" es una excelente elección. Para prepararte una propuesta a medida, ¿qué día te vendría bien? (por ejemplo: "el viernes" o una fecha)`,
+      ask_time:'¿Y a qué hora aproximada te vendría mejor? (mañana o tarde, o una hora concreta)',
+      ask_name:'Genial. ¿A nombre de quién hago la reserva?',
+      ask_phone:'¿Me confirmas un teléfono o email de contacto para enviarte la confirmación?',
+      confirm_title:'✅ ¡Reserva pre-confirmada!',
+      confirm_note:'Nuestro equipo la validará y te contactará en breve para confirmar el horario exacto y el presupuesto del tratamiento.',
+      confirm_cta:'¿Quieres hacer otra consulta?',
+      price_note:'Nuestros tratamientos se personalizan según tus necesidades, así que el precio exacto se confirma junto con el equipo. Si quieres, te preparo la reserva y te llamamos con el presupuesto — ¿qué tratamiento te interesa?',
+      location:'📍 Nos encontramos en los bajos del edificio Hotel Xon\'s Beach, Empuriabrava.\n📞 (+34) 972 454 365\n💬 WhatsApp: (+34) 647 616 499\n📧 info@wellnessnatur.com\n📷 @wellnessnaturempuriabrava',
+      human:'Por supuesto — puedes escribirnos directamente al (+34) 647 616 499 por WhatsApp o a info@wellnessnatur.com y el equipo te atenderá encantado.',
+      fallback:'Puedo ayudarte a ver los tratamientos, reservar una cita, o darte la dirección y horarios. ¿Qué prefieres?',
+      restart:['Ver tratamientos','Reservar una cita','Dirección y horarios']
+    },
+    fr: {
+      status:'Assistant virtuel en ligne',
+      placeholder:'Écrivez votre message...',
+      greet:'Bonjour ! 🌿 Je suis l\'assistant virtuel de Wellness Natur, votre centre de massage et d\'esthétique à Empuriabrava (bâtiment Hôtel Xon\'s Beach). Comment puis-je vous aider aujourd\'hui ?',
+      menu:['Voir les soins','Prendre rendez-vous','Adresse et horaires','Parler à l\'équipe'],
+      services_intro:'Voici nos soins, réalisés avec des produits haut de gamme Ami Iyök Ecosmetics et Germaine de Capuccini :',
+      services_list:'💆 **Visage**\n· Soins du visage personnalisés\n· Dermocosmétique avancée\n\n🧴 **Corps**\n· Soins corporels raffermissants et relaxants\n· Épilation (dont laser)\n\n💉 **Médecine esthétique**\n· Traitements anti-âge\n\n💇 **Capillaire**\n· Soins et rituels capillaires\n\n💆‍♀️ **Massages**\n· Relaxant · Sportif · Thaïlandais · Réflexologie plantaire\n\n💅 Manucure et pédicure\n\nVoulez-vous plus de détails sur l\'un d\'eux, ou préférez-vous réserver directement ?',
+      ask_which:(t)=>`Parfait, "${t}" est un excellent choix. Pour préparer une offre sur mesure, quel jour vous conviendrait ?`,
+      ask_time:'Et à quelle heure environ ? (matin, après-midi, ou une heure précise)',
+      ask_name:'Très bien. À quel nom dois-je faire la réservation ?',
+      ask_phone:'Pouvez-vous me confirmer un téléphone ou un email pour vous envoyer la confirmation ?',
+      confirm_title:'✅ Réservation pré-confirmée !',
+      confirm_note:'Notre équipe la validera et vous contactera rapidement pour confirmer l\'horaire exact et le tarif du soin.',
+      confirm_cta:'Souhaitez-vous autre chose ?',
+      price_note:'Nos soins sont personnalisés selon vos besoins, le tarif exact est donc confirmé avec l\'équipe. Je peux préparer votre réservation et l\'équipe vous rappelle avec le devis — quel soin vous intéresse ?',
+      location:'📍 Bâtiment Hôtel Xon\'s Beach, Empuriabrava.\n📞 (+34) 972 454 365\n💬 WhatsApp : (+34) 647 616 499\n📧 info@wellnessnatur.com\n📷 @wellnessnaturempuriabrava',
+      human:'Bien sûr — vous pouvez nous écrire directement au (+34) 647 616 499 sur WhatsApp ou à info@wellnessnatur.com, l\'équipe se fera un plaisir de vous répondre.',
+      fallback:'Je peux vous montrer les soins, prendre un rendez-vous, ou vous donner l\'adresse et les horaires. Que préférez-vous ?',
+      restart:['Voir les soins','Prendre rendez-vous','Adresse et horaires']
+    },
+    ca: {
+      status:'Assistent virtual en línia',
+      placeholder:'Escriu el teu missatge...',
+      greet:'Hola! 🌿 Sóc l\'assistent virtual de Wellness Natur, el teu centre de massatge i estètica a Empuriabrava (edifici Hotel Xon\'s Beach). En què et puc ajudar avui?',
+      menu:['Veure tractaments','Reservar una cita','Adreça i horaris','Parlar amb l\'equip'],
+      services_intro:'Aquests són els nostres tractaments, amb productes d\'alta cosmètica Ami Iyök Ecosmetics i Germaine de Capuccini:',
+      services_list:'💆 **Rostre**\n· Tractaments facials personalitzats\n· Dermocosmètica avançada\n\n🧴 **Cos**\n· Tractaments corporals reafirmants i relaxants\n· Depilació (inclòs làser)\n\n💉 **Medicina estètica**\n· Tractaments antienvelliment\n\n💇 **Capil·lar**\n· Cures i rituals capil·lars\n\n💆‍♀️ **Massatges**\n· Relaxant · Esportiu · Tailandès · Reflexologia de peus\n\n💅 Manicura i pedicura\n\nVols més detalls d\'algun o prefereixes reservar directament?',
+      ask_which:(t)=>`Perfecte, "${t}" és una molt bona elecció. Per preparar-te una proposta a mida, quin dia et vindria bé?`,
+      ask_time:'I a quina hora aproximadament? (matí, tarda, o una hora concreta)',
+      ask_name:'Genial. A nom de qui faig la reserva?',
+      ask_phone:'Em pots confirmar un telèfon o email de contacte per enviar-te la confirmació?',
+      confirm_title:'✅ Reserva preconfirmada!',
+      confirm_note:'El nostre equip la validarà i et contactarà aviat per confirmar l\'horari exacte i el pressupost del tractament.',
+      confirm_cta:'Vols fer una altra consulta?',
+      price_note:'Els nostres tractaments es personalitzen segons les teves necessitats, així que el preu exacte es confirma amb l\'equip. Si vols, et preparo la reserva i et truquem amb el pressupost — quin tractament t\'interessa?',
+      location:'📍 Ens trobem als baixos de l\'edifici Hotel Xon\'s Beach, Empuriabrava.\n📞 (+34) 972 454 365\n💬 WhatsApp: (+34) 647 616 499\n📧 info@wellnessnatur.com\n📷 @wellnessnaturempuriabrava',
+      human:'És clar — ens pots escriure directament al (+34) 647 616 499 per WhatsApp o a info@wellnessnatur.com i l\'equip t\'atendrà encantat.',
+      fallback:'Et puc ajudar a veure els tractaments, reservar una cita, o donar-te l\'adreça i horaris. Què prefereixes?',
+      restart:['Veure tractaments','Reservar una cita','Adreça i horaris']
+    },
+    en: {
+      status:'Virtual assistant online',
+      placeholder:'Type your message...',
+      greet:'Hi there! 🌿 I\'m the virtual assistant for Wellness Natur, your massage & beauty center in Empuriabrava (Hotel Xon\'s Beach building). How can I help you today?',
+      menu:['See treatments','Book an appointment','Address & hours','Talk to the team'],
+      services_intro:'Here are our treatments, using premium Ami Iyök Ecosmetics and Germaine de Capuccini products:',
+      services_list:'💆 **Face**\n· Personalized facial treatments\n· Advanced dermo-cosmetics\n\n🧴 **Body**\n· Firming & relaxing body treatments\n· Hair removal (incl. laser)\n\n💉 **Aesthetic medicine**\n· Anti-aging treatments\n\n💇 **Hair**\n· Hair care & rituals\n\n💆‍♀️ **Massages**\n· Relaxing · Sports · Thai · Foot reflexology\n\n💅 Manicure & pedicure\n\nWant more detail on one, or would you like to book directly?',
+      ask_which:(t)=>`Great, "${t}" is a wonderful choice. To prepare a tailored offer, what day would suit you?`,
+      ask_time:'And roughly what time? (morning, afternoon, or a specific hour)',
+      ask_name:'Great. What name should I put the booking under?',
+      ask_phone:'Could you confirm a phone number or email so we can send the confirmation?',
+      confirm_title:'✅ Booking pre-confirmed!',
+      confirm_note:'Our team will validate it and contact you shortly to confirm the exact time and treatment price.',
+      confirm_cta:'Would you like anything else?',
+      price_note:'Our treatments are personalized to your needs, so the exact price is confirmed with the team. I can prepare your booking and the team will call you back with the quote — which treatment interests you?',
+      location:'📍 Hotel Xon\'s Beach building, Empuriabrava.\n📞 (+34) 972 454 365\n💬 WhatsApp: (+34) 647 616 499\n📧 info@wellnessnatur.com\n📷 @wellnessnaturempuriabrava',
+      human:'Of course — you can message us directly at (+34) 647 616 499 on WhatsApp or info@wellnessnatur.com and the team will be happy to help.',
+      fallback:'I can show you treatments, book an appointment, or give you the address and hours. What would you prefer?',
+      restart:['See treatments','Book an appointment','Address & hours']
+    }
+  };
+
+  function detectLang(text){
+    const t = text.toLowerCase();
+    let score = {es:0, fr:0, en:0, ca:0};
+    const es_words = ['hola','gracias','cita','quiero','cuánto','cuanto','tratamiento','reserva','dónde','día','hoy','precio','buenas','ayuda','quisiera'];
+    const fr_words = ['bonjour','merci','rendez-vous','je','vous','soin','prix','réserv','aujourd','voudrais','combien','où','svp','s\'il'];
+    const en_words = ['hello','hi','thanks','price','appointment','book','treatment','how much','today','please','would like','want'];
+    const ca_words = ['hola','gràcies','vull','tractament','reserva','quant','avui','preu','on és','si us plau','bon dia','bona tarda','cita','voldria','adéu'];
+    es_words.forEach(w=>{ if(t.includes(w)) score.es++; });
+    fr_words.forEach(w=>{ if(t.includes(w)) score.fr++; });
+    en_words.forEach(w=>{ if(t.includes(w)) score.en++; });
+    ca_words.forEach(w=>{ if(t.includes(w)) score.ca++; });
+    if(/[ñ¿¡]/.test(t)) score.es += 2;
+    if(/[çèêœ]|'/.test(t)) score.fr += 1;
+    if(/[àèòïl·l]/.test(t) || t.includes('gràcies') || t.includes('català')) score.ca += 2;
+    const best = Object.keys(score).reduce((a,b)=> score[b]>score[a]?b:a, 'es');
+    return score[best] > 0 ? best : null;
+  }
+
+  function setLang(l, greetIfChanged){
+    const changed = l !== lang;
+    lang = l;
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+    statusText.textContent = T[lang].status;
+    input.placeholder = T[lang].placeholder;
+    document.documentElement.lang = l;
+    if(greetIfChanged && changed){
+      addBot(T[lang].greet);
+      showChips(T[lang].menu);
+    }
+  }
+
+  function scrollDown(){ chatEl.scrollTop = chatEl.scrollHeight + 200; }
+
+  function addBot(text, isCard){
+    const div = document.createElement('div');
+    div.className = isCard ? 'msg card' : 'msg bot';
+    div.innerHTML = isCard ? text : formatText(text);
+    chatEl.appendChild(div);
+    scrollDown();
+  }
+  function addUser(text){
+    const div = document.createElement('div');
+    div.className = 'msg user';
+    div.textContent = text;
+    chatEl.appendChild(div);
+    scrollDown();
+  }
+  function formatText(text){
+    return text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.*?)\*\*/g,'<b>$1</b>')
+      .replace(/\n/g,'<br>');
+  }
+  function escapeHtml(text){
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function showTyping(cb, delay){
+    const div = document.createElement('div');
+    div.className = 'typing';
+    div.innerHTML = '<span></span><span></span><span></span>';
+    chatEl.appendChild(div);
+    scrollDown();
+    setTimeout(()=>{
+      div.remove();
+      cb();
+    }, delay || 550);
+  }
+
+  function showChips(list){
+    chipsWrap.innerHTML = '';
+    if(!list || !list.length) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'chips';
+    list.forEach(label=>{
+      const b = document.createElement('button');
+      b.className = 'chip';
+      b.type = 'button';
+      b.textContent = label;
+      b.onclick = ()=>handleUserText(label);
+      wrap.appendChild(b);
+    });
+    chipsWrap.appendChild(wrap);
+  }
+
+  function clearChips(){ chipsWrap.innerHTML=''; }
+
+  function handleUserText(raw){
+    const text = raw.trim();
+    if(!text) return;
+    addUser(text);
+    clearChips();
+
+    // auto-detect language only from free text on the very first real exchange or if strongly signalled
+    if(!langAutoDetectDone){
+      langAutoDetectDone = true;
+      const detected = detectLang(text);
+      if(detected) setLang(detected, false);
+    }
+
+    showTyping(()=>route(text));
+  }
+
+  function route(text){
+    const t = text.toLowerCase();
+    const L = T[lang];
+
+    if(stage === 'booking_treatment'){
+      booking.treatment = text;
+      stage = 'booking_day';
+      addBot(L.ask_which(text));
+      return;
+    }
+    if(stage === 'booking_day'){
+      booking.day = text;
+      stage = 'booking_time';
+      addBot(L.ask_time);
+      return;
+    }
+    if(stage === 'booking_time'){
+      booking.time = text;
+      stage = 'booking_name';
+      addBot(L.ask_name);
+      return;
+    }
+    if(stage === 'booking_name'){
+      booking.name = text;
+      stage = 'booking_phone';
+      addBot(L.ask_phone);
+      return;
+    }
+    if(stage === 'booking_phone'){
+      booking.phone = text;
+      stage = 'done';
+      const card = `<b>${escapeHtml(L.confirm_title)}</b><hr>`+
+        `👤 ${escapeHtml(booking.name)}<br>💆 ${escapeHtml(booking.treatment)}<br>📅 ${escapeHtml(booking.day)} — ${escapeHtml(booking.time)}<br>📞 ${escapeHtml(booking.phone)}<br><br>`+
+        `${escapeHtml(L.confirm_note)}`;
+      addBot(card, true);
+      setTimeout(()=>{ addBot(L.confirm_cta); showChips(L.restart); }, 500);
+      booking = { treatment:null, day:null, time:null, name:null, phone:null };
+      stage = 'menu';
+      return;
+    }
+
+    // intent routing from menu state
+    const bookWords = ['reserv','book','cita','rendez','appoint'];
+    const serviceWords = ['tratamient','tractament','soin','servic','treatment','facial','visage','rostre','cuerpo','corps','cos','body','masaje','massatge','massage','depila','épila','hair','laser','làser','láser','dermat','médec','medicin'];
+    const priceWords = ['precio','preu','prix','price','cuánto','cuanto','quant','combien','cost','cuesta'];
+    const locationWords = ['dirección','direccion','adreça','adresse','address','horario','horari','horaire','hour','dónde','donde','on és','où','where','ubicaci'];
+    const humanWords = ['humano','persona','equipo','equip','équipe','human','agent','hablar con alguien','team'];
+    const hasAny = (arr)=> arr.some(w=>t.includes(w));
+
+    if(hasAny(bookWords)){
+      stage = 'booking_treatment';
+      const askMsg = {es:'¡Con gusto! ¿Qué tratamiento te gustaría reservar?', ca:'Amb molt de gust! Quin tractament t\'agradaria reservar?', fr:'Avec plaisir ! Quel soin souhaitez-vous réserver ?', en:'With pleasure! Which treatment would you like to book?'};
+      addBot(askMsg[lang] || askMsg.es);
+      return;
+    }
+    if(hasAny(priceWords)){
+      addBot(L.price_note);
+      showChips(L.menu);
+      return;
+    }
+    if(hasAny(locationWords)){
+      addBot(L.location);
+      showChips(L.menu);
+      return;
+    }
+    if(hasAny(humanWords)){
+      addBot(L.human);
+      showChips(L.menu);
+      return;
+    }
+    if(hasAny(serviceWords)){
+      addBot(L.services_intro);
+      setTimeout(()=>{ addBot(L.services_list); showChips([L.menu[1], L.menu[2]]); }, 450);
+      return;
+    }
+
+    addBot(L.fallback);
+    showChips(L.menu);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const v = input.value;
+    input.value = '';
+    handleUserText(v);
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      langAutoDetectDone = true;
+      chatEl.innerHTML = '';
+      setLang(btn.dataset.lang, false);
+      addBot(T[lang].greet);
+      showChips(T[lang].menu);
+    });
+  });
+
+  // initial greeting
+  setLang('es', false);
+  addBot(T.es.greet);
+  showChips(T.es.menu);
+})();
+</script>
+</body>
+</html>
