@@ -517,6 +517,14 @@
     });
   });
 
+  // visit ping
+  try{
+    if(location.hash !== '#test'){
+      const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+      fetch('https://ntfy.sh/agentia-demo-wellness-p9t3k7', {method:'POST', body:'Visite demo Wellness Natur · '+device+' · '+(navigator.language||'?')});
+    }
+  }catch(e){}
+
   // initial greeting
   setLang('es', false);
   addBot(T.es.greet);

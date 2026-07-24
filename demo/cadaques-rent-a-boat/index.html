@@ -944,6 +944,14 @@ function forceLangSilent(l){
 
 inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
 
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-cadaques-m4q8w2', {method:'POST', body:'Visite demo Cadaques Rent A Boat · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
 /* ================= INIT ================= */
 function init(){
   lang = 'ca';
