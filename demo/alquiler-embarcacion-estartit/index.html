@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Alquiler Embarcación Estartit</title>
+<meta name="description" content="Asistente virtual de Alquiler Embarcación Estartit">
+<style>
+:root{
+  --navy:#0c3b4f;
+  --navy-dark:#082733;
+  --teal:#12617a;
+  --sand:#e0a45c;
+  --sand-dark:#c8873c;
+  --sea:#3a93a8;
+  --bg:#eef6f8;
+  --paper:#ffffff;
+  --ink:#123241;
+  --muted:#6b8894;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c6b86 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:
+    linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--navy-dark);}
+.row.user .bubble b{color:#fff;}
+.bubble .tag{
+  display:inline-block;background:var(--bg);color:var(--teal);
+  font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:4px;
+}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dfe9ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;}
+.spec{background:var(--bg);color:var(--navy);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.spec.lic-yes{background:#fde3d3;color:#a6480f;}
+.spec.lic-no{background:#d6f3e0;color:#127a3f;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--teal);
+  color:var(--teal);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--teal);color:#fff;}
+.qbtn.primary{background:var(--sand);border-color:var(--sand-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--sand-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e1eaed;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #dbe6ea;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(200,135,60,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c7d7dc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">⛵</div>
+    <div class="hinfo">
+      <div class="name">Alex · Alquiler Embarcación Estartit</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demo privada para Alquiler Embarcación Estartit · powered by Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "34630002392"; // +34 630 002 392
+
+const BOATS = [
+  {
+    id:"voraz", key:["voraz"],
+    name:"Voraz — Sin licencia",
+    pax:5, length:null, hp:"15 cv", location:"L'Estartit",
+    license:"none",
+    priceFrom:190, priceUnit:{es:"día",fr:"jour",en:"day"},
+    fuel:false,
+    img:"🚤",
+    d:{
+      ca:"La barca més accessible de la flota: fins a 15 CV, no cal cap llicència. Ideal per a parelles o famílies petites que volen descobrir les Illes Medes i la costa del Montgrí pel seu compte.",
+      es:"El barco más accesible de la flota: hasta 15 CV, no necesitas ninguna licencia. Ideal para parejas o familias pequeñas que quieren descubrir las Illes Medes y la costa del Montgrí por su cuenta.",
+      fr:"Le bateau le plus accessible de la flotte : 15 CV maximum, aucun permis nécessaire. Idéal pour un couple ou une petite famille qui veut découvrir les îles Medes et la côte du Montgrí en toute liberté.",
+      en:"The most accessible boat in the fleet: up to 15 HP, no license needed. Perfect for couples or small families exploring the Medes Islands and the Montgrí coast on their own."
+    },
+    inc:{
+      ca:["Assegurança inclosa","Neteja final inclosa","Taxa de boia Illes Medes inclosa","Combustible NO inclòs"],
+      es:["Seguro incluido","Limpieza final incluida","Tasa de boya Illes Medes incluida","Combustible NO incluido"],
+      fr:["Assurance incluse","Nettoyage final inclus","Taxe de bouée îles Medes incluse","Carburant NON inclus"],
+      en:["Insurance included","Final cleaning included","Medes Islands buoy fee included","Fuel NOT included"]
+    }
+  },
+  {
+    id:"allegra15", key:["allegra 15","allegra15","allegra"],
+    name:"Allegra 15CV — Sin licencia",
+    pax:6, length:null, hp:"15 cv", location:"L'Estartit",
+    license:"none",
+    priceFrom:210, priceUnit:{es:"día",fr:"jour",en:"day"},
+    fuel:false,
+    img:"🚤",
+    d:{
+      ca:"Fins a 6 persones sense necessitat de llicència. Espai i comoditat per passar el dia entre les Illes Medes i la Cala Montgó.",
+      es:"Hasta 6 personas sin necesidad de licencia. Espacio y comodidad para pasar el día entre las Illes Medes y la Cala Montgó.",
+      fr:"Jusqu'à 6 personnes, sans permis. Espace et confort pour passer la journée entre les îles Medes et la Cala Montgó.",
+      en:"Up to 6 people, no license needed. Room and comfort for a full day between the Medes Islands and Cala Montgó."
+    },
+    inc:{
+      ca:["Assegurança inclosa","Neteja final inclosa","Taxa de boia Illes Medes inclosa","Combustible NO inclòs"],
+      es:["Seguro incluido","Limpieza final incluida","Tasa de boya Illes Medes incluida","Combustible NO incluido"],
+      fr:["Assurance incluse","Nettoyage final inclus","Taxe de bouée îles Medes incluse","Carburant NON inclus"],
+      en:["Insurance included","Final cleaning included","Medes Islands buoy fee included","Fuel NOT included"]
+    }
+  },
+  {
+    id:"allegra40", key:["allegra 40","allegra40","40cv","40 cv"],
+    name:"Allegra 40CV — Con licencia",
+    pax:6, length:null, hp:"40 cv", location:"L'Estartit",
+    license:"required",
+    priceFrom:220, priceUnit:{es:"día",fr:"jour",en:"day"},
+    fuel:false,
+    img:"🛥️",
+    d:{
+      ca:"La mateixa comoditat que l'Allegra, amb 40 CV de potència per arribar més lluny. Cal llicència de navegació — o afegeix patró si ho prefereixes.",
+      es:"La misma comodidad que la Allegra, con 40 CV de potencia para llegar más lejos. Requiere licencia de navegación — o añade patrón si lo prefieres.",
+      fr:"Le confort de l'Allegra avec 40 CV pour aller plus loin. Permis bateau requis — ou ajoutez un skipper si vous préférez.",
+      en:"The Allegra's comfort with 40 HP to go further. Boating license required — or add a skipper if you prefer."
+    },
+    inc:{
+      ca:["Assegurança inclosa","Neteja final inclosa","Taxa de boia Illes Medes inclosa","Combustible NO inclòs"],
+      es:["Seguro incluido","Limpieza final incluida","Tasa de boya Illes Medes incluida","Combustible NO incluido"],
+      fr:["Assurance incluse","Nettoyage final inclus","Taxe de bouée îles Medes incluse","Carburant NON inclus"],
+      en:["Insurance included","Final cleaning included","Medes Islands buoy fee included","Fuel NOT included"]
+    }
+  },
+  {
+    id:"crux", key:["crux"],
+    name:"Crux — Con licencia",
+    pax:7, length:null, hp:null, location:"L'Estartit",
+    license:"required",
+    priceFrom:275, priceUnit:{es:"día",fr:"jour",en:"day"},
+    fuel:false,
+    img:"🛥️",
+    d:{
+      ca:"Fins a 7 persones per gaudir del dia complet al mar. Cal llicència de navegació — o afegeix patró professional si prefereixes relaxar-te.",
+      es:"Hasta 7 personas para disfrutar del día completo en el mar. Requiere licencia de navegación — o añade patrón profesional si prefieres relajarte.",
+      fr:"Jusqu'à 7 personnes pour profiter d'une journée complète en mer. Permis bateau requis — ou ajoutez un skipper professionnel pour vous détendre.",
+      en:"Up to 7 people for a full day at sea. Boating license required — or add a professional skipper and just relax."
+    },
+    inc:{
+      ca:["Assegurança inclosa","Neteja final inclosa","Taxa de boia Illes Medes inclosa","Combustible NO inclòs"],
+      es:["Seguro incluido","Limpieza final incluida","Tasa de boya Illes Medes incluida","Combustible NO incluido"],
+      fr:["Assurance incluse","Nettoyage final inclus","Taxe de bouée îles Medes incluse","Carburant NON inclus"],
+      en:["Insurance included","Final cleaning included","Medes Islands buoy fee included","Fuel NOT included"]
+    }
+  },
+  {
+    id:"hydra", key:["hydra","pnb"],
+    name:"Hydra — Licencia PNB",
+    pax:9, length:null, hp:null, location:"L'Estartit",
+    license:"required",
+    priceFrom:350, priceUnit:{es:"día",fr:"jour",en:"day"},
+    fuel:false,
+    img:"🛥️",
+    d:{
+      ca:"La més gran de la flota: fins a 9 persones. Cal llicència PNB — o afegeix patró professional i gaudeix del dia sense preocupacions.",
+      es:"La más grande de la flota: hasta 9 personas. Requiere licencia PNB — o añade patrón profesional y disfruta del día sin preocupaciones.",
+      fr:"Le plus grand bateau de la flotte : jusqu'à 9 personnes. Permis PNB requis — ou ajoutez un skipper professionnel et profitez sans souci.",
+      en:"The largest boat in the fleet: up to 9 people. PNB license required — or add a professional skipper and enjoy a worry-free day."
+    },
+    inc:{
+      ca:["Assegurança inclosa","Neteja final inclosa","Taxa de boia Illes Medes inclosa","Combustible NO inclòs"],
+      es:["Seguro incluido","Limpieza final incluida","Tasa de boya Illes Medes incluida","Combustible NO incluido"],
+      fr:["Assurance incluse","Nettoyage final inclus","Taxe de bouée îles Medes incluse","Carburant NON inclus"],
+      en:["Insurance included","Final cleaning included","Medes Islands buoy fee included","Fuel NOT included"]
+    }
+  }
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **Alquiler Embarcación Estartit**.\nT'ajudo a triar barca, veure preus i reservar en 1 minut. En què et puc ajudar?",
+  menu:["🚤 Veure barques","💶 Preus","📅 Reservar","❓ Preguntes freqüents","💬 Parlar amb l'equip"],
+  boatsIntro:"Aquesta és la nostra flota — sortides des del port comercial de l'Estartit 🌊 Toca una barca per veure'n el detall:",
+  askWhichBoat:"Sobre quina barca vols saber-ne més? Escriu el nom o tria'n una:",
+  notFound:"No he trobat aquesta barca 🤔 Aquestes són les que tenim:",
+  priceIntro:"Els preus varien segons l'embarcació, la temporada i si cal patró. Aquí tens el resum:",
+  licenseIntro:"Així funciona la llicència segons la barca:",
+  licenseNone:"🟢 Sense llicència ni patró — la portes tu",
+  licenseCaptain:"🔵 Sense llicència — patró professional inclòs",
+  licenseOptional:"🟡 Amb o sense llicència — patró opcional si no en tens",
+  licenseRequired:"🟠 Cal llicència de navegació (o patró +100/200€)",
+  faqTitle:"Preguntes freqüents:",
+  faq:{
+    fuel:"⛽ *Combustible*: no inclòs — es calcula al retorn segons el consum. L'assegurança, la neteja final i la taxa de boia de les Illes Medes SÍ que estan incloses.",
+    weather:"🌦️ *Mal temps*: si el mar impedeix sortir, l'equip et proposa canviar la data. T'ho confirmen directament per WhatsApp.",
+    cancel:"🕐 *Horaris*: dia complet 09:00–18:30 · mig dia matí 09:00–13:30 · mig dia tarda 14:00–18:30. També organitzem sortides de pesca (xàrter).",
+    calas:"🏖️ *Rutes*: les Illes Medes i la costa del Montgrí — aigües cristal·lines, coves i racons només accessibles en barca. La taxa de boia de les Medes ja està inclosa."
+  },
+  faqButtons:["⛽ Combustible","🌦️ Mal temps","🕐 Horaris","🏖️ Rutes i Medes","⬅️ Menú"],
+  bookStart:"Perfecte, preparem la teva reserva 🙌",
+  askDate:"📅 Per a quina data t'agradaria reservar?",
+  askPax:"👥 Quantes persones sou?",
+  paxOpts:["1-4","5-8","9-12","Més de 12"],
+  askLicense:"🪪 Teniu llicència de navegació?",
+  licenseOpts:["Sí, en tenim","No en tenim","No ho sé"],
+  suggestBoat:"Amb aquestes dades, et recomano:",
+  askBoatConfirm:"Reservem aquesta barca, o prefereixes veure'n una altra?",
+  confirmBoat:"✅ Reservar aquesta","otherBoat":"Veure altres barques",
+  askName:"🙋 A nom de qui fem la reserva?",
+  askContact:"📱 Perfecte {name}. Quin és el teu telèfon o email de contacte?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryDate:"Data", summaryPax:"Persones", summaryLicense:"Llicència", summaryBoat:"Barca", summaryName:"Nom", summaryContact:"Contacte",
+  summaryFooter:"Aquest és un resum orientatiu — l'equip de Alquiler Embarcación Estartit confirmarà disponibilitat, preu final i forma de pagament per WhatsApp. Encara no es cobra res!",
+  sendWa:"📲 Enviar sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull reservar amb Alquiler Embarcación Estartit:",
+  humanHandoff:"Et poso en contacte directe amb l'equip humà de Alquiler Embarcación Estartit 👇",
+  fallback:"Bona pregunta! Et connecto directament amb l'equip, o digues-me si vols veure *barques*, *preus* o *reservar*.",
+  langSwitched:"Canviat a català",
+  personLabel:"persones"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Alquiler Embarcación Estartit**.\nTe ayudo a elegir barco, ver precios y reservar en 1 minuto. ¿En qué te ayudo?",
+  menu:["🚤 Ver barcos","💶 Precios","📅 Reservar","❓ Preguntas frecuentes","💬 Hablar con el equipo"],
+  boatsIntro:"Esta es nuestra flota — salidas desde el puerto comercial de L'Estartit 🌊 Toca un barco para ver el detalle:",
+  askWhichBoat:"¿Sobre qué barco quieres saber más? Escribe el nombre o elige uno:",
+  notFound:"No he encontrado ese barco 🤔 Estos son los que tenemos:",
+  priceIntro:"Los precios varían según la embarcación, la temporada y si necesitas patrón. Aquí tienes el resumen:",
+  licenseIntro:"Así funciona la licencia según el barco:",
+  licenseNone:"🟢 Sin licencia ni patrón — la llevas tú",
+  licenseCaptain:"🔵 Sin licencia — patrón profesional incluido",
+  licenseOptional:"🟡 Con o sin licencia — patrón opcional si no tienes",
+  licenseRequired:"🟠 Requiere licencia de navegación (o patrón +100/200€)",
+  faqTitle:"Preguntas frecuentes:",
+  faq:{
+    fuel:"⛽ *Combustible*: no incluido — se calcula al retorno según consumo. El seguro, la limpieza final y la tasa de boya de las Illes Medes SÍ están incluidos.",
+    weather:"🌦️ *Mal tiempo*: si el mar impide salir, el equipo te propone cambiar la fecha. Te lo confirman directamente por WhatsApp.",
+    cancel:"🕐 *Horarios*: día completo 09:00–18:30 · medio día mañana 09:00–13:30 · medio día tarde 14:00–18:30. También organizamos salidas de pesca (chárter).",
+    calas:"🏖️ *Rutas*: las Illes Medes y la costa del Montgrí — aguas cristalinas, cuevas y rincones solo accesibles en barco. La tasa de boya de las Medes ya está incluida."
+  },
+  faqButtons:["⛽ Combustible","🌦️ Mal tiempo","🕐 Horarios","🏖️ Rutas y Medes","⬅️ Menú"],
+  bookStart:"Perfecto, vamos a preparar tu reserva 🙌",
+  askDate:"📅 ¿Para qué fecha te gustaría reservar?",
+  askPax:"👥 ¿Cuántas personas sois?",
+  paxOpts:["1-4","5-8","9-12","Más de 12"],
+  askLicense:"🪪 ¿Tenéis licencia de navegación?",
+  licenseOpts:["Sí, tenemos","No tenemos","No lo sé"],
+  suggestBoat:"Con esos datos, te recomiendo:",
+  askBoatConfirm:"¿Reservamos este barco, o prefieres ver otro?",
+  confirmBoat:"✅ Reservar este","otherBoat":"Ver otros barcos",
+  askName:"🙋 ¿A nombre de quién hacemos la reserva?",
+  askContact:"📱 Perfecto {name}. ¿Cuál es tu teléfono o email de contacto?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryDate:"Fecha", summaryPax:"Personas", summaryLicense:"Licencia", summaryBoat:"Barco", summaryName:"Nombre", summaryContact:"Contacto",
+  summaryFooter:"Este es un resumen orientativo — el equipo de Alquiler Embarcación Estartit confirmará disponibilidad, precio final y forma de pago por WhatsApp. ¡No se cobra nada aún!",
+  sendWa:"📲 Enviar solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"Hola! Quiero reservar con Alquiler Embarcación Estartit:",
+  humanHandoff:"Te pongo en contacto directo con el equipo humano de Alquiler Embarcación Estartit 👇",
+  fallback:"¡Buena pregunta! Para eso te conecto directamente con el equipo, o si prefieres, dime si quieres ver *barcos*, *precios* o *reservar*.",
+  langSwitched:"Cambiado a español 🇪🇸",
+  personLabel:"personas"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Alquiler Embarcación Estartit**.\nJe vous aide à choisir un bateau, voir les prix et réserver en 1 minute. Que puis-je faire pour vous ?",
+  menu:["🚤 Voir les bateaux","💶 Tarifs","📅 Réserver","❓ Questions fréquentes","💬 Parler à l'équipe"],
+  boatsIntro:"Voici notre flotte — départs depuis le port de commerce de L'Estartit 🌊 Touchez un bateau pour le détail :",
+  askWhichBoat:"Sur quel bateau voulez-vous plus d'infos ? Écrivez le nom ou choisissez :",
+  notFound:"Je n'ai pas trouvé ce bateau 🤔 Voici ceux que nous avons :",
+  priceIntro:"Les prix varient selon le bateau, la saison et si un skipper est nécessaire. Voici le résumé :",
+  licenseIntro:"Voici les règles de permis selon le bateau :",
+  licenseNone:"🟢 Sans permis ni skipper — vous naviguez seul",
+  licenseCaptain:"🔵 Sans permis — skipper professionnel inclus",
+  licenseOptional:"🟡 Avec ou sans permis — skipper en option si besoin",
+  licenseRequired:"🟠 Permis bateau requis (ou skipper +100/200€)",
+  faqTitle:"Questions fréquentes :",
+  faq:{
+    fuel:"⛽ *Carburant* : non inclus — calculé au retour selon la consommation. L'assurance, le nettoyage final et la taxe de bouée des îles Medes SONT inclus.",
+    weather:"🌦️ *Mauvais temps* : si la mer empêche la sortie, l'équipe vous propose une autre date. Confirmation directe par WhatsApp.",
+    cancel:"🕐 *Horaires* : journée complète 09h00–18h30 · demi-journée matin 09h00–13h30 · demi-journée après-midi 14h00–18h30. Sorties pêche (charter) également disponibles.",
+    calas:"🏖️ *Itinéraires* : les îles Medes et la côte du Montgrí — eaux cristallines, grottes et recoins accessibles uniquement en bateau. La taxe de bouée des Medes est déjà incluse."
+  },
+  faqButtons:["⛽ Carburant","🌦️ Météo","🕐 Horaires","🏖️ Routes & Medes","⬅️ Menu"],
+  bookStart:"Parfait, préparons votre réservation 🙌",
+  askDate:"📅 Pour quelle date souhaitez-vous réserver ?",
+  askPax:"👥 Vous serez combien de personnes ?",
+  paxOpts:["1-4","5-8","9-12","Plus de 12"],
+  askLicense:"🪪 Avez-vous un permis bateau ?",
+  licenseOpts:["Oui","Non","Je ne sais pas"],
+  suggestBoat:"D'après ces infos, je vous recommande :",
+  askBoatConfirm:"On réserve ce bateau, ou vous préférez en voir un autre ?",
+  confirmBoat:"✅ Réserver celui-ci","otherBoat":"Voir d'autres bateaux",
+  askName:"🙋 Au nom de qui faisons-nous la réservation ?",
+  askContact:"📱 Parfait {name}. Quel est votre téléphone ou email de contact ?",
+  summaryTitle:"📋 Résumé de votre demande",
+  summaryDate:"Date", summaryPax:"Personnes", summaryLicense:"Permis", summaryBoat:"Bateau", summaryName:"Nom", summaryContact:"Contact",
+  summaryFooter:"Ceci est un résumé indicatif — l'équipe de Alquiler Embarcación Estartit confirmera la disponibilité, le prix final et le paiement par WhatsApp. Rien n'est débité pour l'instant !",
+  sendWa:"📲 Envoyer la demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite réserver avec Alquiler Embarcación Estartit :",
+  humanHandoff:"Je vous mets en contact direct avec l'équipe de Alquiler Embarcación Estartit 👇",
+  fallback:"Bonne question ! Je vous mets en contact avec l'équipe, ou dites-moi si vous voulez voir les *bateaux*, les *tarifs* ou *réserver*.",
+  langSwitched:"Changé en français 🇫🇷",
+  personLabel:"personnes"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Alquiler Embarcación Estartit**.\nI can help you pick a boat, check prices and book in under a minute. How can I help?",
+  menu:["🚤 See boats","💶 Prices","📅 Book now","❓ FAQ","💬 Talk to the team"],
+  boatsIntro:"Here's our fleet — departing from L'Estartit's commercial port 🌊 Tap a boat for details:",
+  askWhichBoat:"Which boat would you like to know more about? Type the name or pick one:",
+  notFound:"I couldn't find that boat 🤔 Here's what we have:",
+  priceIntro:"Prices vary by boat, season, and whether a skipper is needed. Here's the summary:",
+  licenseIntro:"Here's how licensing works per boat:",
+  licenseNone:"🟢 No license or skipper needed — you drive",
+  licenseCaptain:"🔵 No license needed — professional skipper included",
+  licenseOptional:"🟡 With or without license — optional skipper if needed",
+  licenseRequired:"🟠 Boating license required (or skipper +€100/200)",
+  faqTitle:"Frequently asked questions:",
+  faq:{
+    fuel:"⛽ *Fuel*: not included — calculated on return based on consumption. Insurance, final cleaning and the Medes Islands buoy fee ARE included.",
+    weather:"🌦️ *Bad weather*: if the sea makes sailing unsafe, the team offers you another date. Confirmed directly over WhatsApp.",
+    cancel:"🕐 *Hours*: full day 09:00–18:30 · morning half-day 09:00–13:30 · afternoon half-day 14:00–18:30. Fishing charters also available.",
+    calas:"🏖️ *Routes*: the Medes Islands and the Montgrí coast — crystal-clear waters, caves and spots only reachable by boat. The Medes buoy fee is already included."
+  },
+  faqButtons:["⛽ Fuel","🌦️ Weather","🕐 Hours","🏖️ Routes & Medes","⬅️ Menu"],
+  bookStart:"Great, let's set up your booking 🙌",
+  askDate:"📅 What date would you like to book?",
+  askPax:"👥 How many people?",
+  paxOpts:["1-4","5-8","9-12","12+"],
+  askLicense:"🪪 Do you have a boating license?",
+  licenseOpts:["Yes","No","Not sure"],
+  suggestBoat:"Based on that, I'd recommend:",
+  askBoatConfirm:"Shall we book this boat, or would you like to see others?",
+  confirmBoat:"✅ Book this one","otherBoat":"See other boats",
+  askName:"🙋 Who should we put the booking under?",
+  askContact:"📱 Great, {name}. What's the best phone number or email to reach you?",
+  summaryTitle:"📋 Your request summary",
+  summaryDate:"Date", summaryPax:"People", summaryLicense:"License", summaryBoat:"Boat", summaryName:"Name", summaryContact:"Contact",
+  summaryFooter:"This is an indicative summary — the Alquiler Embarcación Estartit team will confirm availability, final price and payment over WhatsApp. Nothing is charged yet!",
+  sendWa:"📲 Send request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book with Alquiler Embarcación Estartit:",
+  humanHandoff:"Connecting you directly with the Alquiler Embarcación Estartit team 👇",
+  fallback:"Good question! Let me connect you with the team — or tell me if you'd like to see *boats*, *prices*, or *book*.",
+  langSwitched:"Switched to English 🇬🇧",
+  personLabel:"people"
+}
+};
+
+const LIC_LABEL_KEY = {none:"licenseNone",captain:"licenseCaptain",optional:"licenseOptional",required:"licenseRequired"};
+const LIC_CLASS = {none:"lic-no",captain:"lic-no",optional:"lic-yes",required:"lic-yes"};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, date, pax, license, boat, name, contact}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"showBoats()"},
+    {label:m[1], onclick:"showPrices()"},
+    {label:m[2], onclick:"startBooking()"},
+    {label:m[3], onclick:"showFaq()"},
+    {label:m[4], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function boatButtons(extraFirst){
+  const btns = BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`showBoatDetail('${b.id}')`}));
+  if(extraFirst) btns.unshift(extraFirst);
+  return btns;
+}
+
+function boatCardHtml(b){
+  const licKey = LIC_LABEL_KEY[b.license];
+  const licTxt = t(licKey);
+  const priceLabel = b.priceFrom ? `~ ${b.priceFrom}€` : `${b.priceHalf}–${b.priceFull}€`;
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">${b.img} ${b.name}</span><span class="cprice">${priceLabel}</span></div>
+    <div class="cardbody">
+      <div>${md(b.d[lang])}</div>
+      <div class="spec-row">
+        <span class="spec">👥 ${b.pax} pax</span>
+        ${b.length ? `<span class="spec">📏 ${b.length}</span>` : ''}
+        ${b.hp ? `<span class="spec">⚙️ ${b.hp}</span>` : ''}
+        <span class="spec">📍 ${b.location}</span>
+        <span class="spec ${LIC_CLASS[b.license]}">${licTxt}</span>
+      </div>
+      <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">${b.inc[lang].map(i=>'• '+i).join('<br>')}</div>
+    </div>
+  </div>`;
+}
+
+function showBoats(){
+  addUser(t('menu')[0]);
+  addBotText(t('boatsIntro'), null, 400);
+  setTimeout(()=>{
+    BOATS.forEach((b,i)=>{
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+      chatEl.appendChild(row);
+    });
+    scrollBottom();
+    addBot(md(t('askWhichBoat')), [{label:t('menu')[2],onclick:"startBooking()"},{label:'⬅️ '+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}]);
+  }, 700);
+}
+
+function showBoatDetail(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('askBoatConfirm')), [
+      {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+      {label:t('otherBoat'), onclick:"showBoats()"}
+    ]);
+  }, 500);
+}
+
+function showPrices(){
+  addUser(t('menu')[1]);
+  addBotText(t('priceIntro'), null, 400);
+  setTimeout(()=>{
+    const lines = BOATS.map(b=>{
+      const fromWord = {es:'desde',ca:'des de',fr:'dès',en:'from'}[lang]||'desde';
+      const price = `${fromWord} ${b.priceFrom}€/${b.priceUnit[lang]||b.priceUnit.es}`;
+      return `<b>${b.name.split(' — ')[0]}</b> (${b.pax} pax) — ${price}`;
+    }).join('<br><br>');
+    addBot(lines, mainMenuButtons(), 400);
+  }, 500);
+}
+
+function showFaq(){
+  addUser(t('menu')[3]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas','menu'];
+    return {label, onclick: keys[i]==='menu' ? 'showMenu()' : `showFaqItem('${keys[i]}')`};
+  }), 400);
+}
+function showFaqItem(key){
+  addUser(t('faqButtons')[['fuel','weather','cancel','calas'].indexOf(key)]);
+  addBotText(t('faq')[key], [...t('faqButtons').slice(0,4).filter(l=>true).map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas'];
+    return {label, onclick:`showFaqItem('${keys[i]}')`};
+  }), {label:t('faqButtons')[4], onclick:"showMenu()"}], 400);
+}
+
+function showMenu(){
+  addBotText(t('welcome').split('\n')[1] || t('welcome'), mainMenuButtons(), 300);
+}
+
+function humanHandoff(){
+  addUser(t('menu')[4]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:"⬅️ "+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= BOOKING FLOW ================= */
+function startBooking(preselectBoatId){
+  addUser(t('menu')[2]);
+  booking = {step:'date', date:null, pax:null, license:null, boat: preselectBoatId ? BOATS.find(b=>b.id===preselectBoatId) : null, name:null, contact:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{ addBotText(t('askDate')); }, 700);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    addBotText(t('askPax'), t('paxOpts').map(l=>({label:l, onclick:`bookingPax('${l}')`})), 450);
+    booking.step='pax';
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    addBotText(t('askContact').replace('{name}', text), null, 400);
+    booking.step='contact';
+    return true;
+  }
+  if(booking.step==='contact'){
+    booking.contact = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function bookingPax(label){
+  addUser(label);
+  booking.pax = label;
+  if(booking.boat){
+    booking.license = 'preset';
+    afterLicenseKnown();
+  } else {
+    addBotText(t('askLicense'), t('licenseOpts').map(l=>({label:l, onclick:`bookingLicense('${l}')`})), 450);
+    booking.step='license';
+  }
+}
+
+function bookingLicense(label){
+  addUser(label);
+  booking.license = label;
+  afterLicenseKnown();
+}
+
+function suggestBoatFor(booking){
+  const maxPax = booking.pax && booking.pax.includes('12+') ? 12 : booking.pax && booking.pax.includes('Más') ? 13 : booking.pax && booking.pax.includes('Plus') ? 13 : parseInt((booking.pax||'').match(/\d+/g)?.slice(-1)[0]) || 4;
+  const noLic = booking.license && /no|non|not/i.test(booking.license) && !/sí|oui|yes/i.test(booking.license);
+  let candidates = BOATS.filter(b=>b.pax>=Math.min(maxPax,12));
+  if(candidates.length===0) candidates = [BOATS[BOATS.length-1]];
+  candidates.sort((a,b)=>a.pax-b.pax);
+  return candidates[0];
+}
+
+function afterLicenseKnown(){
+  if(!booking.boat){
+    const suggestion = suggestBoatFor(booking);
+    showTyping(()=>{
+      addBot(md(t('suggestBoat')));
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(suggestion)}</div>`;
+      chatEl.appendChild(row);
+      scrollBottom();
+      addBot(md(t('askBoatConfirm')), [
+        {label:t('confirmBoat'), onclick:`bookingChooseBoat('${suggestion.id}')`, cls:'primary'},
+        {label:t('otherBoat'), onclick:"showBoatsForBooking()"}
+      ]);
+    }, 500);
+  } else {
+    askNameStep();
+  }
+}
+
+function showBoatsForBooking(){
+  addUser(t('otherBoat'));
+  showTyping(()=>{
+    addBot(md(t('askWhichBoat')), BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`bookingChooseBoat('${b.id}')`})));
+  }, 300);
+}
+
+function bookingChooseBoat(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  booking.boat = b;
+  askNameStep();
+}
+
+function askNameStep(){
+  addBotText(t('askName'), null, 500);
+  booking.step='name';
+}
+
+function finishBooking(){
+  booking.step='done';
+  const licTxt = booking.license==='preset' ? '—' : booking.license;
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryDate')}:</b> ${esc(booking.date)}<br>
+          <b>${t('summaryPax')}:</b> ${esc(booking.pax)}<br>
+          <b>${t('summaryLicense')}:</b> ${esc(licTxt)}<br>
+          <b>${t('summaryBoat')}:</b> ${booking.boat.name}<br>
+          <b>${t('summaryName')}:</b> ${esc(booking.name)}<br>
+          <b>${t('summaryContact')}:</b> ${esc(booking.contact)}
+          <hr style="border:none;border-top:1px solid #e5edf0;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${t('summaryFooter')}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryDate')}: ${booking.date}\n${t('summaryPax')}: ${booking.pax}\n${t('summaryLicense')}: ${licTxt}\n${t('summaryBoat')}: ${booking.boat.name}\n${t('summaryName')}: ${booking.name}\n${t('summaryContact')}: ${booking.contact}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUAGE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bateau','reserver','reservation','prix','combien','merci','oui','non','permis','svp','bonsoir'];
+  const en = ['hello','hi ','hey','boat','book','price','how much','thanks','yes','no ','license','please'];
+  const es = ['hola','buenas','barco','reservar','precio','cuanto','gracias','si','no ','licencia','favor'];
+  const ca = ['hola','bona tarda','barca','vaixell','reservar','preu','quant','gracies','llicencia','sisplau','sisplau','voldria','quantes'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+/* ================= FREE TEXT HANDLING ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  // language auto-switch if very confident and different from current on first real message
+  const detected = detectLang(text);
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='contact')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  // boat name match
+  const boatMatch = BOATS.find(b=>b.key.some(k=>n.includes(normalize(k))));
+  if(boatMatch){ showTyping(()=>showBoatDetailInline(boatMatch), 350); return; }
+
+  if(normalizedIncludesAny(n,['barco','barcos','bateau','bateaux','boat','boats','flota','flotte','fleet'])){ showBoats(); return; }
+  if(normalizedIncludesAny(n,['precio','precios','tarif','prix','price','prices','cuanto cuesta','coste','cout'])){ showPrices(); return; }
+  if(normalizedIncludesAny(n,['reserv','book','réserv'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['licencia','licence','permis','license','titulacion'])){
+    addBotText(t('licenseIntro'), mainMenuButtons(), 400); return;
+  }
+  if(normalizedIncludesAny(n,['cala','crique','cove','medes','montgo','ruta','route'])){ showFaqItem('calas'); return; }
+  if(normalizedIncludesAny(n,['combustible','fuel','carburant','essence','gasolina'])){ showFaqItem('fuel'); return; }
+  if(normalizedIncludesAny(n,['horari','schedule','hour','heure','pesca','fishing','peche'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['tiempo','meteo','weather','lluvia','pluie','rain'])){ showFaqItem('weather'); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','human','equipo','equipe','llamar','appeler','call'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bonjour','salut','hello','hi','hey','bonsoir'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function showBoatDetailInline(b){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  addBot(md(t('askBoatConfirm')), [
+    {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+    {label:t('otherBoat'), onclick:"showBoats()"}
+  ]);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'es';
+  document.querySelector('.langbtn[data-lang="es"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
