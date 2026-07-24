@@ -12,45 +12,25 @@
   <meta name="theme-color" content="#080d18">
 
   <!-- SEO -->
-  <title>ALEX — Votre Agent IA | Assistant commercial pour commerces</title>
-  <meta name="description" content="ALEX répond à vos clients en moins de 2 minutes, 24h/24 : qualification, prise de RDV, relances. Pour agences immobilières, salons, santé, restaurants, nautique.">
+  <title>ALEX pour cabinets dentaires &amp; santé — Un accueil qui ne sature jamais</title>
+  <meta name="description" content="ALEX prend les demandes de rendez-vous 24h/24, trie les urgences et envoie les rappels qui réduisent les rendez-vous manqués. Pour cabinets dentaires et professionnels de santé.">
   <meta name="robots" content="index, follow">
-  <meta name="google-site-verification" content="YHOxbJW6FxLzzECsZCXFB_9oCcUAK4Eph3gPnWk2ZUY" />
-  <link rel="canonical" href="https://agentia-immo.com/">
+  <link rel="canonical" href="https://agentia-immo.com/sante/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="ALEX — Votre Agent IA">
-  <meta property="og:description" content="Un assistant commercial et marketing IA qui répond à vos clients en moins de 2 minutes, 24h/24. Qualification, RDV, relances — pour tous les commerces.">
+  <meta property="og:title" content="ALEX pour cabinets dentaires &amp; santé">
+  <meta property="og:description" content="Votre secrétariat sonne occupé ? ALEX répond à tous les patients, tout le temps : RDV, urgences, rappels.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://agentia-immo.com/">
+  <meta property="og:url" content="https://agentia-immo.com/sante/">
   <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="ALEX">
   <meta property="og:image" content="https://agentia-immo.com/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ALEX — Votre Agent IA">
-  <meta name="twitter:description" content="Assistant commercial IA : réponse < 2 min, 24h/24, qualification, RDV, relances.">
+  <meta name="twitter:title" content="ALEX pour la santé">
+  <meta name="twitter:description" content="Prise de RDV 24h/24, tri des urgences, rappels anti-lapins.">
   <meta name="twitter:image" content="https://agentia-immo.com/og-image.png">
-
-  <!-- Schema.org -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "ALEX",
-    "description": "Assistant commercial et marketing IA pour commerces — répond aux clients 24h/24 en moins de 2 minutes, qualifie, prend les rendez-vous et relance",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "offers": [
-      {"@type": "Offer", "name": "ALEX Assistant", "priceCurrency": "EUR", "price": "290"},
-      {"@type": "Offer", "name": "Pack Croissance", "priceCurrency": "EUR", "price": "590"},
-      {"@type": "Offer", "name": "Automatisations", "priceCurrency": "EUR", "price": "190"}
-    ]
-  }
-  </script>
 
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEMBBR76SN"></script>
@@ -81,6 +61,7 @@
       --accent-dim:   rgba(41,193,255,0.10);
       --accent-glow:  rgba(41,193,255,0.22);
       --magenta-dim:  rgba(233,79,245,0.10);
+      --whatsapp:     #25d366;
       --white:        #ffffff;
       --text:         #e2e8f0;
       --muted:        #6b7280;
@@ -89,6 +70,9 @@
       --border:       rgba(255,255,255,0.07);
       --border-a:     rgba(41,193,255,0.28);
       --border-m:     rgba(233,79,245,0.28);
+      --red:          #fc8181;
+      --red-bg:       rgba(239,68,68,0.07);
+      --red-border:   rgba(239,68,68,0.22);
       --radius:       14px;
       --transition:   all 0.25s cubic-bezier(0.4,0,0.2,1);
       --shadow-card:  0 4px 28px rgba(0,0,0,0.45);
@@ -125,12 +109,6 @@
       line-height: 1.75; max-width: 620px; margin: 0 auto 56px;
     }
     .text-accent { color: var(--accent); }
-    .brand-gradient {
-      font-family: var(--font-display);
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; background-clip: text;
-      -webkit-text-fill-color: transparent; color: transparent;
-    }
 
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
@@ -147,6 +125,8 @@
     }
     .btn-outline  { background: transparent; color: var(--white); border: 1px solid var(--border); }
     .btn-outline:hover { border-color: var(--border-a); color: var(--accent); }
+    .btn-whatsapp { background: var(--whatsapp); color: #06130a; }
+    .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,0.3); background: #3ce07a; }
     .btn-lg       { font-size: 1.1rem; padding: 17px 42px; }
 
     .fade-in {
@@ -189,33 +169,26 @@
       font-weight: 500; transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--white); }
+    .nav-links a.current { color: var(--accent); }
     @media (max-width: 768px) {
       .nav-links { display: none; }
       nav { padding: 0 20px; }
     }
 
     .hero {
-      position: relative; padding: 110px 40px 80px;
+      position: relative; padding: 105px 40px 75px;
       text-align: center; overflow: hidden;
     }
     .hero-bg {
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(41,193,255,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(41,193,255,0.10) 0%, transparent 65%),
         radial-gradient(ellipse 60% 50% at 80% 60%,  rgba(233,79,245,0.07) 0%, transparent 55%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-      background-size: 56px 56px;
-      mask-image: radial-gradient(ellipse 80% 80% at 50% 0%, black 0%, transparent 70%);
     }
     .hero-content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
     .hero h1 {
-      font-size: clamp(2.3rem, 5.5vw, 3.8rem); font-weight: 900;
-      line-height: 1.12; margin: 22px 0 24px; letter-spacing: -1.5px;
+      font-size: clamp(2.2rem, 5.2vw, 3.6rem); font-weight: 900;
+      line-height: 1.14; margin: 22px 0 24px; letter-spacing: -1.5px;
       color: var(--white);
     }
     .hero h1 .accent {
@@ -224,7 +197,7 @@
       -webkit-text-fill-color: transparent; color: transparent;
     }
     .hero-sub {
-      font-size: 1.13rem; color: var(--muted2); line-height: 1.75;
+      font-size: 1.12rem; color: var(--muted2); line-height: 1.75;
       max-width: 640px; margin: 0 auto 40px;
     }
     .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -234,32 +207,38 @@
       background: var(--magenta-dim); border: 1px solid var(--border-m);
       border-radius: 8px; padding: 8px 18px; font-size: 0.78rem; color: var(--accent2);
     }
-    @media (max-width: 640px) { .hero { padding: 90px 20px 60px; } }
 
-    /* Secteurs */
-    .sector-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+    /* Before / After */
+    .hero-visual { margin: 60px auto 0; max-width: 780px; position: relative; z-index: 1; }
+    .baa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .baa-card { border-radius: var(--radius); padding: 22px; text-align: left; }
+    .baa-card.bad  { background: var(--red-bg);  border: 1px solid var(--red-border); }
+    .baa-card.good { background: rgba(41,193,255,0.05); border: 1px solid var(--border-a); }
+    .baa-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; margin-bottom: 14px;
     }
-    .sector-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 28px 26px;
-      transition: var(--transition); text-decoration: none; color: var(--text);
-      display: flex; flex-direction: column; gap: 10px;
+    .baa-card.bad  .baa-label { color: var(--red); }
+    .baa-card.good .baa-label { color: var(--accent); }
+    .baa-time { font-size: 0.7rem; color: var(--muted); margin-bottom: 8px; }
+    .bubble {
+      border-radius: 10px; padding: 10px 14px; font-size: 0.82rem;
+      line-height: 1.5; margin-bottom: 8px; color: var(--text);
     }
-    .sector-card:hover { transform: translateY(-4px); border-color: var(--border-a); box-shadow: var(--shadow-card); }
-    .sector-icon { font-size: 1.7rem; }
-    .sector-card h3 { color: var(--white); font-size: 1.05rem; font-weight: 800; }
-    .sector-pain { font-size: 0.86rem; color: var(--muted2); line-height: 1.6; flex: 1; }
-    .sector-link { font-size: 0.83rem; font-weight: 700; color: var(--accent); }
-    .sector-card.flagship { border-color: var(--border-a); background: linear-gradient(160deg, #0d1a2e, #0a1322); }
-    .sector-card.flagship .sector-badge {
-      align-self: flex-start; font-size: 0.62rem; font-weight: 800; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--accent);
-      background: var(--accent-dim); border: 1px solid var(--border-a);
-      border-radius: 40px; padding: 3px 10px;
+    .bubble.from-prospect { background: rgba(255,255,255,0.07); }
+    .bubble.from-agent    { background: rgba(41,193,255,0.12); border: 1px solid rgba(41,193,255,0.18); }
+    .baa-reply-time { font-size: 0.68rem; color: var(--muted); text-align: right; margin-bottom: 6px; }
+    .baa-outcome {
+      display: flex; align-items: center; gap: 8px;
+      border-radius: 8px; padding: 10px 12px;
+      font-size: 0.8rem; margin-top: 10px;
     }
-    @media (max-width: 860px) { .sector-grid { grid-template-columns: 1fr 1fr; } }
-    @media (max-width: 560px) { .sector-grid { grid-template-columns: 1fr; } }
+    .baa-outcome.bad  { background: var(--red-bg);  color: var(--red);    border: 1px solid var(--red-border); }
+    .baa-outcome.good { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--border-a); }
+    @media (max-width: 640px) {
+      .baa-grid { grid-template-columns: 1fr; }
+      .hero { padding: 88px 20px 55px; }
+    }
 
     /* Features */
     .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -292,8 +271,7 @@
     }
     .pc-popular {
       position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
-      background: var(--accent-gradient);
-      color: #080d18;
+      background: var(--accent-gradient); color: #080d18;
       font-size: 0.68rem; font-weight: 800; letter-spacing: 1px;
       padding: 4px 16px; border-radius: 50px; white-space: nowrap;
       text-transform: uppercase;
@@ -328,7 +306,18 @@
       color:var(--white); font-size:0.95rem; outline:none; font-family:inherit;
     }
     .form-input:focus { border-color: var(--accent); }
-    select.form-input { appearance: auto; }
+
+    /* Floating WhatsApp */
+    .wa-float {
+      position: fixed; left: 22px; bottom: 22px; z-index: 90;
+      display: inline-flex; align-items: center; gap: 9px;
+      background: var(--whatsapp); color: #06130a;
+      font-weight: 700; font-size: 0.9rem;
+      padding: 12px 20px; border-radius: 50px; text-decoration: none;
+      box-shadow: 0 8px 30px rgba(37,211,102,0.35);
+      transition: var(--transition);
+    }
+    .wa-float:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
 
     footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; }
   </style>
@@ -343,11 +332,10 @@
     <span>ALEX</span><span class="nav-sub">Votre Agent IA</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#secteurs">Secteurs</a></li>
-    <li><a href="#offres">Offres</a></li>
+    <li><a href="/">Accueil</a></li>
+    <li><a href="/sante/" class="current">Santé</a></li>
     <li><a href="/immo/">Immobilier</a></li>
-    <li><a href="/nautique/">Nautique</a></li>
-    <li><a href="/acquisition/">Acquisition</a></li>
+    <li><a href="/#offres">Offres</a></li>
   </ul>
   <a href="#contact" class="btn btn-primary" aria-label="Demander une démonstration gratuite">
     Demander une démo →
@@ -359,26 +347,29 @@
 <!-- HERO -->
 <header class="hero" role="banner">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-grid" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <div class="tag fade-in">🤖 ALEX — Assistant commercial &amp; marketing IA</div>
+    <div class="tag fade-in">⚕️ ALEX pour la santé &amp; le dentaire</div>
 
     <h1 class="fade-in delay-1">
-      Un vrai collaborateur commercial.<br>
-      <span class="accent">Pas un chatbot.</span>
+      Votre secrétariat sonne occupé.<br>
+      <span class="accent">Le patient appelle le cabinet suivant.</span>
     </h1>
 
     <p class="hero-sub fade-in delay-2">
-      ALEX répond à vos clients en moins de 2 minutes, 24h/24 — sur votre site, WhatsApp, Facebook ou Instagram. Il qualifie les demandes, prend les rendez-vous dans votre agenda et relance automatiquement. En français, espagnol et anglais.
+      ALEX prend les demandes de rendez-vous 24h/24 sur votre site et WhatsApp, répond aux questions fréquentes, trie les urgences et envoie les rappels qui réduisent les rendez-vous manqués.
     </p>
 
     <div class="hero-btns fade-in delay-3">
       <a href="#contact" class="btn btn-primary btn-lg" aria-label="Réserver une démonstration gratuite">
         🎯 Demander ma démo gratuite
       </a>
-      <a href="#secteurs" class="btn btn-outline btn-lg">
-        Voir mon secteur
+      <a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20ALEX%20pour%20mon%20cabinet"
+         target="_blank" rel="noopener"
+         class="btn btn-whatsapp btn-lg"
+         onclick="trackEvent('click_whatsapp','CTA','sante_hero',0)"
+         aria-label="Discuter sur WhatsApp">
+        💬 Parlons-en sur WhatsApp
       </a>
     </div>
 
@@ -386,117 +377,83 @@
       Démo 20 min — sans engagement — aucune carte bancaire
     </p>
     <div class="launch-pill fade-in delay-4">
-      🎁 Le premier client de chaque secteur : <strong>&nbsp;1 mois gratuit, zéro carte bancaire</strong>
+      🎁 Premier cabinet client : <strong>&nbsp;1 mois gratuit, zéro carte bancaire</strong>
+    </div>
+  </div>
+
+  <!-- Before / After -->
+  <div class="hero-visual fade-in delay-4" role="img" aria-label="Comparaison avant/après : sans et avec ALEX">
+    <div class="baa-grid">
+      <div class="baa-card bad">
+        <div class="baa-label">😰 Sans ALEX</div>
+        <div class="baa-time">Lundi 9h05 — Téléphone</div>
+        <div class="bubble from-prospect">"Bonjour, je voudrais un rendez-vous pour un détartrage cette semaine..."</div>
+        <div class="baa-outcome bad">⏳ Ligne occupée — le patient raccroche</div>
+        <div class="baa-outcome bad">→ Il a pris rendez-vous dans le cabinet d'à côté.</div>
+      </div>
+      <div class="baa-card good">
+        <div class="baa-label">✅ Avec ALEX</div>
+        <div class="baa-time">Lundi 9h05 — Site du cabinet</div>
+        <div class="bubble from-prospect">"Bonjour, je voudrais un rendez-vous pour un détartrage cette semaine..."</div>
+        <div class="baa-reply-time">9h05 — Réponse immédiate ✓</div>
+        <div class="bubble from-agent">"Bonjour ! Pour un détartrage, il reste jeudi 11h30 ou vendredi 15h cette semaine. Quel créneau vous convient ?"</div>
+        <div class="baa-outcome good">✅ RDV confirmé jeudi 11h30 · rappel envoyé la veille</div>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- SECTEURS -->
-<section class="section" id="secteurs" aria-label="Secteurs couverts">
-  <div class="container">
-    <div style="text-align:center" class="fade-in"><div class="tag">🏙️ Votre métier</div></div>
-    <h2 class="section-heading fade-in delay-1">Chaque commerce perd des clients<br>faute de réponse. <span class="text-accent">Plus le vôtre.</span></h2>
-    <p class="section-sub fade-in delay-2">
-      ALEX est configuré pour votre métier, votre vocabulaire et vos horaires — pas un outil générique.
-    </p>
-
-    <div class="sector-grid">
-      <a href="/immo/" class="sector-card flagship fade-in delay-1">
-        <span class="sector-badge">Page dédiée</span>
-        <div class="sector-icon">🏠</div>
-        <h3>Agences immobilières</h3>
-        <p class="sector-pain">Le prospect du vendredi soir visite chez le concurrent le samedi. ALEX qualifie budget, projet et délai, et pose le RDV.</p>
-        <span class="sector-link">Découvrir ALEX Immo →</span>
-      </a>
-      <a href="/nautique/" class="sector-card flagship fade-in delay-1">
-        <span class="sector-badge">Page dédiée</span>
-        <div class="sector-icon">🚤</div>
-        <h3>Nautique &amp; tourisme</h3>
-        <p class="sector-pain">En pleine saison, les demandes arrivent en 4 langues à toute heure. ALEX répond, vérifie les dispos et confirme la réservation.</p>
-        <span class="sector-link">Découvrir ALEX Nautique →</span>
-      </a>
-      <a href="/beaute/" class="sector-card flagship fade-in delay-1">
-        <span class="sector-badge">Page dédiée</span>
-        <div class="sector-icon">💇</div>
-        <h3>Salons &amp; beauté</h3>
-        <p class="sector-pain">Le téléphone sonne pendant un soin — cliente perdue. ALEX prend les RDV et envoie les rappels qui font chuter les no-shows.</p>
-        <span class="sector-link">Découvrir ALEX Beauté →</span>
-      </a>
-      <a href="/sante/" class="sector-card flagship fade-in delay-2">
-        <span class="sector-badge">Page dédiée</span>
-        <div class="sector-icon">⚕️</div>
-        <h3>Santé &amp; dentaire</h3>
-        <p class="sector-pain">Standard saturé, patients qui raccrochent. ALEX prend les RDV, trie les urgences et envoie les rappels automatiques.</p>
-        <span class="sector-link">Découvrir ALEX Santé →</span>
-      </a>
-      <a href="/restaurants/" class="sector-card flagship fade-in delay-2">
-        <span class="sector-badge">Page dédiée</span>
-        <div class="sector-icon">🍽️</div>
-        <h3>Restaurants</h3>
-        <p class="sector-pain">Les réservations tombent pendant le service, personne ne décroche. ALEX confirme la table, répond sur le menu et rappelle le client.</p>
-        <span class="sector-link">Découvrir ALEX Restaurants →</span>
-      </a>
-      <a href="#contact" class="sector-card fade-in delay-2" onclick="presetSector('Autre commerce')">
-        <div class="sector-icon">🏪</div>
-        <h3>Commerces &amp; services</h3>
-        <p class="sector-pain">Chaque question sans réponse est un client qui va voir ailleurs. ALEX répond, oriente et transforme les demandes en ventes.</p>
-        <span class="sector-link">Demander une démo →</span>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- CE QUE FAIT ALEX -->
+<!-- FEATURES -->
 <section class="section section-alt" id="fonctions" aria-label="Ce que fait ALEX">
   <div class="container">
     <div style="text-align:center" class="fade-in"><div class="tag">⚙️ Ce que fait ALEX</div></div>
-    <h2 class="section-heading fade-in delay-1">Il travaille comme votre<br><span class="text-accent">meilleur commercial.</span></h2>
+    <h2 class="section-heading fade-in delay-1">Un accueil disponible pour<br><span class="text-accent">chaque patient, à chaque heure.</span></h2>
     <p class="section-sub fade-in delay-2">
-      Pas un répondeur automatique : un assistant qui vend, qualifie et fidélise pendant que vous travaillez.
+      ALEX désengorge votre secrétariat : il gère les demandes simples, votre équipe garde les cas qui comptent.
     </p>
 
     <div class="feat-grid">
       <div class="feat fade-in delay-1">
-        <div class="feat-icon">⚡</div>
-        <h3>Réponse &lt; 2 min, 24h/24</h3>
-        <p>Sur votre site, WhatsApp Business, Facebook Messenger et Instagram — partout où vos clients écrivent.</p>
-      </div>
-      <div class="feat fade-in delay-1">
-        <div class="feat-icon">🎯</div>
-        <h3>Qualification commerciale</h3>
-        <p>Budget, besoin, délai, urgence : ALEX pose les bonnes questions et ne vous transmet que les contacts sérieux.</p>
-      </div>
-      <div class="feat fade-in delay-1">
         <div class="feat-icon">📅</div>
-        <h3>Prise de RDV automatique</h3>
-        <p>ALEX propose vos créneaux réels et confirme le rendez-vous directement dans votre agenda.</p>
+        <h3>Prise de RDV 24h/24</h3>
+        <p>Le patient réserve quand ça l'arrange — le soir, le week-end. Votre agenda se remplit sans appel.</p>
+      </div>
+      <div class="feat fade-in delay-1">
+        <div class="feat-icon">🚨</div>
+        <h3>Tri des urgences</h3>
+        <p>Douleur aiguë ou contrôle de routine ? ALEX identifie l'urgence et oriente vers le bon créneau ou le bon numéro.</p>
+      </div>
+      <div class="feat fade-in delay-1">
+        <div class="feat-icon">🔔</div>
+        <h3>Rappels anti-lapins</h3>
+        <p>Rappel automatique la veille. Chaque rendez-vous manqué évité, c'est un créneau facturé.</p>
       </div>
       <div class="feat fade-in delay-2">
-        <div class="feat-icon">🔁</div>
-        <h3>Relances &amp; anti no-show</h3>
-        <p>Rappels de RDV, relances des devis sans réponse, réactivation des anciens clients — automatiquement.</p>
+        <div class="feat-icon">💬</div>
+        <h3>Questions fréquentes</h3>
+        <p>Tarifs, remboursements, accès, préparation avant consultation : ALEX répond sans mobiliser votre équipe.</p>
       </div>
       <div class="feat fade-in delay-2">
-        <div class="feat-icon">⭐</div>
-        <h3>Avis Google</h3>
-        <p>Après chaque prestation, ALEX sollicite l'avis client au bon moment — votre note monte toute seule.</p>
+        <div class="feat-icon">📋</div>
+        <h3>Liste d'attente intelligente</h3>
+        <p>Une annulation ? ALEX propose le créneau libéré aux patients en attente. Zéro trou dans l'agenda.</p>
       </div>
       <div class="feat fade-in delay-2">
-        <div class="feat-icon">🌍</div>
-        <h3>Multilingue FR / ES / EN</h3>
-        <p>Il bascule automatiquement dans la langue du client — indispensable en zone touristique.</p>
+        <div class="feat-icon">🔐</div>
+        <h3>Conformité RGPD</h3>
+        <p>Données hébergées en Europe, aucune donnée médicale sensible stockée sans votre accord.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- OFFRES -->
-<section class="section" id="offres" aria-label="Offres et tarifs">
+<!-- PRICING -->
+<section class="section" id="tarifs" aria-label="Tarifs">
   <div class="container">
-    <div style="text-align:center" class="fade-in"><div class="tag">💳 Offres</div></div>
-    <h2 class="section-heading fade-in delay-1">Des offres simples. <span class="text-accent">Zéro surprise.</span></h2>
+    <div style="text-align:center" class="fade-in"><div class="tag">💳 Tarifs</div></div>
+    <h2 class="section-heading fade-in delay-1">Un rendez-vous manqué évité par jour<br><span class="text-accent">et ALEX est rentabilisé.</span></h2>
     <p class="section-sub fade-in delay-2">
-      Setup unique + abonnement mensuel. Résiliable à tout moment, sans engagement annuel.
+      Setup unique + abonnement mensuel. Résiliable à tout moment.
     </p>
 
     <div class="pricing-grid">
@@ -506,13 +463,13 @@
         <div class="pc-price">290 € <span>/mois</span></div>
         <div class="pc-setup">+ 490 € de mise en place (une seule fois)</div>
         <ul class="pc-feats">
-          <li>Assistant commercial IA sur 1 canal (site ou WhatsApp)</li>
-          <li>Réponse &lt; 2 min, 24h/24, multilingue</li>
-          <li>Qualification des demandes</li>
-          <li>Récapitulatif email quotidien</li>
+          <li>ALEX sur 1 canal (site ou WhatsApp)</li>
+          <li>Prise de RDV 24h/24</li>
+          <li>Questions fréquentes (tarifs, accès, remboursements)</li>
+          <li>Récapitulatif quotidien des demandes</li>
           <li>Mise en place en 5–7 jours</li>
         </ul>
-        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_assistant',290)" aria-label="Demander une démo pour l'offre ALEX Assistant">
+        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_sante','CTA','offer_assistant',290)">
           Demander une démo →
         </a>
       </div>
@@ -523,13 +480,13 @@
         <div class="pc-price">590 € <span>/mois</span></div>
         <div class="pc-setup">+ 690 € de mise en place (une seule fois)</div>
         <ul class="pc-feats">
-          <li>ALEX Assistant sur 3 canaux au choix</li>
-          <li>Prise de RDV automatique dans votre agenda</li>
-          <li>Relances clients + anti no-show + avis Google</li>
-          <li>Intégration CRM incluse</li>
+          <li>ALEX sur 3 canaux (site + WhatsApp + Instagram)</li>
+          <li>RDV confirmés dans votre agenda</li>
+          <li>Tri des urgences + liste d'attente</li>
+          <li>Rappels anti-lapins automatiques</li>
           <li>Optimisations mensuelles + support prioritaire</li>
         </ul>
-        <a href="#contact" class="btn btn-primary" onclick="trackEvent('click_demo_hub','CTA','offer_croissance',590)" aria-label="Demander une démo pour le Pack Croissance">
+        <a href="#contact" class="btn btn-primary" onclick="trackEvent('click_demo_sante','CTA','offer_croissance',590)">
           🔥 Demander une démo →
         </a>
       </div>
@@ -539,13 +496,13 @@
         <div class="pc-price">dès 190 € <span>/mois</span></div>
         <div class="pc-setup">+ setup selon projet (dès 390 €)</div>
         <ul class="pc-feats">
-          <li>Relances devis &amp; paniers abandonnés</li>
-          <li>Rappels de RDV et séquences email/SMS</li>
+          <li>Rappels de contrôles périodiques (6 mois, 1 an)</li>
+          <li>Séquences post-soins automatiques</li>
           <li>Collecte d'avis Google automatisée</li>
-          <li>Facturation &amp; onboarding client automatisés</li>
-          <li>Connexion à vos outils (CRM, agenda, caisse)</li>
+          <li>Formulaires pré-consultation en ligne</li>
+          <li>Connexion à votre logiciel de cabinet</li>
         </ul>
-        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_autom',190)" aria-label="Demander un devis automatisations">
+        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_sante','CTA','offer_autom',190)">
           Étudier mon besoin →
         </a>
       </div>
@@ -553,12 +510,9 @@
     </div>
 
     <p class="pricing-note fade-in delay-1">
-      🏠 <strong>Agences immobilières :</strong> tarifs et offres dédiés (Starter, Pro, Réseau, Acquisition) sur <a href="/immo/#tarifs" style="color:var(--accent)">la page Immobilier →</a>
+      🎁 <strong>Offre de lancement :</strong> le premier cabinet client bénéficie d'1 mois complet gratuit — aucune carte bancaire.
     </p>
     <p class="pricing-note fade-in delay-2">
-      🎁 <strong>Offre de lancement :</strong> le premier client de chaque secteur bénéficie d'1 mois complet gratuit — aucune carte bancaire, en échange d'un retour honnête.
-    </p>
-    <p class="pricing-note fade-in delay-3">
       🤝 <strong>Parrainage :</strong> 150 € offerts pour chaque commerce présenté. Contrat signé = <strong>1 mois gratuit</strong> en plus.
     </p>
   </div>
@@ -572,19 +526,20 @@
       Réservez votre démo<br><span class="text-accent">de 20 minutes</span>
     </h2>
     <p class="fade-in delay-2" style="color:var(--muted2);margin-bottom:40px;max-width:480px">
-      Je vous montre ALEX en action sur un cas concret adapté à votre commerce. Réponse sous 24h.
+      Je vous montre ALEX en action sur un cas concret adapté à votre établissement. Réponse sous 24h — ou écrivez-moi directement sur WhatsApp.
     </p>
 
     <form
       action="https://formsubmit.co/maximebricepaul@gmail.com"
       method="POST"
-      onsubmit="trackEvent('submit_demo_hub','Lead','contact_form_hub',0)"
+      onsubmit="trackEvent('submit_demo_sante','Lead','contact_form_sante',0)"
       class="form-wrap fade-in delay-3"
     >
-      <input type="hidden" name="_subject" value="Nouvelle demande de demo ALEX">
+      <input type="hidden" name="_subject" value="Nouvelle demande de demo ALEX — Sante">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://agentia-immo.com/merci.html">
+      <input type="hidden" name="Secteur" value="Santé / dentaire">
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div>
@@ -598,31 +553,18 @@
       </div>
 
       <div>
-        <label for="f-commerce" class="form-label">Nom de votre commerce *</label>
-        <input type="text" id="f-commerce" name="Commerce" required placeholder="Salon Élégance / Restaurant La Voile / Agence Dupont..." class="form-input">
-      </div>
-
-      <div>
-        <label for="f-secteur" class="form-label">Votre secteur *</label>
-        <select id="f-secteur" name="Secteur" required class="form-input">
-          <option value="" disabled selected>Choisissez votre secteur</option>
-          <option>Agence immobilière</option>
-          <option>Nautique / tourisme</option>
-          <option>Salon / beauté</option>
-          <option>Santé / dentaire</option>
-          <option>Restaurant</option>
-          <option>Autre commerce</option>
-        </select>
+        <label for="f-commerce" class="form-label">Nom de votre établissement *</label>
+        <input type="text" id="f-commerce" name="Commerce" required placeholder="Cabinet Dentaire du Port / Centre Médical..." class="form-input">
       </div>
 
       <div>
         <label for="f-email" class="form-label">Email professionnel *</label>
-        <input type="email" id="f-email" name="Email" required placeholder="jean@moncommerce.fr" class="form-input">
+        <input type="email" id="f-email" name="Email" required placeholder="jean@monactivite.com" class="form-input">
       </div>
 
       <div>
-        <label for="f-tel" class="form-label">Téléphone <span style="color:var(--muted)">(optionnel)</span></label>
-        <input type="tel" id="f-tel" name="Telephone" placeholder="06 12 34 56 78" class="form-input">
+        <label for="f-tel" class="form-label">Téléphone / WhatsApp <span style="color:var(--muted)">(optionnel)</span></label>
+        <input type="tel" id="f-tel" name="Telephone" placeholder="+34 / +33..." class="form-input">
       </div>
 
       <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1rem;font-weight:700;margin-top:4px">
@@ -636,33 +578,18 @@
   </div>
 </section>
 
-<!-- TESTER ALEX -->
-<div style="background:var(--bg);border-top:1px solid var(--border);padding:56px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
-  <div class="tag" style="margin-bottom:16px">🤖 Tester maintenant</div>
-  <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:12px">
-    ALEX est déjà là. <span class="text-accent">Parlez-lui.</span>
-  </h2>
-  <p style="color:var(--muted2);max-width:500px;margin:0 auto 28px;line-height:1.7">
-    Cliquez sur l'icône de chat en bas à droite. ALEX vous répond en direct, comme il le ferait pour vos clients.
-  </p>
-  <p style="font-size:0.82rem;color:var(--muted);margin-top:8px">
-    Démo configurée pour l'immobilier · Données non enregistrées
-  </p>
-</div>
-
 </main>
 
 <!-- FOOTER -->
 <footer role="contentinfo">
-  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px"><span class="brand-gradient">ALEX</span> — Votre Agent IA</p>
+  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">ALEX — Votre Agent IA</p>
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
-    Assistant commercial &amp; marketing IA pour commerces · Réponses 24h/24 · RDV &amp; relances automatiques
+    Assistant commercial &amp; marketing IA · Cabinets dentaires &amp; santé · RDV et rappels automatiques
   </p>
   <nav aria-label="Liens du pied de page" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
-    <a href="#secteurs" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Secteurs</a>
-    <a href="#offres" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Offres</a>
+    <a href="/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Accueil</a>
+    <a href="/#secteurs" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Secteurs</a>
     <a href="/immo/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Immobilier</a>
-    <a href="/acquisition/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Acquisition</a>
     <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">maximebricepaul@gmail.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
@@ -671,73 +598,12 @@
 </footer>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20ALEX%20pour%20mon%20commerce"
-   target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp"
-   onclick="trackEvent('click_whatsapp','CTA','hub_float',0)"
-   style="position:fixed;left:22px;bottom:22px;z-index:90;display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#06130a;font-weight:700;font-size:0.9rem;padding:12px 20px;border-radius:50px;text-decoration:none;box-shadow:0 8px 30px rgba(37,211,102,0.35)">
+<a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20ALEX%20pour%20mon%20cabinet"
+   target="_blank" rel="noopener" class="wa-float"
+   onclick="trackEvent('click_whatsapp','CTA','sante_float',0)"
+   aria-label="Discuter sur WhatsApp">
   💬 WhatsApp
 </a>
-
-<!-- VOICEFLOW WIDGET -->
-<script type="text/javascript">
-(function(d, t) {
-  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-  v.onload = function() {
-    var userLang = navigator.language || navigator.userLanguage || 'fr-FR';
-    var langCode = userLang.toLowerCase().startsWith('en') ? 'en'
-                 : userLang.toLowerCase().startsWith('es') ? 'es'
-                 : userLang.toLowerCase().startsWith('ca') ? 'es'
-                 : 'fr';
-
-    window.voiceflow.chat.load({
-      verify: { projectID: '6a50f720a304d092f7166812' },
-      url: 'https://general-runtime.voiceflow.com',
-      versionID: 'main',
-      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://agentia-immo.com', 'https://www.agentia-immo.com'],
-      stylesheet: 'https://agentia-immo.com/vf-custom.css',
-
-      assistant: {
-        color: '#29c1ff',
-        header: { title: 'Alex' },
-        banner: {
-          title: 'Alex',
-          description: langCode === 'en' ? 'Hi! I\'m Alex, your AI sales assistant. How can I help?'
-                      : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente comercial IA. ¿Cómo puedo ayudarte?'
-                      : 'Bonjour ! Je suis Alex, votre assistant commercial IA. Comment puis-je vous aider ?'
-        },
-      },
-
-      launch: {
-        event: {
-          type: 'launch',
-          payload: {
-            language: langCode,
-            pageUrl: window.location.href,
-            referrer: document.referrer || 'direct',
-          }
-        }
-      },
-
-      proactive: {
-        delay: 25000,
-        messages: [{
-          type: 'text',
-          payload: {
-            message: langCode === 'en'
-              ? 'Hi! Questions about ALEX? I\'m here 👋'
-              : langCode === 'es'
-              ? '¡Hola! ¿Preguntas sobre ALEX? 👋'
-              : 'Bonjour ! Des questions sur ALEX ? Je suis là 👋'
-          }
-        }]
-      },
-    });
-  };
-  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-  v.type = "text/javascript";
-  s.parentNode.insertBefore(v, s);
-})(document, 'script');
-</script>
 
 <!-- APP JS -->
 <script>
@@ -754,15 +620,6 @@ const nav = document.getElementById('main-nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 10);
 }, { passive: true });
-
-function presetSector(sector) {
-  const sel = document.getElementById('f-secteur');
-  if (sel) {
-    for (const opt of sel.options) {
-      if (opt.text === sector) { sel.value = opt.value || opt.text; break; }
-    }
-  }
-}
 
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
