@@ -6,14 +6,17 @@
   <title>Demande reçue — ALEX Immo</title>
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #080d18; --bg2: #0d1421;
-      --accent: #00d4aa; --white: #ffffff;
+      --accent: #29c1ff; --accent2: #e94ff5;
+      --accent-gradient: linear-gradient(120deg, #29c1ff 0%, #b34ff0 55%, #e94ff5 100%);
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --white: #ffffff;
       --text: #e2e8f0; --muted: #6b7280; --muted2: #9ca3af;
       --card: #111827; --border: rgba(255,255,255,0.07);
-      --border-a: rgba(0,212,170,0.28);
+      --border-a: rgba(41,193,255,0.28);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -28,8 +31,13 @@
       padding: 40px 24px;
       text-align: center;
     }
-    .logo { font-weight: 900; font-size: 1.1rem; color: var(--white); margin-bottom: 48px; }
-    .logo span { color: var(--accent); }
+    .logo { font-weight: 900; font-size: 1.1rem; color: var(--white); margin-bottom: 48px; display: flex; align-items: baseline; justify-content: center; gap: 6px; }
+    .logo span {
+      font-family: var(--font-display); font-weight: 900;
+      background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    .logo .logo-sub { font-size: 0.6rem; font-weight: 600; color: var(--muted2); letter-spacing: 0.06em; text-transform: uppercase; }
     .card {
       background: var(--card);
       border: 1px solid var(--border-a);
@@ -40,7 +48,7 @@
     }
     .check {
       width: 72px; height: 72px;
-      background: rgba(0,212,170,0.12);
+      background: rgba(41,193,255,0.12);
       border: 2px solid var(--accent);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
@@ -97,7 +105,7 @@
   </style>
 </head>
 <body>
-  <div class="logo"><span>ALEX</span> Immo</div>
+  <div class="logo"><span>ALEX</span><span class="logo-sub">Agent IA</span></div>
 
   <div class="card">
     <div class="check">✓</div>

@@ -12,25 +12,25 @@
   <meta name="theme-color" content="#080d18">
 
   <!-- SEO -->
-  <title>Acquisition — ALEX Immo | On vous apporte les leads, ALEX les convertit</title>
+  <title>Acquisition — ALEX | On vous apporte les leads, ALEX les convertit</title>
   <meta name="description" content="Campagnes Meta & Google ciblées sur votre secteur, branchées sur ALEX. Des rendez-vous vendeurs qualifiés directement dans votre agenda.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://agentia-immo.com/acquisition/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Acquisition — ALEX Immo">
+  <meta property="og:title" content="Acquisition — ALEX">
   <meta property="og:description" content="Des campagnes Meta & Google sur votre secteur, branchées sur ALEX. Résultat : des rendez-vous vendeurs qualifiés qui tombent dans votre agenda.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://agentia-immo.com/acquisition/">
   <meta property="og:locale" content="fr_FR">
-  <meta property="og:site_name" content="ALEX Immo">
+  <meta property="og:site_name" content="ALEX">
   <meta property="og:image" content="https://agentia-immo.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Acquisition — ALEX Immo">
+  <meta name="twitter:title" content="Acquisition — ALEX">
   <meta name="twitter:description" content="On vous apporte les leads, ALEX les convertit. Rendez-vous vendeurs qualifiés dans votre agenda.">
   <meta name="twitter:image" content="https://agentia-immo.com/og-image.png">
 
@@ -65,7 +65,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     /* ============================================================
@@ -77,22 +77,25 @@
       --bg:           #080d18;
       --bg2:          #0d1421;
       --bg3:          #0f1929;
-      --accent:       #00d4aa;
-      --accent-dim:   rgba(0,212,170,0.10);
-      --accent-glow:  rgba(0,212,170,0.22);
-      --gold:         #f5a623;
-      --gold-dim:     rgba(245,166,35,0.10);
+      --accent:       #29c1ff;
+      --accent2:      #e94ff5;
+      --accent-gradient: linear-gradient(120deg, #29c1ff 0%, #b34ff0 55%, #e94ff5 100%);
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --accent-dim:   rgba(41,193,255,0.10);
+      --accent-glow:  rgba(41,193,255,0.22);
+      --gold:         #e94ff5;
+      --gold-dim:     rgba(233,79,245,0.10);
       --white:        #ffffff;
       --text:         #e2e8f0;
       --muted:        #6b7280;
       --muted2:       #9ca3af;
       --card:         #111827;
       --border:       rgba(255,255,255,0.07);
-      --border-a:     rgba(0,212,170,0.28);
+      --border-a:     rgba(41,193,255,0.28);
       --radius:       14px;
       --transition:   all 0.25s cubic-bezier(0.4,0,0.2,1);
       --shadow-card:  0 4px 28px rgba(0,0,0,0.45);
-      --shadow-glow:  0 0 40px rgba(0,212,170,0.14);
+      --shadow-glow:  0 0 40px rgba(41,193,255,0.14);
     }
 
     html { scroll-behavior: smooth; }
@@ -153,7 +156,7 @@
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px var(--accent-glow);
-      background: #00e8b8;
+      background: #5cd3ff;
     }
     .btn-outline  { background: transparent; color: var(--white); border: 1px solid var(--border); }
     .btn-outline:hover { border-color: var(--border-a); color: var(--accent); }
@@ -173,10 +176,18 @@
     }
     nav.scrolled { border-bottom-color: rgba(255,255,255,0.10); }
     .nav-logo {
-      font-size: 1.1rem; font-weight: 900; color: var(--white);
+      font-size: 1.15rem; font-weight: 900; color: var(--white);
       text-decoration: none; letter-spacing: -0.5px;
+      display: inline-flex; align-items: baseline; gap: 6px;
     }
-    .nav-logo span { color: var(--accent); }
+    .nav-logo span {
+      font-family: var(--font-display); font-weight: 900;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      letter-spacing: 0.5px;
+    }
+    .nav-logo .nav-sub { font-size: 0.68rem; font-weight: 600; color: var(--muted2); letter-spacing: 0.06em; text-transform: uppercase; }
     .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
     .nav-links a {
       color: var(--muted2); text-decoration: none; font-size: 0.875rem;
@@ -199,7 +210,7 @@
     .hero-bg {
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(0,212,170,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(41,193,255,0.09) 0%, transparent 65%),
         radial-gradient(ellipse 60% 50% at 80% 60%,  rgba(0,90,200,0.06)  0%, transparent 55%);
     }
     .hero-grid {
@@ -255,7 +266,7 @@
     .pc.featured {
       border-color: var(--gold);
       background: linear-gradient(160deg,#221a08,#0f0c05);
-      box-shadow: 0 0 0 1px var(--gold), 0 0 40px rgba(245,166,35,0.14);
+      box-shadow: 0 0 0 1px var(--gold), 0 0 40px rgba(233,79,245,0.14);
     }
     .pc-popular {
       position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
@@ -281,14 +292,14 @@
     .pc-feats li::before { content: "✓"; color: var(--accent); font-weight: 800; flex-shrink: 0; }
     .pc.featured .pc-feats li::before { color: var(--gold); }
     .pc-guarantee {
-      background: var(--gold-dim); border: 1px solid rgba(245,166,35,0.3);
+      background: var(--gold-dim); border: 1px solid rgba(233,79,245,0.3);
       border-radius: 10px; padding: 14px 16px; margin-bottom: 22px;
       font-size: 0.82rem; color: var(--text); line-height: 1.6;
     }
     .pc-guarantee strong { color: var(--gold); }
     .pc .btn { width: 100%; justify-content: center; }
     .pc.featured .btn-primary { background: var(--gold); }
-    .pc.featured .btn-primary:hover { background: #ffb738; box-shadow: 0 12px 40px rgba(245,166,35,0.3); }
+    .pc.featured .btn-primary:hover { background: #ffb738; box-shadow: 0 12px 40px rgba(233,79,245,0.3); }
 
     .pricing-note { text-align: center; margin-top: 30px; color: var(--muted2); font-size: 0.88rem; }
     .pricing-note strong { color: var(--accent); }
@@ -320,8 +331,8 @@
 <a href="#main-content" id="skip-link" style="position:absolute;left:-9999px;top:0;z-index:9999;background:var(--accent);color:var(--bg);padding:8px 16px;font-weight:700;border-radius:0 0 8px 0;text-decoration:none" tabindex="1" onfocus="this.style.left='0'">Aller au contenu principal</a>
 
 <nav id="main-nav" role="navigation" aria-label="Navigation principale">
-  <a href="/" class="nav-logo" aria-label="ALEX Immo — Accueil">
-    <span>ALEX</span> Immo
+  <a href="/" class="nav-logo" aria-label="ALEX — Accueil">
+    <span>ALEX</span><span class="nav-sub">Agent IA</span>
   </a>
   <ul class="nav-links">
     <li><a href="/#comment">Comment ça marche</a></li>
@@ -544,7 +555,7 @@
      FOOTER (identique à index.html)
 ============================================================ -->
 <footer style="background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;text-align:center" role="contentinfo">
-  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">ALEX Immo</p>
+  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">ALEX</p>
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
     Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique
   </p>
@@ -555,7 +566,7 @@
     <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none" aria-label="Contacter par email">maximebricepaul@gmail.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
-    © 2026 ALEX Immo · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
+    © 2026 ALEX · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
   </p>
 </footer>
 

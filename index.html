@@ -12,23 +12,23 @@
   <meta name="theme-color" content="#080d18">
 
   <!-- SEO -->
-  <title>ALEX Immo — Plus aucun prospect ne reste sans réponse</title>
+  <title>ALEX — Plus aucun prospect ne reste sans réponse</title>
   <meta name="description" content="Votre agence immobilière répond automatiquement à chaque prospect en moins de 2 minutes, 24h/24, 7j/7. Qualifiez, planifiez et ne perdez plus jamais un lead.">
   <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="YHOxbJW6FxLzzECsZCXFB_9oCcUAK4Eph3gPnWk2ZUY" />
   <link rel="canonical" href="https://agentia-immo.com/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="ALEX Immo — Plus aucun prospect ne reste sans réponse">
+  <meta property="og:title" content="ALEX — Plus aucun prospect ne reste sans réponse">
   <meta property="og:description" content="Un assistant commercial virtuel répond à vos prospects en moins de 2 minutes, 24h/24. Qualifie, planifie et transmet les leads chauds à votre équipe.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://agentia-immo.com/">
   <meta property="og:locale" content="fr_FR">
-  <meta property="og:site_name" content="ALEX Immo">
+  <meta property="og:site_name" content="ALEX">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ALEX Immo — Plus aucun prospect ne reste sans réponse">
+  <meta name="twitter:title" content="ALEX — Plus aucun prospect ne reste sans réponse">
   <meta name="twitter:description" content="Votre agence répond en moins de 2 minutes, même à 22h un dimanche.">
   <meta name="twitter:image" content="https://agentia-immo.com/og-image.png">
 
@@ -36,14 +36,14 @@
   <meta property="og:image" content="https://agentia-immo.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="ALEX Immo — Votre assistant commercial qui répond 24h/24">
+  <meta property="og:image:alt" content="ALEX — Votre assistant commercial qui répond 24h/24">
 
   <!-- Schema.org -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "name": "ALEX Immo",
+    "name": "ALEX",
     "description": "Assistant commercial IA dédié aux agences immobilières — répond aux prospects 24h/24 en moins de 2 minutes",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
@@ -86,7 +86,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
 
   <style>
     /* ============================================================
@@ -98,23 +98,26 @@
       --bg:           #080d18;
       --bg2:          #0d1421;
       --bg3:          #0f1929;
-      --accent:       #00d4aa;
-      --accent-dim:   rgba(0,212,170,0.10);
-      --accent-glow:  rgba(0,212,170,0.22);
+      --accent:       #29c1ff;
+      --accent2:      #e94ff5;
+      --accent-gradient: linear-gradient(120deg, #29c1ff 0%, #b34ff0 55%, #e94ff5 100%);
+      --font-display: 'Orbitron', 'Inter', sans-serif;
+      --accent-dim:   rgba(41,193,255,0.10);
+      --accent-glow:  rgba(41,193,255,0.22);
       --white:        #ffffff;
       --text:         #e2e8f0;
       --muted:        #6b7280;
       --muted2:       #9ca3af;
       --card:         #111827;
       --border:       rgba(255,255,255,0.07);
-      --border-a:     rgba(0,212,170,0.28);
+      --border-a:     rgba(41,193,255,0.28);
       --red:          #fc8181;
       --red-bg:       rgba(239,68,68,0.07);
       --red-border:   rgba(239,68,68,0.22);
       --radius:       14px;
       --transition:   all 0.25s cubic-bezier(0.4,0,0.2,1);
       --shadow-card:  0 4px 28px rgba(0,0,0,0.45);
-      --shadow-glow:  0 0 40px rgba(0,212,170,0.14);
+      --shadow-glow:  0 0 40px rgba(41,193,255,0.14);
     }
 
     html { scroll-behavior: smooth; }
@@ -155,6 +158,12 @@
     }
 
     .text-accent { color: var(--accent); }
+    .brand-gradient {
+      font-family: var(--font-display);
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
 
     /* ============================================================
        BUTTONS
@@ -170,7 +179,7 @@
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 12px 40px var(--accent-glow);
-      background: #00e8b8;
+      background: #5cd3ff;
     }
     .btn-outline  { background: transparent; color: var(--white); border: 1px solid var(--border); }
     .btn-outline:hover { border-color: var(--border-a); color: var(--accent); }
@@ -205,10 +214,18 @@
     nav.scrolled { border-bottom-color: rgba(255,255,255,0.10); }
 
     .nav-logo {
-      font-size: 1.1rem; font-weight: 900; color: var(--white);
+      font-size: 1.15rem; font-weight: 900; color: var(--white);
       text-decoration: none; letter-spacing: -0.5px;
+      display: inline-flex; align-items: baseline; gap: 6px;
     }
-    .nav-logo span { color: var(--accent); }
+    .nav-logo span {
+      font-family: var(--font-display); font-weight: 900;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      letter-spacing: 0.5px;
+    }
+    .nav-logo .nav-sub { font-size: 0.68rem; font-weight: 600; color: var(--muted2); letter-spacing: 0.06em; text-transform: uppercase; }
 
     .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
     .nav-links a {
@@ -233,8 +250,8 @@
     .hero-bg {
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(0,212,170,0.09) 0%, transparent 65%),
-        radial-gradient(ellipse 60% 50% at 80% 60%,  rgba(0,90,200,0.06)  0%, transparent 55%);
+        radial-gradient(ellipse 90% 70% at 50% -10%, rgba(41,193,255,0.09) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 80% 60%,  rgba(233,79,245,0.06)  0%, transparent 55%);
     }
 
     .hero-grid {
@@ -279,7 +296,7 @@
       border-radius: var(--radius); padding: 22px; text-align: left;
     }
     .baa-card.bad  { background: var(--red-bg);  border: 1px solid var(--red-border); }
-    .baa-card.good { background: rgba(0,212,170,0.05); border: 1px solid var(--border-a); }
+    .baa-card.good { background: rgba(41,193,255,0.05); border: 1px solid var(--border-a); }
 
     .baa-label {
       font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
@@ -295,7 +312,7 @@
       line-height: 1.5; margin-bottom: 8px; color: var(--text);
     }
     .bubble.from-prospect { background: rgba(255,255,255,0.07); }
-    .bubble.from-agent    { background: rgba(0,212,170,0.12); border: 1px solid rgba(0,212,170,0.18); }
+    .bubble.from-agent    { background: rgba(41,193,255,0.12); border: 1px solid rgba(41,193,255,0.18); }
     .baa-reply-time { font-size: 0.68rem; color: var(--muted); text-align: right; margin-bottom: 6px; }
 
     .baa-outcome {
@@ -421,7 +438,7 @@
     }
     .alex-card::before {
       content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,170,0.06) 0%, transparent 60%);
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(41,193,255,0.06) 0%, transparent 60%);
     }
     .alex-head {
       display: flex; align-items: center; gap: 14px;
@@ -429,7 +446,7 @@
     }
     .alex-avatar {
       width: 50px; height: 50px;
-      background: linear-gradient(135deg,#00d4aa,#0070f3);
+      background: linear-gradient(135deg,#29c1ff,#e94ff5);
       border-radius: 14px; display: flex; align-items: center;
       justify-content: center; font-size: 1.4rem;
     }
@@ -469,7 +486,7 @@
     .steps-grid::before {
       content: ''; position: absolute;
       top: 25px; left: 12.5%; right: 12.5%; height: 1px;
-      background: linear-gradient(90deg, var(--accent), rgba(0,212,170,.25), rgba(0,212,170,.25), var(--accent));
+      background: linear-gradient(90deg, var(--accent), rgba(41,193,255,.25), rgba(41,193,255,.25), var(--accent));
       z-index: 0;
     }
     .step-card { text-align: center; padding: 24px 16px; position: relative; z-index: 1; }
@@ -505,11 +522,11 @@
       border-radius: 20px; overflow: hidden; box-shadow: var(--shadow-card);
     }
     .chat-mock-head {
-      background: rgba(0,212,170,0.07); border-bottom: 1px solid var(--border);
+      background: rgba(41,193,255,0.07); border-bottom: 1px solid var(--border);
       padding: 14px 18px; display: flex; align-items: center; gap: 12px;
     }
     .chat-av {
-      width: 34px; height: 34px; background: linear-gradient(135deg,#00d4aa,#0070f3);
+      width: 34px; height: 34px; background: linear-gradient(135deg,#29c1ff,#e94ff5);
       border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;
     }
     .chat-av-name { font-weight: 700; font-size: 0.85rem; color: var(--white); }
@@ -523,11 +540,11 @@
     }
     .msg.left  .msg-b  { background: rgba(255,255,255,0.07); align-self: flex-start; }
     .msg.left  .msg-t  { align-self: flex-start; }
-    .msg.right .msg-b  { background: rgba(0,212,170,0.12); border: 1px solid rgba(0,212,170,0.2); align-self: flex-end; }
+    .msg.right .msg-b  { background: rgba(41,193,255,0.12); border: 1px solid rgba(41,193,255,0.2); align-self: flex-end; }
     .msg.right .msg-t  { align-self: flex-end; }
     .chat-foot {
       padding: 14px 18px; border-top: 1px solid var(--border);
-      background: rgba(0,212,170,0.04);
+      background: rgba(41,193,255,0.04);
       display: flex; align-items: center; gap: 8px;
     }
     .chat-foot span { font-size: 0.77rem; color: var(--accent); font-weight: 600; }
@@ -585,7 +602,7 @@
     .timeline::before {
       content: ''; position: absolute;
       left: calc(40px + 17px); top: 0; bottom: 0; width: 1px;
-      background: linear-gradient(to bottom, var(--accent), rgba(0,212,170,.08));
+      background: linear-gradient(to bottom, var(--accent), rgba(41,193,255,.08));
     }
     .tl-item { display: flex; gap: 22px; margin-bottom: 36px; position: relative; }
     .tl-item:last-child { margin-bottom: 0; }
@@ -691,7 +708,7 @@
     }
     .cta-final::before {
       content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(0,212,170,0.06) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(41,193,255,0.06) 0%, transparent 70%);
     }
     .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
     .cta-inner h2 {
@@ -747,8 +764,8 @@
 <a href="#main-content" id="skip-link" style="position:absolute;left:-9999px;top:0" tabindex="1" onfocus="this.style.left='0'">Aller au contenu</a>
 
 <nav id="main-nav" role="navigation" aria-label="Navigation principale">
-  <a href="#" class="nav-logo" aria-label="ALEX Immo — Accueil">
-    <span>ALEX</span> Immo
+  <a href="#" class="nav-logo" aria-label="ALEX — Accueil">
+    <span>ALEX</span><span class="nav-sub">Agent IA</span>
   </a>
   <ul class="nav-links">
     <li><a href="#comment">Comment ça marche</a></li>
@@ -773,13 +790,23 @@
   <div class="hero-grid" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <div class="tag fade-in">🏠 Assistant commercial IA — Spécialiste agences immobilières</div>
+    <div class="tag fade-in">🤖 ALEX — Votre Agent IA</div>
 
     <h1 class="fade-in delay-1">
       Votre concurrent répond<br>
       <span class="accent">en 90 secondes.</span><br>
       Et vous ?
     </h1>
+
+    <div class="fade-in delay-1" style="display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;margin:22px 0 6px;font-size:0.78rem;color:var(--muted2);font-weight:600;letter-spacing:0.02em">
+      <span>🏪 Commerces</span>
+      <span style="color:var(--accent)">🏠 Agences Immo</span>
+      <span>💇 Salons &amp; Beauté</span>
+      <span>⚕️ Médecins</span>
+    </div>
+    <p class="fade-in delay-1" style="text-align:center;font-size:0.76rem;color:var(--muted);margin-bottom:8px">
+      Disponible aujourd'hui pour les agences immobilières — bientôt pour les autres secteurs
+    </p>
 
     <p class="hero-sub fade-in delay-2">
       Un assistant commercial virtuel répond à chacun de vos prospects en moins de 2 minutes, 24h/24, 7j/7. Il qualifie, planifie les visites et transmet uniquement des leads chauds à votre équipe. Sans recruter.
@@ -788,7 +815,7 @@
     <div class="hero-btns fade-in delay-3">
       <a href="#contact"
          class="btn btn-primary btn-lg"
-         aria-label="Réserver une démonstration gratuite d'ALEX Immo">
+         aria-label="Réserver une démonstration gratuite d'ALEX">
         🎯 Demander ma démo gratuite
       </a>
       <a href="#comment" class="btn btn-outline btn-lg">
@@ -799,7 +826,7 @@
     <p class="hero-note fade-in delay-4">
       Démo 20 min — sans engagement — aucune carte bancaire
     </p>
-    <div class="fade-in delay-5" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.25);border-radius:8px;padding:8px 18px;font-size:0.78rem;color:#f5a623">
+    <div class="fade-in delay-5" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(233,79,245,0.08);border:1px solid rgba(233,79,245,0.28);border-radius:8px;padding:8px 18px;font-size:0.78rem;color:#e94ff5">
       ⚡ La toute première agence : <strong>1 mois gratuit, zéro carte bancaire</strong>
     </div>
   </div>
@@ -900,7 +927,7 @@
     <div class="story-bridge fade-in delay-2">
       <p>
         Ce scénario se reproduit chaque semaine dans des centaines d'agences.<br>
-        <span>ALEX Immo est là pour que ça n'arrive plus jamais chez vous.</span>
+        <span>ALEX est là pour que ça n'arrive plus jamais chez vous.</span>
       </p>
     </div>
   </div>
@@ -1042,7 +1069,7 @@
 <!-- ============================================================
      MID-PAGE CTA BAND
 ============================================================ -->
-<div style="background:linear-gradient(135deg,rgba(0,212,170,0.08),rgba(0,70,200,0.06));border-top:1px solid var(--border-a);border-bottom:1px solid var(--border-a);padding:48px 40px;text-align:center" role="complementary">
+<div style="background:linear-gradient(135deg,rgba(41,193,255,0.08),rgba(0,70,200,0.06));border-top:1px solid var(--border-a);border-bottom:1px solid var(--border-a);padding:48px 40px;text-align:center" role="complementary">
   <p style="color:var(--white);font-size:1.15rem;font-weight:700;margin-bottom:18px">
     Prêt à voir Alex en action sur votre agence ?
   </p>
@@ -1173,7 +1200,7 @@
 
     <a href="#contact"
          class="btn btn-primary btn-lg fade-in"
-       aria-label="Réserver ma démonstration gratuite d'ALEX Immo">
+       aria-label="Réserver ma démonstration gratuite d'ALEX">
       🎯 Réserver ma démo gratuite
     </a>
     <p style="margin-top:14px;color:var(--muted);font-size:.8rem" class="fade-in delay-1">
@@ -1445,7 +1472,7 @@
            class="btn btn-primary"
            target="_blank" rel="noopener"
            onclick="trackEvent('click_stripe','CTA','stripe_button',390);lintrk&&lintrk('track',{conversion_id:'stripe_checkout'})"
-           aria-label="Souscrire à l'offre Pro ALEX Immo à 390€/mois">
+           aria-label="Souscrire à l'offre Pro ALEX à 390€/mois">
           🔥 Souscrire — offre lancement 390€/mois
         </a>
       </div>
@@ -1496,20 +1523,20 @@
 <section class="section section-alt" aria-label="À propos" style="padding:60px 24px">
   <div class="container" style="max-width:780px">
     <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center">
-      <img src="linkedin_avatar.png" alt="Maxime Brice Paul — ALEX Immo"
+      <img src="linkedin_avatar.png" alt="Maxime Brice Paul — ALEX"
         style="width:110px;height:110px;border-radius:50%;border:3px solid var(--accent);object-fit:cover;flex-shrink:0"
         onerror="this.style.display='none'">
       <div style="flex:1;min-width:260px">
         <p style="font-size:0.82rem;color:var(--accent);font-weight:700;letter-spacing:0.08em;margin-bottom:6px;text-transform:uppercase">Votre interlocuteur</p>
         <h3 style="font-size:1.35rem;font-weight:800;margin-bottom:6px;color:var(--white)">Maxime Brice Paul</h3>
-        <p style="color:var(--muted2);margin-bottom:14px;font-size:0.95rem">Spécialiste IA pour agences immobilières · Fondateur ALEX Immo</p>
+        <p style="color:var(--muted2);margin-bottom:14px;font-size:0.95rem">Spécialiste IA pour agences immobilières · Fondateur ALEX</p>
         <p style="color:var(--text);line-height:1.7;font-size:0.93rem">
           J'ai conçu Alex spécifiquement pour les agences qui perdent des mandats faute de réactivité. 
           Je vous accompagne personnellement de la démo à la mise en place, en moins d'une semaine.
         </p>
         <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
           <a href="https://www.linkedin.com/in/maxime-brice-paul-6439aa419/" target="_blank" rel="noopener"
-            style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(0,212,170,0.1);border:1px solid var(--border-a);border-radius:8px;color:var(--accent);font-size:0.85rem;font-weight:600;text-decoration:none">
+            style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(41,193,255,0.1);border:1px solid var(--border-a);border-radius:8px;color:var(--accent);font-size:0.85rem;font-weight:600;text-decoration:none">
             LinkedIn →
           </a>
           <a href="mailto:maximebricepaul@gmail.com"
@@ -1564,7 +1591,7 @@
       class="fade-in delay-3"
       style="display:flex;flex-direction:column;gap:18px;background:var(--card);border:1px solid var(--border-a);border-radius:20px;padding:40px"
     >
-      <input type="hidden" name="_subject" value="Nouvelle demande de demo ALEX Immo">
+      <input type="hidden" name="_subject" value="Nouvelle demande de demo ALEX">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://maximebricepaul-commits.github.io/agent-ia-immo/merci.html">
@@ -1645,12 +1672,12 @@
          class="btn btn-primary btn-lg"
          target="_blank" rel="noopener"
          onclick="trackEvent('click_stripe','CTA','stripe_button',390);lintrk&&lintrk('track',{conversion_id:'stripe_checkout'})"
-         aria-label="Souscrire à ALEX Immo Pack Pro à 390€/mois">
+         aria-label="Souscrire à ALEX Pack Pro à 390€/mois">
         🔥 Démarrer maintenant — 390€/mois
       </a>
       <a href="#contact"
          class="btn btn-outline btn-lg"
-         aria-label="Réserver une démo gratuite d'ALEX Immo">
+         aria-label="Réserver une démo gratuite d'ALEX">
         🎯 Demander une démo d'abord
       </a>
     </div>
@@ -1684,7 +1711,7 @@
      FOOTER
 ============================================================ -->
 <footer style="background:var(--bg);border-top:1px solid var(--border);padding:40px 24px;text-align:center" role="contentinfo">
-  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">ALEX Immo</p>
+  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px">ALEX</p>
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
     Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique
   </p>
@@ -1695,7 +1722,7 @@
     <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none" aria-label="Contacter par email">maximebricepaul@gmail.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
-    © 2026 ALEX Immo · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
+    © 2026 ALEX · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
   </p>
 </footer>
 
@@ -1750,7 +1777,7 @@
               ? 'Hi! Questions about our real estate AI agent? I\'m here 👋'
               : langCode === 'es'
               ? '¡Hola! ¿Preguntas sobre el agente IA inmobiliario? 👋'
-              : 'Bonjour ! Des questions sur ALEX Immo ? Je suis là 👋'
+              : 'Bonjour ! Des questions sur ALEX ? Je suis là 👋'
           }
         }]
       },
