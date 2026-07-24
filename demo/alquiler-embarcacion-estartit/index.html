@@ -923,6 +923,14 @@ function forceLangSilent(l){
 
 inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
 
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-estartit-x7k3p9', {method:'POST', body:'Visite demo Estartit · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
 /* ================= INIT ================= */
 function init(){
   lang = 'es';
