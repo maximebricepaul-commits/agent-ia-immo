@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alex — Asistente IA para negocios de la Costa Brava | Agentia</title>
+<meta name="description" content="Tu negocio responde 24/7 en español, catalán, francés e inglés — y toma las reservas solo. Asistente IA para náutica, buceo, estética y turismo en la Costa Brava.">
+<style>
+:root{
+  --navy:#0c3b4f; --navy-dark:#082733; --teal:#12617a; --sea:#3a93a8;
+  --sand:#e0a45c; --sand-dark:#c8873c;
+  --bg:#eef6f8; --paper:#fff; --ink:#123241; --muted:#5f7d8a;
+  --wa:#25d366; --wa-dark:#1ebe5b;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.55;
+}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px;}
+header.hero{
+  background:radial-gradient(900px 500px at 50% -10%, #1c6b86 0%, var(--navy) 60%, var(--navy-dark) 100%);
+  color:#fff; text-align:center; padding:52px 0 44px;
+}
+.hero .badge{
+  display:inline-block;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  font-size:12.5px;font-weight:600;letter-spacing:.5px;padding:5px 14px;border-radius:20px;margin-bottom:18px;
+}
+.hero h1{font-size:clamp(26px,6vw,38px);line-height:1.15;font-weight:800;margin-bottom:14px;}
+.hero h1 em{font-style:normal;color:var(--sand);}
+.hero p.sub{font-size:16.5px;opacity:.9;max-width:520px;margin:0 auto 26px;}
+.btn{
+  display:inline-block;border-radius:28px;padding:14px 26px;font-size:16px;font-weight:700;
+  text-decoration:none;transition:.15s;cursor:pointer;border:none;
+}
+.btn.primary{background:linear-gradient(135deg,var(--sand),var(--sand-dark));color:#fff;box-shadow:0 4px 14px rgba(200,135,60,.45);}
+.btn.primary:hover{transform:translateY(-1px);}
+.btn.wa{background:var(--wa);color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.4);}
+.btn.wa:hover{background:var(--wa-dark);}
+.btn.ghost{background:transparent;border:2px solid rgba(255,255,255,.5);color:#fff;}
+.hero .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+
+section{padding:44px 0;}
+section h2{font-size:clamp(21px,5vw,27px);font-weight:800;color:var(--navy);text-align:center;margin-bottom:8px;}
+section p.lead{text-align:center;color:var(--muted);max-width:520px;margin:0 auto 28px;font-size:15.5px;}
+
+.pains{display:grid;gap:12px;}
+.pain{
+  background:var(--paper);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;
+  box-shadow:0 1px 4px rgba(12,59,79,.08);
+}
+.pain .ico{font-size:24px;flex-shrink:0;}
+.pain b{color:var(--navy);}
+.pain p{font-size:14.5px;color:var(--ink);}
+
+.steps{display:grid;gap:14px;counter-reset:step;}
+.step{
+  background:var(--paper);border-radius:14px;padding:18px;position:relative;
+  box-shadow:0 1px 4px rgba(12,59,79,.08);padding-left:64px;
+}
+.step::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;left:16px;top:16px;width:34px;height:34px;border-radius:50%;
+  background:linear-gradient(135deg,var(--teal),var(--navy));color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;
+}
+.step b{color:var(--navy);display:block;margin-bottom:3px;}
+.step p{font-size:14.5px;}
+
+.demo-block{
+  background:linear-gradient(135deg,var(--navy),var(--teal));border-radius:20px;color:#fff;
+  padding:30px 24px;text-align:center;box-shadow:0 8px 30px rgba(12,59,79,.3);
+}
+.demo-block .phone{font-size:44px;margin-bottom:10px;}
+.demo-block h3{font-size:21px;margin-bottom:8px;}
+.demo-block p{font-size:14.5px;opacity:.9;max-width:440px;margin:0 auto 20px;}
+.demo-block .note{font-size:12px;opacity:.7;margin-top:14px;}
+
+.offer{
+  background:var(--paper);border:2px solid var(--sand);border-radius:20px;padding:28px 24px;text-align:center;
+  box-shadow:0 6px 24px rgba(200,135,60,.18);
+}
+.offer .tag{
+  display:inline-block;background:var(--sand);color:#fff;font-size:12px;font-weight:800;
+  letter-spacing:.6px;padding:5px 14px;border-radius:20px;margin-bottom:14px;text-transform:uppercase;
+}
+.offer .price{font-size:44px;font-weight:800;color:var(--navy);line-height:1;}
+.offer .price small{font-size:17px;font-weight:600;color:var(--muted);}
+.offer .old{color:var(--muted);text-decoration:line-through;font-size:17px;margin-left:8px;}
+.offer ul{list-style:none;margin:18px 0 22px;display:grid;gap:8px;}
+.offer li{font-size:14.5px;}
+.offer li::before{content:"✓  ";color:var(--wa-dark);font-weight:800;}
+
+footer{
+  background:var(--navy-dark);color:rgba(255,255,255,.75);text-align:center;
+  padding:26px 20px;font-size:13px;
+}
+footer a{color:var(--sand);text-decoration:none;}
+
+.float-wa{
+  position:fixed;right:18px;bottom:18px;z-index:50;
+  width:56px;height:56px;border-radius:50%;background:var(--wa);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="badge">🌊 COSTA BRAVA · EMPORDÀ</div>
+    <h1>Tu negocio responde 24/7.<br><em>Aunque estés en el agua.</em></h1>
+    <p class="sub">Alex es un asistente de IA que contesta a tus clientes al instante — en español, catalán, francés e inglés — y toma las reservas él solo. Náutica, buceo, estética, actividades turísticas.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#demo">▶ Probar la demo</a>
+      <a class="btn ghost" href="#oferta">Ver la oferta</a>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>¿Te suena?</h2>
+    <p class="lead">En plena temporada, cada mensaje sin responder es dinero que se va a la competencia.</p>
+    <div class="pains">
+      <div class="pain"><span class="ico">🌙</span><p><b>El turista que escribe a las 23h</b> preguntando si queda barco, cita o plaza para mañana… reserva con quien le contesta primero.</p></div>
+      <div class="pain"><span class="ico">🌍</span><p><b>Clientes en 4 idiomas</b> — francés, inglés, catalán, español — y no siempre hay alguien que pueda responder a todos.</p></div>
+      <div class="pain"><span class="ico">📵</span><p><b>Cuando estás trabajando</b> — en el agua, en cabina, en pista — nadie responde el WhatsApp. Y los mensajes se acumulan.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <h2>Cómo funciona</h2>
+    <p class="lead">Sin instalar nada, sin cambiar tu forma de trabajar.</p>
+    <div class="steps">
+      <div class="step"><b>Preparamos tu asistente</b><p>Con tus servicios, tus precios y tus horarios reales. Listo en 24-48h.</p></div>
+      <div class="step"><b>Lo pruebas tú mismo</b><p>Te enviamos tu demo personalizada. La testeas como si fueras un cliente antes de decidir nada.</p></div>
+      <div class="step"><b>Lo activamos</b><p>En tu web. Cada reserva que gestiona te llega directa a tu WhatsApp, lista para confirmar.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="demo" style="padding-top:0">
+  <div class="wrap">
+    <div class="demo-block">
+      <div class="phone">📱</div>
+      <h3>Pruébalo ahora — sin registrarte</h3>
+      <p>Marina Brava es un negocio de ejemplo. Pregúntale precios, pide un barco para el sábado, cambia de idioma… y haz una reserva de prueba para ver cómo te llegaría a ti.</p>
+      <a class="btn primary" href="/demo/marina-brava/" target="_blank">▶ Abrir la demo Marina Brava</a>
+      <div class="note">🧪 Negocio ficticio de demostración. Tu asistente se crea con TUS servicios y precios.</div>
+    </div>
+  </div>
+</section>
+
+<section id="oferta" style="padding-top:0">
+  <div class="wrap">
+    <div class="offer">
+      <div class="tag">Oferta de lanzamiento · solo 5 negocios</div>
+      <div class="price">190 €<small>/mes</small><span class="old">290 €</span></div>
+      <ul>
+        <li>Instalación (490 €) incluida</li>
+        <li>Sin permanencia — lo paras cuando quieras</li>
+        <li>Precio garantizado para siempre</li>
+        <li>4 idiomas: ES · CA · FR · EN</li>
+        <li>Reservas directas a tu WhatsApp</li>
+      </ul>
+      <a class="btn wa" href="https://wa.me/33774602008?text=Hola%2C%20he%20visto%20la%20demo%20de%20Alex%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n%20para%20mi%20negocio">💬 Quiero mi asistente — WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b style="color:#fff">Agentia</b> · Asistentes IA para negocios · Empuriabrava, Costa Brava<br>
+  <a href="https://agentia-immo.com">agentia-immo.com</a>
+</footer>
+
+<a class="float-wa" href="https://wa.me/33774602008?text=Hola%2C%20vengo%20de%20la%20p%C3%A1gina%20de%20Alex%20y%20tengo%20una%20pregunta" aria-label="WhatsApp">💬</a>
+
+<script>
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-landing-costabrava-q2j6m4', {method:'POST', body:'Visite landing Costa Brava · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+</script>
+</body>
+</html>
