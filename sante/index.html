@@ -32,6 +32,26 @@
   <meta name="twitter:description" content="Prise de RDV 24h/24, tri des urgences, rappels anti-lapins.">
   <meta name="twitter:image" content="https://agentia-immo.com/og-image.png">
 
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "ALEX — Assistant commercial IA pour cabinets dentaires et professionnels de santé",
+    "serviceType": "Assistant commercial et marketing IA",
+    "url": "https://agentia-immo.com/sante/",
+    "description": "Assistant commercial IA pour cabinets dentaires et professionnels de santé : prise de rendez-vous 24h/24, tri des urgences, rappels automatiques.",
+    "provider": {"@type": "Organization", "name": "ALEX", "url": "https://agentia-immo.com/", "logo": "https://agentia-immo.com/alex-logo.png", "email": "maximebricepaul@gmail.com"},
+    "areaServed": ["FR", "ES"],
+    "offers": [
+      {"@type": "Offer", "name": "ALEX Assistant", "priceCurrency": "EUR", "price": "290"},
+      {"@type": "Offer", "name": "Pack Croissance", "priceCurrency": "EUR", "price": "590"},
+      {"@type": "Offer", "name": "Automatisations", "priceCurrency": "EUR", "price": "190"}
+    ]
+  }
+  </script>
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEMBBR76SN"></script>
   <script>
@@ -320,6 +340,23 @@
     .wa-float:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
 
     footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; }
+  
+    /* Burger menu mobile */
+    .burger{display:none;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;margin-right:12px}
+    .burger span{display:block;width:22px;height:2px;background:var(--white);margin:5px 0;border-radius:2px;transition:0.3s}
+    @media (max-width: 768px){
+      .burger{display:block}
+      .nav-links{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(8,13,24,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-direction:column;align-items:flex-start;padding:18px 24px;gap:16px;list-style:none}
+      .nav-links.open{display:flex}
+    }
+
+    /* Icon chips */
+    .feat-icon, .sector-icon{
+      width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg, rgba(41,193,255,0.12), rgba(233,79,245,0.12));
+      border:1px solid var(--border-a);border-radius:12px;font-size:1.25rem !important;
+    }
+
   </style>
 </head>
 <body>
@@ -337,6 +374,10 @@
     <li><a href="/immo/">Immobilier</a></li>
     <li><a href="/#offres">Offres</a></li>
   </ul>
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
+    onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+    <span></span><span></span><span></span>
+  </button>
   <a href="#contact" class="btn btn-primary" aria-label="Demander une démonstration gratuite">
     Demander une démo →
   </a>
@@ -519,6 +560,22 @@
 </section>
 
 <!-- CONTACT -->
+
+<!-- FONDATEUR -->
+<section class="section" aria-label="Votre interlocuteur" style="padding-top:0">
+  <div class="container" style="max-width:760px">
+    <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px">
+      <img src="/linkedin_avatar.png" alt="Maxime Brice Paul" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:2px solid var(--border-a)">
+      <div style="flex:1;min-width:240px">
+        <div class="tag" style="margin-bottom:10px">👤 Votre interlocuteur</div>
+        <h3 style="color:var(--white);font-size:1.15rem;font-weight:800;margin-bottom:8px">Maxime Brice Paul — Fondateur d'ALEX</h3>
+        <p style="color:var(--muted2);font-size:0.92rem;line-height:1.7">Je configure ALEX moi-même pour votre métier, je fais la démo en direct et je reste votre interlocuteur unique, de l'installation au suivi. Pas de support anonyme : vous m'écrivez, je réponds.</p>
+        <p style="margin-top:10px"><a href="https://www.linkedin.com/in/maxime-brice-paul-6439aa419/" target="_blank" rel="noopener" style="color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:600">Mon profil LinkedIn →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="section section-alt" aria-label="Formulaire de demande de démo">
   <div class="container" style="max-width:640px">
     <div class="tag fade-in" style="margin-bottom:24px">📋 C'est gratuit et sans engagement</div>
@@ -578,6 +635,15 @@
   </div>
 </section>
 
+
+<!-- TESTER ALEX -->
+<div style="background:var(--bg);border-top:1px solid var(--border);padding:56px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
+  <div class="tag" style="margin-bottom:16px">🤖 Tester maintenant</div>
+  <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:12px">ALEX est déjà là. <span class="text-accent">Parlez-lui.</span></h2>
+  <p style="color:var(--muted2);max-width:520px;margin:0 auto 8px;line-height:1.7">Cliquez sur la bulle de chat en bas à droite et testez la technologie en direct.</p>
+  <p style="font-size:0.82rem;color:var(--muted)">Démo actuellement configurée pour l'immobilier — la vôtre sera configurée pour votre métier.</p>
+</div>
+
 </main>
 
 <!-- FOOTER -->
@@ -586,10 +652,14 @@
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
     Assistant commercial &amp; marketing IA · Cabinets dentaires &amp; santé · RDV et rappels automatiques
   </p>
-  <nav aria-label="Liens du pied de page" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+  <nav aria-label="Liens du pied de page" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
     <a href="/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Accueil</a>
-    <a href="/#secteurs" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Secteurs</a>
     <a href="/immo/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Immobilier</a>
+    <a href="/nautique/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Nautique</a>
+    <a href="/beaute/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Beauté</a>
+    <a href="/sante/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Santé</a>
+    <a href="/restaurants/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Restaurants</a>
+    <a href="/acquisition/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Acquisition</a>
     <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">maximebricepaul@gmail.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
@@ -637,5 +707,53 @@ if (skipLink) {
 }
 </script>
 
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){
+    var n = document.querySelector('.nav-links'); if (n) n.classList.remove('open');
+    var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
+  });
+});
+</script>
+
+<!-- VOICEFLOW WIDGET -->
+<script type="text/javascript">
+(function(d, t) {
+  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  v.onload = function() {
+    var userLang = navigator.language || navigator.userLanguage || 'fr-FR';
+    var langCode = userLang.toLowerCase().startsWith('en') ? 'en'
+                 : userLang.toLowerCase().startsWith('es') ? 'es'
+                 : userLang.toLowerCase().startsWith('ca') ? 'es'
+                 : 'fr';
+    window.voiceflow.chat.load({
+      verify: { projectID: '6a50f720a304d092f7166812' },
+      url: 'https://general-runtime.voiceflow.com',
+      versionID: 'main',
+      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://agentia-immo.com', 'https://www.agentia-immo.com'],
+      stylesheet: 'https://agentia-immo.com/vf-custom.css',
+      assistant: {
+        color: '#29c1ff',
+        header: { title: 'Alex' },
+        banner: {
+          title: 'Alex',
+          description: langCode === 'en' ? "Hi! I'm Alex, your AI sales assistant. How can I help?"
+                      : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente comercial IA. ¿Cómo puedo ayudarte?'
+                      : 'Bonjour ! Je suis Alex, votre assistant commercial IA. Comment puis-je vous aider ?'
+        },
+      },
+      launch: { event: { type: 'launch', payload: { language: langCode, pageUrl: window.location.href, referrer: document.referrer || 'direct' } } },
+      proactive: {
+        delay: 25000,
+        messages: [{ type: 'text', payload: { message: langCode === 'en' ? "Hi! Questions about ALEX? I'm here 👋" : langCode === 'es' ? '¡Hola! ¿Preguntas sobre ALEX? 👋' : 'Bonjour ! Des questions sur ALEX ? Je suis là 👋' } }]
+      },
+    });
+  };
+  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+  v.type = "text/javascript";
+  s.parentNode.insertBefore(v, s);
+})(document, 'script');
+</script>
 </body>
 </html>

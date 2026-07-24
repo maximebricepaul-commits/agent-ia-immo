@@ -752,6 +752,16 @@
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
       .fade-in { opacity: 1 !important; transform: none !important; }
     }
+  
+    /* Burger menu mobile */
+    .burger{display:none;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;margin-right:12px}
+    .burger span{display:block;width:22px;height:2px;background:var(--white);margin:5px 0;border-radius:2px;transition:0.3s}
+    @media (max-width: 768px){
+      .burger{display:block}
+      .nav-links{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(8,13,24,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-direction:column;align-items:flex-start;padding:18px 24px;gap:16px;list-style:none}
+      .nav-links.open{display:flex}
+    }
+
   </style>
 </head>
 <body>
@@ -775,6 +785,10 @@
     <li><a href="#faq">FAQ</a></li>
     <li><a href="/acquisition/">Acquisition</a></li>
   </ul>
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
+    onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+    <span></span><span></span><span></span>
+  </button>
   <a href="#contact"
          class="btn btn-primary"
      aria-label="Demander une démonstration gratuite">
@@ -1504,6 +1518,9 @@
     <p class="pricing-note fade-in delay-2">
       🤝 <strong>Programme de parrainage :</strong> 150 € offerts pour chaque agence immobilière que vous me présentez. Si ça débouche sur un contrat signé, vous recevez en plus <strong>1 mois gratuit</strong>.
     </p>
+    <p class="pricing-note fade-in delay-3">
+      ⚡ <strong>Pourquoi moins cher qu'ailleurs ?</strong> L'immobilier est notre premier métier : le Pack Pro à 390 €/mois est l'équivalent du Pack Croissance (590 €/mois dans les autres secteurs) — tarif de lancement réservé aux agences.
+    </p>
 
     <div class="fade-in delay-3" style="text-align:center;margin-top:36px;padding-top:32px;border-top:1px solid var(--border)">
       <p style="color:var(--muted2);font-size:0.92rem;margin-bottom:14px">
@@ -1716,11 +1733,15 @@
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
     Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique
   </p>
-  <nav aria-label="Liens du pied de page" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
-    <a href="#offre" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Voir l'offre">L'offre</a>
-    <a href="#contact" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Voir la démonstration">Démo</a>
-    <a href="#faq" style="color:var(--muted2);font-size:0.85rem;text-decoration:none" aria-label="Consulter la FAQ">FAQ</a>
-    <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none" aria-label="Contacter par email">maximebricepaul@gmail.com</a>
+  <nav aria-label="Liens du pied de page" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+    <a href="/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Accueil</a>
+    <a href="/immo/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Immobilier</a>
+    <a href="/nautique/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Nautique</a>
+    <a href="/beaute/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Beauté</a>
+    <a href="/sante/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Santé</a>
+    <a href="/restaurants/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Restaurants</a>
+    <a href="/acquisition/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Acquisition</a>
+    <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">maximebricepaul@gmail.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
     © 2026 ALEX · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
@@ -1870,5 +1891,14 @@ if (skipLink) {
 }
 </script>
 
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){
+    var n = document.querySelector('.nav-links'); if (n) n.classList.remove('open');
+    var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
+  });
+});
+</script>
 </body>
 </html>

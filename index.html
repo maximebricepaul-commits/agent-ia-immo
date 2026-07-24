@@ -331,6 +331,23 @@
     select.form-input { appearance: auto; }
 
     footer { background: var(--bg); border-top: 1px solid var(--border); padding: 40px 24px; text-align: center; }
+  
+    /* Burger menu mobile */
+    .burger{display:none;background:none;border:none;cursor:pointer;padding:8px;margin-left:auto;margin-right:12px}
+    .burger span{display:block;width:22px;height:2px;background:var(--white);margin:5px 0;border-radius:2px;transition:0.3s}
+    @media (max-width: 768px){
+      .burger{display:block}
+      .nav-links{display:none;position:fixed;top:66px;left:0;right:0;background:rgba(8,13,24,0.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-direction:column;align-items:flex-start;padding:18px 24px;gap:16px;list-style:none}
+      .nav-links.open{display:flex}
+    }
+
+    /* Icon chips */
+    .feat-icon, .sector-icon{
+      width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;
+      background:linear-gradient(135deg, rgba(41,193,255,0.12), rgba(233,79,245,0.12));
+      border:1px solid var(--border-a);border-radius:12px;font-size:1.25rem !important;
+    }
+
   </style>
 </head>
 <body>
@@ -349,6 +366,10 @@
     <li><a href="/nautique/">Nautique</a></li>
     <li><a href="/acquisition/">Acquisition</a></li>
   </ul>
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
+    onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+    <span></span><span></span><span></span>
+  </button>
   <a href="#contact" class="btn btn-primary" aria-label="Demander une démonstration gratuite">
     Demander une démo →
   </a>
@@ -565,6 +586,22 @@
 </section>
 
 <!-- CONTACT -->
+
+<!-- FONDATEUR -->
+<section class="section" aria-label="Votre interlocuteur" style="padding-top:0">
+  <div class="container" style="max-width:760px">
+    <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px">
+      <img src="/linkedin_avatar.png" alt="Maxime Brice Paul" style="width:92px;height:92px;border-radius:50%;object-fit:cover;border:2px solid var(--border-a)">
+      <div style="flex:1;min-width:240px">
+        <div class="tag" style="margin-bottom:10px">👤 Votre interlocuteur</div>
+        <h3 style="color:var(--white);font-size:1.15rem;font-weight:800;margin-bottom:8px">Maxime Brice Paul — Fondateur d'ALEX</h3>
+        <p style="color:var(--muted2);font-size:0.92rem;line-height:1.7">Je configure ALEX moi-même pour votre métier, je fais la démo en direct et je reste votre interlocuteur unique, de l'installation au suivi. Pas de support anonyme : vous m'écrivez, je réponds.</p>
+        <p style="margin-top:10px"><a href="https://www.linkedin.com/in/maxime-brice-paul-6439aa419/" target="_blank" rel="noopener" style="color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:600">Mon profil LinkedIn →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="section section-alt" aria-label="Formulaire de demande de démo">
   <div class="container" style="max-width:640px">
     <div class="tag fade-in" style="margin-bottom:24px">📋 C'est gratuit et sans engagement</div>
@@ -658,10 +695,13 @@
   <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
     Assistant commercial &amp; marketing IA pour commerces · Réponses 24h/24 · RDV &amp; relances automatiques
   </p>
-  <nav aria-label="Liens du pied de page" style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
-    <a href="#secteurs" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Secteurs</a>
-    <a href="#offres" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Offres</a>
+  <nav aria-label="Liens du pied de page" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+    <a href="/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Accueil</a>
     <a href="/immo/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Immobilier</a>
+    <a href="/nautique/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Nautique</a>
+    <a href="/beaute/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Beauté</a>
+    <a href="/sante/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Santé</a>
+    <a href="/restaurants/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Restaurants</a>
     <a href="/acquisition/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Acquisition</a>
     <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">maximebricepaul@gmail.com</a>
   </nav>
@@ -780,5 +820,14 @@ if (skipLink) {
 }
 </script>
 
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){
+    var n = document.querySelector('.nav-links'); if (n) n.classList.remove('open');
+    var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
+  });
+});
+</script>
 </body>
 </html>
