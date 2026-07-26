@@ -830,8 +830,9 @@
     <div class="hero-btns fade-in delay-3">
       <a href="#contact"
          class="btn btn-primary btn-lg"
-         aria-label="Réserver une démonstration gratuite d'ALEX">
-        🎯 Demander ma démo gratuite
+         aria-label="Tester Alex en direct"
+         onclick="if(window.voiceflow&&window.voiceflow.chat){window.voiceflow.chat.open();trackEvent('click_open_alex','CTA','immo_hero_live',0);return false;}">
+        💬 Tester Alex en direct
       </a>
       <a href="#comment" class="btn btn-outline btn-lg">
         Voir comment ça marche
