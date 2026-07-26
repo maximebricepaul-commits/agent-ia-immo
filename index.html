@@ -384,28 +384,37 @@
   <div class="hero-grid" aria-hidden="true"></div>
 
   <div class="hero-content">
-    <div class="tag fade-in">🤖 Services IA pour entreprises &amp; commerces</div>
+    <img src="/alex-logo.png" alt="Logo ALEX" class="fade-in" style="width:84px;height:84px;border-radius:20px;margin:0 auto 22px;display:block;box-shadow:0 0 60px rgba(41,193,255,0.45), 0 0 120px rgba(233,79,245,0.25)">
+    <div class="tag fade-in">🤖 ALEX — L'avenir de l'automatisation commerciale</div>
 
     <h1 class="fade-in delay-1">
-      Un vrai collaborateur commercial.<br>
-      <span class="accent">Pas un chatbot.</span>
+      Ne perdez plus un client.<br>
+      <span class="accent">Ni un rendez-vous.</span>
     </h1>
 
     <p class="hero-sub fade-in delay-2">
-      ALEX répond à vos clients en moins de 2 minutes, 24h/24 — sur votre site, WhatsApp, Facebook ou Instagram. Il qualifie les demandes, prend les rendez-vous dans votre agenda et relance automatiquement. En français, espagnol et anglais.
+      ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.
     </p>
 
     <div class="hero-btns fade-in delay-3">
-      <a href="#contact" class="btn btn-primary btn-lg" aria-label="Réserver une démonstration gratuite">
-        🎯 Demander ma démo gratuite
+      <a href="#contact" class="btn btn-primary btn-lg" aria-label="Parler à Alex maintenant"
+         onclick="if(window.voiceflow&&window.voiceflow.chat){window.voiceflow.chat.open();trackEvent('click_open_alex','CTA','hero_live',0);return false;}">
+        💬 Parler à Alex maintenant
       </a>
       <a href="#secteurs" class="btn btn-outline btn-lg">
         Voir mon secteur
       </a>
     </div>
 
-    <p class="hero-note fade-in delay-4">
-      Démo 20 min — sans engagement — aucune carte bancaire
+    <div class="fade-in delay-4" style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px">
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid var(--border-a);color:var(--text);font-size:0.82rem;font-weight:600;padding:7px 14px;border-radius:50px">⚡ Répond en quelques secondes</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid var(--border-a);color:var(--text);font-size:0.82rem;font-weight:600;padding:7px 14px;border-radius:50px">🌍 FR · ES · CA · EN détectés seuls</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid var(--border-a);color:var(--text);font-size:0.82rem;font-weight:600;padding:7px 14px;border-radius:50px">🕐 24h/24 — 7j/7</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;background:var(--magenta-dim);border:1px solid var(--border-m);color:var(--text);font-size:0.82rem;font-weight:600;padding:7px 14px;border-radius:50px">📅 Prend les RDV tout seul, en direct</span>
+    </div>
+
+    <p class="hero-note fade-in delay-4" style="margin-top:20px">
+      ↑ Ce n'est pas une promesse : la bulle en bas à droite, c'est lui. Testez-le.
     </p>
     <div class="launch-pill fade-in delay-4">
       🚀 Mise en place complète en 5–7 jours — <strong>&nbsp;sans engagement de durée</strong>
@@ -675,16 +684,37 @@
 </section>
 
 <!-- TESTER ALEX -->
-<div style="background:var(--bg);border-top:1px solid var(--border);padding:56px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
-  <div class="tag" style="margin-bottom:16px">🤖 Tester maintenant</div>
-  <h2 style="font-size:clamp(1.5rem,3vw,2rem);font-weight:900;margin-bottom:12px">
-    ALEX est déjà là. <span class="text-accent">Parlez-lui.</span>
+<div style="background:var(--bg);border-top:1px solid var(--border);padding:64px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
+  <div class="tag" style="margin-bottom:16px">🤖 Ce site EST la démo</div>
+  <h2 style="font-size:clamp(1.5rem,3vw,2.1rem);font-weight:900;margin-bottom:12px">
+    ALEX est déjà là. <span class="text-accent">Essayez de le piéger.</span>
   </h2>
-  <p style="color:var(--muted2);max-width:500px;margin:0 auto 28px;line-height:1.7">
-    Cliquez sur l'icône de chat en bas à droite. ALEX vous répond en direct, comme il le ferait pour vos clients.
+  <p style="color:var(--muted2);max-width:560px;margin:0 auto 30px;line-height:1.7">
+    La bulle en bas à droite, ce n'est pas un gadget : c'est exactement l'agent que vous auriez. Trois défis pour le tester :
   </p>
-  <p style="font-size:0.82rem;color:var(--muted);margin-top:8px">
-    Démo multi-métiers : Alex s'adapte à la page où vous êtes · Données non enregistrées
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto 30px;text-align:left">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+      <div style="font-size:1.3rem;margin-bottom:8px">🌍</div>
+      <p style="color:var(--white);font-weight:700;font-size:0.95rem;margin-bottom:6px">Écrivez-lui en anglais ou en espagnol</p>
+      <p style="color:var(--muted2);font-size:0.85rem">Il détecte la langue tout seul et répond dedans, instantanément.</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+      <div style="font-size:1.3rem;margin-bottom:8px">📅</div>
+      <p style="color:var(--white);font-weight:700;font-size:0.95rem;margin-bottom:6px">Demandez un rendez-vous sur une page métier</p>
+      <p style="color:var(--muted2);font-size:0.85rem">Il propose des créneaux, confirme et récapitule — de bout en bout, tout seul.</p>
+    </div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+      <div style="font-size:1.3rem;margin-bottom:8px">🎯</div>
+      <p style="color:var(--white);font-weight:700;font-size:0.95rem;margin-bottom:6px">Dites-lui votre métier et « c'est trop cher »</p>
+      <p style="color:var(--muted2);font-size:0.85rem">Regardez-le calculer ce que vous perdez chaque mois — avec vos chiffres, pas les siens.</p>
+    </div>
+  </div>
+  <a href="#contact" class="btn btn-primary btn-lg" aria-label="Ouvrir le chat Alex"
+     onclick="if(window.voiceflow&&window.voiceflow.chat){window.voiceflow.chat.open();trackEvent('click_open_alex','CTA','defi_live',0);return false;}">
+    💬 Lancer le défi
+  </a>
+  <p style="font-size:0.82rem;color:var(--muted);margin-top:18px">
+    Démo multi-métiers : Alex s'adapte à la page où vous êtes · La vôtre sera configurée avec vos services, vos prix, votre nom
   </p>
 </div>
 
