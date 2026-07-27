@@ -458,11 +458,11 @@
       </div>
     </div>
     <p style="color:var(--muted2);font-size:0.88rem;margin-bottom:22px">Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center">
-      <button id="voix-live-btn" type="button" class="btn btn-primary btn-lg" style="border:0;cursor:pointer">🎙️ Parlez à ALEX en direct</button>
-      <a href="#contact" class="btn btn-outline btn-lg">🎧 Écouter ALEX au téléphone — demander une démo</a>
+    <div style="max-width:540px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow-card)">
+      <p id="voix-demo-label" style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:14px">🎧 Écoutez ALEX vendre — en vrai</p>
+      <audio controls preload="none" src="/alex-voix-demo.mp3" style="width:100%">Votre navigateur ne gère pas la lecture audio.</audio>
     </div>
-    <p id="voix-live-hint" style="color:var(--muted);font-size:0.82rem;margin-top:12px">Cliquez, autorisez votre micro, et parlez à ALEX comme au téléphone — dans le navigateur.</p>
+    <a href="#contact" class="btn btn-primary btn-lg">📞 Je veux ALEX Voix pour mon commerce</a>
   </div>
 </section>
 
@@ -950,7 +950,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Accueil":"Inicio","Beauté":"Belleza","Santé":"Salud","Restaurants":"Restaurantes","© 2026 ALEX · Contact":"© 2026 ALEX · Contacto",
       "+ 890 € · tous vos canaux":"+ 890 € · todos sus canales",
       "Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée":"Configurada para su actividad, probada con usted antes de publicarla · sin permanencia",
-      "ALEX — Votre Agent IA":"ALEX — Su Agente IA"
+      "ALEX — Votre Agent IA":"ALEX — Su Agente IA",
+      "🎧 Écoutez ALEX vendre — en vrai":"🎧 Escuche a ALEX vender — de verdad",
+      "📞 Je veux ALEX Voix pour mon commerce":"📞 Quiero ALEX Voz para mi negocio"
     },
     en: {
       "Secteurs":"Sectors","Offres":"Pricing","Blog":"Blog","Immobilier":"Real Estate","Nautique":"Boating","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
@@ -993,7 +995,9 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Accueil":"Home","Beauté":"Beauty","Santé":"Health","Restaurants":"Restaurants","© 2026 ALEX · Contact":"© 2026 ALEX · Contact",
       "+ 890 € · tous vos canaux":"+ €890 · all your channels",
       "Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée":"Set up for your business, tested with you before going live · no commitment",
-      "ALEX — Votre Agent IA":"ALEX — Your AI Agent"
+      "ALEX — Votre Agent IA":"ALEX — Your AI Agent",
+      "🎧 Écoutez ALEX vendre — en vrai":"🎧 Hear ALEX sell — for real",
+      "📞 Je veux ALEX Voix pour mon commerce":"📞 I want ALEX Voice for my business"
     }
   };
   const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item';
