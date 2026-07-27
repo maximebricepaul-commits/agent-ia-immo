@@ -785,6 +785,11 @@
     <li><a href="#faq">FAQ</a></li>
     <li><a href="/acquisition/">Acquisition</a></li>
   </ul>
+  <div class="lang-switch" role="group" aria-label="Choisir la langue" style="display:flex;gap:2px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:2px;margin-left:auto;margin-right:14px">
+    <button type="button" class="lang-btn" data-setlang="fr" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">FR</button>
+    <button type="button" class="lang-btn" data-setlang="es" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">ES</button>
+    <button type="button" class="lang-btn" data-setlang="en" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">EN</button>
+  </div>
   <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
     onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
     <span></span><span></span><span></span>
@@ -813,7 +818,7 @@
       Et vous ?
     </h1>
 
-    <div class="fade-in delay-1" style="display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;margin:22px 0 6px;font-size:0.78rem;color:var(--muted2);font-weight:600;letter-spacing:0.02em">
+    <div class="fade-in delay-1 hero-sectors" style="display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;margin:22px 0 6px;font-size:0.78rem;color:var(--muted2);font-weight:600;letter-spacing:0.02em">
       <span>🏪 Commerces</span>
       <span style="color:var(--accent)">🏠 Agences Immo</span>
       <span>💇 Salons &amp; Beauté</span>
@@ -842,7 +847,7 @@
     <p class="hero-note fade-in delay-4">
       Démo 20 min — sans engagement — aucune carte bancaire
     </p>
-    <div class="fade-in delay-5" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(233,79,245,0.08);border:1px solid rgba(233,79,245,0.28);border-radius:8px;padding:8px 18px;font-size:0.78rem;color:#e94ff5">
+    <div class="fade-in delay-5 hero-pill" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;background:rgba(233,79,245,0.08);border:1px solid rgba(233,79,245,0.28);border-radius:8px;padding:8px 18px;font-size:0.78rem;color:#e94ff5">
       🚀 Mise en place complète en 5–7 jours — <strong>sans engagement de durée</strong>
     </div>
   </div>
@@ -874,6 +879,28 @@
     </div>
   </div>
 </header>
+
+<!-- ============================================================
+     VOIX — PRODUIT PHARE
+============================================================ -->
+<section class="section" id="voix-phare" aria-label="ALEX Voix, produit phare" style="padding:52px 0">
+  <div class="container">
+    <div style="position:relative;border:1px solid var(--border-a);border-radius:20px;background:linear-gradient(160deg,rgba(41,193,255,0.09),rgba(233,79,245,0.05));padding:clamp(24px,4vw,40px);overflow:hidden">
+      <span class="vfx-badge" style="display:inline-block;background:var(--accent-gradient);color:#080d18;font-size:0.72rem;font-weight:800;letter-spacing:0.04em;text-transform:uppercase;padding:6px 14px;border-radius:999px">⭐ Produit phare — personne d'autre ne fait ça</span>
+      <h2 class="vfx-h2" style="font-size:clamp(1.55rem,3.4vw,2.25rem);line-height:1.14;margin:18px 0 12px;font-weight:800;max-width:720px">ALEX <span class="accent">Voix</span> décroche votre téléphone —<br>avec une <span class="accent">vraie voix humaine</span>.</h2>
+      <p class="vfx-sub" style="color:var(--muted2);font-size:1.08rem;line-height:1.6;max-width:660px;margin:0 0 24px">Quand vous êtes en visite ou en rendez-vous, ALEX répond au téléphone à votre place : il qualifie l'acheteur ou le vendeur, renseigne sur les biens et cale la visite. 24h/24, en 4 langues — avec une voix si naturelle que vos clients n'y voient que du feu.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 26px">
+        <span class="vfx-chip" style="background:var(--accent-dim);border:1px solid var(--border-a);color:var(--white);font-size:0.92rem;font-weight:600;padding:10px 16px;border-radius:12px">📞 Décroche 100 % des appels</span>
+        <span class="vfx-chip" style="background:var(--accent-dim);border:1px solid var(--border-a);color:var(--white);font-size:0.92rem;font-weight:600;padding:10px 16px;border-radius:12px">🗣️ Voix humaine · FR/ES/CA/EN</span>
+        <span class="vfx-chip" style="background:var(--accent-dim);border:1px solid var(--border-a);color:var(--white);font-size:0.92rem;font-weight:600;padding:10px 16px;border-radius:12px">📅 Qualifie et cale la visite</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px">
+        <a href="#contact" class="btn btn-primary btn-lg vfx-cta">📞 Je veux ALEX Voix</a>
+        <a href="#tarifs" class="btn btn-lg vfx-cta2" style="background:transparent;color:var(--white);border:1px solid var(--border-a)">Voir l'offre — 490 €/mois</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============================================================
      TRUST BAR
@@ -1569,9 +1596,9 @@
             style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:rgba(41,193,255,0.1);border:1px solid var(--border-a);border-radius:8px;color:var(--accent);font-size:0.85rem;font-weight:600;text-decoration:none">
             LinkedIn →
           </a>
-          <a href="mailto:maximebricepaul@gmail.com"
+          <a href="mailto:contact@agentia-immo.com"
             style="display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--muted2);font-size:0.85rem;text-decoration:none">
-            maximebricepaul@gmail.com
+            contact@agentia-immo.com
           </a>
         </div>
       </div>
@@ -1755,10 +1782,10 @@
     <a href="/sante/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Santé</a>
     <a href="/restaurants/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Restaurants</a>
     <a href="/acquisition/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Acquisition</a>
-    <a href="mailto:maximebricepaul@gmail.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">maximebricepaul@gmail.com</a>
+    <a href="mailto:contact@agentia-immo.com" style="color:var(--accent);font-size:0.85rem;text-decoration:none">contact@agentia-immo.com</a>
   </nav>
   <p style="color:var(--muted);font-size:0.78rem">
-    © 2026 ALEX · <a href="mailto:maximebricepaul@gmail.com" style="color:var(--muted);text-decoration:none">Contact</a>
+    © 2026 ALEX · <a href="mailto:contact@agentia-immo.com" style="color:var(--muted);text-decoration:none">Contact</a>
   </p>
 </footer>
 
@@ -1920,6 +1947,338 @@ document.querySelectorAll('.nav-links a').forEach(function(a){
     var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
   });
 });
+</script>
+
+<!-- ============================================================
+     i18n FR / ES / EN (moteur identique au hub)
+============================================================ -->
+<script>
+(function(){
+  const D = {
+    es: {
+      "Votre Agent IA":"Su Agente IA","Comment ça marche":"Cómo funciona","Fonctionnalités":"Funcionalidades","Tarifs":"Precios","Acquisition":"Captación de leads","Demander une démo →":"Solicitar una demo →",
+      "🤖 ALEX — Votre Agent IA":"🤖 ALEX — Su Agente IA",
+      "⭐ Produit phare — personne d'autre ne fait ça":"⭐ Producto estrella — nadie más lo hace",
+      "ALEX Voix décroche votre téléphone —avec une vraie voix humaine.":"ALEX <span class=\"accent\">Voix</span> contesta su teléfono —<br>con una <span class=\"accent\">voz humana de verdad</span>.",
+      "Quand vous êtes en visite ou en rendez-vous, ALEX répond au téléphone à votre place : il qualifie l'acheteur ou le vendeur, renseigne sur les biens et cale la visite. 24h/24, en 4 langues — avec une voix si naturelle que vos clients n'y voient que du feu.":"Cuando está de visita o en una reunión, ALEX contesta el teléfono por usted: cualifica al comprador o al vendedor, informa sobre los inmuebles y agenda la visita. 24/7, en 4 idiomas — con una voz tan natural que sus clientes no notan la diferencia.",
+      "📞 Décroche 100 % des appels":"📞 Contesta el 100 % de las llamadas",
+      "🗣️ Voix humaine · FR/ES/CA/EN":"🗣️ Voz humana · FR/ES/CA/EN",
+      "📅 Qualifie et cale la visite":"📅 Cualifica y agenda la visita",
+      "📞 Je veux ALEX Voix":"📞 Quiero ALEX Voix",
+      "Voir l'offre — 490 €/mois":"Ver la oferta — 490 €/mes",
+      "Votre concurrent répond en 90 secondes. Et vous ?":"Su competencia responde<br><span class=\"accent\">en 90 segundos.</span><br>¿Y usted?",
+      "🏪 Commerces 🏠 Agences Immo 💇 Salons & Beauté ⚕️ Médecins":"<span>🏪 Comercios</span> <span style=\"color:var(--accent)\">🏠 Agencias Inmo</span> <span>💇 Peluquerías y Belleza</span> <span>⚕️ Médicos</span>",
+      "Disponible aujourd'hui pour les agences immobilières — bientôt pour les autres secteurs":"Disponible hoy para agencias inmobiliarias — pronto para los demás sectores",
+      "Un assistant commercial virtuel répond à chacun de vos prospects en moins de 2 minutes, 24h/24, 7j/7. Il qualifie, planifie les visites et transmet uniquement des leads chauds à votre équipe. Sans recruter.":"Un asistente comercial virtual responde a cada uno de sus prospectos en menos de 2 minutos, 24/7. Cualifica, agenda las visitas y transmite únicamente leads calientes a su equipo. Sin contratar a nadie.",
+      "💬 Tester Alex en direct":"💬 Probar a Alex en directo","Voir comment ça marche":"Ver cómo funciona",
+      "Démo 20 min — sans engagement — aucune carte bancaire":"Demo de 20 min — sin compromiso — sin tarjeta bancaria",
+      "🚀 Mise en place complète en 5–7 jours — sans engagement de durée":"🚀 Puesta en marcha completa en 5–7 días — <strong>sin permanencia</strong>",
+      "😰 Sans Alex":"😰 Sin Alex","Vendredi 22h47 — SeLoger":"Viernes 22:47 — SeLoger",
+      "\"Bonjour, j'aimerais visiter le T3 avenue des Acacias. Budget 350 000 €. Est-ce toujours disponible ?\"":"\"Hola, me gustaría visitar el piso de 3 hab. en avenida de las Acacias. Presupuesto 350 000 €. ¿Sigue disponible?\"",
+      "⏳ Aucune réponse avant lundi matin":"⏳ Sin respuesta hasta el lunes por la mañana",
+      "→ Samedi, le couple visite avec l'agence d'en face.":"→ El sábado, la pareja visita con la agencia de enfrente.",
+      "✅ Avec Alex":"✅ Con Alex","Vendredi 22h47":"Viernes 22:47","22h48 — Réponse en 1 min 04 sec ✓":"22:48 — Respuesta en 1 min 04 s ✓",
+      "\"Bonsoir ! Je suis l'assistant de l'Agence Martin 😊 Le T3 est disponible ! Êtes-vous primo-accédant ou avez-vous un bien à vendre ?\"":"\"¡Buenas noches! Soy el asistente de la Agencia Martin 😊 ¡El piso está disponible! ¿Es su primera compra o tiene un inmueble que vender?\"",
+      "✅ Lead qualifié · RDV samedi 10h confirmé":"✅ Lead cualificado · Cita del sábado a las 10:00 confirmada",
+      "Fonctionne avec":"Funciona con","🌐 Votre site web":"🌐 Su sitio web",
+      "Temps de réponse garanti":"Tiempo de respuesta garantizado","24h / 7j":"24/7","Disponibilité sans interruption":"Disponibilidad sin interrupción","5–7 j":"5–7 días","Délai de mise en place":"Plazo de puesta en marcha","Recrutement nécessaire":"Contratación necesaria",
+      "📖 Ça vous est déjà arrivé ?":"📖 ¿Le ha pasado alguna vez?","Vendredi soir — 22h47":"Viernes por la noche — 22:47",
+      "Un couple cherche son appartement depuis 6 mois.":"Una pareja lleva 6 meses buscando piso.",
+      "Ils consultent SeLoger après le travail. Ils tombent sur votre annonce. Le bien correspond exactement à leur budget et à leur projet. Ils envoient un message à 22h47. Ils espèrent une réponse rapide. Ils veulent visiter samedi matin. Mais votre agence est fermée. Vos agents ont éteint leurs téléphones. Le message reste sans réponse jusqu'au lundi matin.":"Consultan los portales inmobiliarios al salir del trabajo. Encuentran <strong>su anuncio</strong>. El inmueble encaja exactamente con su presupuesto y su proyecto.<br><br>Envían un mensaje a las 22:47. Esperan una respuesta rápida. Quieren visitarlo el sábado por la mañana.<br><br>Pero su agencia está cerrada. Sus agentes han apagado el teléfono. El mensaje queda sin respuesta hasta el lunes por la mañana.",
+      "Ce week-end, le couple visite avec l'agence d'en face. Ils signent une offre le dimanche. Votre message du lundi arrive trop tard. Une commission s'envole.":"<strong>Ese fin de semana, la pareja visita con la agencia de enfrente.</strong> Firman una oferta el domingo. Su mensaje del lunes llega demasiado tarde. Una comisión se esfuma.",
+      "Ce scénario se reproduit chaque semaine dans des centaines d'agences. ALEX est là pour que ça n'arrive plus jamais chez vous.":"Este escenario se repite cada semana en cientos de agencias.<br><span>ALEX está aquí para que no vuelva a ocurrirle nunca más.</span>",
+      "⚠️ Le vrai problème":"⚠️ El verdadero problema","Vous perdez des clients sans le savoir.":"Pierde clientes sin saberlo.",
+      "Chaque heure sans réponse est une commission potentielle qui s'envole. Le prospect le plus motivé choisit l'agence qui répond en premier.":"Cada hora sin respuesta es una comisión potencial que se esfuma. El prospecto más motivado elige la agencia que responde primero.",
+      "Les leads du soir disparaissent":"Los leads de la noche desaparecen",
+      "Vos meilleurs acheteurs envoient des messages le soir et le week-end. Sans réponse rapide, ils contactent l'agence suivante sur la liste.":"Sus mejores compradores escriben por la noche y el fin de semana. Sin una respuesta rápida, contactan con la siguiente agencia de la lista.",
+      "Vos agents gaspillent leur énergie":"Sus agentes malgastan su energía",
+      "Ils rappellent des contacts sans budget, sans projet réel, sans urgence. Chaque appel inutile est une visite de moins avec un vrai acheteur.":"Devuelven llamadas a contactos sin presupuesto, sin proyecto real, sin urgencia. Cada llamada inútil es una visita menos con un comprador real.",
+      "Votre taux de transformation stagne":"Su tasa de conversión se estanca",
+      "Vous générez des contacts mais peu deviennent des RDV. La cause principale : le délai de réponse et l'absence de qualification immédiate.":"Genera contactos pero pocos se convierten en citas. La causa principal: el tiempo de respuesta y la falta de cualificación inmediata.",
+      "🤝 La solution":"🤝 La solución",
+      "Pas un chatbot. Un vrai collaborateur.":"No es un simple bot.<br><span class=\"text-accent\">Un verdadero colaborador.</span>",
+      "Alex est votre assistant commercial virtuel. Il connaît votre agence, votre secteur, votre portefeuille de biens. Il répond comme le ferait votre meilleur négociateur — en moins de 2 minutes, à n'importe quelle heure.":"Alex es su asistente comercial virtual. Conoce su agencia, su zona, su cartera de inmuebles. Responde como lo haría su mejor negociador — en menos de 2 minutos, a cualquier hora.",
+      "Répond instantanément, 24h/24 et 7j/7":"Responde al instante, 24/7","Qualifie le budget, le projet et l'urgence":"Cualifica el presupuesto, el proyecto y la urgencia","Propose et confirme des créneaux de visite":"Propone y confirma horarios de visita","Transmet uniquement des leads chauds, déjà qualifiés":"Transmite únicamente leads calientes, ya cualificados","S'exprime avec le ton exact de votre agence":"Se expresa con el tono exacto de su agencia","Ne prend jamais de congés. Ne tombe jamais malade.":"Nunca coge vacaciones. Nunca se pone enfermo.",
+      "Assistant Commercial IA — Immo":"Asistente Comercial IA — Inmobiliario","En ligne":"<div class=\"dot\" aria-hidden=\"true\"></div> En línea",
+      "Temps de réponse":"Tiempo de respuesta","Disponibilité":"Disponibilidad","Conversations en parallèle":"Conversaciones en paralelo",
+      "⚙️ Le processus":"⚙️ El proceso","De l'inconnu au lead chaud — en automatique.":"De desconocido a lead caliente — en automático.",
+      "En 4 étapes entièrement automatisées, Alex transforme un message anonyme en rendez-vous qualifié transmis à votre équipe.":"En 4 pasos totalmente automatizados, Alex convierte un mensaje anónimo en una cita cualificada que llega a su equipo.",
+      "Un prospect vous écrit":"Un prospecto le escribe","Via votre site, WhatsApp, Facebook, ou Instagram — peu importe le canal ou l'heure.":"Desde su web, WhatsApp, Facebook o Instagram — sin importar el canal ni la hora.",
+      "Alex répond en < 2 min":"Alex responde en < 2 min","Message professionnel et personnalisé, au ton de votre agence, qui engage la conversation immédiatement.":"Un mensaje profesional y personalizado, con el tono de su agencia, que inicia la conversación de inmediato.",
+      "Le projet est qualifié":"El proyecto queda cualificado","Budget, type de bien, délai d'achat, situation personnelle — tout est recueilli naturellement et sans friction.":"Presupuesto, tipo de inmueble, plazo de compra, situación personal — todo se recoge de forma natural y sin fricción.",
+      "Votre agent reçoit la fiche":"Su agente recibe la ficha","Récapitulatif complet + RDV déjà confirmé dans l'agenda. Votre équipe n'intervient que sur des dossiers chauds.":"Resumen completo + cita ya confirmada en la agenda. Su equipo solo interviene en casos calientes.",
+      "Prêt à voir Alex en action sur votre agence ?":"¿Listo para ver a Alex en acción en su agencia?","🎯 Demander ma démo gratuite — 20 min":"🎯 Solicitar mi demo gratuita — 20 min","Sans engagement · Aucune carte bancaire":"Sin compromiso · Sin tarjeta bancaria",
+      "💬 Exemple réel":"💬 Ejemplo real","Voici exactement ce que vos prospects reçoivent.":"Esto es exactamente lo que reciben sus prospectos.",
+      "Alex répond comme un collaborateur humain — jamais comme un bot. Il pose les bonnes questions, dans le bon ordre, pour qualifier sans friction ni attente.":"Alex responde como un colaborador humano — nunca como un bot. Hace las preguntas correctas, en el orden correcto, para cualificar sin fricción ni esperas.",
+      "🎯 Qualification complète du projet en quelques échanges":"<span class=\"ico\">🎯</span> Cualificación completa del proyecto en pocos mensajes","📅 Prise de RDV directement dans votre agenda":"<span class=\"ico\">📅</span> Reserva de cita directamente en su agenda","📋 Fiche prospect transmise instantanément à votre équipe":"<span class=\"ico\">📋</span> Ficha del prospecto enviada al instante a su equipo","🔔 Notification en temps réel à votre agent":"<span class=\"ico\">🔔</span> Notificación en tiempo real a su agente",
+      "Voir la démo complète →":"Ver la demo completa →",
+      "Alex — Assistant Agence Martin":"Alex — Asistente Agencia Martin","● En ligne · Répond instantanément":"● En línea · Responde al instante",
+      "Bonsoir, je suis intéressé par le T3 avenue des Acacias. Budget 350 K€. Est-ce toujours disponible ?":"Buenas noches, me interesa el piso de 3 hab. en avenida de las Acacias. Presupuesto 350 K€. ¿Sigue disponible?",
+      "Bonsoir ! Je suis Alex, l'assistant de l'Agence Martin 😊 Le T3 avenue des Acacias est bien disponible ! Pour mieux vous accompagner — avez-vous un bien à vendre ou êtes-vous en première acquisition ?":"¡Buenas noches! Soy Alex, el asistente de la Agencia Martin 😊 ¡El piso de la avenida de las Acacias está disponible! Para atenderle mejor — ¿tiene un inmueble que vender o es su primera compra?",
+      "22h50":"22:50","Nous avons un appartement en cours de vente, compromis signé. On peut bouger rapidement.":"Tenemos un piso en proceso de venta, contrato firmado. Podemos movernos rápido.",
+      "C'est une excellente position 🎉 Une visite samedi matin vous conviendrait-elle ? J'ai un créneau à 10h ou 11h30.":"Es una posición excelente 🎉 ¿Le vendría bien una visita el sábado por la mañana? Tengo hueco a las 10:00 o a las 11:30.",
+      "22h51":"22:51","10h c'est parfait !":"¡Las 10:00 perfecto!",
+      "Lead qualifié transmis · RDV confirmé samedi 10h":"Lead cualificado enviado · Cita confirmada el sábado a las 10:00",
+      "🎯 Votre démo personnalisée":"🎯 Su demo personalizada","En 20 minutes, vous verrez tout.":"En 20 minutos, lo verá todo.",
+      "Une démonstration live, adaptée à votre agence et votre secteur. Pas de slides. Pas de PowerPoint. Du concret.":"Una demostración en directo, adaptada a su agencia y su sector. Sin diapositivas. Sin PowerPoint. Puro concreto.",
+      "Alex en action sur un vrai scénario":"Alex en acción en un escenario real","Je simule une conversation prospect en direct. Vous voyez exactement ce que vos clients recevraient.":"Simulo una conversación con un prospecto en directo. Ve exactamente lo que recibirían sus clientes.",
+      "Le parcours complet jusqu'au lead qualifié":"El recorrido completo hasta el lead cualificado","De la 1ère réponse automatique à la fiche prospect transmise à votre équipe — en temps réel.":"Desde la 1ª respuesta automática hasta la ficha del prospecto enviada a su equipo — en tiempo real.",
+      "La configuration pour votre agence":"La configuración para su agencia","Je vous montre comment Alex s'adapte à votre secteur, votre ton, vos typologies de biens et vos prix.":"Le muestro cómo Alex se adapta a su sector, su tono, sus tipologías de inmuebles y sus precios.",
+      "L'intégration avec vos outils existants":"La integración con sus herramientas actuales","WhatsApp, votre site, votre CRM et votre agenda — je vous explique comment tout se connecte, sans friction technique.":"WhatsApp, su web, su CRM y su agenda — le explico cómo se conecta todo, sin fricción técnica.",
+      "Un devis personnalisé, transparent":"Un presupuesto personalizado y transparente","Tarif exact, délai, plan de déploiement — tout est clair avant de vous engager. Aucune surprise.":"Tarifa exacta, plazo, plan de despliegue — todo claro antes de comprometerse. Ninguna sorpresa.",
+      "🎯 Réserver ma démo gratuite":"🎯 Reservar mi demo gratuita","Démo 20 min · Sans engagement · Aucune carte bancaire":"Demo de 20 min · Sin compromiso · Sin tarjeta bancaria",
+      "🛠️ Ce qui est inclus":"🛠️ Lo que incluye","Tout ce dont votre agence a besoin.":"Todo lo que su agencia necesita.",
+      "Un système complet, configuré pour votre agence, opérationnel en moins d'une semaine. Rien à installer de votre côté.":"Un sistema completo, configurado para su agencia, operativo en menos de una semana. Nada que instalar por su parte.",
+      "Multi-canal":"Multicanal","Site web, WhatsApp Business, Facebook Messenger, Instagram — Alex est présent partout où vos prospects vous écrivent.":"Sitio web, WhatsApp Business, Facebook Messenger, Instagram — Alex está presente allí donde le escriben sus prospectos.",
+      "Formé sur votre agence":"Formado sobre su agencia","Alex connaît votre secteur géographique, vos typologies de biens, vos prix moyens et le ton exact de votre marque.":"Alex conoce su zona geográfica, sus tipologías de inmuebles, sus precios medios y el tono exacto de su marca.",
+      "Qualification complète":"Cualificación completa","Budget, délai, type de projet, situation personnelle et motivation — tout est qualifié avant que votre équipe n'intervienne.":"Presupuesto, plazo, tipo de proyecto, situación personal y motivación — todo se cualifica antes de que intervenga su equipo.",
+      "Prise de RDV automatique":"Reserva de citas automática","Alex propose directement des créneaux dans votre agenda et confirme les visites — sans aucune intervention humaine.":"Alex propone directamente horarios en su agenda y confirma las visitas — sin ninguna intervención humana.",
+      "Connexion CRM":"Conexión con el CRM","Compatible HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API ou Zapier/Make.":"Compatible con HubSpot, Notion, Airtable, Google Sheets, Pipedrive — o cualquier herramienta con API o Zapier/Make.",
+      "Dashboard en temps réel":"Panel en tiempo real","Tous vos leads, leurs statuts et les conversations — accessibles à tout moment depuis un tableau de bord centralisé.":"Todos sus leads, sus estados y las conversaciones — accesibles en todo momento desde un panel centralizado.",
+      "🚀 Mise en place":"🚀 Puesta en marcha","Opérationnel en 5 à 7 jours.":"Operativo en 5 a 7 días.","Vous n'avez rien à faire techniquement. Je m'occupe de tout.":"Usted no tiene que hacer nada a nivel técnico. Yo me encargo de todo.",
+      "Jour 1":"Día 1","Appel de découverte — 30 minutes":"Llamada de descubrimiento — 30 minutos","On échange sur votre agence, votre secteur, vos besoins et vos outils actuels. Je prends note de tout.":"Hablamos de su agencia, su sector, sus necesidades y sus herramientas actuales. Tomo nota de todo.",
+      "Jours 2–4":"Días 2–4","Configuration et personnalisation":"Configuración y personalización","Je configure Alex avec votre ton, vos biens, votre secteur géographique et votre processus de qualification.":"Configuro a Alex con su tono, sus inmuebles, su zona geográfica y su proceso de cualificación.",
+      "Jours 5–6":"Días 5–6","Connexion à vos canaux et outils":"Conexión con sus canales y herramientas","Intégration WhatsApp, site web, CRM et agenda. Je teste chaque canal en conditions réelles avant le lancement.":"Integración de WhatsApp, sitio web, CRM y agenda. Pruebo cada canal en condiciones reales antes del lanzamiento.",
+      "Jour 7":"Día 7","Lancement et formation":"Lanzamiento y formación","Alex est en ligne. Je vous forme en 30 minutes sur le dashboard et les rapports. Vous êtes autonome dès le premier jour.":"Alex está en línea. Le formo en 30 minutos sobre el panel y los informes. Es autónomo desde el primer día.",
+      "🔐 Transparence totale":"🔐 Transparencia total","Honnêteté totale. Zéro surprise.":"Honestidad total. Cero sorpresas.",
+      "Je suis en phase de lancement et je le dis clairement. Ce que vous obtenez en échange : transparence absolue, tarif préférentiel et suivi personnalisé.":"Estoy en fase de lanzamiento y lo digo claramente. Lo que obtiene a cambio: transparencia absoluta, tarifa preferente y seguimiento personalizado.",
+      "Vos données vous appartiennent":"Sus datos le pertenecen","Tous les contacts et conversations appartiennent à votre agence. Je ne les utilise ni ne les partage. Conformité RGPD garantie.":"Todos los contactos y conversaciones pertenecen a su agencia. No los utilizo ni los comparto. Cumplimiento del RGPD garantizado.",
+      "Sans engagement":"Sin compromiso","Résiliation à tout moment, sans préavis, sans frais. Si l'agent ne vous convient pas, vous partez sans débourser un euro supplémentaire.":"Cancelación en cualquier momento, sin preaviso, sin gastos. Si el agente no le convence, se marcha sin pagar un euro más.",
+      "Accompagnement humain direct":"Acompañamiento humano directo","Je suis joignable directement — pas un support anonyme. Si quelque chose ne fonctionne pas, je le corrige sous 24 heures.":"Estoy localizable directamente — no un soporte anónimo. Si algo no funciona, lo corrijo en menos de 24 horas.",
+      "Questions fréquentes":"Preguntas frecuentes",
+      "Combien de temps pour mettre en place l'agent ? ▾":"¿Cuánto tarda la puesta en marcha del agente? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Entre 5 et 7 jours ouvrés. On commence par un appel de 30 min pour comprendre votre agence, puis je configure tout de mon côté. Vous n'avez rien à faire techniquement.":"Entre 5 y 7 días laborables. Empezamos con una llamada de 30 min para entender su agencia y luego lo configuro todo por mi parte. Usted no tiene que hacer nada a nivel técnico.",
+      "Est-ce que ça remplace mes agents immobiliers ? ▾":"¿Sustituye a mis agentes inmobiliarios? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Non — ça les libère. Alex gère la 1ère prise de contact et la qualification. Vos agents n'interviennent que sur des leads chauds, avec un projet clair et un RDV confirmé. Ils passent leur temps sur ce qui génère réellement des commissions.":"No — los libera. Alex se encarga del primer contacto y de la cualificación. Sus agentes solo intervienen en leads calientes, con un proyecto claro y una cita confirmada. Dedican su tiempo a lo que realmente genera comisiones.",
+      "Mes prospects sauront-ils qu'ils parlent à une IA ? ▾":"¿Sabrán mis prospectos que hablan con una IA? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "C'est votre choix. On peut configurer Alex pour se présenter comme \"l'assistant de votre agence\" ou être transparent sur sa nature. Je respecte les bonnes pratiques légales et vous conseille sur la meilleure approche selon votre clientèle.":"Usted decide. Podemos configurar a Alex para que se presente como \"el asistente de su agencia\" o para ser transparente sobre su naturaleza. Respeto las buenas prácticas legales y le aconsejo sobre el mejor enfoque según su clientela.",
+      "Quels outils sont compatibles ? ▾":"¿Qué herramientas son compatibles? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API, Zapier ou Make. Si vous n'avez pas de CRM, je vous mets en place une solution simple et gratuite (Airtable ou Google Sheets) adaptée à une agence.":"HubSpot, Notion, Airtable, Google Sheets, Pipedrive — o cualquier herramienta con API, Zapier o Make. Si no tiene CRM, le monto una solución sencilla y gratuita (Airtable o Google Sheets) adaptada a una agencia.",
+      "Et si je veux arrêter ? ▾":"¿Y si quiero cancelar? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Résiliation à tout moment, sans engagement, sans frais. Vous gardez toutes vos données prospects et l'historique complet des conversations. Aucun blocage, aucune clause cachée.":"Cancelación en cualquier momento, sin compromiso, sin gastos. Conserva todos sus datos de prospectos y el historial completo de conversaciones. Sin bloqueos, sin cláusulas ocultas.",
+      "Alex peut-il vraiment répondre comme un humain ? ▾":"¿Alex puede responder de verdad como un humano? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Oui. Alex est configuré pour adopter le ton, le vocabulaire et le style de votre agence. Il ne répond pas avec des formules génériques. Lors de la démo, vous verrez des exemples concrets de conversations réelles.":"Sí. Alex está configurado para adoptar el tono, el vocabulario y el estilo de su agencia. No responde con fórmulas genéricas. Durante la demo, verá ejemplos concretos de conversaciones reales.",
+      "Vous n'avez pas encore de clients. Pourquoi vous faire confiance ? ▾":"Todavía no tiene clientes. ¿Por qué confiar en usted? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "C'est une question légitime et je la prends au sérieux. Je suis en phase de lancement et je travaille avec un cercle restreint d'agences pionnières. En échange : tarif préférentiel et suivi très personnalisé. La démo est gratuite, sans engagement. Vous jugez par vous-même avant toute décision.":"Es una pregunta legítima y me la tomo en serio. Estoy en fase de lanzamiento y trabajo con un círculo reducido de agencias pioneras. A cambio: tarifa preferente y seguimiento muy personalizado. La demo es gratuita, sin compromiso. Usted juzga por sí mismo antes de tomar cualquier decisión.",
+      "💳 Tarifs":"💳 Precios","Tarifs transparents. Aucune surprise.":"Precios transparentes. Ninguna sorpresa.","Setup unique + abonnement mensuel. Résiliable à tout moment.":"Pago único de instalación + suscripción mensual. Cancelable en cualquier momento.",
+      "🎙️ Produit phare — ALEX Voix":"🎙️ Producto estrella — ALEX Voix","ALEX décroche aussi le téléphone de l'agence.":"ALEX también contesta el teléfono de la agencia.",
+      "Il répond aux appels sur les annonces et confirme les visites avec une voix naturelle. Seul : 490 €/mois + 690 € de mise en place · En option sur votre pack : +290 €/mois.":"Responde a las llamadas sobre los anuncios y confirma las visitas con una voz natural. Solo: <strong style=\"color:var(--white)\">490 €/mes</strong> + 690 € de instalación · Como opción en su pack: <strong style=\"color:var(--white)\">+290 €/mes</strong>.",
+      "290 € /mois":"290 € <span>/mes</span>","+ 490 € de setup (une seule fois)":"+ 490 € de instalación (pago único)",
+      "1 canal (site ou WhatsApp)":"1 canal (web o WhatsApp)","Qualification budget / type / délai":"Cualificación presupuesto / tipo / plazo","Récapitulatif email quotidien":"Resumen diario por email","Support par email":"Soporte por email","Mise en place en 5–7 jours":"Puesta en marcha en 5–7 días",
+      "⚡ Recommandé":"⚡ Recomendado","390 € /mois":"390 € <span>/mes</span>","Setup inclus · tarif de lancement agences":"Instalación incluida · tarifa de lanzamiento agencias",
+      "3 canaux au choix":"3 canales a elegir","Qualification complète + prise de RDV":"Cualificación completa + reserva de cita","Intégration CRM incluse":"Integración con CRM incluida","Support prioritaire (réponse < 4h)":"Soporte prioritario (respuesta < 4h)","Optimisations mensuelles incluses":"Optimizaciones mensuales incluidas",
+      "🆕 Option Voix : ALEX décroche votre téléphone (+290 €/mois)":"🆕 <strong>Opción Voz:</strong> ALEX contesta su teléfono (+290 €/mes)",
+      "🔥 Souscrire — offre lancement 390€/mois":"🔥 Suscribirse — oferta de lanzamiento 390€/mes",
+      "790 € /mois":"790 € <span>/mes</span>","Setup inclus pour 3 agences et plus":"Instalación incluida para 3 agencias o más",
+      "Jusqu'à 5 agences / points de vente":"Hasta 5 agencias / puntos de venta","Tous les canaux inclus":"Todos los canales incluidos","Dashboard centralisé multi-agences":"Panel centralizado multiagencia","Rapport de performance mensuel":"Informe de rendimiento mensual","Interlocuteur dédié":"Interlocutor dedicado","Personnalisation avancée par agence":"Personalización avanzada por agencia",
+      "Nous contacter →":"Contáctenos →",
+      "🎁 Offre de lancement : la toute première agence qui démarre avec Alex bénéficie de conditions préférentielles — aucune carte bancaire pour la démo. Les agences suivantes bénéficient du tarif Pro garanti 3 mois.":"🎁 <strong>Oferta de lanzamiento:</strong> la primera agencia que empiece con Alex obtiene condiciones preferentes — sin tarjeta bancaria para la demo. Las siguientes agencias disfrutan de la tarifa Pro garantizada 3 meses.",
+      "🤝 Programme de parrainage : 150 € offerts pour chaque agence immobilière que vous me présentez et qui signe.":"🤝 <strong>Programa de recomendación:</strong> 150 € por cada agencia inmobiliaria que me recomiende y que firme.",
+      "💼 Moins de 13 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.":"💼 Menos de 13 €/día — un negociador que habla 4 idiomas, nunca duerme y no pierde ni un comprador.",
+      "⚡ Tarif de lancement agences : le Pack Pro à 390 €/mois est l'équivalent du Pack Croissance (590 €/mois) — offre réservée aux agences immobilières.":"⚡ <strong>Tarifa de lanzamiento agencias:</strong> el Pack Pro a 390 €/mes equivale al Pack Crecimiento (590 €/mes) — oferta reservada a las agencias inmobiliarias.",
+      "Vous voulez aussi qu'on vous apporte les leads, pas seulement les convertir ?":"¿Quiere también que le <strong style=\"color:var(--white)\">traigamos</strong> los leads, no solo convertirlos?",
+      "→ Découvrir l'offre Acquisition":"→ Descubrir la oferta de Captación",
+      "Votre interlocuteur":"Su interlocutor","Spécialiste IA pour agences immobilières · Fondateur ALEX":"Especialista en IA para agencias inmobiliarias · Fundador de ALEX",
+      "J'ai conçu Alex spécifiquement pour les agences qui perdent des mandats faute de réactivité. Je vous accompagne personnellement de la démo à la mise en place, en moins d'une semaine.":"Diseñé a Alex específicamente para las agencias que pierden mandatos por falta de reactividad. Le acompaño personalmente desde la demo hasta la puesta en marcha, en menos de una semana.",
+      "Ce que vous pouvez vérifier":"Lo que puede comprobar","Alex fonctionne maintenant":"Alex funciona ahora mismo","Testez le widget en bas à droite — réponse réelle en direct":"Pruebe el widget de abajo a la derecha — respuesta real en directo",
+      "Voiceflow — 50 000+ entreprises":"Voiceflow — más de 50 000 empresas","Technologie utilisée par des milliers de pros dans le monde":"Tecnología utilizada por miles de profesionales en todo el mundo",
+      "Démo en 20 min chrono":"Demo en 20 min exactos","Je vous montre tout sur un cas réel. Pas de présentation PowerPoint":"Le muestro todo sobre un caso real. Sin presentación de PowerPoint",
+      "📋 C'est gratuit et sans engagement":"📋 Es gratis y sin compromiso",
+      "Réservez votre démo de 20 minutes":"Reserve su demo<br><span class=\"text-accent\">de 20 minutos</span>",
+      "Je vous montre Alex en action sur un cas concret adapté à votre agence. Réponse sous 24h.":"Le muestro a Alex en acción sobre un caso concreto adaptado a su agencia. Respuesta en menos de 24 h.",
+      "Prénom *":"Nombre *","Nom *":"Apellidos *","Nom de votre agence *":"Nombre de su agencia *","Email professionnel *":"Email profesional *",
+      "Téléphone (optionnel)":"Teléfono <span style=\"color:var(--muted)\">(opcional)</span>","Votre situation (optionnel)":"Su situación <span style=\"color:var(--muted)\">(opcional)</span>",
+      "Réserver ma démo gratuite de 20 min":"Reservar mi demo gratuita de 20 min","📅 Ou choisissez directement votre créneau":"📅 O elija directamente su horario",
+      "Sans engagement · Réponse sous 24h · Aucune carte bancaire":"Sin compromiso · Respuesta en 24 h · Sin tarjeta bancaria",
+      "🏁 Prêt à arrêter de perdre des prospects ?":"🏁 ¿Listo para dejar de perder prospectos?",
+      "Ce soir, un prospect va écrire à votre agence. Qui lui répondra ?":"Esta noche, un prospecto<br>va a escribir a su agencia.<br><span class=\"text-accent\">¿Quién le responderá?</span>",
+      "Demandez une démo gratuite de 20 minutes. Je vous montre Alex en action sur un cas concret adapté à votre agence. Aucun engagement. Aucune carte bancaire requise.":"Solicite una demo gratuita de 20 minutos. Le muestro a Alex en acción sobre un caso concreto adaptado a su agencia. Sin compromiso. Sin tarjeta bancaria.",
+      "🔥 Démarrer maintenant — 390€/mois":"🔥 Empezar ahora — 390€/mes","🎯 Demander une démo d'abord":"🎯 Solicitar antes una demo",
+      "✓ Activation en 5–7 jours":"✓ Activación en 5–7 días","✓ Paiement sécurisé Stripe":"✓ Pago seguro con Stripe","✓ Sans engagement annuel":"✓ Sin permanencia anual","✓ Support inclus":"✓ Soporte incluido",
+      "🤖 Tester maintenant":"🤖 Probar ahora","Alex est déjà là. Parlez-lui.":"Alex ya está aquí. <span style=\"color:var(--accent)\">Háblele.</span>",
+      "Cliquez sur l'icône de chat en bas à droite. Alex vous répond en direct, comme il le ferait pour vos futurs clients.":"Haga clic en el icono de chat de abajo a la derecha. Alex le responde en directo, igual que lo haría con sus futuros clientes.",
+      "Propulsé par Voiceflow · Données non enregistrées · Démo à titre illustratif":"Con la tecnología de Voiceflow · Datos no registrados · Demo a título ilustrativo",
+      "Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique":"Colaborador IA para agencias inmobiliarias · Respuestas 24/7 · Cualificación automática",
+      "Accueil":"Inicio","Immobilier":"Inmobiliario","Nautique":"Náutica","Beauté":"Belleza","Santé":"Salud","Restaurants":"Restaurantes",
+      "© 2026 ALEX · Contact":"© 2026 ALEX · <a href=\"mailto:contact@agentia-immo.com\" style=\"color:var(--muted);text-decoration:none\">Contacto</a>"
+    },
+    en: {
+      "Votre Agent IA":"Your AI Agent","Comment ça marche":"How it works","Fonctionnalités":"Features","Tarifs":"Pricing","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
+      "🤖 ALEX — Votre Agent IA":"🤖 ALEX — Your AI Agent",
+      "⭐ Produit phare — personne d'autre ne fait ça":"⭐ Flagship product — no one else does this",
+      "ALEX Voix décroche votre téléphone —avec une vraie voix humaine.":"ALEX <span class=\"accent\">Voix</span> answers your phone —<br>with a <span class=\"accent\">real human voice</span>.",
+      "Quand vous êtes en visite ou en rendez-vous, ALEX répond au téléphone à votre place : il qualifie l'acheteur ou le vendeur, renseigne sur les biens et cale la visite. 24h/24, en 4 langues — avec une voix si naturelle que vos clients n'y voient que du feu.":"When you're out on a viewing or in a meeting, ALEX answers the phone for you: it qualifies the buyer or seller, shares details about your listings and books the viewing. 24/7, in 4 languages — with a voice so natural your clients never notice.",
+      "📞 Décroche 100 % des appels":"📞 Answers 100% of calls",
+      "🗣️ Voix humaine · FR/ES/CA/EN":"🗣️ Human voice · FR/ES/CA/EN",
+      "📅 Qualifie et cale la visite":"📅 Qualifies and books the viewing",
+      "📞 Je veux ALEX Voix":"📞 I want ALEX Voix",
+      "Voir l'offre — 490 €/mois":"See the offer — 490 €/mo",
+      "Votre concurrent répond en 90 secondes. Et vous ?":"Your competitor replies<br><span class=\"accent\">in 90 seconds.</span><br>And you?",
+      "🏪 Commerces 🏠 Agences Immo 💇 Salons & Beauté ⚕️ Médecins":"<span>🏪 Shops</span> <span style=\"color:var(--accent)\">🏠 Real Estate</span> <span>💇 Salons & Beauty</span> <span>⚕️ Doctors</span>",
+      "Disponible aujourd'hui pour les agences immobilières — bientôt pour les autres secteurs":"Available today for real estate agencies — other sectors coming soon",
+      "Un assistant commercial virtuel répond à chacun de vos prospects en moins de 2 minutes, 24h/24, 7j/7. Il qualifie, planifie les visites et transmet uniquement des leads chauds à votre équipe. Sans recruter.":"A virtual sales assistant replies to every one of your leads in under 2 minutes, 24/7. It qualifies, schedules viewings and passes only hot leads to your team. Without hiring anyone.",
+      "💬 Tester Alex en direct":"💬 Try Alex live","Voir comment ça marche":"See how it works",
+      "Démo 20 min — sans engagement — aucune carte bancaire":"20-min demo — no commitment — no credit card",
+      "🚀 Mise en place complète en 5–7 jours — sans engagement de durée":"🚀 Full setup in 5–7 days — <strong>no lock-in contract</strong>",
+      "😰 Sans Alex":"😰 Without Alex","Vendredi 22h47 — SeLoger":"Friday 10:47 PM — SeLoger",
+      "\"Bonjour, j'aimerais visiter le T3 avenue des Acacias. Budget 350 000 €. Est-ce toujours disponible ?\"":"\"Hi, I'd like to view the 2-bed on avenue des Acacias. Budget €350,000. Is it still available?\"",
+      "⏳ Aucune réponse avant lundi matin":"⏳ No reply until Monday morning",
+      "→ Samedi, le couple visite avec l'agence d'en face.":"→ On Saturday, the couple views with the agency across the street.",
+      "✅ Avec Alex":"✅ With Alex","Vendredi 22h47":"Friday 10:47 PM","22h48 — Réponse en 1 min 04 sec ✓":"10:48 PM — Replied in 1 min 04 sec ✓",
+      "\"Bonsoir ! Je suis l'assistant de l'Agence Martin 😊 Le T3 est disponible ! Êtes-vous primo-accédant ou avez-vous un bien à vendre ?\"":"\"Good evening! I'm the assistant at Agence Martin 😊 The flat is available! Are you a first-time buyer or do you have a property to sell?\"",
+      "✅ Lead qualifié · RDV samedi 10h confirmé":"✅ Qualified lead · Saturday 10 AM appointment confirmed",
+      "Fonctionne avec":"Works with","🌐 Votre site web":"🌐 Your website",
+      "Temps de réponse garanti":"Guaranteed response time","24h / 7j":"24/7","Disponibilité sans interruption":"Uninterrupted availability","5–7 j":"5–7 days","Délai de mise en place":"Setup time","Recrutement nécessaire":"Hiring needed",
+      "📖 Ça vous est déjà arrivé ?":"📖 Has this ever happened to you?","Vendredi soir — 22h47":"Friday night — 10:47 PM",
+      "Un couple cherche son appartement depuis 6 mois.":"A couple has been flat-hunting for 6 months.",
+      "Ils consultent SeLoger après le travail. Ils tombent sur votre annonce. Le bien correspond exactement à leur budget et à leur projet. Ils envoient un message à 22h47. Ils espèrent une réponse rapide. Ils veulent visiter samedi matin. Mais votre agence est fermée. Vos agents ont éteint leurs téléphones. Le message reste sans réponse jusqu'au lundi matin.":"They browse the property portals after work. They come across <strong>your ad</strong>. The property matches their budget and their plans exactly.<br><br>They send a message at 10:47 PM. They're hoping for a quick reply. They want to view it Saturday morning.<br><br>But your agency is closed. Your agents have switched off their phones. The message goes unanswered until Monday morning.",
+      "Ce week-end, le couple visite avec l'agence d'en face. Ils signent une offre le dimanche. Votre message du lundi arrive trop tard. Une commission s'envole.":"<strong>That weekend, the couple views with the agency across the street.</strong> They sign an offer on Sunday. Your Monday message arrives too late. A commission vanishes.",
+      "Ce scénario se reproduit chaque semaine dans des centaines d'agences. ALEX est là pour que ça n'arrive plus jamais chez vous.":"This scenario repeats every week in hundreds of agencies.<br><span>ALEX is here so it never happens to you again.</span>",
+      "⚠️ Le vrai problème":"⚠️ The real problem","Vous perdez des clients sans le savoir.":"You're losing clients without knowing it.",
+      "Chaque heure sans réponse est une commission potentielle qui s'envole. Le prospect le plus motivé choisit l'agence qui répond en premier.":"Every hour without a reply is a potential commission slipping away. The most motivated lead picks the agency that replies first.",
+      "Les leads du soir disparaissent":"Evening leads vanish",
+      "Vos meilleurs acheteurs envoient des messages le soir et le week-end. Sans réponse rapide, ils contactent l'agence suivante sur la liste.":"Your best buyers send messages in the evening and at weekends. Without a fast reply, they contact the next agency on the list.",
+      "Vos agents gaspillent leur énergie":"Your agents waste their energy",
+      "Ils rappellent des contacts sans budget, sans projet réel, sans urgence. Chaque appel inutile est une visite de moins avec un vrai acheteur.":"They call back contacts with no budget, no real project, no urgency. Every wasted call is one less viewing with a genuine buyer.",
+      "Votre taux de transformation stagne":"Your conversion rate stalls",
+      "Vous générez des contacts mais peu deviennent des RDV. La cause principale : le délai de réponse et l'absence de qualification immédiate.":"You generate contacts but few turn into appointments. The main cause: response time and the lack of immediate qualification.",
+      "🤝 La solution":"🤝 The solution",
+      "Pas un chatbot. Un vrai collaborateur.":"Not just a bot.<br><span class=\"text-accent\">A real teammate.</span>",
+      "Alex est votre assistant commercial virtuel. Il connaît votre agence, votre secteur, votre portefeuille de biens. Il répond comme le ferait votre meilleur négociateur — en moins de 2 minutes, à n'importe quelle heure.":"Alex is your virtual sales assistant. It knows your agency, your area, your property portfolio. It replies like your best negotiator would — in under 2 minutes, at any hour.",
+      "Répond instantanément, 24h/24 et 7j/7":"Replies instantly, 24/7","Qualifie le budget, le projet et l'urgence":"Qualifies budget, project and urgency","Propose et confirme des créneaux de visite":"Offers and confirms viewing slots","Transmet uniquement des leads chauds, déjà qualifiés":"Passes on only hot, pre-qualified leads","S'exprime avec le ton exact de votre agence":"Speaks in the exact tone of your agency","Ne prend jamais de congés. Ne tombe jamais malade.":"Never takes time off. Never gets sick.",
+      "Assistant Commercial IA — Immo":"AI Sales Assistant — Real Estate","En ligne":"<div class=\"dot\" aria-hidden=\"true\"></div> Online",
+      "Temps de réponse":"Response time","Disponibilité":"Availability","Conversations en parallèle":"Simultaneous conversations",
+      "⚙️ Le processus":"⚙️ The process","De l'inconnu au lead chaud — en automatique.":"From stranger to hot lead — automatically.",
+      "En 4 étapes entièrement automatisées, Alex transforme un message anonyme en rendez-vous qualifié transmis à votre équipe.":"In 4 fully automated steps, Alex turns an anonymous message into a qualified appointment handed to your team.",
+      "Un prospect vous écrit":"A lead messages you","Via votre site, WhatsApp, Facebook, ou Instagram — peu importe le canal ou l'heure.":"Via your site, WhatsApp, Facebook or Instagram — whatever the channel or the hour.",
+      "Alex répond en < 2 min":"Alex replies in < 2 min","Message professionnel et personnalisé, au ton de votre agence, qui engage la conversation immédiatement.":"A professional, personalized message, in your agency's tone, that starts the conversation immediately.",
+      "Le projet est qualifié":"The project gets qualified","Budget, type de bien, délai d'achat, situation personnelle — tout est recueilli naturellement et sans friction.":"Budget, property type, purchase timeline, personal situation — all gathered naturally and friction-free.",
+      "Votre agent reçoit la fiche":"Your agent receives the file","Récapitulatif complet + RDV déjà confirmé dans l'agenda. Votre équipe n'intervient que sur des dossiers chauds.":"Full summary + appointment already confirmed in the calendar. Your team only steps in on hot cases.",
+      "Prêt à voir Alex en action sur votre agence ?":"Ready to see Alex in action for your agency?","🎯 Demander ma démo gratuite — 20 min":"🎯 Get my free demo — 20 min","Sans engagement · Aucune carte bancaire":"No commitment · No credit card",
+      "💬 Exemple réel":"💬 Real example","Voici exactement ce que vos prospects reçoivent.":"This is exactly what your leads receive.",
+      "Alex répond comme un collaborateur humain — jamais comme un bot. Il pose les bonnes questions, dans le bon ordre, pour qualifier sans friction ni attente.":"Alex replies like a human teammate — never like a bot. It asks the right questions, in the right order, to qualify with no friction and no waiting.",
+      "🎯 Qualification complète du projet en quelques échanges":"<span class=\"ico\">🎯</span> Full project qualification in a few messages","📅 Prise de RDV directement dans votre agenda":"<span class=\"ico\">📅</span> Appointment booked straight into your calendar","📋 Fiche prospect transmise instantanément à votre équipe":"<span class=\"ico\">📋</span> Lead file sent instantly to your team","🔔 Notification en temps réel à votre agent":"<span class=\"ico\">🔔</span> Real-time notification to your agent",
+      "Voir la démo complète →":"See the full demo →",
+      "Alex — Assistant Agence Martin":"Alex — Agence Martin Assistant","● En ligne · Répond instantanément":"● Online · Replies instantly",
+      "Bonsoir, je suis intéressé par le T3 avenue des Acacias. Budget 350 K€. Est-ce toujours disponible ?":"Good evening, I'm interested in the 2-bed on avenue des Acacias. Budget €350K. Is it still available?",
+      "Bonsoir ! Je suis Alex, l'assistant de l'Agence Martin 😊 Le T3 avenue des Acacias est bien disponible ! Pour mieux vous accompagner — avez-vous un bien à vendre ou êtes-vous en première acquisition ?":"Good evening! I'm Alex, the assistant at Agence Martin 😊 The flat on avenue des Acacias is indeed available! To help you better — do you have a property to sell or is this your first purchase?",
+      "22h50":"10:50 PM","Nous avons un appartement en cours de vente, compromis signé. On peut bouger rapidement.":"We have a flat under sale, contract signed. We can move quickly.",
+      "C'est une excellente position 🎉 Une visite samedi matin vous conviendrait-elle ? J'ai un créneau à 10h ou 11h30.":"That's an excellent position 🎉 Would a Saturday morning viewing suit you? I have a slot at 10:00 or 11:30.",
+      "22h51":"10:51 PM","10h c'est parfait !":"10:00 is perfect!",
+      "Lead qualifié transmis · RDV confirmé samedi 10h":"Qualified lead sent · Appointment confirmed Saturday 10 AM",
+      "🎯 Votre démo personnalisée":"🎯 Your personalized demo","En 20 minutes, vous verrez tout.":"In 20 minutes, you'll see everything.",
+      "Une démonstration live, adaptée à votre agence et votre secteur. Pas de slides. Pas de PowerPoint. Du concret.":"A live demo, tailored to your agency and your market. No slides. No PowerPoint. Just the real thing.",
+      "Alex en action sur un vrai scénario":"Alex in action on a real scenario","Je simule une conversation prospect en direct. Vous voyez exactement ce que vos clients recevraient.":"I simulate a live lead conversation. You see exactly what your clients would receive.",
+      "Le parcours complet jusqu'au lead qualifié":"The full journey to a qualified lead","De la 1ère réponse automatique à la fiche prospect transmise à votre équipe — en temps réel.":"From the 1st automatic reply to the lead file handed to your team — in real time.",
+      "La configuration pour votre agence":"The setup for your agency","Je vous montre comment Alex s'adapte à votre secteur, votre ton, vos typologies de biens et vos prix.":"I show you how Alex adapts to your market, your tone, your property types and your prices.",
+      "L'intégration avec vos outils existants":"Integration with your existing tools","WhatsApp, votre site, votre CRM et votre agenda — je vous explique comment tout se connecte, sans friction technique.":"WhatsApp, your site, your CRM and your calendar — I explain how it all connects, with no technical friction.",
+      "Un devis personnalisé, transparent":"A personalized, transparent quote","Tarif exact, délai, plan de déploiement — tout est clair avant de vous engager. Aucune surprise.":"Exact price, timeline, rollout plan — all clear before you commit. No surprises.",
+      "🎯 Réserver ma démo gratuite":"🎯 Book my free demo","Démo 20 min · Sans engagement · Aucune carte bancaire":"20-min demo · No commitment · No credit card",
+      "🛠️ Ce qui est inclus":"🛠️ What's included","Tout ce dont votre agence a besoin.":"Everything your agency needs.",
+      "Un système complet, configuré pour votre agence, opérationnel en moins d'une semaine. Rien à installer de votre côté.":"A complete system, configured for your agency, live in under a week. Nothing to install on your side.",
+      "Multi-canal":"Multichannel","Site web, WhatsApp Business, Facebook Messenger, Instagram — Alex est présent partout où vos prospects vous écrivent.":"Website, WhatsApp Business, Facebook Messenger, Instagram — Alex is present wherever your leads message you.",
+      "Formé sur votre agence":"Trained on your agency","Alex connaît votre secteur géographique, vos typologies de biens, vos prix moyens et le ton exact de votre marque.":"Alex knows your geographic area, your property types, your average prices and the exact tone of your brand.",
+      "Qualification complète":"Full qualification","Budget, délai, type de projet, situation personnelle et motivation — tout est qualifié avant que votre équipe n'intervienne.":"Budget, timeline, project type, personal situation and motivation — all qualified before your team steps in.",
+      "Prise de RDV automatique":"Automatic appointment booking","Alex propose directement des créneaux dans votre agenda et confirme les visites — sans aucune intervention humaine.":"Alex offers slots directly in your calendar and confirms viewings — with no human intervention.",
+      "Connexion CRM":"CRM connection","Compatible HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API ou Zapier/Make.":"Compatible with HubSpot, Notion, Airtable, Google Sheets, Pipedrive — or any tool with an API or Zapier/Make.",
+      "Dashboard en temps réel":"Real-time dashboard","Tous vos leads, leurs statuts et les conversations — accessibles à tout moment depuis un tableau de bord centralisé.":"All your leads, their statuses and the conversations — accessible anytime from a centralized dashboard.",
+      "🚀 Mise en place":"🚀 Setup","Opérationnel en 5 à 7 jours.":"Live in 5 to 7 days.","Vous n'avez rien à faire techniquement. Je m'occupe de tout.":"You have nothing to do technically. I take care of everything.",
+      "Jour 1":"Day 1","Appel de découverte — 30 minutes":"Discovery call — 30 minutes","On échange sur votre agence, votre secteur, vos besoins et vos outils actuels. Je prends note de tout.":"We talk through your agency, your market, your needs and your current tools. I note everything down.",
+      "Jours 2–4":"Days 2–4","Configuration et personnalisation":"Configuration and personalization","Je configure Alex avec votre ton, vos biens, votre secteur géographique et votre processus de qualification.":"I configure Alex with your tone, your properties, your geographic area and your qualification process.",
+      "Jours 5–6":"Days 5–6","Connexion à vos canaux et outils":"Connection to your channels and tools","Intégration WhatsApp, site web, CRM et agenda. Je teste chaque canal en conditions réelles avant le lancement.":"WhatsApp, website, CRM and calendar integration. I test each channel in real conditions before launch.",
+      "Jour 7":"Day 7","Lancement et formation":"Launch and training","Alex est en ligne. Je vous forme en 30 minutes sur le dashboard et les rapports. Vous êtes autonome dès le premier jour.":"Alex is live. I train you in 30 minutes on the dashboard and the reports. You're self-sufficient from day one.",
+      "🔐 Transparence totale":"🔐 Total transparency","Honnêteté totale. Zéro surprise.":"Total honesty. Zero surprises.",
+      "Je suis en phase de lancement et je le dis clairement. Ce que vous obtenez en échange : transparence absolue, tarif préférentiel et suivi personnalisé.":"I'm in launch phase and I say so plainly. What you get in return: absolute transparency, a preferential rate and personalized follow-up.",
+      "Vos données vous appartiennent":"Your data belongs to you","Tous les contacts et conversations appartiennent à votre agence. Je ne les utilise ni ne les partage. Conformité RGPD garantie.":"All contacts and conversations belong to your agency. I neither use nor share them. GDPR compliance guaranteed.",
+      "Sans engagement":"No commitment","Résiliation à tout moment, sans préavis, sans frais. Si l'agent ne vous convient pas, vous partez sans débourser un euro supplémentaire.":"Cancel anytime, no notice, no fees. If the agent isn't right for you, you leave without paying a single euro more.",
+      "Accompagnement humain direct":"Direct human support","Je suis joignable directement — pas un support anonyme. Si quelque chose ne fonctionne pas, je le corrige sous 24 heures.":"You can reach me directly — not an anonymous help desk. If something doesn't work, I fix it within 24 hours.",
+      "Questions fréquentes":"Frequently asked questions",
+      "Combien de temps pour mettre en place l'agent ? ▾":"How long does it take to set up the agent? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Entre 5 et 7 jours ouvrés. On commence par un appel de 30 min pour comprendre votre agence, puis je configure tout de mon côté. Vous n'avez rien à faire techniquement.":"Between 5 and 7 business days. We start with a 30-min call to understand your agency, then I configure everything on my end. You have nothing to do technically.",
+      "Est-ce que ça remplace mes agents immobiliers ? ▾":"Does it replace my real estate agents? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Non — ça les libère. Alex gère la 1ère prise de contact et la qualification. Vos agents n'interviennent que sur des leads chauds, avec un projet clair et un RDV confirmé. Ils passent leur temps sur ce qui génère réellement des commissions.":"No — it frees them up. Alex handles the first contact and qualification. Your agents only step in on hot leads, with a clear project and a confirmed appointment. They spend their time on what actually generates commissions.",
+      "Mes prospects sauront-ils qu'ils parlent à une IA ? ▾":"Will my leads know they're talking to an AI? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "C'est votre choix. On peut configurer Alex pour se présenter comme \"l'assistant de votre agence\" ou être transparent sur sa nature. Je respecte les bonnes pratiques légales et vous conseille sur la meilleure approche selon votre clientèle.":"It's your choice. We can set Alex up to introduce itself as \"your agency's assistant\" or to be transparent about its nature. I follow legal best practices and advise you on the best approach for your clientele.",
+      "Quels outils sont compatibles ? ▾":"Which tools are compatible? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "HubSpot, Notion, Airtable, Google Sheets, Pipedrive — ou tout outil avec une API, Zapier ou Make. Si vous n'avez pas de CRM, je vous mets en place une solution simple et gratuite (Airtable ou Google Sheets) adaptée à une agence.":"HubSpot, Notion, Airtable, Google Sheets, Pipedrive — or any tool with an API, Zapier or Make. If you don't have a CRM, I'll set up a simple, free solution (Airtable or Google Sheets) suited to an agency.",
+      "Et si je veux arrêter ? ▾":"What if I want to stop? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Résiliation à tout moment, sans engagement, sans frais. Vous gardez toutes vos données prospects et l'historique complet des conversations. Aucun blocage, aucune clause cachée.":"Cancel anytime, no commitment, no fees. You keep all your lead data and the full conversation history. No lock-in, no hidden clauses.",
+      "Alex peut-il vraiment répondre comme un humain ? ▾":"Can Alex really reply like a human? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "Oui. Alex est configuré pour adopter le ton, le vocabulaire et le style de votre agence. Il ne répond pas avec des formules génériques. Lors de la démo, vous verrez des exemples concrets de conversations réelles.":"Yes. Alex is configured to adopt the tone, vocabulary and style of your agency. It doesn't reply with generic phrases. During the demo, you'll see concrete examples of real conversations.",
+      "Vous n'avez pas encore de clients. Pourquoi vous faire confiance ? ▾":"You don't have clients yet. Why trust you? <span class=\"faq-chev\" aria-hidden=\"true\">▾</span>",
+      "C'est une question légitime et je la prends au sérieux. Je suis en phase de lancement et je travaille avec un cercle restreint d'agences pionnières. En échange : tarif préférentiel et suivi très personnalisé. La démo est gratuite, sans engagement. Vous jugez par vous-même avant toute décision.":"It's a fair question and I take it seriously. I'm in launch phase and working with a small circle of pioneering agencies. In return: a preferential rate and highly personalized follow-up. The demo is free, no commitment. You judge for yourself before making any decision.",
+      "💳 Tarifs":"💳 Pricing","Tarifs transparents. Aucune surprise.":"Transparent pricing. No surprises.","Setup unique + abonnement mensuel. Résiliable à tout moment.":"One-time setup + monthly subscription. Cancel anytime.",
+      "🎙️ Produit phare — ALEX Voix":"🎙️ Flagship — ALEX Voix","ALEX décroche aussi le téléphone de l'agence.":"ALEX also answers the agency's phone.",
+      "Il répond aux appels sur les annonces et confirme les visites avec une voix naturelle. Seul : 490 €/mois + 690 € de mise en place · En option sur votre pack : +290 €/mois.":"It answers calls about your listings and confirms viewings with a natural voice. Standalone: <strong style=\"color:var(--white)\">€490/mo</strong> + €690 setup · As an add-on to your pack: <strong style=\"color:var(--white)\">+€290/mo</strong>.",
+      "290 € /mois":"290 € <span>/mo</span>","+ 490 € de setup (une seule fois)":"+ €490 setup (one-time)",
+      "1 canal (site ou WhatsApp)":"1 channel (site or WhatsApp)","Qualification budget / type / délai":"Budget / type / timeline qualification","Récapitulatif email quotidien":"Daily email summary","Support par email":"Email support","Mise en place en 5–7 jours":"Setup in 5–7 days",
+      "⚡ Recommandé":"⚡ Recommended","390 € /mois":"390 € <span>/mo</span>","Setup inclus · tarif de lancement agences":"Setup included · agency launch rate",
+      "3 canaux au choix":"3 channels of your choice","Qualification complète + prise de RDV":"Full qualification + appointment booking","Intégration CRM incluse":"CRM integration included","Support prioritaire (réponse < 4h)":"Priority support (reply < 4h)","Optimisations mensuelles incluses":"Monthly optimizations included",
+      "🆕 Option Voix : ALEX décroche votre téléphone (+290 €/mois)":"🆕 <strong>Voice add-on:</strong> ALEX answers your phone (+€290/mo)",
+      "🔥 Souscrire — offre lancement 390€/mois":"🔥 Subscribe — launch offer €390/mo",
+      "790 € /mois":"790 € <span>/mo</span>","Setup inclus pour 3 agences et plus":"Setup included for 3 agencies or more",
+      "Jusqu'à 5 agences / points de vente":"Up to 5 agencies / points of sale","Tous les canaux inclus":"All channels included","Dashboard centralisé multi-agences":"Centralized multi-agency dashboard","Rapport de performance mensuel":"Monthly performance report","Interlocuteur dédié":"Dedicated point of contact","Personnalisation avancée par agence":"Advanced per-agency customization",
+      "Nous contacter →":"Contact us →",
+      "🎁 Offre de lancement : la toute première agence qui démarre avec Alex bénéficie de conditions préférentielles — aucune carte bancaire pour la démo. Les agences suivantes bénéficient du tarif Pro garanti 3 mois.":"🎁 <strong>Launch offer:</strong> the very first agency to start with Alex gets preferential terms — no credit card for the demo. The next agencies get the Pro rate guaranteed for 3 months.",
+      "🤝 Programme de parrainage : 150 € offerts pour chaque agence immobilière que vous me présentez et qui signe.":"🤝 <strong>Referral program:</strong> €150 for every real estate agency you refer that signs.",
+      "💼 Moins de 13 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.":"💼 Less than €13/day — a negotiator who speaks 4 languages, never sleeps and never misses a buyer.",
+      "⚡ Tarif de lancement agences : le Pack Pro à 390 €/mois est l'équivalent du Pack Croissance (590 €/mois) — offre réservée aux agences immobilières.":"⚡ <strong>Agency launch rate:</strong> the Pro Pack at €390/mo is the equivalent of the Growth Pack (€590/mo) — offer reserved for real estate agencies.",
+      "Vous voulez aussi qu'on vous apporte les leads, pas seulement les convertir ?":"Want us to <strong style=\"color:var(--white)\">bring</strong> you the leads too, not just convert them?",
+      "→ Découvrir l'offre Acquisition":"→ Discover the Lead Gen offer",
+      "Votre interlocuteur":"Your contact","Spécialiste IA pour agences immobilières · Fondateur ALEX":"AI specialist for real estate agencies · Founder of ALEX",
+      "J'ai conçu Alex spécifiquement pour les agences qui perdent des mandats faute de réactivité. Je vous accompagne personnellement de la démo à la mise en place, en moins d'une semaine.":"I built Alex specifically for agencies that lose mandates for lack of responsiveness. I support you personally from the demo to go-live, in under a week.",
+      "Ce que vous pouvez vérifier":"What you can verify","Alex fonctionne maintenant":"Alex works right now","Testez le widget en bas à droite — réponse réelle en direct":"Try the widget in the bottom right — a real, live reply",
+      "Voiceflow — 50 000+ entreprises":"Voiceflow — 50,000+ companies","Technologie utilisée par des milliers de pros dans le monde":"Technology used by thousands of professionals worldwide",
+      "Démo en 20 min chrono":"Demo in 20 minutes flat","Je vous montre tout sur un cas réel. Pas de présentation PowerPoint":"I show you everything on a real case. No PowerPoint presentation",
+      "📋 C'est gratuit et sans engagement":"📋 It's free and no commitment",
+      "Réservez votre démo de 20 minutes":"Book your<br><span class=\"text-accent\">20-minute demo</span>",
+      "Je vous montre Alex en action sur un cas concret adapté à votre agence. Réponse sous 24h.":"I show you Alex in action on a concrete case tailored to your agency. Reply within 24h.",
+      "Prénom *":"First name *","Nom *":"Last name *","Nom de votre agence *":"Your agency name *","Email professionnel *":"Work email *",
+      "Téléphone (optionnel)":"Phone <span style=\"color:var(--muted)\">(optional)</span>","Votre situation (optionnel)":"Your situation <span style=\"color:var(--muted)\">(optional)</span>",
+      "Réserver ma démo gratuite de 20 min":"Book my free 20-min demo","📅 Ou choisissez directement votre créneau":"📅 Or pick your slot directly",
+      "Sans engagement · Réponse sous 24h · Aucune carte bancaire":"No commitment · Reply within 24h · No credit card",
+      "🏁 Prêt à arrêter de perdre des prospects ?":"🏁 Ready to stop losing leads?",
+      "Ce soir, un prospect va écrire à votre agence. Qui lui répondra ?":"Tonight, a lead<br>will message your agency.<br><span class=\"text-accent\">Who will answer?</span>",
+      "Demandez une démo gratuite de 20 minutes. Je vous montre Alex en action sur un cas concret adapté à votre agence. Aucun engagement. Aucune carte bancaire requise.":"Request a free 20-minute demo. I show you Alex in action on a concrete case tailored to your agency. No commitment. No credit card required.",
+      "🔥 Démarrer maintenant — 390€/mois":"🔥 Start now — €390/mo","🎯 Demander une démo d'abord":"🎯 Request a demo first",
+      "✓ Activation en 5–7 jours":"✓ Activation in 5–7 days","✓ Paiement sécurisé Stripe":"✓ Secure Stripe payment","✓ Sans engagement annuel":"✓ No annual commitment","✓ Support inclus":"✓ Support included",
+      "🤖 Tester maintenant":"🤖 Try it now","Alex est déjà là. Parlez-lui.":"Alex is already here. <span style=\"color:var(--accent)\">Talk to him.</span>",
+      "Cliquez sur l'icône de chat en bas à droite. Alex vous répond en direct, comme il le ferait pour vos futurs clients.":"Click the chat icon in the bottom right. Alex replies to you live, just as he would for your future clients.",
+      "Propulsé par Voiceflow · Données non enregistrées · Démo à titre illustratif":"Powered by Voiceflow · Data not stored · Illustrative demo",
+      "Collaborateur IA pour agences immobilières · Réponses 24h/24 · Qualification automatique":"AI teammate for real estate agencies · 24/7 replies · Automatic qualification",
+      "Accueil":"Home","Immobilier":"Real Estate","Nautique":"Boating","Beauté":"Beauty","Santé":"Health","Restaurants":"Restaurants",
+      "© 2026 ALEX · Contact":"© 2026 ALEX · <a href=\"mailto:contact@agentia-immo.com\" style=\"color:var(--muted);text-decoration:none\">Contact</a>"
+    }
+  };
+  const SEL = 'nav .nav-links a, .nav-sub, .btn, .tag, h1, h2, h3, p, li, label, .hero-sectors, .hero-pill, .story-kicker, .trust-label, .trust-item, .stat-num, .stat-lbl, .baa-label, .baa-time, .bubble, .baa-reply-time, .baa-outcome, .alex-role, .alex-online, .kpi-lbl, .di-title, .di-desc, .chat-av-name, .chat-av-sub, .msg-t, .msg-b, .chat-foot span, .tl-day, .faq-btn, .faq-ans, .pc-name, .pc-price, .pc-setup, .pc-popular, .cta-pill, footer nav a, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2';
+  const norm = s => s.replace(/\s+/g,' ').trim();
+  let els = [];
+  function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined){ el.dataset.o = el.innerHTML; el.dataset.k = norm(el.textContent); } }); }
+  function apply(lang){
+    els.forEach(el=>{
+      const o = el.dataset.o; if(o===undefined) return;
+      if(lang==='fr'){ el.innerHTML = o; return; }
+      const t = D[lang][el.dataset.k];
+      el.innerHTML = (t!==undefined) ? t : o;
+    });
+    document.documentElement.lang = lang;
+    try{ localStorage.setItem('alexLang', lang); }catch(e){}
+    document.querySelectorAll('.lang-btn').forEach(b=>{
+      const on = b.dataset.setlang===lang;
+      b.style.background = on ? 'var(--accent)' : 'transparent';
+      b.style.color = on ? '#08101f' : 'var(--muted2)';
+    });
+  }
+  window.__setLang = apply;
+  function init(){
+    collect();
+    document.querySelectorAll('.lang-btn').forEach(b=> b.addEventListener('click', ()=>apply(b.dataset.setlang)));
+    let l; try{ l = localStorage.getItem('alexLang'); }catch(e){}
+    if(!l){ const n=(navigator.language||'fr').slice(0,2).toLowerCase(); l = (n==='es'||n==='en')?n:'fr'; }
+    apply(l);
+  }
+  if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
+})();
 </script>
 </body>
 </html>
