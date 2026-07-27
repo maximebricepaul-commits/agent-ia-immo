@@ -45,9 +45,9 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "offers": [
-      {"@type": "Offer", "name": "ALEX Assistant", "priceCurrency": "EUR", "price": "290"},
-      {"@type": "Offer", "name": "Pack Croissance", "priceCurrency": "EUR", "price": "590"},
-      {"@type": "Offer", "name": "Automatisations", "priceCurrency": "EUR", "price": "190"}
+      {"@type": "Offer", "name": "ALEX Voix", "priceCurrency": "EUR", "price": "490"},
+      {"@type": "Offer", "name": "ALEX 360 (Voix + Chat)", "priceCurrency": "EUR", "price": "690"},
+      {"@type": "Offer", "name": "ALEX Chat", "priceCurrency": "EUR", "price": "290"}
     ]
   }
   </script>
@@ -422,6 +422,41 @@
   </div>
 </header>
 
+<!-- ALEX VOIX -->
+<section class="section section-alt" id="voix" aria-label="ALEX Voix — l'assistant qui téléphone">
+  <div class="container" style="text-align:center">
+    <div class="tag" style="background:var(--magenta-dim);border-color:var(--border-m);color:var(--accent2)">🎙️ NOTRE PRODUIT PHARE — ALEX VOIX</div>
+    <h2 class="section-heading" style="margin-top:18px">Un vrai commercial <span class="accent">qui décroche le téléphone.</span></h2>
+    <p class="section-sub">Voici ce qu'ALEX fait de mieux : il parle. Une vraie voix humaine et naturelle, multilingue, qui répond à vos appels, rappelle vos clients et prend vos rendez-vous — pendant que vous travaillez. Le genre de commercial qu'on ne trouve pas.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:820px;margin:0 auto 30px;text-align:left">
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px">
+        <div style="font-size:1.4rem;margin-bottom:10px">📥</div>
+        <p style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:8px">Il décroche à votre place</p>
+        <p style="color:var(--muted2);font-size:0.9rem">Le téléphone sonne pendant le service, le soir, le dimanche ? ALEX répond, renseigne, prend la réservation et vous envoie le récap. Plus aucun appel perdu.</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px">
+        <div style="font-size:1.4rem;margin-bottom:10px">📤</div>
+        <p style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:8px">Il appelle pour vous</p>
+        <p style="color:var(--muted2);font-size:0.9rem">Confirmations de rendez-vous, rappels anti no-show, relances des demandes restées sans réponse : ALEX passe les appels que vous n'avez jamais le temps de passer.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:18px 26px;text-align:center">
+        <p style="color:var(--accent2);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px">ALEX Voix</p>
+        <p style="color:var(--white);font-weight:900;font-size:1.3rem">490 €<span style="font-size:0.85rem;color:var(--muted2);font-weight:600"> /mois</span></p>
+        <p style="color:var(--muted);font-size:0.8rem">+ 690 € de mise en place</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 26px;text-align:center">
+        <p style="color:var(--muted2);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px">ALEX 360 — Voix + Chat</p>
+        <p style="color:var(--white);font-weight:900;font-size:1.3rem">690 €<span style="font-size:0.85rem;color:var(--muted2);font-weight:600"> /mois</span></p>
+        <p style="color:var(--muted);font-size:0.8rem">+ 890 € · tous vos canaux</p>
+      </div>
+    </div>
+    <p style="color:var(--muted2);font-size:0.88rem;margin-bottom:22px">Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée</p>
+    <a href="#contact" class="btn btn-primary btn-lg">🎧 Écouter ALEX au téléphone — demander une démo</a>
+  </div>
+</section>
+
 <!-- SECTEURS -->
 <section class="section" id="secteurs" aria-label="Secteurs couverts">
   <div class="container">
@@ -532,58 +567,60 @@
 
     <div class="pricing-grid">
 
-      <div class="pc fade-in delay-1">
-        <div class="pc-name">ALEX Assistant</div>
+      <div class="pc featured fade-in delay-1">
+        <div class="pc-popular">🎙️ Produit phare</div>
+        <div class="pc-name">ALEX Voix</div>
+        <div class="pc-price">490 € <span>/mois</span></div>
+        <div class="pc-setup">+ 690 € de mise en place (une seule fois)</div>
+        <ul class="pc-feats">
+          <li>Un vrai commercial vocal qui <strong>décroche ET rappelle</strong></li>
+          <li>Voix naturelle et humaine, multilingue (FR / ES / CA / EN)</li>
+          <li>Rappel de vos leads en moins d'une minute</li>
+          <li>Prise de rendez-vous et confirmations par téléphone</li>
+          <li>Configuré sur votre métier, testé avec vous avant la mise en ligne</li>
+        </ul>
+        <a href="#contact" class="btn btn-primary" onclick="trackEvent('click_demo_hub','CTA','offer_voix',490)" aria-label="Demander une démo pour ALEX Voix">
+          🔥 Demander une démo →
+        </a>
+      </div>
+
+      <div class="pc fade-in delay-2">
+        <div class="pc-name">ALEX 360</div>
+        <div class="pc-price">690 € <span>/mois</span></div>
+        <div class="pc-setup">+ 890 € de mise en place (une seule fois)</div>
+        <ul class="pc-feats">
+          <li><strong>ALEX Voix + Chat</strong> sur tous vos canaux</li>
+          <li>Téléphone + site + WhatsApp + Instagram + Facebook</li>
+          <li>Prise de RDV, relances, anti no-show, avis Google</li>
+          <li>Intégration CRM + optimisations mensuelles</li>
+          <li>L'offre complète : rien ne passe entre les mailles</li>
+        </ul>
+        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_360',690)" aria-label="Demander une démo pour ALEX 360">
+          Demander une démo →
+        </a>
+      </div>
+
+      <div class="pc fade-in delay-3">
+        <div class="pc-name">ALEX Chat</div>
         <div class="pc-price">290 € <span>/mois</span></div>
         <div class="pc-setup">+ 490 € de mise en place (une seule fois)</div>
         <ul class="pc-feats">
-          <li>Assistant commercial IA sur 1 canal (site ou WhatsApp)</li>
+          <li>Assistant écrit sur 1 canal (site ou WhatsApp)</li>
           <li>Réponse &lt; 2 min, 24h/24, multilingue</li>
           <li>Qualification des demandes</li>
           <li>Récapitulatif email quotidien</li>
           <li>Mise en place en 5–7 jours</li>
         </ul>
-        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_assistant',290)" aria-label="Demander une démo pour l'offre ALEX Assistant">
+        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_chat',290)" aria-label="Demander une démo pour ALEX Chat">
           Demander une démo →
-        </a>
-      </div>
-
-      <div class="pc featured fade-in delay-2">
-        <div class="pc-popular">⚡ Recommandé</div>
-        <div class="pc-name">Pack Croissance</div>
-        <div class="pc-price">590 € <span>/mois</span></div>
-        <div class="pc-setup">+ 690 € de mise en place (une seule fois)</div>
-        <ul class="pc-feats">
-          <li>ALEX Assistant sur 3 canaux au choix</li>
-          <li>Prise de RDV automatique dans votre agenda</li>
-          <li>Relances clients + anti no-show + avis Google</li>
-          <li>Intégration CRM incluse</li>
-          <li>Optimisations mensuelles + support prioritaire</li>
-          <li>🆕 <strong>Option Voix :</strong> ALEX décroche votre téléphone (+290 €/mois)</li>
-        </ul>
-        <a href="#contact" class="btn btn-primary" onclick="trackEvent('click_demo_hub','CTA','offer_croissance',590)" aria-label="Demander une démo pour le Pack Croissance">
-          🔥 Demander une démo →
-        </a>
-      </div>
-
-      <div class="pc fade-in delay-3">
-        <div class="pc-name">Automatisations</div>
-        <div class="pc-price">dès 190 € <span>/mois</span></div>
-        <div class="pc-setup">+ setup selon projet (dès 390 €)</div>
-        <ul class="pc-feats">
-          <li>Relances devis &amp; paniers abandonnés</li>
-          <li>Rappels de RDV et séquences email/SMS</li>
-          <li>Collecte d'avis Google automatisée</li>
-          <li>Facturation &amp; onboarding client automatisés</li>
-          <li>Connexion à vos outils (CRM, agenda, caisse)</li>
-        </ul>
-        <a href="#contact" class="btn btn-outline" onclick="trackEvent('click_demo_hub','CTA','offer_autom',190)" aria-label="Demander un devis automatisations">
-          Étudier mon besoin →
         </a>
       </div>
 
     </div>
 
+    <p class="pricing-note fade-in delay-1">
+      ⚙️ <strong>Automatisations sur mesure</strong> (relances, rappels de RDV, avis Google, facturation) — dès 190 €/mois selon le projet.
+    </p>
     <p class="pricing-note fade-in delay-1">
       🏠 <strong>Agences immobilières :</strong> tarifs et offres dédiés (Starter, Pro, Réseau, Acquisition) sur <a href="/immo/#tarifs" style="color:var(--accent)">la page Immobilier →</a>
     </p>
@@ -594,7 +631,7 @@
       🤝 <strong>Parrainage :</strong> 150 € offerts pour chaque commerce présenté qui signe.
     </p>
     <p class="pricing-note fade-in delay-2" style="color:var(--white);font-weight:700">
-      💼 Moins de 10 €/jour — un employé qui parle 4 langues, ne dort jamais et ne rate aucun client.
+      💼 Environ 16 €/jour — un commercial qui téléphone, parle 4 langues, ne dort jamais et ne rate aucun client.
     </p>
   </div>
 </section>
@@ -689,40 +726,7 @@
   </div>
 </section>
 
-<!-- ALEX VOIX -->
-<section class="section section-alt" id="voix" aria-label="ALEX Voix — l'assistant qui téléphone">
-  <div class="container" style="text-align:center">
-    <div class="tag" style="background:var(--magenta-dim);border-color:var(--border-m);color:var(--accent2)">📞 NOUVEAU — ALEX VOIX</div>
-    <h2 class="section-heading" style="margin-top:18px">Maintenant, ALEX <span class="accent">décroche le téléphone.</span></h2>
-    <p class="section-sub">L'écrit ne suffit plus ? ALEX parle. Une vraie voix naturelle, en français et en espagnol, qui répond à vos appels et passe les vôtres — pendant que vous travaillez.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:820px;margin:0 auto 30px;text-align:left">
-      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px">
-        <div style="font-size:1.4rem;margin-bottom:10px">📥</div>
-        <p style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:8px">Il décroche à votre place</p>
-        <p style="color:var(--muted2);font-size:0.9rem">Le téléphone sonne pendant le service, le soir, le dimanche ? ALEX répond, renseigne, prend la réservation et vous envoie le récap. Plus aucun appel perdu.</p>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px">
-        <div style="font-size:1.4rem;margin-bottom:10px">📤</div>
-        <p style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:8px">Il appelle pour vous</p>
-        <p style="color:var(--muted2);font-size:0.9rem">Confirmations de rendez-vous, rappels anti no-show, relances des demandes restées sans réponse : ALEX passe les appels que vous n'avez jamais le temps de passer.</p>
-      </div>
-    </div>
-    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:24px">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 26px;text-align:center">
-        <p style="color:var(--muted2);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px">ALEX Voix seul</p>
-        <p style="color:var(--white);font-weight:900;font-size:1.3rem">390 €<span style="font-size:0.85rem;color:var(--muted2);font-weight:600"> /mois</span></p>
-        <p style="color:var(--muted);font-size:0.8rem">+ 490 € de mise en place</p>
-      </div>
-      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:18px 26px;text-align:center">
-        <p style="color:var(--accent2);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px">En option sur votre pack</p>
-        <p style="color:var(--white);font-weight:900;font-size:1.3rem">+290 €<span style="font-size:0.85rem;color:var(--muted2);font-weight:600"> /mois</span></p>
-        <p style="color:var(--muted);font-size:0.8rem">setup inclus dans votre pack</p>
-      </div>
-    </div>
-    <p style="color:var(--muted2);font-size:0.88rem;margin-bottom:22px">Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée</p>
-    <a href="#contact" class="btn btn-primary btn-lg">🎧 Écouter ALEX au téléphone — demander une démo</a>
-  </div>
-</section>
+
 
 <!-- TESTER ALEX -->
 <div style="background:var(--bg);border-top:1px solid var(--border);padding:64px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
