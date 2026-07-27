@@ -367,6 +367,11 @@
     <li><a href="/nautique/">Nautique</a></li>
     <li><a href="/acquisition/">Acquisition</a></li>
   </ul>
+  <div class="lang-switch" role="group" aria-label="Choisir la langue" style="display:flex;gap:2px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:2px;margin-left:auto;margin-right:14px">
+    <button type="button" class="lang-btn" data-setlang="fr" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">FR</button>
+    <button type="button" class="lang-btn" data-setlang="es" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">ES</button>
+    <button type="button" class="lang-btn" data-setlang="en" style="border:0;background:transparent;color:var(--muted2);font-size:0.72rem;font-weight:800;padding:5px 8px;border-radius:6px;cursor:pointer;letter-spacing:0.5px">EN</button>
+  </div>
   <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
     onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
     <span></span><span></span><span></span>
@@ -896,6 +901,82 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+/* ===== i18n FR / ES / EN (hub) ===== */
+(function(){
+  const D = {
+    es: {
+      "Secteurs":"Sectores","Offres":"Precios","Blog":"Blog","Immobilier":"Inmobiliario","Nautique":"Náutica","Acquisition":"Captación de leads","Demander une démo →":"Solicitar una demo →",
+      "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — El futuro de la automatización comercial",
+      "Ne perdez plus un client. Ni un rendez-vous.":"No pierda ni un cliente.<br><span class=\"accent\">Ni una cita.</span>",
+      "ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX es un verdadero comercial y responsable de marketing con IA — no un chatbot. Responde a sus clientes en segundos, 24/7, en su idioma, cualifica las solicitudes, agenda las citas y hace el seguimiento automáticamente. Mientras usted trabaja, él también.",
+      "💬 Parler à Alex maintenant":"💬 Hablar con Alex ahora","Voir mon secteur":"Ver mi sector",
+      "⚡ Répond en quelques secondes":"⚡ Responde en segundos","🕐 24h/24 — 7j/7":"🕐 24/7 los 7 días","📅 Prend les RDV tout seul, en direct":"📅 Agenda las citas solo, en directo",
+      "↑ Ce n'est pas une promesse : la bulle en bas à droite, c'est lui. Testez-le.":"↑ No es una promesa: la burbuja de abajo a la derecha es él. Pruébelo.",
+      "🎙️ NOTRE PRODUIT PHARE — ALEX VOIX":"🎙️ NUESTRO PRODUCTO ESTRELLA — ALEX VOZ",
+      "Il répond avec votre voix. Et il vend pendant que vous dormez.":"Responde con <span class=\"accent\">su voz.</span> Y vende <span class=\"accent\">mientras usted duerme.</span>",
+      "On clone votre voix. Ensuite, ALEX décroche votre téléphone, répond à vos clients et vend pour vous — en français, espagnol et anglais, 24h/24. Vous, vous êtes en service, en rendez-vous, ou tranquillement en train de dormir : lui, il travaille et il conclut. Le commercial qui ne s'arrête jamais, avec votre voix.":"Clonamos su voz. Después, ALEX contesta su teléfono, atiende a sus clientes y vende por usted — en francés, español e inglés, 24/7. Usted está trabajando, en una cita o durmiendo tranquilamente: él trabaja y cierra. El comercial que nunca se detiene, con su voz.",
+      "Il décroche à votre place":"Contesta por usted",
+      "Le téléphone sonne pendant le service, le soir, le dimanche ? ALEX répond, renseigne, prend la réservation et vous envoie le récap. Plus aucun appel perdu.":"¿El teléfono suena durante el servicio, por la noche, en domingo? ALEX contesta, informa, toma la reserva y le envía el resumen. Ni una llamada perdida.",
+      "Il appelle pour vous":"Llama por usted",
+      "Confirmations de rendez-vous, rappels anti no-show, relances des demandes restées sans réponse : ALEX passe les appels que vous n'avez jamais le temps de passer.":"Confirmaciones de citas, recordatorios anti ausencias, seguimiento de solicitudes sin respuesta: ALEX hace las llamadas que usted nunca tiene tiempo de hacer.",
+      "🎧 Écouter ALEX au téléphone — demander une démo":"🎧 Escuchar a ALEX por teléfono — pedir una demo",
+      "💳 Offres":"💳 Precios","Des offres simples. Zéro surprise.":"Precios simples. <span class=\"text-accent\">Cero sorpresas.</span>",
+      "Setup unique + abonnement mensuel. Résiliable à tout moment, sans engagement annuel.":"Pago único de instalación + suscripción mensual. Cancelable en cualquier momento, sin permanencia anual.",
+      "🎙️ Produit phare":"🎙️ Producto estrella","🔥 Demander une démo →":"🔥 Solicitar una demo →",
+      "+ 690 € de mise en place (une seule fois)":"+ 690 € de instalación (pago único)","+ 890 € de mise en place (une seule fois)":"+ 890 € de instalación (pago único)","+ 490 € de mise en place (une seule fois)":"+ 490 € de instalación (pago único)"
+    },
+    en: {
+      "Secteurs":"Sectors","Offres":"Pricing","Blog":"Blog","Immobilier":"Real Estate","Nautique":"Boating","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
+      "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — The future of sales automation",
+      "Ne perdez plus un client. Ni un rendez-vous.":"Never lose a customer.<br><span class=\"accent\">Or an appointment.</span>",
+      "ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX is a real AI sales & marketing teammate — not a chatbot. It replies to your customers in seconds, 24/7, in their language, qualifies requests, books appointments and follows up automatically. While you work, so does he.",
+      "💬 Parler à Alex maintenant":"💬 Talk to Alex now","Voir mon secteur":"See my sector",
+      "⚡ Répond en quelques secondes":"⚡ Replies in seconds","🕐 24h/24 — 7j/7":"🕐 24/7","📅 Prend les RDV tout seul, en direct":"📅 Books appointments on its own, live",
+      "↑ Ce n'est pas une promesse : la bulle en bas à droite, c'est lui. Testez-le.":"↑ Not a promise: the bubble in the bottom right is him. Try it.",
+      "🎙️ NOTRE PRODUIT PHARE — ALEX VOIX":"🎙️ OUR FLAGSHIP — ALEX VOICE",
+      "Il répond avec votre voix. Et il vend pendant que vous dormez.":"It answers in <span class=\"accent\">your voice.</span> And it sells <span class=\"accent\">while you sleep.</span>",
+      "On clone votre voix. Ensuite, ALEX décroche votre téléphone, répond à vos clients et vend pour vous — en français, espagnol et anglais, 24h/24. Vous, vous êtes en service, en rendez-vous, ou tranquillement en train de dormir : lui, il travaille et il conclut. Le commercial qui ne s'arrête jamais, avec votre voix.":"We clone your voice. Then ALEX answers your phone, talks to your customers and sells for you — in French, Spanish and English, 24/7. You're serving, in a meeting, or fast asleep: he's working and closing. The salesperson who never stops — in your voice.",
+      "Il décroche à votre place":"It answers for you",
+      "Le téléphone sonne pendant le service, le soir, le dimanche ? ALEX répond, renseigne, prend la réservation et vous envoie le récap. Plus aucun appel perdu.":"Phone ringing mid-service, at night, on a Sunday? ALEX answers, informs, takes the booking and sends you the summary. Never a missed call again.",
+      "Il appelle pour vous":"It calls for you",
+      "Confirmations de rendez-vous, rappels anti no-show, relances des demandes restées sans réponse : ALEX passe les appels que vous n'avez jamais le temps de passer.":"Appointment confirmations, no-show reminders, follow-ups on unanswered leads: ALEX makes the calls you never have time to make.",
+      "🎧 Écouter ALEX au téléphone — demander une démo":"🎧 Hear ALEX on the phone — book a demo",
+      "💳 Offres":"💳 Pricing","Des offres simples. Zéro surprise.":"Simple plans. <span class=\"text-accent\">Zero surprises.</span>",
+      "Setup unique + abonnement mensuel. Résiliable à tout moment, sans engagement annuel.":"One-time setup + monthly subscription. Cancel anytime, no annual commitment.",
+      "🎙️ Produit phare":"🎙️ Flagship","🔥 Demander une démo →":"🔥 Book a demo →",
+      "+ 690 € de mise en place (une seule fois)":"+ €690 setup (one-time)","+ 890 € de mise en place (une seule fois)":"+ €890 setup (one-time)","+ 490 € de mise en place (une seule fois)":"+ €490 setup (one-time)"
+    }
+  };
+  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn';
+  const norm = s => s.replace(/\s+/g,' ').trim();
+  let els = [];
+  function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined) el.dataset.o = el.innerHTML; }); }
+  function apply(lang){
+    els.forEach(el=>{
+      const o = el.dataset.o; if(o===undefined) return;
+      if(lang==='fr'){ el.innerHTML = o; return; }
+      const t = D[lang][norm(el.textContent)];
+      el.innerHTML = (t!==undefined) ? t : o;
+    });
+    document.documentElement.lang = lang;
+    try{ localStorage.setItem('alexLang', lang); }catch(e){}
+    document.querySelectorAll('.lang-btn').forEach(b=>{
+      const on = b.dataset.setlang===lang;
+      b.style.background = on ? 'var(--accent)' : 'transparent';
+      b.style.color = on ? '#08101f' : 'var(--muted2)';
+    });
+  }
+  window.__setLang = apply;
+  function init(){
+    collect();
+    document.querySelectorAll('.lang-btn').forEach(b=> b.addEventListener('click', ()=>apply(b.dataset.setlang)));
+    let l; try{ l = localStorage.getItem('alexLang'); }catch(e){}
+    if(!l){ const n=(navigator.language||'fr').slice(0,2).toLowerCase(); l = (n==='es'||n==='en')?n:'fr'; }
+    apply(l);
+  }
+  if(document.readyState!=='loading') init(); else document.addEventListener('DOMContentLoaded', init);
+})();
 
 const skipLink = document.getElementById('skip-link');
 if (skipLink) {
