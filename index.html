@@ -458,7 +458,11 @@
       </div>
     </div>
     <p style="color:var(--muted2);font-size:0.88rem;margin-bottom:22px">Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée</p>
-    <a href="#contact" class="btn btn-primary btn-lg">🎧 Écouter ALEX au téléphone — demander une démo</a>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center">
+      <button id="voix-live-btn" type="button" class="btn btn-primary btn-lg" style="border:0;cursor:pointer">🎙️ Parlez à ALEX en direct</button>
+      <a href="#contact" class="btn btn-outline btn-lg">🎧 Écouter ALEX au téléphone — demander une démo</a>
+    </div>
+    <p id="voix-live-hint" style="color:var(--muted);font-size:0.82rem;margin-top:12px">Cliquez, autorisez votre micro, et parlez à ALEX comme au téléphone — dans le navigateur.</p>
   </div>
 </section>
 
@@ -1037,6 +1041,42 @@ document.querySelectorAll('.nav-links a').forEach(function(a){
     var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
   });
 });
+</script>
+
+<!-- ALEX VOIX — Web Call en direct (Retell) -->
+<script type="module">
+import { RetellWebClient } from 'https://esm.sh/retell-client-js-sdk';
+const btn = document.getElementById('voix-live-btn');
+const hint = document.getElementById('voix-live-hint');
+if (btn) {
+  const L = {
+    fr:{idle:'🎙️ Parlez à ALEX en direct',conn:'⏳ Connexion…',live:'🔴 En appel — cliquez pour raccrocher',err:'🎙️ Réessayer',hint:'Cliquez, autorisez votre micro, et parlez à ALEX comme au téléphone — directement dans le navigateur.'},
+    es:{idle:'🎙️ Hable con ALEX en directo',conn:'⏳ Conectando…',live:'🔴 En llamada — clic para colgar',err:'🎙️ Reintentar',hint:'Haga clic, permita su micrófono y hable con ALEX como por teléfono — directamente en el navegador.'},
+    en:{idle:'🎙️ Talk to ALEX live',conn:'⏳ Connecting…',live:'🔴 In call — click to hang up',err:'🎙️ Try again',hint:'Click, allow your mic, and talk to ALEX like a phone call — right in your browser.'}
+  };
+  const lang = () => { const l = document.documentElement.lang; return L[l] ? l : 'fr'; };
+  const setIdle = () => { btn.textContent = L[lang()].idle; if(hint) hint.textContent = L[lang()].hint; };
+  let client = null, live = false;
+  setIdle();
+  new MutationObserver(()=>{ if(!live) setIdle(); }).observe(document.documentElement, {attributes:true, attributeFilter:['lang']});
+  btn.addEventListener('click', async () => {
+    if (live && client) { client.stopCall(); return; }
+    btn.textContent = L[lang()].conn; btn.disabled = true;
+    try {
+      const r = await fetch('https://aiceo.agentia-immo.com/alexvoix/create-web-call', { method:'POST' });
+      if (!r.ok) throw new Error('svc');
+      const d = await r.json();
+      client = new RetellWebClient();
+      client.on('call_started', ()=>{ live=true; btn.disabled=false; btn.textContent=L[lang()].live; });
+      client.on('call_ended', ()=>{ live=false; btn.disabled=false; setIdle(); });
+      client.on('error', ()=>{ live=false; btn.disabled=false; setIdle(); try{ client && client.stopCall(); }catch(e){} });
+      await client.startCall({ accessToken: d.access_token });
+      btn.disabled = false;
+    } catch(e) {
+      btn.disabled = false; btn.textContent = L[lang()].err; setTimeout(setIdle, 2500);
+    }
+  });
+}
 </script>
 </body>
 </html>
