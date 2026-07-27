@@ -995,12 +995,12 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
   const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item';
   const norm = s => s.replace(/\s+/g,' ').trim();
   let els = [];
-  function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined) el.dataset.o = el.innerHTML; }); }
+  function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined){ el.dataset.o = el.innerHTML; el.dataset.k = norm(el.textContent); } }); }
   function apply(lang){
     els.forEach(el=>{
       const o = el.dataset.o; if(o===undefined) return;
       if(lang==='fr'){ el.innerHTML = o; return; }
-      const t = D[lang][norm(el.textContent)];
+      const t = D[lang][el.dataset.k];
       el.innerHTML = (t!==undefined) ? t : o;
     });
     document.documentElement.lang = lang;
