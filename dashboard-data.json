@@ -1,0 +1,182 @@
+{
+    "client":  "ALEX - vos appels en direct",
+    "generatedAt":  "2026-07-28T20:42:11",
+    "source":  "retell",
+    "windows":  {
+                    "7":  {
+                              "recus":  29,
+                              "manques":  8,
+                              "rdv":  4,
+                              "heures":  1,
+                              "ca":  800,
+                              "zero":  0,
+                              "cost":  "114 €",
+                              "ca_s":  "800 €",
+                              "mult":  "×7",
+                              "chart":  {
+                                            "labels":  [
+                                                           "21/07",
+                                                           "22/07",
+                                                           "23/07",
+                                                           "24/07",
+                                                           "25/07",
+                                                           "26/07",
+                                                           "27/07"
+                                                       ],
+                                            "app":  [
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        8,
+                                                        21,
+                                                        0
+                                                    ],
+                                            "rdv":  [
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        0,
+                                                        4,
+                                                        0
+                                                    ]
+                                        },
+                              "langues":  {
+                                              "FR":  100,
+                                              "ES":  0,
+                                              "CA":  0,
+                                              "EN":  0
+                                          }
+                          },
+                    "30":  {
+                               "recus":  29,
+                               "manques":  8,
+                               "rdv":  4,
+                               "heures":  1,
+                               "ca":  800,
+                               "zero":  0,
+                               "cost":  "490 €",
+                               "ca_s":  "800 €",
+                               "mult":  "×2",
+                               "chart":  {
+                                             "labels":  [
+                                                            "Sem. 1",
+                                                            "Sem. 2",
+                                                            "Sem. 3",
+                                                            "Sem. 4"
+                                                        ],
+                                             "app":  [
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         29
+                                                     ],
+                                             "rdv":  [
+                                                         0,
+                                                         0,
+                                                         0,
+                                                         4
+                                                     ]
+                                         },
+                               "langues":  {
+                                               "FR":  100,
+                                               "ES":  0,
+                                               "CA":  0,
+                                               "EN":  0
+                                           }
+                           },
+                    "90":  {
+                               "recus":  29,
+                               "manques":  8,
+                               "rdv":  4,
+                               "heures":  1,
+                               "ca":  800,
+                               "zero":  0,
+                               "cost":  "1 470 €",
+                               "ca_s":  "800 €",
+                               "mult":  "×1",
+                               "chart":  {
+                                             "labels":  [
+                                                            "Mois 1",
+                                                            "Mois 2",
+                                                            "Mois 3"
+                                                        ],
+                                             "app":  [
+                                                         0,
+                                                         0,
+                                                         29
+                                                     ],
+                                             "rdv":  [
+                                                         0,
+                                                         0,
+                                                         4
+                                                     ]
+                                         },
+                               "langues":  {
+                                               "FR":  100,
+                                               "ES":  0,
+                                               "CA":  0,
+                                               "EN":  0
+                                           }
+                           }
+                },
+    "recent":  [
+                   {
+                       "time":  "19:20",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:19",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:18",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:18",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:17",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:16",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "19:09",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   }
+               ]
+}
