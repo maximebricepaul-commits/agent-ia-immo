@@ -1,9 +1,9 @@
-<#
-  ALEX — Pipeline dashboard ROI : Retell (vrais appels) -> dashboard-data.json -> push GitHub Pages
+﻿<#
+  ALEX - Pipeline dashboard ROI : Retell (vrais appels) -> dashboard-data.json -> push GitHub Pages
   ---------------------------------------------------------------------------------------------
   - Lit la clé API Retell dans retell.config.json (JAMAIS committé, voir .gitignore).
   - Appelle l'API Retell (list-calls), agrège sur 7/30/90 jours, anonymise (aucune donnee perso
-    dans le JSON public : ni numero, ni nom, ni transcript — uniquement des agregats + libelles generiques).
+    dans le JSON public : ni numero, ni nom, ni transcript - uniquement des agregats + libelles generiques).
   - Ecrit dashboard-data.json a la racine du repo, puis git add/commit/push.
   - En cas d'echec API : n'ecrase RIEN (le dashboard garde soit le dernier flux, soit la demo).
 
@@ -33,7 +33,7 @@ $panier   = if ($cfg.panierMoyenEuros)   { [double]$cfg.panierMoyenEuros }   els
 $aboMois  = if ($cfg.abonnementMensuel)  { [double]$cfg.abonnementMensuel }  else { 490 }   # € / mois
 $openH    = if ($cfg.heureOuverture -ne $null) { [int]$cfg.heureOuverture } else { 9 }
 $closeH   = if ($cfg.heureFermeture -ne $null) { [int]$cfg.heureFermeture } else { 20 }
-$clientLabel = if ($cfg.clientLabel) { [string]$cfg.clientLabel } else { "ALEX — vos appels en direct" }
+$clientLabel = if ($cfg.clientLabel) { [string]$cfg.clientLabel } else { "ALEX - vos appels en direct" }
 $langField= if ($cfg.champLangue)  { [string]$cfg.champLangue }  else { "language" }
 $rdvField = if ($cfg.champRdv)     { [string]$cfg.champRdv }     else { "appointment_booked" }
 
@@ -83,7 +83,7 @@ function Hour-Local($ms){
 }
 
 $now = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-$dayMs = 86400000L
+$dayMs = ([int64]86400000)
 
 function Build-Window([int]$days){
   $since = $now - ($days * $dayMs)
@@ -157,13 +157,17 @@ $json = $feed | ConvertTo-Json -Depth 8
 Log "dashboard-data.json ecrit ($($feed.windows.'30'.recus) appels sur 30j)."
 
 Push-Location $root
+# git ecrit ses infos de progression sur stderr : sous ErrorActionPreference=Stop
+# cela leverait une fausse erreur. On passe en Continue et on juge sur $LASTEXITCODE.
+$ErrorActionPreference = "Continue"
 try {
-  & git add dashboard-data.json
+  & git add dashboard-data.json | Out-Null
   $status = & git status --porcelain dashboard-data.json
-  if ([string]::IsNullOrWhiteSpace($status)) { Log "Aucun changement a pousser."; }
+  if ([string]::IsNullOrWhiteSpace($status)) { Log "Aucun changement a pousser." }
   else {
-    & git commit -q -m "dashboard: sync donnees reelles Retell ($(Get-Date -Format 'dd/MM HH:mm'))"
+    & git commit -q -m ("dashboard: sync donnees reelles Retell (" + (Get-Date -Format 'dd/MM HH:mm') + ")") | Out-Null
     & git push origin main 2>&1 | Out-Null
-    Log "Push effectue."
+    if ($LASTEXITCODE -eq 0) { Log "Push effectue." } else { Log "git push a renvoye le code $LASTEXITCODE." }
   }
 } finally { Pop-Location }
+exit 0
