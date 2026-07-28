@@ -376,7 +376,7 @@
     onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
     <span></span><span></span><span></span>
   </button>
-  <a href="#contact" class="btn btn-primary" aria-label="Demander une démonstration gratuite">
+  <a href="#contact" class="btn btn-primary" aria-label="Demander une démonstration">
     Demander une démo →
   </a>
 </nav>
@@ -398,7 +398,7 @@
     </h1>
 
     <p class="hero-sub fade-in delay-2">
-      ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.
+      ALEX est un vrai collaborateur commercial et marketing IA — pas un répondeur, pas un formulaire automatique. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.
     </p>
 
     <div class="hero-btns fade-in delay-3">
@@ -482,8 +482,8 @@
     </div>
     <p style="color:var(--muted2);font-size:0.88rem;margin-bottom:22px">Configurée sur votre activité, testée avec vous avant la mise en ligne · sans engagement de durée</p>
     <div style="max-width:540px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow-card)">
-      <p id="voix-demo-label" style="color:var(--white);font-weight:800;font-size:1.05rem;margin-bottom:6px">🎧 Un vrai appel — ALEX décroche un rendez-vous</p>
-      <p style="color:var(--muted2);font-size:0.85rem;margin-bottom:14px">Appel réel, non scénarisé : ALEX répond, gère les objections et cale le rendez-vous. Avec la voix de Maxime.</p>
+      <p id="voix-demo-label" style="color:var(--white);font-weight:900;font-size:1.28rem;line-height:1.25;margin-bottom:8px">🎧 Un vrai appel — ALEX décroche un rendez-vous</p>
+      <p style="color:var(--text);font-size:0.95rem;margin-bottom:14px"><strong style="color:var(--accent2)">Appel réel, non scénarisé — la vraie voix de Maxime.</strong> ALEX répond, gère les objections et cale le rendez-vous.</p>
       <audio controls preload="none" src="/alex-voix-demo.mp3" style="width:100%">Votre navigateur ne gère pas la lecture audio.</audio>
     </div>
     <a href="#contact" class="btn btn-primary btn-lg">📞 Je veux ALEX Voix pour mon commerce</a>
@@ -582,9 +582,72 @@
       </div>
       <div class="feat fade-in delay-2">
         <div class="feat-icon">🌍</div>
-        <h3>Multilingue FR / ES / EN</h3>
+        <h3>Multilingue FR / ES / CA / EN</h3>
         <p>Il bascule automatiquement dans la langue du client — indispensable en zone touristique.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- POURQUOI ALEX ≠ UN SIMPLE BOT (comparatif) -->
+<section class="section" id="compare" aria-label="Pourquoi ALEX n'est pas un simple bot">
+  <style>
+    #compare .cmp-wrap{max-width:960px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--border);border-radius:18px;background:var(--card);box-shadow:var(--shadow-card)}
+    #compare table{border-collapse:collapse;width:100%;min-width:720px}
+    #compare th,#compare td{padding:14px 12px;text-align:center;border-bottom:1px solid var(--border);font-size:0.86rem}
+    #compare thead th{color:var(--muted2);font-weight:700;font-size:0.8rem;line-height:1.3;vertical-align:bottom}
+    #compare tbody tr:last-child td{border-bottom:none}
+    #compare .cmp-crit{text-align:left;color:var(--white);font-weight:700;font-size:0.9rem;min-width:190px}
+    #compare .cmp-col-alex{color:var(--accent);font-weight:900;font-size:0.98rem}
+    #compare .col-alex{background:linear-gradient(180deg,rgba(41,193,255,0.10),rgba(41,193,255,0.03));border-left:1px solid var(--border-a);border-right:1px solid var(--border-a)}
+    #compare .ok{color:#34d399;font-weight:900;font-size:1.1rem}
+    #compare .no{color:#6b7280;font-weight:800}
+    #compare .mid{color:#f5b74f;font-weight:800}
+    #compare .cmp-val{font-weight:800;font-size:0.82rem}
+  </style>
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">⚖️ La différence</div></div>
+    <h2 class="section-heading fade-in delay-1">Pourquoi ALEX <span class="text-accent">≠ un simple bot</span></h2>
+    <p class="section-sub fade-in delay-2">Un vrai commercial vocal face aux rustines habituelles. Regardez la différence, ligne par ligne.</p>
+    <div class="cmp-wrap fade-in delay-2">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="cmp-col cmp-col-alex col-alex">ALEX Voix</th>
+            <th class="cmp-col">Répondeur / messagerie</th>
+            <th class="cmp-col">Formulaire ou assistant écrit basique</th>
+            <th class="cmp-col">Secrétariat externe</th>
+            <th class="cmp-col">Ne rien faire</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cmp-crit">Décroche le téléphone avec une vraie voix humaine</td>
+            <td class="ok col-alex">✓</td><td class="no">✗</td><td class="no">✗</td><td class="ok">✓</td><td class="no">✗</td>
+          </tr>
+          <tr>
+            <td class="cmp-crit">Disponible 24h/24, 7j/7</td>
+            <td class="ok col-alex">✓</td><td class="mid">~</td><td class="ok">✓</td><td class="no">✗</td><td class="no">✗</td>
+          </tr>
+          <tr>
+            <td class="cmp-crit">Parle 4 langues (FR · ES · CA · EN)</td>
+            <td class="ok col-alex">✓</td><td class="no">✗</td><td class="mid">~</td><td class="mid">~</td><td class="no">✗</td>
+          </tr>
+          <tr>
+            <td class="cmp-crit">Prend le rendez-vous en direct</td>
+            <td class="ok col-alex">✓</td><td class="no">✗</td><td class="mid">~</td><td class="ok">✓</td><td class="no">✗</td>
+          </tr>
+          <tr>
+            <td class="cmp-crit">Coût</td>
+            <td class="cmp-val col-alex" style="color:var(--accent)">≈ 16 €/jour</td>
+            <td class="cmp-val" style="color:var(--muted2)">faible</td>
+            <td class="cmp-val" style="color:var(--muted2)">faible</td>
+            <td class="cmp-val" style="color:#f5b74f">500 €+/mois</td>
+            <td class="cmp-val" style="color:#ef6d6d">clients perdus</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -658,7 +721,7 @@
       🏠 <strong>Agences immobilières :</strong> tarifs et offres dédiés (Starter, Pro, Réseau, Acquisition) sur <a href="/immo/#tarifs" style="color:var(--accent)">la page Immobilier →</a>
     </p>
     <p class="pricing-note fade-in delay-2">
-      🎁 <strong>Offre de lancement :</strong> le premier client de chaque secteur bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.
+      🎁 <strong>Exclusivité :</strong> j'accompagne un seul partenaire par secteur et par zone.
     </p>
     <p class="pricing-note fade-in delay-3">
       🤝 <strong>Parrainage :</strong> 150 € offerts pour chaque commerce présenté qui signe.
@@ -688,7 +751,7 @@
 
 <section id="contact" class="section section-alt" aria-label="Formulaire de demande de démo">
   <div class="container" style="max-width:640px">
-    <div class="tag fade-in" style="margin-bottom:24px">📋 C'est gratuit et sans engagement</div>
+    <div class="tag fade-in" style="margin-bottom:24px">📋 Démo de 20 min, sans engagement</div>
     <h2 class="fade-in delay-1" style="margin-bottom:8px">
       Réservez votre démo<br><span class="text-accent">de 20 minutes</span>
     </h2>
@@ -747,13 +810,13 @@
       </div>
 
       <button type="submit" class="btn btn-primary" style="width:100%;padding:16px;font-size:1rem;font-weight:700;margin-top:4px">
-        Réserver ma démo gratuite de 20 min
+        Réserver ma démo de 20 min
       </button>
 
       <a href="https://cal.com/maxime-brice-paul-e6mogj/demo-alex-20-min" target="_blank" rel="noopener" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:4px">📅 Ou choisissez directement votre créneau</a>
 
       <p style="text-align:center;font-size:0.78rem;color:var(--muted);margin:0">
-        Sans engagement · Réponse sous 24h · Aucune carte bancaire
+        Sans engagement · Réponse sous 24h
       </p>
     </form>
   </div>
@@ -820,13 +883,24 @@
   </p>
 </footer>
 
-<!-- Floating WhatsApp -->
+<!-- Floating WhatsApp (icône compacte, coin bas-gauche — empreinte minimale, ne recouvre aucun CTA ni la bulle Voiceflow à droite) -->
 <a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20ALEX%20pour%20mon%20commerce"
-   target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp"
+   target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp" title="WhatsApp"
    onclick="trackEvent('click_whatsapp','CTA','hub_float',0)"
-   style="position:fixed;left:22px;bottom:22px;z-index:90;display:inline-flex;align-items:center;gap:9px;background:#25d366;color:#06130a;font-weight:700;font-size:0.9rem;padding:12px 20px;border-radius:50px;text-decoration:none;box-shadow:0 8px 30px rgba(37,211,102,0.35)">
-  💬 WhatsApp
+   style="position:fixed;left:18px;bottom:18px;z-index:80;width:52px;height:52px;display:inline-flex;align-items:center;justify-content:center;background:#25d366;font-size:1.5rem;line-height:1;border-radius:50%;text-decoration:none;box-shadow:0 6px 22px rgba(37,211,102,0.35)">
+  <span aria-hidden="true">💬</span>
 </a>
+
+<!-- VOICEFLOW — rebrand du lanceur (masque le "Talk to AI" anglais, force la charte ALEX) -->
+<style>
+  .vfrc-launcher__label { font-size: 0 !important; }
+  .vfrc-launcher__label::after {
+    content: 'Parler à ALEX' !important;
+    font-size: 14px !important; font-weight: 700 !important; color: #fff !important;
+  }
+  html[lang="es"] .vfrc-launcher__label::after { content: 'Hablar con ALEX' !important; }
+  html[lang="en"] .vfrc-launcher__label::after { content: 'Talk to ALEX' !important; }
+</style>
 
 <!-- VOICEFLOW WIDGET -->
 <script type="text/javascript">
@@ -854,14 +928,25 @@
       stylesheet: 'https://agentia-immo.com/vf-custom.css',
 
       assistant: {
+        title: 'ALEX',
+        description: langCode === 'en' ? 'Your assistant — replies in seconds'
+                    : langCode === 'es' ? 'Tu asistente — responde en segundos'
+                    : 'Votre assistant — répond en quelques secondes',
+        image: 'https://agentia-immo.com/alex-logo.png',
         color: '#29c1ff',
-        header: { title: 'Alex' },
+        header: { title: 'ALEX' },
         banner: {
-          title: 'Alex',
+          title: 'ALEX',
           description: langCode === 'en' ? 'Hi! I\'m Alex, your AI sales assistant. How can I help?'
                       : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente comercial IA. ¿Cómo puedo ayudarte?'
                       : 'Bonjour ! Je suis Alex, votre assistant commercial IA. Comment puis-je vous aider ?'
         },
+      },
+
+      launcher: {
+        text: langCode === 'en' ? 'Talk to ALEX'
+             : langCode === 'es' ? 'Hablar con ALEX'
+             : 'Parler à ALEX'
       },
 
       launch: {
@@ -937,7 +1022,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Secteurs":"Sectores","Offres":"Precios","Blog":"Blog","Immobilier":"Inmobiliario","Nautique":"Náutica","Acquisition":"Captación de leads","Demander une démo →":"Solicitar una demo →",
       "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — El futuro de la automatización comercial",
       "Ne perdez plus un client. Ni un rendez-vous.":"No pierda ni un cliente.<br><span class=\"accent\">Ni una cita.</span>",
-      "ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX es un verdadero comercial y responsable de marketing con IA — no un chatbot. Responde a sus clientes en segundos, 24/7, en su idioma, cualifica las solicitudes, agenda las citas y hace el seguimiento automáticamente. Mientras usted trabaja, él también.",
+      "ALEX est un vrai collaborateur commercial et marketing IA — pas un répondeur, pas un formulaire automatique. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX es un verdadero comercial y responsable de marketing con IA — no un contestador, ni un formulario automático. Responde a sus clientes en segundos, 24/7, en su idioma, cualifica las solicitudes, agenda las citas y hace el seguimiento automáticamente. Mientras usted trabaja, él también.",
       "💬 Parler à Alex maintenant":"💬 Hablar con Alex ahora","Voir mon secteur":"Ver mi sector",
       "⚡ Répond en quelques secondes":"⚡ Responde en segundos","🕐 24h/24 — 7j/7":"🕐 24/7 los 7 días","📅 Prend les RDV tout seul, en direct":"📅 Agenda las citas solo, en directo",
       "↑ Ce n'est pas une promesse : la bulle en bas à droite, c'est lui. Testez-le.":"↑ No es una promesa: la burbuja de abajo a la derecha es él. Pruébelo.",
@@ -961,14 +1046,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Pas un répondeur automatique : un assistant qui vend, qualifie et fidélise pendant que vous travaillez.":"No es un contestador: un asistente que vende, cualifica y fideliza mientras usted trabaja.",
       "⚙️ Automatisations sur mesure (relances, rappels de RDV, avis Google, facturation) — dès 190 €/mois selon le projet.":"⚙️ Automatizaciones a medida (seguimientos, recordatorios de citas, reseñas de Google, facturación) — desde 190 €/mes según el proyecto.",
       "🏠 Agences immobilières : tarifs et offres dédiés (Starter, Pro, Réseau, Acquisition) sur la page Immobilier →":"🏠 Agencias inmobiliarias: precios y ofertas dedicadas en la página Inmobiliario →",
-      "🎁 Offre de lancement : le premier client de chaque secteur bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.":"🎁 Oferta de lanzamiento: el primer cliente de cada sector obtiene condiciones preferentes — sin tarjeta para la demo.",
+      "🎁 Exclusivité : j'accompagne un seul partenaire par secteur et par zone.":"🎁 Exclusividad: acompaño a un solo socio por sector y por zona.",
       "🤝 Parrainage : 150 € offerts pour chaque commerce présenté qui signe.":"🤝 Recomendación: 150 € por cada negocio recomendado que firme.",
       "💼 Environ 16 €/jour — un commercial qui téléphone, parle 4 langues, ne dort jamais et ne rate aucun client.":"💼 Unos 16 €/día — un comercial que llama, habla 4 idiomas, nunca duerme y no pierde ni un cliente.",
       "👤 Votre interlocuteur":"👤 Su contacto",
-      "📋 C'est gratuit et sans engagement":"📋 Gratis y sin compromiso",
+      "📋 Démo de 20 min, sans engagement":"📋 Demo de 20 min, sin compromiso",
       "Réservez votre démode 20 minutes":"Reserve su demo<br><span class=\"text-accent\">de 20 minutos</span>",
       "Prénom *":"Nombre *","Nom *":"Apellidos *","Nom de votre commerce *":"Nombre de su negocio *","Votre secteur *":"Su sector *","Email professionnel *":"Email profesional *","Téléphone (optionnel)":"Teléfono (opcional)",
-      "Réserver ma démo gratuite de 20 min":"Reservar mi demo gratuita de 20 min","📅 Ou choisissez directement votre créneau":"📅 O elija directamente su horario",
+      "Réserver ma démo de 20 min":"Reservar mi demo de 20 min","📅 Ou choisissez directement votre créneau":"📅 O elija directamente su horario",
       "🤖 Ce site EST la démo":"🤖 Esta web ES la demo","ALEX est déjà là. Essayez de le piéger.":"ALEX ya está aquí. <span class=\"text-accent\">Intente engañarlo.</span>","💬 Lancer le défi":"💬 Aceptar el reto",
       "Services IA pour entreprises & commerces · Assistant commercial IA 24h/24 · RDV, relances & automatisations":"Servicios de IA para empresas y comercios · Asistente comercial IA 24/7 · Citas, seguimientos y automatizaciones",
       "Accueil":"Inicio","Beauté":"Belleza","Santé":"Salud","Restaurants":"Restaurantes","© 2026 ALEX · Contact":"© 2026 ALEX · Contacto",
@@ -977,7 +1062,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "ALEX — Votre Agent IA":"ALEX — Su Agente IA",
       "🎧 Un vrai appel — ALEX décroche un rendez-vous":"🎧 Una llamada real — ALEX consigue una cita",
       "🎧 Écouter un vrai appel (30 s)":"🎧 Escuchar una llamada real (30 s)",
-      "Appel réel, non scénarisé : ALEX répond, gère les objections et cale le rendez-vous. Avec la voix de Maxime.":"Llamada real, sin guion: ALEX responde, gestiona las objeciones y agenda la cita. Con la voz de Maxime.",
+      "Appel réel, non scénarisé — la vraie voix de Maxime. ALEX répond, gère les objections et cale le rendez-vous.":"<strong style=\"color:var(--accent2)\">Llamada real, sin guion — la voz auténtica de Maxime.</strong> ALEX responde, gestiona las objeciones y agenda la cita.",
       "📞 Je veux ALEX Voix pour mon commerce":"📞 Quiero ALEX Voz para mi negocio",
       "⭐ Produit phare — personne d'autre ne fait ça":"⭐ Producto estrella — nadie más lo hace",
       "ALEX Voix décroche votre téléphone —avec une vraie voix humaine.":"ALEX <span class=\"accent\">Voix</span> descuelga su teléfono —<br>con una <span class=\"accent\">voz humana real</span>.",
@@ -986,13 +1071,29 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "🗣️ Voix humaine · FR/ES/CA/EN":"🗣️ Voz humana · FR/ES/CA/EN",
       "📅 Qualifie et prend le RDV":"📅 Cualifica y concierta la cita",
       "📞 Découvrir ALEX Voix":"📞 Descubre ALEX Voix",
-      "Voir l'offre — 490 €/mois":"Ver la oferta — 490 €/mes"
+      "Voir l'offre — 490 €/mois":"Ver la oferta — 490 €/mes",
+      "⚖️ La différence":"⚖️ La diferencia",
+      "Pourquoi ALEX ≠ un simple bot":"Por qué ALEX <span class=\"text-accent\">≠ un simple bot</span>",
+      "Un vrai commercial vocal face aux rustines habituelles. Regardez la différence, ligne par ligne.":"Un verdadero comercial de voz frente a los apaños de siempre. Vea la diferencia, línea por línea.",
+      "Répondeur / messagerie":"Contestador / buzón de voz",
+      "Formulaire ou assistant écrit basique":"Formulario o asistente de texto básico",
+      "Secrétariat externe":"Secretaría externa",
+      "Ne rien faire":"No hacer nada",
+      "Décroche le téléphone avec une vraie voix humaine":"Descuelga el teléfono con una voz humana real",
+      "Disponible 24h/24, 7j/7":"Disponible 24/7",
+      "Parle 4 langues (FR · ES · CA · EN)":"Habla 4 idiomas (FR · ES · CA · EN)",
+      "Prend le rendez-vous en direct":"Concierta la cita en directo",
+      "Coût":"Coste",
+      "≈ 16 €/jour":"≈ 16 €/día",
+      "faible":"bajo",
+      "500 €+/mois":"500 €+/mes",
+      "clients perdus":"clientes perdidos"
     },
     en: {
       "Secteurs":"Sectors","Offres":"Pricing","Blog":"Blog","Immobilier":"Real Estate","Nautique":"Boating","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
       "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — The future of sales automation",
       "Ne perdez plus un client. Ni un rendez-vous.":"Never lose a customer.<br><span class=\"accent\">Or an appointment.</span>",
-      "ALEX est un vrai collaborateur commercial et marketing IA — pas un chatbot. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX is a real AI sales & marketing teammate — not a chatbot. It replies to your customers in seconds, 24/7, in their language, qualifies requests, books appointments and follows up automatically. While you work, so does he.",
+      "ALEX est un vrai collaborateur commercial et marketing IA — pas un répondeur, pas un formulaire automatique. Il répond à vos clients en quelques secondes, 24h/24, dans leur langue, qualifie les demandes, prend les rendez-vous et relance automatiquement. Pendant que vous travaillez, lui aussi.":"ALEX is a real AI sales & marketing teammate — not an answering machine, not an automated form. It replies to your customers in seconds, 24/7, in their language, qualifies requests, books appointments and follows up automatically. While you work, so does he.",
       "💬 Parler à Alex maintenant":"💬 Talk to Alex now","Voir mon secteur":"See my sector",
       "⚡ Répond en quelques secondes":"⚡ Replies in seconds","🕐 24h/24 — 7j/7":"🕐 24/7","📅 Prend les RDV tout seul, en direct":"📅 Books appointments on its own, live",
       "↑ Ce n'est pas une promesse : la bulle en bas à droite, c'est lui. Testez-le.":"↑ Not a promise: the bubble in the bottom right is him. Try it.",
@@ -1016,14 +1117,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Pas un répondeur automatique : un assistant qui vend, qualifie et fidélise pendant que vous travaillez.":"Not an answering machine: an assistant that sells, qualifies and retains while you work.",
       "⚙️ Automatisations sur mesure (relances, rappels de RDV, avis Google, facturation) — dès 190 €/mois selon le projet.":"⚙️ Custom automations (follow-ups, appointment reminders, Google reviews, invoicing) — from €190/mo depending on the project.",
       "🏠 Agences immobilières : tarifs et offres dédiés (Starter, Pro, Réseau, Acquisition) sur la page Immobilier →":"🏠 Real estate agencies: dedicated plans on the Real Estate page →",
-      "🎁 Offre de lancement : le premier client de chaque secteur bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.":"🎁 Launch offer: the first client in each sector gets preferential terms — no card required for the demo.",
+      "🎁 Exclusivité : j'accompagne un seul partenaire par secteur et par zone.":"🎁 Exclusive: I work with a single partner per sector and per area.",
       "🤝 Parrainage : 150 € offerts pour chaque commerce présenté qui signe.":"🤝 Referrals: €150 for every business you refer that signs.",
       "💼 Environ 16 €/jour — un commercial qui téléphone, parle 4 langues, ne dort jamais et ne rate aucun client.":"💼 About €16/day — a salesperson who calls, speaks 4 languages, never sleeps and never misses a customer.",
       "👤 Votre interlocuteur":"👤 Your contact",
-      "📋 C'est gratuit et sans engagement":"📋 Free and no commitment",
+      "📋 Démo de 20 min, sans engagement":"📋 20-min demo, no commitment",
       "Réservez votre démode 20 minutes":"Book your<br><span class=\"text-accent\">20-minute demo</span>",
       "Prénom *":"First name *","Nom *":"Last name *","Nom de votre commerce *":"Your business name *","Votre secteur *":"Your sector *","Email professionnel *":"Work email *","Téléphone (optionnel)":"Phone (optional)",
-      "Réserver ma démo gratuite de 20 min":"Book my free 20-min demo","📅 Ou choisissez directement votre créneau":"📅 Or pick your slot directly",
+      "Réserver ma démo de 20 min":"Book my 20-min demo","📅 Ou choisissez directement votre créneau":"📅 Or pick your slot directly",
       "🤖 Ce site EST la démo":"🤖 This site IS the demo","ALEX est déjà là. Essayez de le piéger.":"ALEX is already here. <span class=\"text-accent\">Try to trip him up.</span>","💬 Lancer le défi":"💬 Take the challenge",
       "Services IA pour entreprises & commerces · Assistant commercial IA 24h/24 · RDV, relances & automatisations":"AI services for businesses · 24/7 AI sales assistant · Appointments, follow-ups & automations",
       "Accueil":"Home","Beauté":"Beauty","Santé":"Health","Restaurants":"Restaurants","© 2026 ALEX · Contact":"© 2026 ALEX · Contact",
@@ -1032,7 +1133,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "ALEX — Votre Agent IA":"ALEX — Your AI Agent",
       "🎧 Un vrai appel — ALEX décroche un rendez-vous":"🎧 A real call — ALEX books an appointment",
       "🎧 Écouter un vrai appel (30 s)":"🎧 Hear a real call (30 s)",
-      "Appel réel, non scénarisé : ALEX répond, gère les objections et cale le rendez-vous. Avec la voix de Maxime.":"A real, unscripted call: ALEX answers, handles objections and books the appointment. In Maxime's voice.",
+      "Appel réel, non scénarisé — la vraie voix de Maxime. ALEX répond, gère les objections et cale le rendez-vous.":"<strong style=\"color:var(--accent2)\">A real, unscripted call — Maxime's actual voice.</strong> ALEX answers, handles objections and books the appointment.",
       "📞 Je veux ALEX Voix pour mon commerce":"📞 I want ALEX Voice for my business",
       "⭐ Produit phare — personne d'autre ne fait ça":"⭐ Flagship product — no one else does this",
       "ALEX Voix décroche votre téléphone —avec une vraie voix humaine.":"ALEX <span class=\"accent\">Voix</span> answers your phone —<br>with a <span class=\"accent\">real human voice</span>.",
@@ -1041,10 +1142,26 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "🗣️ Voix humaine · FR/ES/CA/EN":"🗣️ Human voice · FR/ES/CA/EN",
       "📅 Qualifie et prend le RDV":"📅 Qualifies and books the appointment",
       "📞 Découvrir ALEX Voix":"📞 Discover ALEX Voix",
-      "Voir l'offre — 490 €/mois":"See the offer — 490 €/mo"
+      "Voir l'offre — 490 €/mois":"See the offer — 490 €/mo",
+      "⚖️ La différence":"⚖️ The difference",
+      "Pourquoi ALEX ≠ un simple bot":"Why ALEX <span class=\"text-accent\">≠ a basic bot</span>",
+      "Un vrai commercial vocal face aux rustines habituelles. Regardez la différence, ligne par ligne.":"A real voice salesperson versus the usual quick fixes. See the difference, line by line.",
+      "Répondeur / messagerie":"Answering machine / voicemail",
+      "Formulaire ou assistant écrit basique":"Form or basic text assistant",
+      "Secrétariat externe":"External call center",
+      "Ne rien faire":"Doing nothing",
+      "Décroche le téléphone avec une vraie voix humaine":"Answers the phone with a real human voice",
+      "Disponible 24h/24, 7j/7":"Available 24/7",
+      "Parle 4 langues (FR · ES · CA · EN)":"Speaks 4 languages (FR · ES · CA · EN)",
+      "Prend le rendez-vous en direct":"Books the appointment live",
+      "Coût":"Cost",
+      "≈ 16 €/jour":"≈ €16/day",
+      "faible":"low",
+      "500 €+/mois":"€500+/mo",
+      "clients perdus":"lost customers"
     }
   };
-  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2';
+  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2, #compare .cmp-col, #compare .cmp-crit, #compare .cmp-val';
   const norm = s => s.replace(/\s+/g,' ').trim();
   let els = [];
   function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined){ el.dataset.o = el.innerHTML; el.dataset.k = norm(el.textContent); } }); }
