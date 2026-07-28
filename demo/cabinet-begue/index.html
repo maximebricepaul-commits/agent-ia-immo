@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Cabinet Alexandre Begué</title>
+<meta name="description" content="Alex, l'assistant virtuel du Cabinet Alexandre Begué, expertise comptable à Biarritz — prenez rendez-vous ou demandez à être rappelé en 1 minute.">
+<style>
+:root{
+  --navy:#1b2a45;
+  --navy-dark:#111c30;
+  --blue:#2c4a78;
+  --gold:#b0894b;
+  --gold-dark:#8d6c37;
+  --steel:#5b7091;
+  --bg:#eef2f7;
+  --paper:#ffffff;
+  --ink:#1d2735;
+  --muted:#78859a;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #24395e 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--blue);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--blue),var(--steel));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--blue);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e2e8f1;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.svc{padding:7px 0;border-bottom:1px dashed #e5ebf3;}
+.svc:last-child{border-bottom:none;}
+.svc .sname{font-weight:700;color:var(--blue);font-size:13.8px;}
+.svc .sdesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--gold-dark);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--gold);border-color:var(--gold-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--gold-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e2e8f1;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #dde4ee;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(141,108,55,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c7d2e0;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">📊</div>
+    <div class="hinfo">
+      <div class="name">Alex · Cabinet Alexandre Begué</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démo privée pour le Cabinet Alexandre Begué · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Services ILLUSTRATIFS de démonstration — ne reflètent pas l'offre exacte du cabinet */
+const SERVICES = [
+  {name:{fr:"Comptabilité & bilan annuel",es:"Contabilidad y balance anual",en:"Accounting & annual accounts",ca:"Comptabilitat i balanç anual"},
+   desc:{fr:"tenue, révision, établissement des comptes",es:"llevanza, revisión, cierre de cuentas",en:"bookkeeping, review, year-end accounts",ca:"portança, revisió, tancament de comptes"}},
+  {name:{fr:"Déclarations fiscales",es:"Declaraciones fiscales",en:"Tax filings",ca:"Declaracions fiscals"},
+   desc:{fr:"TVA, impôt sur le revenu, impôt sociétés",es:"IVA, IRPF, impuesto de sociedades",en:"VAT, income tax, corporate tax",ca:"IVA, IRPF, impost de societats"}},
+  {name:{fr:"Création & accompagnement d'entreprise",es:"Creación y acompañamiento de empresa",en:"Company setup & guidance",ca:"Creació i acompanyament d'empresa"},
+   desc:{fr:"choix du statut, formalités, prévisionnel",es:"elección de estatuto, trámites, previsión",en:"legal form, formalities, forecasts",ca:"elecció d'estatut, tràmits, previsió"}},
+  {name:{fr:"Paie & social",es:"Nóminas y laboral",en:"Payroll & HR",ca:"Nòmines i laboral"},
+   desc:{fr:"bulletins, contrats, déclarations sociales",es:"nóminas, contratos, declaraciones sociales",en:"payslips, contracts, social filings",ca:"nòmines, contractes, declaracions socials"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel du **Cabinet Alexandre Begué**, votre cabinet d'expertise comptable à Biarritz.\nJe vous accueille et je prépare votre rendez-vous ou votre rappel — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["📅 Prendre RDV","📞 Être rappelé","📋 Nos services","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  noAdvice:"ℹ️ Je ne donne pas de conseil comptable ou fiscal — je note votre besoin et un expert du cabinet vous répond personnellement.",
+  /* prise de RDV / rappel */
+  bookStartRdv:"Avec plaisir, organisons votre rendez-vous 🙌",
+  bookStartRappel:"Avec plaisir, je prépare votre demande de rappel 🙌",
+  askNeed:"🎯 Quel est l'objet de votre demande ?",
+  needOpts:["📊 Bilan annuel","🧾 Déclaration fiscale","🚀 Création d'entreprise","❓ Autre question"],
+  askDate:"📅 Quand souhaitez-vous venir au cabinet ?",
+  dateOpts:["Cette semaine","La semaine prochaine","Dès que possible","Autre date"],
+  askSlot:"⏰ Quel moment de la journée vous conviendrait le mieux ?",
+  slotOpts:["Matin (9h–12h)","Après-midi (14h–17h)","Fin de journée (17h–19h)"],
+  askCallWindow:"📞 À quel moment préférez-vous être rappelé ?",
+  callWindowOpts:["Ce matin","Cet après-midi","En fin de journée","Demain"],
+  askName:"🙋 À quel prénom dois-je noter la demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que le cabinet vous joigne (et vous envoie la confirmation) ?",
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  sumType:"Type", typeRdv:"Rendez-vous au cabinet", typeRappel:"Demande de rappel",
+  sumNeed:"Objet", sumDate:"Date souhaitée", sumSlot:"Créneau", sumCallWindow:"Rappel souhaité", sumName:"Prénom", sumPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe du Cabinet Alexandre Begué, qui vous confirme le rendez-vous. 🔔 Vous recevrez un rappel automatique avant l'échéance pour ne rien oublier.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefixRdv:"Bonjour ! Je souhaite prendre rendez-vous au Cabinet Alexandre Begué :",
+  waPrefixRappel:"Bonjour ! Je souhaite être rappelé par le Cabinet Alexandre Begué :",
+  waPrefixGeneric:"Bonjour ! Je vous contacte au sujet du Cabinet Alexandre Begué :",
+  /* services */
+  servicesIntro:"Voici un aperçu des domaines dans lesquels le cabinet vous accompagne 📈 :",
+  servicesCardTitle:"Nos domaines d'accompagnement",
+  servicesCardTag:"Sur rendez-vous",
+  servicesDemoNote:"Présentation illustrative à titre de démonstration — l'équipe vous détaille les prestations et honoraires adaptés à votre situation.",
+  servicesLine:"Dites-moi votre besoin et je vous propose un rendez-vous ou un rappel avec l'expert concerné.",
+  servicesButtons:["📅 Prendre RDV","📞 Être rappelé","⬅️ Menu"],
+  /* infos & accès */
+  faqTitle:"Que souhaitez-vous savoir ?",
+  faqButtons:["🕐 Horaires","📍 Accès & parking","🔒 Confidentialité","⬅️ Menu"],
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nDu lundi au vendredi — 9h00–12h30 · 14h00–18h00\nAccueil sur rendez-vous, fermé le week-end.",
+  accessText:"📍 *Accès* : en centre-ville de Biarritz, à quelques minutes à pied de la gare du Midi. 🅿️ Parkings publics à proximité. Cabinet accessible de plain-pied.",
+  privacyText:"🔒 *Confidentialité* : vos documents et informations sont traités de manière strictement confidentielle par le cabinet, dans le respect du secret professionnel de l'expert-comptable.",
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe du Cabinet Alexandre Begué 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, être *rappelé* ou découvrir *nos services* — ou je vous passe l'équipe. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual del **Cabinet Alexandre Begué**, tu asesoría contable en Biarritz.\nTe atiendo y preparo tu cita o tu llamada de vuelta — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["📅 Pedir cita","📞 Que me llamen","📋 Nuestros servicios","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  noAdvice:"ℹ️ No doy asesoramiento contable ni fiscal — anoto tu necesidad y un experto del despacho te responde personalmente.",
+  bookStartRdv:"¡Encantado, organizamos tu cita! 🙌",
+  bookStartRappel:"¡Encantado, preparo tu solicitud de llamada! 🙌",
+  askNeed:"🎯 ¿Cuál es el motivo de tu consulta?",
+  needOpts:["📊 Balance anual","🧾 Declaración fiscal","🚀 Crear empresa","❓ Otra consulta"],
+  askDate:"📅 ¿Cuándo quieres venir al despacho?",
+  dateOpts:["Esta semana","La semana que viene","Cuanto antes","Otra fecha"],
+  askSlot:"⏰ ¿Qué momento del día te viene mejor?",
+  slotOpts:["Mañana (9h–12h)","Tarde (14h–17h)","Final del día (17h–19h)"],
+  askCallWindow:"📞 ¿Cuándo prefieres que te llamemos?",
+  callWindowOpts:["Esta mañana","Esta tarde","Al final del día","Mañana"],
+  askName:"🙋 ¿A nombre de quién anoto la solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para que el despacho te localice (y te envíe la confirmación)?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  sumType:"Tipo", typeRdv:"Cita en el despacho", typeRappel:"Solicitud de llamada",
+  sumNeed:"Motivo", sumDate:"Fecha deseada", sumSlot:"Franja", sumCallWindow:"Llamada deseada", sumName:"Nombre", sumPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo del Cabinet Alexandre Begué, que te confirma la cita. 🔔 Recibirás un recordatorio automático antes del vencimiento para no olvidarlo.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefixRdv:"¡Hola! Quiero pedir cita en el Cabinet Alexandre Begué:",
+  waPrefixRappel:"¡Hola! Quiero que me llame el Cabinet Alexandre Begué:",
+  waPrefixGeneric:"¡Hola! Os contacto sobre el Cabinet Alexandre Begué:",
+  servicesIntro:"Aquí tienes un vistazo a las áreas en las que el despacho te acompaña 📈:",
+  servicesCardTitle:"Nuestras áreas de trabajo",
+  servicesCardTag:"Con cita",
+  servicesDemoNote:"Presentación ilustrativa a modo de demostración — el equipo te detalla los servicios y honorarios según tu situación.",
+  servicesLine:"Dime tu necesidad y te propongo una cita o una llamada con el experto correspondiente.",
+  servicesButtons:["📅 Pedir cita","📞 Que me llamen","⬅️ Menú"],
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🕐 Horarios","📍 Cómo llegar","🔒 Confidencialidad","⬅️ Menú"],
+  hoursText:"🕐 *Horarios* (ejemplo de demostración)\nDe lunes a viernes — 9:00–12:30 · 14:00–18:00\nAtención con cita previa, cerrado el fin de semana.",
+  accessText:"📍 *Cómo llegar*: en el centro de Biarritz, a pocos minutos a pie de la estación du Midi. 🅿️ Aparcamientos públicos cerca. Despacho accesible a pie llano.",
+  privacyText:"🔒 *Confidencialidad*: tus documentos e información se tratan de forma estrictamente confidencial por el despacho, respetando el secreto profesional del experto contable.",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo del Cabinet Alexandre Begué 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *pedir cita*, que *te llamen* o ver *nuestros servicios* — o te paso con el equipo. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Cabinet Alexandre Begué**, your chartered accountancy firm in Biarritz.\nI'll welcome you and set up your appointment or callback — in under a minute. How can I help?",
+  menu:["📅 Book an appointment","📞 Request a callback","📋 Our services","💬 Talk to a human"],
+  menuLabel:"Menu",
+  noAdvice:"ℹ️ I don't give accounting or tax advice — I note your need and one of the firm's experts replies to you personally.",
+  bookStartRdv:"With pleasure — let's set up your appointment 🙌",
+  bookStartRappel:"With pleasure — let me prepare your callback request 🙌",
+  askNeed:"🎯 What is your enquiry about?",
+  needOpts:["📊 Annual accounts","🧾 Tax filing","🚀 Starting a business","❓ Other question"],
+  askDate:"📅 When would you like to come to the firm?",
+  dateOpts:["This week","Next week","As soon as possible","Another date"],
+  askSlot:"⏰ Which time of day would suit you best?",
+  slotOpts:["Morning (9am–12pm)","Afternoon (2pm–5pm)","End of day (5pm–7pm)"],
+  askCallWindow:"📞 When would you prefer to be called back?",
+  callWindowOpts:["This morning","This afternoon","End of day","Tomorrow"],
+  askName:"🙋 What name should I put the request under?",
+  askPhone:"📱 Great, {name}! A mobile number so the firm can reach you (and send the confirmation)?",
+  summaryTitle:"📋 Your request summary",
+  sumType:"Type", typeRdv:"Appointment at the firm", typeRappel:"Callback request",
+  sumNeed:"Subject", sumDate:"Preferred date", sumSlot:"Time slot", sumCallWindow:"Preferred callback", sumName:"Name", sumPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Cabinet Alexandre Begué team, who will confirm your appointment. 🔔 You'll get an automatic reminder before the deadline so nothing slips your mind.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefixRdv:"Hi! I'd like to book an appointment at Cabinet Alexandre Begué:",
+  waPrefixRappel:"Hi! I'd like a callback from Cabinet Alexandre Begué:",
+  waPrefixGeneric:"Hi! I'm contacting you about Cabinet Alexandre Begué:",
+  servicesIntro:"Here's an overview of the areas the firm can support you with 📈:",
+  servicesCardTitle:"Our areas of support",
+  servicesCardTag:"By appointment",
+  servicesDemoNote:"Illustrative overview shown for demonstration — the team will detail the services and fees suited to your situation.",
+  servicesLine:"Tell me your need and I'll offer an appointment or a callback with the relevant expert.",
+  servicesButtons:["📅 Book","📞 Callback","⬅️ Menu"],
+  faqTitle:"What would you like to know?",
+  faqButtons:["🕐 Hours","📍 Directions","🔒 Confidentiality","⬅️ Menu"],
+  hoursText:"🕐 *Hours* (demonstration example)\nMonday to Friday — 9:00–12:30 · 14:00–18:00\nBy appointment, closed at weekends.",
+  accessText:"📍 *Getting here*: in central Biarritz, a few minutes' walk from the Gare du Midi. 🅿️ Public car parks nearby. Step-free access.",
+  privacyText:"🔒 *Confidentiality*: your documents and information are handled in strict confidence by the firm, in line with the accountant's duty of professional secrecy.",
+  humanHandoff:"Of course — I'll connect you directly with the Cabinet Alexandre Begué team 👇",
+  fallback:"Good question! I can help you *book an appointment*, request a *callback* or see *our services* — or I can hand you to the team. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual del **Cabinet Alexandre Begué**, la teva gestoria comptable a Biarritz.\nT'atenc i preparo la teva cita o la teva trucada — en menys d'un minut. En què et puc ajudar?",
+  menu:["📅 Demanar cita","📞 Que et truquin","📋 Els nostres serveis","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  noAdvice:"ℹ️ No dono assessorament comptable ni fiscal — anoto la teva necessitat i un expert del despatx et respon personalment.",
+  bookStartRdv:"Amb molt de gust, organitzem la teva cita! 🙌",
+  bookStartRappel:"Amb molt de gust, preparo la teva sol·licitud de trucada! 🙌",
+  askNeed:"🎯 Quin és el motiu de la teva consulta?",
+  needOpts:["📊 Balanç anual","🧾 Declaració fiscal","🚀 Crear empresa","❓ Una altra consulta"],
+  askDate:"📅 Quan vols venir al despatx?",
+  dateOpts:["Aquesta setmana","La setmana vinent","Al més aviat possible","Una altra data"],
+  askSlot:"⏰ Quin moment del dia et va millor?",
+  slotOpts:["Matí (9h–12h)","Tarda (14h–17h)","Final del dia (17h–19h)"],
+  askCallWindow:"📞 Quan prefereixes que et truquin?",
+  callWindowOpts:["Aquest matí","Aquesta tarda","Al final del dia","Demà"],
+  askName:"🙋 A nom de qui anoto la sol·licitud?",
+  askPhone:"📱 Perfecte {name}! Un mòbil perquè el despatx et localitzi (i t'enviï la confirmació)?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  sumType:"Tipus", typeRdv:"Cita al despatx", typeRappel:"Sol·licitud de trucada",
+  sumNeed:"Motiu", sumDate:"Data desitjada", sumSlot:"Franja", sumCallWindow:"Trucada desitjada", sumName:"Nom", sumPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip del Cabinet Alexandre Begué, que et confirma la cita. 🔔 Rebràs un recordatori automàtic abans del venciment per no oblidar-ho.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefixRdv:"Hola! Vull demanar cita al Cabinet Alexandre Begué:",
+  waPrefixRappel:"Hola! Vull que em truqui el Cabinet Alexandre Begué:",
+  waPrefixGeneric:"Hola! Us contacto sobre el Cabinet Alexandre Begué:",
+  servicesIntro:"Aquí tens un tast de les àrees en què el despatx t'acompanya 📈:",
+  servicesCardTitle:"Les nostres àrees de treball",
+  servicesCardTag:"Amb cita",
+  servicesDemoNote:"Presentació il·lustrativa a tall de demostració — l'equip et detalla els serveis i honoraris segons la teva situació.",
+  servicesLine:"Digues-me la teva necessitat i et proposo una cita o una trucada amb l'expert corresponent.",
+  servicesButtons:["📅 Demanar cita","📞 Que et truquin","⬅️ Menú"],
+  faqTitle:"Què vols saber?",
+  faqButtons:["🕐 Horaris","📍 Com arribar","🔒 Confidencialitat","⬅️ Menú"],
+  hoursText:"🕐 *Horaris* (exemple de demostració)\nDe dilluns a divendres — 9:00–12:30 · 14:00–18:00\nAtenció amb cita prèvia, tancat el cap de setmana.",
+  accessText:"📍 *Com arribar*: al centre de Biarritz, a pocs minuts a peu de l'estació du Midi. 🅿️ Aparcaments públics a prop. Despatx accessible sense esgraons.",
+  privacyText:"🔒 *Confidencialitat*: els teus documents i informació es tracten de manera estrictament confidencial pel despatx, respectant el secret professional de l'expert comptable.",
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip del Cabinet Alexandre Begué 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *demanar cita*, que *et truquin* o veure *els nostres serveis* — o et passo amb l'equip. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {mode, step, need, date, slot, callWindow, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking('rdv')", cls:"primary"},
+    {label:m[1], onclick:"startBooking('rappel')"},
+    {label:m[2], onclick:"showServices()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= NOS SERVICES ================= */
+function servicesCardHtml(){
+  let body = '';
+  SERVICES.forEach(s=>{
+    body += `<div class="svc"><div class="sname">${esc(s.name[lang])}</div><div class="sdesc">${esc(s.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">📈 ${t('servicesCardTitle')}</span><span class="cprice">${t('servicesCardTag')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('servicesDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showServices(){
+  addUser(t('menu')[2]);
+  addBotText(t('servicesIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${servicesCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('servicesLine')), t('servicesButtons').map((label,i)=>{
+      const acts = ["startBooking('rdv')","startBooking('rappel')","showMenu()"];
+      return {label, onclick:acts[i], cls: i===0?'primary':''};
+    }));
+  }, 700);
+}
+
+/* ================= INFOS (horaires / accès / confidentialité) ================= */
+function showInfo(){
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const map=["showHours()","showAccess()","showPrivacy()","showMenu()"];
+    return {label, onclick: map[i]};
+  }), 350);
+}
+
+function infoButtons(){
+  return [
+    {label:t('menu')[0], onclick:"startBooking('rdv')", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ];
+}
+
+function showHours(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('hoursText'), infoButtons(), 400);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[1]);
+  addBotText(t('accessText'), infoButtons(), 400);
+}
+
+function showPrivacy(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('privacyText'), infoButtons(), 400);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefixGeneric'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= PRISE DE RDV / RAPPEL ================= */
+function startBooking(mode){
+  const m = mode==='rappel' ? t('menu')[1] : t('menu')[0];
+  addUser(m);
+  booking = {mode, step:'need', need:null, date:null, slot:null, callWindow:null, name:null, phone:null};
+  addBotText(mode==='rappel' ? t('bookStartRappel') : t('bookStartRdv'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('noAdvice'), null, 250);
+    setTimeout(()=>{
+      addBotText(t('askNeed'), t('needOpts').map(l=>({label:l, onclick:`bookingNeed('${l.replace(/'/g,"\\'")}')`})));
+    }, 500);
+  }, 650);
+}
+
+function bookingNeed(label){
+  addUser(label);
+  booking.need = label;
+  if(booking.mode==='rappel'){
+    booking.step='callWindow';
+    addBotText(t('askCallWindow'), t('callWindowOpts').map(l=>({label:l, onclick:`bookingCallWindow('${l.replace(/'/g,"\\'")}')`})), 450);
+  }else{
+    booking.step='date';
+    addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingCallWindow(label){
+  addUser(label);
+  booking.callWindow = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  const isRappel = booking.mode==='rappel';
+  showTyping(()=>{
+    let rows = `<b>${t('sumType')} :</b> ${isRappel ? esc(t('typeRappel')) : esc(t('typeRdv'))}<br>
+      <b>${t('sumNeed')} :</b> ${esc(booking.need)}<br>`;
+    if(isRappel){
+      rows += `<b>${t('sumCallWindow')} :</b> ${esc(booking.callWindow)}<br>`;
+    }else{
+      rows += `<b>${t('sumDate')} :</b> ${esc(booking.date)}<br>
+      <b>${t('sumSlot')} :</b> ${esc(booking.slot)}<br>`;
+    }
+    rows += `<b>${t('sumName')} :</b> ${esc(booking.name)}<br>
+      <b>${t('sumPhone')} :</b> ${esc(booking.phone)}`;
+
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          ${rows}
+          <hr style="border:none;border-top:1px solid #e5ebf3;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+
+    const prefix = isRappel ? t('waPrefixRappel') : t('waPrefixRdv');
+    let waLines = `${prefix}\n${t('sumType')}: ${isRappel ? t('typeRappel') : t('typeRdv')}\n${t('sumNeed')}: ${booking.need}\n`;
+    if(isRappel){
+      waLines += `${t('sumCallWindow')}: ${booking.callWindow}\n`;
+    }else{
+      waLines += `${t('sumDate')}: ${booking.date}\n${t('sumSlot')}: ${booking.slot}\n`;
+    }
+    waLines += `${t('sumName')}: ${booking.name}\n${t('sumPhone')}: ${booking.phone}`;
+
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waLines)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','rendez-vous','rdv','rappel','rappeler','comptable','bilan','fiscal','declaration','entreprise','horaire','merci','oui','non','question'];
+  const en = ['hello','hi ','hey','appointment','call back','callback','accountant','accounts','tax','filing','company','business','hours','thanks','yes','no ','question'];
+  const es = ['hola','buenas','cita','llamada','llamar','contable','balance','fiscal','declaracion','empresa','horario','gracias','si','no ','consulta'];
+  const ca = ['hola','bon dia','bona tarda','cita','trucada','trucar','comptable','balanc','fiscal','declaracio','empresa','horari','gracies','consulta'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['rappel','rappeler','callback','call back','llamada','llamar','trucada','trucar'])){ startBooking('rappel'); return; }
+  if(normalizedIncludesAny(n,['rendez','rdv','appointment','cita','reserv','prendre'])){ startBooking('rdv'); return; }
+  if(normalizedIncludesAny(n,['service','servei','servicio','bilan','balance','balanc','fiscal','declarat','declarac','tva','iva','impot','impost','tax','entreprise','empresa','company','business','paie','nomina','nomines','payroll','creation','crear'])){ showServices(); return; }
+  if(normalizedIncludesAny(n,['horaire','horari','horario','hour','ouvert','abierto','open','ferme','tancat','tarif','honoraire'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['acces','acceso','direction','parking','venir','llegar','arribar','adresse','address','gare','biarritz'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['confiden','secret','rgpd','donnee','datos','privac'])){ showPrivacy(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','equipe','equipo','equip','appeler','call','telephone','expert','comptable','contable'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','bon dia'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-cabinetbegue-r9t2', {method:'POST', body:'Visite demo Cabinet Begue · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

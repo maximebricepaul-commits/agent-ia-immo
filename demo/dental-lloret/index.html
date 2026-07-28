@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Clínica Dental Lloret</title>
+<meta name="description" content="Alex, el asistente virtual de Clínica Dental Lloret — pide cita, consulta horarios y dirección en menos de un minuto.">
+<style>
+:root{
+  --teal:#0f4c5c;
+  --teal-dark:#0a3641;
+  --aqua:#2a9d8f;
+  --mint:#57c4b0;
+  --mint-dark:#3ba694;
+  --sky:#e0f2f1;
+  --bg:#f2f8f8;
+  --paper:#ffffff;
+  --ink:#213436;
+  --muted:#7c9295;
+  --alert:#e07a5f;
+  --alert-dark:#c85f45;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #15697d 0%, var(--teal) 55%, var(--teal-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--teal) 0%,var(--aqua) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mint),var(--mint-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--teal);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--aqua));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--teal);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #d9eae8;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--teal),var(--aqua));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* alert box for urgencia / no medical advice */
+.alertbox{
+  background:#fdeee9;border:1px solid #f3c9bd;border-radius:12px;
+  padding:9px 12px;font-size:12.8px;color:var(--alert-dark);margin-top:8px;line-height:1.4;
+}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--aqua);
+  color:var(--teal);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--aqua);color:#fff;}
+.qbtn.primary{background:var(--aqua);border-color:var(--mint-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--mint-dark);}
+.qbtn.alert{background:var(--alert);border-color:var(--alert-dark);color:#fff;}
+.qbtn.alert:hover{background:var(--alert-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #dceae8;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d3e4e2;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--aqua);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--aqua),var(--mint-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(42,157,143,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c3ddd9;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🦷</div>
+    <div class="hinfo">
+      <div class="name">Alex · Clínica Dental Lloret</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demo privada para Clínica Dental Lloret · con la tecnología de Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* ================= I18N STRINGS ================= */
+const S = {
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Clínica Dental Lloret**, tu clínica dental en Lloret de Mar.\nTe ayudo a pedir cita, ver los horarios o cómo llegar — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🦷 Pedir cita","🚨 Urgencia","🕐 Horario y dirección","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  /* cita */
+  bookStart:"¡Con mucho gusto, vamos a preparar tu cita! 🙌",
+  askReason:"🦷 ¿Cuál es el motivo de tu cita?",
+  reasonOpts:["🪥 Revisión","✨ Limpieza","😣 Dolor / urgencia","➕ Otro"],
+  askUrgent:"¿Es *urgente*? Si tienes dolor o una molestia importante, te doy prioridad.",
+  urgentOpts:["🚨 Sí, es urgente","🙂 No, puede esperar"],
+  urgentNote:"⚠️ *Importante*: soy un asistente y no puedo dar consejo médico ni recomendar medicamentos. Si tienes un dolor fuerte, hinchazón, fiebre o un golpe reciente, es mejor que lo vea el equipo cuanto antes. Anoto tu solicitud como *prioritaria* y te tomo los datos para que te llamen enseguida.",
+  askSlot:"⏰ Estos son los huecos disponibles — ¿cuál te viene bien?",
+  slotOptsNormal:["Mañana 10:00","Mañana 16:30","Pasado mañana 12:15"],
+  slotOptsUrgent:["Hoy 18:45 (prioritario)","Mañana 09:00 (prioritario)","Mañana 11:30"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para confirmarte la cita (y enviarte el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryReason:"Motivo", summaryUrgent:"Urgencia", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  urgentYes:"Sí, prioritaria", urgentNo:"No",
+  summaryFooter:"✅ Paso tu solicitud al equipo de Clínica Dental Lloret, que te confirma la cita. 🔔 Recibirás un recordatorio la víspera para no olvidarla — y liberar el hueco si surge un imprevisto.",
+  summaryFooterUrgent:"✅ Marco tu solicitud como *prioritaria* y la paso al equipo de Clínica Dental Lloret para que te llamen lo antes posible. Si el dolor empeora antes, no dudes en llamar directamente.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero pedir cita en Clínica Dental Lloret:",
+  /* urgencia (menú directo) */
+  urgencyTitle:"🚨 Entiendo, vamos con la *urgencia*.",
+  urgencyIntro:"Soy un asistente y no puedo dar consejo médico ni indicarte ningún medicamento. Lo que sí hago: darte prioridad, tomar tus datos y avisar al equipo para que te atiendan cuanto antes.\n\nSi es una urgencia vital (dificultad para respirar, sangrado que no para, un golpe fuerte), llama al *112*.",
+  urgencyStartBtn:"📅 Reservar hueco prioritario",
+  /* horario & dirección */
+  hoursTitle:"🕐 Horario y dirección",
+  hoursText:"🕐 *Horario* (ejemplo de demostración)\nLunes a viernes — mañana 09:00–13:30 · tarde 15:30–20:00\nSábado 09:30–13:30 (con cita) · domingo cerrado.",
+  accessText:"📍 *Dónde estamos*: en el centro de Lloret de Mar, a pocos minutos a pie del paseo marítimo. 🅿️ Aparcamiento público cerca. Clínica accesible sin escalones.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🕐 Horario","📍 Cómo llegar","💳 Primera visita","⬅️ Menú"],
+  firstVisitText:"🦷 *Primera visita*: en la primera cita el equipo hace una valoración y te explica las opciones y el presupuesto sin compromiso. Trae, si los tienes, informes o radiografías anteriores. No puedo darte diagnóstico ni precios exactos por aquí — eso te lo confirma el equipo tras verte.",
+  /* diversos */
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de Clínica Dental Lloret 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *pedir cita*, gestionar una *urgencia* o darte el *horario y la dirección* — o te paso con una persona del equipo. ¿Qué prefieres?",
+  noMedical:"🌿 Soy un asistente y no puedo dar consejo médico ni recomendar medicamentos. Lo que sí puedo: darte cita, priorizar una urgencia o pasarte con el equipo. Si el dolor es fuerte, te doy prioridad y tomo tus datos para que te llamen. ¿Te reservo un hueco prioritario?",
+  noMedicalBtns:["🚨 Hueco prioritario","💬 Hablar con una persona","⬅️ Menú"],
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **Clínica Dental Lloret**, la teva clínica dental a Lloret de Mar.\nT'ajudo a demanar hora, veure els horaris o com arribar — en menys d'un minut. En què et puc ajudar?",
+  menu:["🦷 Demanar hora","🚨 Urgència","🕐 Horari i adreça","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  bookStart:"Amb molt de gust, preparem la teva cita! 🙌",
+  askReason:"🦷 Quin és el motiu de la teva visita?",
+  reasonOpts:["🪥 Revisió","✨ Neteja","😣 Dolor / urgència","➕ Altre"],
+  askUrgent:"És *urgent*? Si tens dolor o una molèstia important, et dono prioritat.",
+  urgentOpts:["🚨 Sí, és urgent","🙂 No, pot esperar"],
+  urgentNote:"⚠️ *Important*: sóc un assistent i no puc donar consell mèdic ni recomanar medicaments. Si tens un dolor fort, inflor, febre o un cop recent, és millor que ho vegi l'equip com abans. Anoto la teva sol·licitud com a *prioritària* i et prenc les dades perquè et truquin de seguida.",
+  askSlot:"⏰ Aquests són els horaris disponibles — quin et va bé?",
+  slotOptsNormal:["Demà 10:00","Demà 16:30","Demà passat 12:15"],
+  slotOptsUrgent:["Avui 18:45 (prioritari)","Demà 09:00 (prioritari)","Demà 11:30"],
+  askName:"🙋 A nom de qui anoto la cita?",
+  askPhone:"📱 Perfecte {name}! Un mòbil per confirmar-te la cita (i enviar-te el recordatori la vigília)?",
+  summaryTitle:"📋 Resum de la teva cita",
+  summaryReason:"Motiu", summaryUrgent:"Urgència", summarySlot:"Hora", summaryName:"Nom", summaryPhone:"Telèfon",
+  urgentYes:"Sí, prioritària", urgentNo:"No",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de Clínica Dental Lloret, que et confirma la cita. 🔔 Rebràs un recordatori la vigília per no oblidar-la — i alliberar l'hora si sorgeix un imprevist.",
+  summaryFooterUrgent:"✅ Marco la teva sol·licitud com a *prioritària* i la passo a l'equip de Clínica Dental Lloret perquè et truquin com abans millor. Si el dolor empitjora abans, no dubtis a trucar directament.",
+  sendWa:"📲 Enviar la meva cita per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull demanar hora a Clínica Dental Lloret:",
+  urgencyTitle:"🚨 Entès, anem amb la *urgència*.",
+  urgencyIntro:"Sóc un assistent i no puc donar consell mèdic ni indicar-te cap medicament. El que sí faig: donar-te prioritat, prendre les teves dades i avisar l'equip perquè t'atenguin com abans.\n\nSi és una urgència vital (dificultat per respirar, sagnat que no para, un cop fort), truca al *112*.",
+  urgencyStartBtn:"📅 Reservar hora prioritària",
+  hoursTitle:"🕐 Horari i adreça",
+  hoursText:"🕐 *Horari* (exemple de demostració)\nDe dilluns a divendres — matí 09:00–13:30 · tarda 15:30–20:00\nDissabte 09:30–13:30 (amb cita) · diumenge tancat.",
+  accessText:"📍 *On som*: al centre de Lloret de Mar, a pocs minuts a peu del passeig marítim. 🅿️ Aparcament públic a prop. Clínica accessible sense esglaons.",
+  faqTitle:"Què vols saber?",
+  faqButtons:["🕐 Horari","📍 Com arribar","💳 Primera visita","⬅️ Menú"],
+  firstVisitText:"🦷 *Primera visita*: a la primera cita l'equip fa una valoració i t'explica les opcions i el pressupost sense compromís. Porta, si en tens, informes o radiografies anteriors. No puc donar-te diagnòstic ni preus exactes per aquí — això t'ho confirma l'equip després de veure't.",
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de Clínica Dental Lloret 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *demanar hora*, gestionar una *urgència* o donar-te l'*horari i l'adreça* — o et passo amb una persona de l'equip. Què prefereixes?",
+  noMedical:"🌿 Sóc un assistent i no puc donar consell mèdic ni recomanar medicaments. El que sí puc: donar-te hora, prioritzar una urgència o passar-te amb l'equip. Si el dolor és fort, et dono prioritat i prenc les teves dades perquè et truquin. Et reservo una hora prioritària?",
+  noMedicalBtns:["🚨 Hora prioritària","💬 Parlar amb una persona","⬅️ Menú"],
+  langSwitched:"Canviat a català"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Clínica Dental Lloret**, your dental clinic in Lloret de Mar.\nI can help you book an appointment, check opening hours or find us — in under a minute. How can I help?",
+  menu:["🦷 Book an appointment","🚨 Emergency","🕐 Hours & directions","💬 Talk to a human"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's set up your appointment 🙌",
+  askReason:"🦷 What's the reason for your visit?",
+  reasonOpts:["🪥 Check-up","✨ Cleaning","😣 Pain / emergency","➕ Other"],
+  askUrgent:"Is it *urgent*? If you're in pain or discomfort, I'll give you priority.",
+  urgentOpts:["🚨 Yes, it's urgent","🙂 No, it can wait"],
+  urgentNote:"⚠️ *Important*: I'm an assistant and can't give medical advice or recommend medication. If you have strong pain, swelling, fever or a recent knock, it's best the team sees you as soon as possible. I'll mark your request as *priority* and take your details so they can call you right away.",
+  askSlot:"⏰ Here are the available slots — which suits you?",
+  slotOptsNormal:["Tomorrow 10:00","Tomorrow 16:30","Day after 12:15"],
+  slotOptsUrgent:["Today 18:45 (priority)","Tomorrow 09:00 (priority)","Tomorrow 11:30"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can confirm the appointment (and send a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryReason:"Reason", summaryUrgent:"Urgency", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  urgentYes:"Yes, priority", urgentNo:"No",
+  summaryFooter:"✅ I'm passing your request to the Clínica Dental Lloret team, who will confirm your appointment. 🔔 You'll get a reminder the day before so nothing slips your mind — and the slot can be freed if plans change.",
+  summaryFooterUrgent:"✅ I'm marking your request as *priority* and passing it to the Clínica Dental Lloret team so they can call you as soon as possible. If the pain gets worse before then, don't hesitate to call directly.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at Clínica Dental Lloret:",
+  urgencyTitle:"🚨 Understood — let's handle the *emergency*.",
+  urgencyIntro:"I'm an assistant and can't give medical advice or name any medication. What I can do: give you priority, take your details and alert the team so they see you as soon as possible.\n\nIf this is a life-threatening emergency (trouble breathing, bleeding that won't stop, a heavy blow), call *112*.",
+  urgencyStartBtn:"📅 Book a priority slot",
+  hoursTitle:"🕐 Hours & directions",
+  hoursText:"🕐 *Hours* (demonstration example)\nMonday to Friday — morning 09:00–13:30 · afternoon 15:30–20:00\nSaturday 09:30–13:30 (by appointment) · Sunday closed.",
+  accessText:"📍 *Where we are*: in central Lloret de Mar, a few minutes' walk from the seafront. 🅿️ Public parking nearby. Step-free access.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🕐 Hours","📍 Directions","💳 First visit","⬅️ Menu"],
+  firstVisitText:"🦷 *First visit*: at the first appointment the team does an assessment and explains your options and a quote, no obligation. Bring any previous reports or x-rays if you have them. I can't give a diagnosis or exact prices here — the team confirms that after seeing you.",
+  humanHandoff:"Of course — I'll connect you directly with the Clínica Dental Lloret team 👇",
+  fallback:"Good question! I can help you *book an appointment*, handle an *emergency* or give you the *hours and address* — or I can hand you to a team member. What would you prefer?",
+  noMedical:"🌿 I'm an assistant and can't give medical advice or recommend medication. What I can do: book you in, prioritise an emergency or connect you with the team. If the pain is strong, I'll give you priority and take your details so they call you. Shall I book a priority slot?",
+  noMedicalBtns:["🚨 Priority slot","💬 Talk to a human","⬅️ Menu"],
+  langSwitched:"Switched to English 🇬🇧"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Clínica Dental Lloret**, votre cabinet dentaire à Lloret de Mar.\nJe vous aide à prendre rendez-vous, consulter les horaires ou l'accès — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🦷 Prendre rendez-vous","🚨 Urgence","🕐 Horaires & accès","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  bookStart:"Avec plaisir, préparons votre rendez-vous 🙌",
+  askReason:"🦷 Quel est le motif de votre visite ?",
+  reasonOpts:["🪥 Contrôle","✨ Détartrage","😣 Douleur / urgence","➕ Autre"],
+  askUrgent:"Est-ce *urgent* ? Si vous avez une douleur ou une gêne importante, je vous donne la priorité.",
+  urgentOpts:["🚨 Oui, c'est urgent","🙂 Non, ça peut attendre"],
+  urgentNote:"⚠️ *Important* : je suis un assistant et je ne peux pas donner de conseil médical ni recommander de médicament. En cas de forte douleur, gonflement, fièvre ou choc récent, il vaut mieux que l'équipe vous voie au plus vite. Je note votre demande en *prioritaire* et je prends vos coordonnées pour qu'on vous rappelle tout de suite.",
+  askSlot:"⏰ Voici les créneaux disponibles — lequel vous convient ?",
+  slotOptsNormal:["Demain 10:00","Demain 16:30","Après-demain 12:15"],
+  slotOptsUrgent:["Aujourd'hui 18:45 (prioritaire)","Demain 09:00 (prioritaire)","Demain 11:30"],
+  askName:"🙋 À quel prénom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous confirmer le rendez-vous (et vous envoyer le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryReason:"Motif", summaryUrgent:"Urgence", summarySlot:"Heure", summaryName:"Prénom", summaryPhone:"Téléphone",
+  urgentYes:"Oui, prioritaire", urgentNo:"Non",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de Clínica Dental Lloret, qui vous confirme le rendez-vous. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer le créneau en cas d'imprévu.",
+  summaryFooterUrgent:"✅ Je marque votre demande en *prioritaire* et je la transmets à l'équipe de Clínica Dental Lloret pour qu'on vous rappelle au plus vite. Si la douleur s'aggrave avant, n'hésitez pas à appeler directement.",
+  sendWa:"📲 Envoyer mon rendez-vous par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous à Clínica Dental Lloret :",
+  urgencyTitle:"🚨 Compris, traitons l'*urgence*.",
+  urgencyIntro:"Je suis un assistant et je ne peux pas donner de conseil médical ni citer de médicament. Ce que je fais : vous donner la priorité, prendre vos coordonnées et prévenir l'équipe pour qu'elle vous voie au plus vite.\n\nS'il s'agit d'une urgence vitale (difficulté à respirer, saignement qui ne s'arrête pas, choc violent), appelez le *112*.",
+  urgencyStartBtn:"📅 Réserver un créneau prioritaire",
+  hoursTitle:"🕐 Horaires & accès",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nDu lundi au vendredi — matin 09:00–13:30 · après-midi 15:30–20:00\nSamedi 09:30–13:30 (sur rendez-vous) · dimanche fermé.",
+  accessText:"📍 *Où nous sommes* : dans le centre de Lloret de Mar, à quelques minutes à pied du front de mer. 🅿️ Parking public à proximité. Cabinet accessible de plain-pied.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🕐 Horaires","📍 Accès","💳 Première visite","⬅️ Menu"],
+  firstVisitText:"🦷 *Première visite* : lors du premier rendez-vous, l'équipe réalise un bilan et vous explique les options et le devis, sans engagement. Apportez, si vous les avez, vos comptes rendus ou radios précédents. Je ne peux pas établir de diagnostic ni de prix exacts ici — c'est l'équipe qui vous le confirme après vous avoir vu.",
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de Clínica Dental Lloret 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, gérer une *urgence* ou vous donner les *horaires et l'accès* — ou je vous passe une personne de l'équipe. Que préférez-vous ?",
+  noMedical:"🌿 Je suis un assistant et je ne peux pas donner de conseil médical ni recommander de médicament. Ce que je peux faire : vous donner un rendez-vous, prioriser une urgence ou vous passer l'équipe. Si la douleur est forte, je vous donne la priorité et je prends vos coordonnées pour qu'on vous rappelle. Je vous réserve un créneau prioritaire ?",
+  noMedicalBtns:["🚨 Créneau prioritaire","💬 Parler à un humain","⬅️ Menu"],
+  langSwitched:"Passé en français 🇫🇷"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, reason, urgent, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showUrgency()", cls:"alert"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= HORARIO & DIRECCIÓN ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['hours','access','first','menu'];
+    const map={hours:"showHoursText()",access:"showAccess()",first:"showFirstVisit()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showHoursText(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('hoursText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[1]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showFirstVisit(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('firstVisitText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+/* ================= URGENCIA (menú directo) ================= */
+function showUrgency(){
+  addUser(t('menu')[1]);
+  addBotText(t('urgencyTitle'), null, 300);
+  setTimeout(()=>{
+    addBot(md(t('urgencyIntro')), [
+      {label:t('urgencyStartBtn'), onclick:"startBookingUrgent()", cls:'alert'},
+      {label:t('menu')[3], onclick:"humanHandoff()", cls:'wa'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 750);
+}
+
+/* ================= HANDOFF HUMANO ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= CITA ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'reason', reason:null, urgent:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askReason'), t('reasonOpts').map(l=>({label:l, onclick:`bookingReason('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+/* démarrage direct depuis l'urgence : motif = dolor/urgencia, urgence présumée */
+function startBookingUrgent(){
+  addUser(t('urgencyStartBtn'));
+  booking = {step:'reason', reason:t('reasonOpts')[2], urgent:true, slot:null, name:null, phone:null};
+  booking.step='slot';
+  addBotText(t('urgentNote'), null, 350);
+  setTimeout(()=>{
+    addBotText(t('askSlot'), t('slotOptsUrgent').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+  }, 900);
+}
+
+function bookingReason(label){
+  addUser(label);
+  booking.reason = label;
+  const isPain = /😣/.test(label);
+  if(isPain){
+    booking.step='urgent';
+    addBotText(t('askUrgent'), t('urgentOpts').map((l,i)=>({label:l, onclick:`bookingUrgent(${i===0?'true':'false'},'${l.replace(/'/g,"\\'")}')`, cls:i===0?'alert':''})), 450);
+  }else{
+    booking.urgent=false;
+    booking.step='slot';
+    addBotText(t('askSlot'), t('slotOptsNormal').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingUrgent(isUrgent, label){
+  addUser(label);
+  booking.urgent = isUrgent;
+  booking.step='slot';
+  if(isUrgent){
+    addBotText(t('urgentNote'), null, 350);
+    setTimeout(()=>{
+      addBotText(t('askSlot'), t('slotOptsUrgent').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+    }, 900);
+  }else{
+    addBotText(t('askSlot'), t('slotOptsNormal').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  const urgentLabel = booking.urgent ? t('urgentYes') : t('urgentNo');
+  const footer = booking.urgent ? t('summaryFooterUrgent') : t('summaryFooter');
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span>${booking.urgent?'<span class="cprice">🚨 '+esc(t('urgentYes'))+'</span>':''}</div>
+        <div class="cardbody">
+          <b>${t('summaryReason')} :</b> ${esc(booking.reason)}<br>
+          <b>${t('summaryUrgent')} :</b> ${esc(urgentLabel)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #dceae8;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${md(footer)}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryReason')}: ${booking.reason}\n${t('summaryUrgent')}: ${urgentLabel}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= NO MEDICAL ADVICE ================= */
+function showNoMedical(){
+  addBotText(t('noMedical'), t('noMedicalBtns').map((label,i)=>{
+    const acts=["startBookingUrgent()","humanHandoff()","showMenu()"];
+    return {label, onclick:acts[i], cls: i===0?'alert':(i===1?'wa':'')};
+  }), 450);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const es = ['hola','buenas','cita','pedir','reservar','dolor','muela','diente','limpieza','revision','urgencia','horario','gracias','duele'];
+  const ca = ['hola','bon dia','bona tarda','hora','demanar','dolor','queixal','dent','neteja','revisio','urgencia','horari','gracies','vull'];
+  const en = ['hello','hi ','hey','appointment','book','booking','pain','tooth','teeth','cleaning','check','emergency','hours','thanks','hurts'];
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','douleur','dent','detartrage','controle','urgence','horaire','merci','mal','prendre'];
+  let scores = {es:0,ca:0,en:0,fr:0};
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  /* garde-fou conseil médical / médicaments : intercepté AVANT le reste */
+  if(normalizedIncludesAny(n,['medicament','medicamento','medicine','pastilla','pill','antibiotic','antibiotico','ibuprofen','ibuprofeno','paracetamol','que me tomo','qué tomo','what should i take','que dois-je prendre','remedio','remei','tratamiento en casa'])){
+    showNoMedical(); return;
+  }
+
+  if(normalizedIncludesAny(n,['urgenci','urgence','emergency','duele mucho','fort mal','severe pain','me duele','tinc dolor','j\'ai mal','hinchazon','inflor','swelling','fiebre','fever'])){ showUrgency(); return; }
+  if(normalizedIncludesAny(n,['cita','pedir','reservar','appointment','book','rendez','rdv','demanar hora','hora amb','revision','revisio','check','limpieza','neteja','detartrage','contrôle','controle'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['horario','horari','hours','horaire','abierto','obert','open','ouvert','cerrado','tancat','ferme'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['direccion','adreca','address','acces','como llegar','com arribar','directions','venir','parking','aparcamiento'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['primera visita','first visit','premiere visite','primera','presupuesto','pressupost','quote','devis','precio','preu','price','prix'])){ showFirstVisit(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','human','humain','persona','equipo','equip','equipe','llamar','call','telefono','telefon','appeler'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bon dia','bona tarda','hello','hi','hey','bonjour','salut','bonsoir'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-dentallloret-j5q9', {method:'POST', body:'Visite demo Dental Lloret · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'es';
+  document.querySelector('.langbtn[data-lang="es"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Notaría Vázquez Moral</title>
+<meta name="description" content="Alex, el asistente virtual de la Notaría Pablo Vázquez Moral — pide cita, conoce los trámites y el horario en menos de un minuto.">
+<style>
+:root{
+  --navy:#1c2b4a;
+  --navy-dark:#121d33;
+  --slate:#2f4368;
+  --gold:#a9863f;
+  --gold-dark:#8c6d2c;
+  --bg:#f3f0e8;
+  --paper:#fffdf8;
+  --ink:#232b38;
+  --muted:#7d7768;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #2c4066 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--slate) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--slate),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--navy);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e7e0d2;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--slate));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #ece5d6;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--navy);font-size:13.8px;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--gold-dark);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--navy);border-color:var(--navy-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--navy-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece5d6;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e2dac9;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(140,109,44,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#d6cdba;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">⚖️</div>
+    <div class="hinfo">
+      <div class="name">Alex · Notaría Vázquez Moral</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demostración privada para la Notaría Vázquez Moral · con la tecnología de Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Lista ILUSTRATIVA de trámites de demostración — no sustituye la información oficial de la notaría */
+const TRAMITES = [
+  {key:"compraventa", icon:"🏠", name:{es:"Compraventa de inmueble",ca:"Compravenda d'immoble",fr:"Vente immobilière",en:"Property sale"},
+    desc:{es:"escritura de compra/venta de vivienda o local",ca:"escriptura de compra/venda d'habitatge o local",fr:"acte de vente d'un logement ou local",en:"deed of sale for a home or premises"}},
+  {key:"herencia", icon:"📜", name:{es:"Herencia / Sucesión",ca:"Herència / Successió",fr:"Succession / Héritage",en:"Inheritance / Succession"},
+    desc:{es:"aceptación de herencia, testamento, adjudicación",ca:"acceptació d'herència, testament, adjudicació",fr:"acceptation de succession, testament, partage",en:"acceptance of inheritance, will, distribution"}},
+  {key:"poder", icon:"✍️", name:{es:"Poder / Apoderamiento",ca:"Poder / Apoderament",fr:"Procuration",en:"Power of attorney"},
+    desc:{es:"poder general o especial para representación",ca:"poder general o especial per a representació",fr:"procuration générale ou spéciale",en:"general or special power for representation"}},
+  {key:"otra", icon:"💬", name:{es:"Otra consulta",ca:"Una altra consulta",fr:"Autre demande",en:"Other request"},
+    desc:{es:"acta, constitución de sociedad, otro documento",ca:"acta, constitució de societat, un altre document",fr:"acte, constitution de société, autre document",en:"deed, company formation, other document"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de la **Notaría Pablo Vázquez Moral**, en Sant Feliu de Guíxols.\nTe ayudo a pedir cita, orientarte sobre el tipo de trámite y darte el horario — en menos de un minuto. ¿En qué puedo ayudarte?",
+  menu:["📅 Pedir cita","📁 Tipo de trámite","🕐 Horario y dirección","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  disclaimer:"ℹ️ Aviso: soy un asistente para orientarte y agendar tu cita. No ofrezco asesoramiento jurídico; el notario y su equipo resolverán tus dudas legales en la cita.",
+  /* cita */
+  bookStart:"Con mucho gusto, preparamos tu cita 🙌",
+  askTramite:"📁 ¿Sobre qué tipo de trámite es tu cita?",
+  tramiteOpts:["🏠 Compraventa","📜 Herencia / Sucesión","✍️ Poder","💬 Otra consulta"],
+  askDate:"📅 ¿Para cuándo te vendría bien la cita?",
+  dateOpts:["Esta semana","La próxima semana","Cuanto antes","Otra fecha"],
+  askSlot:"⏰ Estos son los huecos disponibles — ¿cuál prefieres?",
+  slotOpts:["09:30","11:00","16:30"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y un recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryTramite:"Trámite", summaryDate:"Fecha", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo de la Notaría Vázquez Moral, que confirmará la cita y te indicará la documentación a aportar. 🔔 Recibirás un recordatorio la víspera para no olvidarlo.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero pedir cita en la Notaría Vázquez Moral:",
+  /* trámites */
+  tramiteIntro:"Estos son los trámites más habituales. Elige el tuyo para pedir cita, y en la notaría te indicarán la documentación exacta 📁:",
+  tramiteCardTitle:"Trámites habituales",
+  tramiteCardTag:"Orientativo",
+  tramiteDemoNote:"Información ilustrativa de demostración — la notaría te confirmará los documentos y requisitos de tu caso concreto.",
+  tramiteButtons:["📅 Pedir cita","⬅️ Menú"],
+  docLine:"📄 *Documentación*: para cada trámite se suele necesitar el DNI/NIE de los intervinientes y los documentos del asunto (escrituras, certificados…). En tu cita, el equipo te dará la lista exacta según tu caso.",
+  /* horario y dirección */
+  hoursTitle:"🕐 Horario y dirección",
+  hoursText:"🕐 *Horario* (ejemplo de demostración)\nDe lunes a viernes — 09:00–14:00 · tardes con cita previa\nSábados, domingos y festivos cerrado.",
+  accessText:"📍 *Dirección*: en el centro de Sant Feliu de Guíxols (Baix Empordà), a pocos minutos del paseo marítimo. 🅿️ Aparcamiento público cerca. Despacho accesible a pie llano. Se recomienda cita previa.",
+  docsText:"📄 *Documentación*: dime tu trámite (compraventa, herencia, poder…) y te oriento sobre lo que se suele aportar. La lista definitiva te la confirma el equipo, que revisa cada caso.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["📄 Documentación","📁 Trámites","📍 Dirección","⬅️ Menú"],
+  /* varios */
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de la Notaría Vázquez Moral 👇",
+  fallback:"Buena pregunta. Puedo ayudarte a *pedir cita*, orientarte sobre el *tipo de trámite* o darte el *horario* — o te paso con el equipo. Recuerda que no doy asesoramiento jurídico. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de la **Notaría Pablo Vázquez Moral**, a Sant Feliu de Guíxols.\nT'ajudo a demanar cita, orientar-te sobre el tipus de tràmit i donar-te l'horari — en menys d'un minut. En què et puc ajudar?",
+  menu:["📅 Demanar cita","📁 Tipus de tràmit","🕐 Horari i adreça","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  disclaimer:"ℹ️ Avís: sóc un assistent per orientar-te i concertar la teva cita. No ofereixo assessorament jurídic; el notari i el seu equip resoldran els teus dubtes legals a la cita.",
+  bookStart:"Amb molt de gust, preparem la teva cita 🙌",
+  askTramite:"📁 Sobre quin tipus de tràmit és la teva cita?",
+  tramiteOpts:["🏠 Compravenda","📜 Herència / Successió","✍️ Poder","💬 Una altra consulta"],
+  askDate:"📅 Per a quan et vindria bé la cita?",
+  dateOpts:["Aquesta setmana","La setmana vinent","Com més aviat millor","Una altra data"],
+  askSlot:"⏰ Aquests són els horaris disponibles — quin prefereixes?",
+  slotOpts:["09:30","11:00","16:30"],
+  askName:"🙋 A nom de qui anoto la cita?",
+  askPhone:"📱 Perfecte {name}! Un mòbil per enviar-te la confirmació (i un recordatori la vigília)?",
+  summaryTitle:"📋 Resum de la teva cita",
+  summaryTramite:"Tràmit", summaryDate:"Data", summarySlot:"Hora", summaryName:"Nom", summaryPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de la Notaría Vázquez Moral, que confirmarà la cita i t'indicarà la documentació a aportar. 🔔 Rebràs un recordatori la vigília per no oblidar-ho.",
+  sendWa:"📲 Enviar la meva cita per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull demanar cita a la Notaría Vázquez Moral:",
+  tramiteIntro:"Aquests són els tràmits més habituals. Tria el teu per demanar cita, i a la notaria t'indicaran la documentació exacta 📁:",
+  tramiteCardTitle:"Tràmits habituals",
+  tramiteCardTag:"Orientatiu",
+  tramiteDemoNote:"Informació il·lustrativa de demostració — la notaria et confirmarà els documents i requisits del teu cas concret.",
+  tramiteButtons:["📅 Demanar cita","⬅️ Menú"],
+  docLine:"📄 *Documentació*: per a cada tràmit sol caldre el DNI/NIE dels intervinents i els documents de l'assumpte (escriptures, certificats…). A la teva cita, l'equip et donarà la llista exacta segons el teu cas.",
+  hoursTitle:"🕐 Horari i adreça",
+  hoursText:"🕐 *Horari* (exemple de demostració)\nDe dilluns a divendres — 09:00–14:00 · tardes amb cita prèvia\nDissabtes, diumenges i festius tancat.",
+  accessText:"📍 *Adreça*: al centre de Sant Feliu de Guíxols (Baix Empordà), a pocs minuts del passeig marítim. 🅿️ Aparcament públic a prop. Despatx accessible sense esgraons. Es recomana cita prèvia.",
+  docsText:"📄 *Documentació*: digues-me el teu tràmit (compravenda, herència, poder…) i t'oriento sobre el que se sol aportar. La llista definitiva te la confirma l'equip, que revisa cada cas.",
+  faqTitle:"Què vols saber?",
+  faqButtons:["📄 Documentació","📁 Tràmits","📍 Adreça","⬅️ Menú"],
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de la Notaría Vázquez Moral 👇",
+  fallback:"Bona pregunta. Puc ajudar-te a *demanar cita*, orientar-te sobre el *tipus de tràmit* o donar-te l'*horari* — o et passo amb l'equip. Recorda que no dono assessorament jurídic. Què prefereixes?",
+  langSwitched:"Canviat a català"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de la **Notaría Pablo Vázquez Moral**, à Sant Feliu de Guíxols.\nJe vous aide à prendre rendez-vous, vous orienter sur le type de dossier et vous donner les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["📅 Prendre rendez-vous","📁 Type de dossier","🕐 Horaires & adresse","💬 Parler à une personne"],
+  menuLabel:"Menu",
+  disclaimer:"ℹ️ Note : je suis un assistant pour vous orienter et fixer votre rendez-vous. Je ne donne pas de conseil juridique ; le notaire et son équipe répondront à vos questions légales lors du rendez-vous.",
+  bookStart:"Avec plaisir, préparons votre rendez-vous 🙌",
+  askTramite:"📁 Sur quel type de dossier porte votre rendez-vous ?",
+  tramiteOpts:["🏠 Vente immobilière","📜 Succession / Héritage","✍️ Procuration","💬 Autre demande"],
+  askDate:"📅 Pour quand souhaitez-vous le rendez-vous ?",
+  dateOpts:["Cette semaine","La semaine prochaine","Dès que possible","Autre date"],
+  askSlot:"⏰ Voici les créneaux disponibles — lequel préférez-vous ?",
+  slotOpts:["09h30","11h00","16h30"],
+  askName:"🙋 À quel nom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et un rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryTramite:"Dossier", summaryDate:"Date", summarySlot:"Heure", summaryName:"Nom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de la Notaría Vázquez Moral, qui confirmera le rendez-vous et vous indiquera les documents à apporter. 🔔 Vous recevrez un rappel la veille pour ne rien oublier.",
+  sendWa:"📲 Envoyer mon rendez-vous par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous à la Notaría Vázquez Moral :",
+  tramiteIntro:"Voici les dossiers les plus courants. Choisissez le vôtre pour prendre rendez-vous, et l'étude vous précisera les documents exacts 📁 :",
+  tramiteCardTitle:"Dossiers courants",
+  tramiteCardTag:"Indicatif",
+  tramiteDemoNote:"Information illustrative de démonstration — l'étude vous confirmera les documents et conditions propres à votre cas.",
+  tramiteButtons:["📅 Prendre rendez-vous","⬅️ Menu"],
+  docLine:"📄 *Documents* : pour chaque dossier, il faut généralement la pièce d'identité (DNI/NIE) des intervenants et les documents de l'affaire (actes, certificats…). Lors du rendez-vous, l'équipe vous remettra la liste exacte selon votre cas.",
+  hoursTitle:"🕐 Horaires & adresse",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nDu lundi au vendredi — 09h00–14h00 · après-midi sur rendez-vous\nSamedi, dimanche et jours fériés fermé.",
+  accessText:"📍 *Adresse* : au centre de Sant Feliu de Guíxols (Baix Empordà), à quelques minutes du front de mer. 🅿️ Parking public à proximité. Étude accessible de plain-pied. Rendez-vous conseillé.",
+  docsText:"📄 *Documents* : indiquez-moi votre dossier (vente, succession, procuration…) et je vous oriente sur ce qu'il faut généralement apporter. La liste définitive vous est confirmée par l'équipe, qui étudie chaque cas.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["📄 Documents","📁 Dossiers","📍 Adresse","⬅️ Menu"],
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de la Notaría Vázquez Moral 👇",
+  fallback:"Bonne question. Je peux vous aider à *prendre rendez-vous*, vous orienter sur le *type de dossier* ou vous donner les *horaires* — ou je vous passe l'équipe. Je ne donne pas de conseil juridique. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for the **Notaría Pablo Vázquez Moral**, in Sant Feliu de Guíxols.\nI can help you book an appointment, point you to the right type of matter and give you the opening hours — in under a minute. How can I help?",
+  menu:["📅 Book an appointment","📁 Type of matter","🕐 Hours & address","💬 Talk to a person"],
+  menuLabel:"Menu",
+  disclaimer:"ℹ️ Note: I'm an assistant to guide you and set up your appointment. I don't provide legal advice; the notary and the team will answer your legal questions at the appointment.",
+  bookStart:"With pleasure — let's set up your appointment 🙌",
+  askTramite:"📁 What type of matter is your appointment about?",
+  tramiteOpts:["🏠 Property sale","📜 Inheritance / Succession","✍️ Power of attorney","💬 Other request"],
+  askDate:"📅 When would the appointment suit you?",
+  dateOpts:["This week","Next week","As soon as possible","Another date"],
+  askSlot:"⏰ Here are the available slots — which do you prefer?",
+  slotOpts:["9:30 am","11:00 am","4:30 pm"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryTramite:"Matter", summaryDate:"Date", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Notaría Vázquez Moral team, who will confirm the appointment and tell you which documents to bring. 🔔 You'll get a reminder the day before so nothing slips your mind.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at the Notaría Vázquez Moral:",
+  tramiteIntro:"Here are the most common matters. Pick yours to book an appointment, and the office will tell you the exact documents 📁:",
+  tramiteCardTitle:"Common matters",
+  tramiteCardTag:"For guidance",
+  tramiteDemoNote:"Illustrative information for demonstration — the office will confirm the documents and requirements for your specific case.",
+  tramiteButtons:["📅 Book an appointment","⬅️ Menu"],
+  docLine:"📄 *Documents*: for each matter you'll usually need the ID (DNI/NIE) of the parties and the documents of the case (deeds, certificates…). At your appointment, the team will give you the exact list for your case.",
+  hoursTitle:"🕐 Hours & address",
+  hoursText:"🕐 *Hours* (demonstration example)\nMonday to Friday — 09:00–14:00 · afternoons by appointment\nClosed Saturdays, Sundays and public holidays.",
+  accessText:"📍 *Address*: in central Sant Feliu de Guíxols (Baix Empordà), a few minutes from the seafront. 🅿️ Public parking nearby. Step-free access. An appointment is recommended.",
+  docsText:"📄 *Documents*: tell me your matter (sale, inheritance, power of attorney…) and I'll guide you on what's usually needed. The final list is confirmed by the team, who reviews each case.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["📄 Documents","📁 Matters","📍 Address","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the Notaría Vázquez Moral team 👇",
+  fallback:"Good question. I can help you *book an appointment*, guide you on the *type of matter* or give you the *hours* — or I can hand you to the team. Note that I don't give legal advice. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, tramite, date, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showTramites()"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= TRÁMITES ================= */
+function tramiteCardHtml(){
+  let body = '';
+  TRAMITES.forEach(tr=>{
+    body += `<div class="dish"><div class="dname">${tr.icon} ${esc(tr.name[lang])}</div><div class="ddesc">${esc(tr.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">📁 ${t('tramiteCardTitle')}</span><span class="cprice">${t('tramiteCardTag')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('tramiteDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showTramites(){
+  addUser(t('menu')[1]);
+  addBotText(t('tramiteIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${tramiteCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('docLine')), t('tramiteButtons').map((label,i)=>{
+      const acts = ["startBooking()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===0?'primary':''};
+    }));
+  }, 700);
+}
+
+/* ================= HORARIO Y DIRECCIÓN ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['docs','tramites','access','menu'];
+    const map={docs:"showDocs()",tramites:"showTramites()",access:"showAccess()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showDocs(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('docsText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+/* ================= HANDOFF HUMANO ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= CITA / PRISE DE RDV ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'tramite', tramite:null, date:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askTramite'), t('tramiteOpts').map(l=>({label:l, onclick:`bookingTramite('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function bookingTramite(label){
+  addUser(label);
+  booking.tramite = label;
+  booking.step='date';
+  addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    booking.step='slot';
+    addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryTramite')} :</b> ${esc(booking.tramite)}<br>
+          <b>${t('summaryDate')} :</b> ${esc(booking.date)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #ece5d6;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryTramite')}: ${booking.tramite}\n${t('summaryDate')}: ${booking.date}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= IDIOMA ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const es = ['hola','buenas','cita','tramite','compraventa','herencia','poder','notaria','horario','direccion','gracias','si','documento','escritura'];
+  const ca = ['hola','bon dia','cita','tramit','compravenda','herencia','poder','notaria','horari','adreca','gracies','document','escriptura','voldria'];
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','vente','succession','procuration','notaire','horaire','adresse','merci','oui','document'];
+  const en = ['hello','hi ','hey','appointment','sale','inheritance','power of attorney','notary','hours','address','thanks','yes','document','deed'];
+  let scores = {es:0,ca:0,fr:0,en:0};
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+  setTimeout(()=>addBot(md(t('disclaimer'))), 900);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTO LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['cita','rendez','rdv','appointment','reserv','agenda'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['tramite','tramit','dossier','matter','compraventa','compravenda','vente','sale','herencia','succession','inheritance','poder','procuration','power','escritura','deed'])){ showTramites(); return; }
+  if(normalizedIncludesAny(n,['document','documentacion','documentacio','papel','papier','aportar','bring'])){ showDocs(); return; }
+  if(normalizedIncludesAny(n,['horario','horari','horaire','hour','abierto','obert','ouvert','open','cerrado','tancat','ferme'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['direccion','adreca','adresse','address','parking','aparcamiento','llegar','venir','arribar','como llego'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','huma','humain','human','persona','equipo','equip','equipe','team','llamar','telefono','appeler','call','notario','notari','notaire','notary'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bon dia','bonjour','salut','bonsoir','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-notariavazquez-x2n8', {method:'POST', body:'Visite demo Notaria Vazquez · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'es';
+  document.querySelector('.langbtn[data-lang="es"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+  setTimeout(()=>addBot(md(t('disclaimer'))), 1100);
+}
+init();
+</script>
+</body>
+</html>
