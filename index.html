@@ -974,6 +974,25 @@
         }]
       },
     });
+
+    // --- Rebrand widget-next : le bundle ignore les clés stylesheet/launcher,
+    //     on injecte donc la charte ALEX directement dans le shadow root du widget. ---
+    (function alexRebrand(){
+      var n = 0;
+      var iv = setInterval(function(){
+        n++;
+        var host = document.getElementById('voiceflow-chat');
+        var sr = host && host.shadowRoot;
+        if (sr && !sr.querySelector('link[data-alex]')) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = 'https://agentia-immo.com/vf-custom.css';
+          l.setAttribute('data-alex', '1');
+          sr.appendChild(l);
+        }
+        if (n > 60) clearInterval(iv); // ~30s de sécurité
+      }, 500);
+    })();
   };
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
   v.type = "text/javascript";
