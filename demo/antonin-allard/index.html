@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Antonin Allard</title>
+<meta name="description" content="Alex, l'assistant virtuel d'Antonin Allard — acheter, vendre ou estimer un bien de prestige à Megève, et prendre rendez-vous en 1 minute.">
+<style>
+:root{
+  --navy:#12233a;
+  --navy-dark:#0b1626;
+  --slate:#26415e;
+  --gold:#b08d4f;
+  --gold-dark:#8f6f37;
+  --stone:#f4f0e9;
+  --bg:#f6f2ec;
+  --paper:#fffdfa;
+  --ink:#22292f;
+  --muted:#8a8073;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c3452 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--slate) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--slate),var(--gold));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--gold-dark);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e7ddcb;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--slate));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #ece2d0;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--gold-dark);font-size:13.8px;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--gold-dark);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--gold);border-color:var(--gold-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--gold-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece2d0;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e2d7c4;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(143,111,55,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#dccbb8;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🏔️</div>
+    <div class="hinfo">
+      <div class="name">Alex · Antonin Allard</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour Antonin Allard · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Biens ILLUSTRATIFS de démonstration — ne reflètent pas le portefeuille réel de l'agence */
+const LISTINGS = [
+  {cat:"chalet", name:{fr:"Chalet contemporain, Mont d'Arbois",es:"Chalet contemporáneo, Mont d'Arbois",en:"Contemporary chalet, Mont d'Arbois",ca:"Xalet contemporani, Mont d'Arbois"},
+    desc:{fr:"6 chambres, spa, vue sur le Mont-Blanc — ski aux pieds",es:"6 dormitorios, spa, vistas al Mont-Blanc — a pie de pistas",en:"6 bedrooms, spa, Mont-Blanc views — ski-in ski-out",ca:"6 habitacions, spa, vistes al Mont-Blanc — a peu de pistes"}},
+  {cat:"chalet", name:{fr:"Ferme rénovée, Le Petit Bois",es:"Granja rehabilitada, Le Petit Bois",en:"Renovated farmhouse, Le Petit Bois",ca:"Masia rehabilitada, Le Petit Bois"},
+    desc:{fr:"vieux bois et pierre, 5 chambres, grand jardin",es:"madera vieja y piedra, 5 dormitorios, gran jardín",en:"reclaimed wood & stone, 5 bedrooms, large garden",ca:"fusta vella i pedra, 5 habitacions, gran jardí"}},
+  {cat:"appartement", name:{fr:"Appartement de standing, centre village",es:"Apartamento de lujo, centro del pueblo",en:"Premium apartment, village centre",ca:"Apartament d'estànding, centre del poble"},
+    desc:{fr:"3 chambres, balcon plein sud, cave à ski, parking",es:"3 dormitorios, balcón al sur, ski room, parking",en:"3 bedrooms, south-facing balcony, ski locker, parking",ca:"3 habitacions, balcó al sud, ski room, pàrquing"}},
+  {cat:"appartement", name:{fr:"Duplex neuf, quartier Rochebrune",es:"Dúplex nuevo, barrio Rochebrune",en:"New duplex, Rochebrune area",ca:"Dúplex nou, barri Rochebrune"},
+    desc:{fr:"2 chambres, prestations haut de gamme, accès télécabine",es:"2 dormitorios, acabados premium, junto al telecabina",en:"2 bedrooms, high-end finishes, gondola access",ca:"2 habitacions, acabats premium, accés al telecabina"}},
+  {cat:"terrain", name:{fr:"Terrain constructible, coteau ensoleillé",es:"Terreno edificable, ladera soleada",en:"Building plot, sunny hillside",ca:"Terreny edificable, vessant assolellat"},
+    desc:{fr:"projet de chalet, exposition et vue dégagée",es:"proyecto de chalet, orientación y vistas despejadas",en:"chalet project, open aspect and views",ca:"projecte de xalet, orientació i vistes obertes"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel d'**Antonin Allard**, votre agence immobilière de prestige à Megève.\nJe vous accompagne pour *acheter*, *vendre* ou *estimer* un bien, et je peux organiser un rendez-vous avec un conseiller — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🔑 Acheter","🏡 Vendre","📊 Estimer mon bien","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* commun */
+  askSector:"📍 Sur quel secteur porte votre projet ?",
+  sectorOpts:["Megève centre","Mont d'Arbois / Rochebrune","Environs (Combloux, Demi-Quartier…)","Je ne sais pas encore"],
+  askVisit:"Souhaitez-vous *visiter des biens* ou d'abord *échanger avec un conseiller* ?",
+  visitOpts:["🗝️ Organiser une visite","☕ Rendez-vous conseil"],
+  askName:"🙋 À quel prénom dois-je transmettre votre demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que votre conseiller vous rappelle (et vous envoie une confirmation) ?",
+  /* acheter */
+  buyStart:"Avec plaisir, précisons votre recherche 🙌",
+  askType:"🏠 Quel type de bien recherchez-vous ?",
+  typeOpts:["Chalet","Appartement","Terrain","Investissement locatif"],
+  askBudget:"💰 Quelle enveloppe budgétaire avez-vous en tête ?",
+  budgetOpts:["< 1,5 M€","1,5 – 3 M€","3 – 6 M€","> 6 M€"],
+  /* vendre */
+  sellStart:"Très bien, parlons de votre bien à la vente 🙌",
+  askSellType:"🏠 Quel type de bien souhaitez-vous vendre ?",
+  sellTypeOpts:["Chalet","Appartement","Terrain","Autre bien"],
+  /* estimer */
+  estimateStart:"Avec plaisir — mettons en place votre estimation 📊",
+  askEstimateType:"🏠 Quel bien souhaitez-vous faire estimer ?",
+  estimateTypeOpts:["Chalet","Appartement","Terrain","Autre bien"],
+  estimateNote:"Notre conseiller réalise une estimation personnalisée après une visite sur place — c'est plus fiable qu'un chiffre automatique et sans engagement.",
+  /* récap */
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  summaryProject:"Projet", summarySector:"Secteur", summaryType:"Type de bien", summaryBudget:"Budget", summaryVisit:"Rendez-vous", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe d'Antonin Allard. Un conseiller vous recontacte rapidement pour convenir d'un rendez-vous et affiner votre projet. 🔔 Vous recevrez une confirmation par message.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je vous contacte via l'assistant Alex au sujet d'un projet immobilier avec Antonin Allard :",
+  /* labels projets */
+  projBuy:"Acheter", projSell:"Vendre", projEstimate:"Estimer",
+  visitVisit:"Visite de biens", visitAdvice:"Rendez-vous conseil",
+  /* biens */
+  listingsIntro:"Voici une sélection illustrative de biens de prestige à Megève et ses environs 🏔️ :",
+  listingsChalets:"Chalets", listingsApparts:"Appartements", listingsTerrains:"Terrains & projets",
+  listingsCardTitle:"Sélection du moment",
+  listingsCardPrice:"Sur demande",
+  listingsDemoNote:"Biens illustratifs présentés à titre de démonstration — l'équipe vous communique les biens réellement disponibles.",
+  listingsButtons:["🗝️ Organiser une visite","📊 Estimer mon bien","⬅️ Menu"],
+  /* infos */
+  infoTitle:"Que souhaitez-vous savoir ?",
+  infoButtons:["🏔️ Nos secteurs","🌍 Clientèle internationale","🤝 Notre accompagnement","⬅️ Menu"],
+  sectorsText:"🏔️ *Nos secteurs* : Megève centre, Mont d'Arbois, Rochebrune, ainsi que Combloux, Demi-Quartier et les environs. Chalets, fermes rénovées, appartements de standing et terrains constructibles.",
+  intlText:"🌍 *Clientèle internationale* : nous accompagnons une clientèle française et étrangère. Votre conseiller échange volontiers en plusieurs langues et vous guide à chaque étape, à distance ou sur place.",
+  supportText:"🤝 *Notre accompagnement* : recherche sur-mesure, visites organisées, mise en valeur du bien à la vente, et mise en relation avec des partenaires de confiance. Nous ne fournissons pas de conseil juridique ou fiscal, mais pouvons vous orienter vers les bons interlocuteurs.",
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe d'Antonin Allard 👇",
+  fallback:"Bonne question ! Je peux vous aider à *acheter*, *vendre* ou *estimer* un bien, vous présenter nos *secteurs* — ou vous passer un conseiller. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Antonin Allard**, tu agencia inmobiliaria de prestigio en Megève.\nTe acompaño para *comprar*, *vender* o *valorar* una propiedad, y puedo concertar una cita con un asesor — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🔑 Comprar","🏡 Vender","📊 Valorar mi propiedad","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  askSector:"📍 ¿En qué zona se centra tu proyecto?",
+  sectorOpts:["Centro de Megève","Mont d'Arbois / Rochebrune","Alrededores (Combloux, Demi-Quartier…)","Aún no lo sé"],
+  askVisit:"¿Prefieres *visitar propiedades* o primero *hablar con un asesor*?",
+  visitOpts:["🗝️ Organizar una visita","☕ Cita de asesoramiento"],
+  askName:"🙋 ¿A nombre de quién transmito tu solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para que tu asesor te llame (y te envíe una confirmación)?",
+  buyStart:"¡Encantado, concretemos tu búsqueda! 🙌",
+  askType:"🏠 ¿Qué tipo de propiedad buscas?",
+  typeOpts:["Chalet","Apartamento","Terreno","Inversión para alquiler"],
+  askBudget:"💰 ¿Qué presupuesto tienes en mente?",
+  budgetOpts:["< 1,5 M€","1,5 – 3 M€","3 – 6 M€","> 6 M€"],
+  sellStart:"Muy bien, hablemos de tu propiedad en venta 🙌",
+  askSellType:"🏠 ¿Qué tipo de propiedad quieres vender?",
+  sellTypeOpts:["Chalet","Apartamento","Terreno","Otro tipo"],
+  estimateStart:"¡Con gusto — preparamos tu valoración! 📊",
+  askEstimateType:"🏠 ¿Qué propiedad quieres valorar?",
+  estimateTypeOpts:["Chalet","Apartamento","Terreno","Otro tipo"],
+  estimateNote:"Nuestro asesor realiza una valoración personalizada tras una visita in situ — es más fiable que una cifra automática y sin compromiso.",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryProject:"Proyecto", summarySector:"Zona", summaryType:"Tipo de propiedad", summaryBudget:"Presupuesto", summaryVisit:"Cita", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo de Antonin Allard. Un asesor te contactará pronto para concertar una cita y afinar tu proyecto. 🔔 Recibirás una confirmación por mensaje.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Os contacto a través del asistente Alex sobre un proyecto inmobiliario con Antonin Allard:",
+  projBuy:"Comprar", projSell:"Vender", projEstimate:"Valorar",
+  visitVisit:"Visita de propiedades", visitAdvice:"Cita de asesoramiento",
+  listingsIntro:"Aquí tienes una selección ilustrativa de propiedades de prestigio en Megève y alrededores 🏔️:",
+  listingsChalets:"Chalets", listingsApparts:"Apartamentos", listingsTerrains:"Terrenos y proyectos",
+  listingsCardTitle:"Selección del momento",
+  listingsCardPrice:"A consultar",
+  listingsDemoNote:"Propiedades ilustrativas a modo de demostración — el equipo te facilita las propiedades realmente disponibles.",
+  listingsButtons:["🗝️ Organizar una visita","📊 Valorar mi propiedad","⬅️ Menú"],
+  infoTitle:"¿Qué quieres saber?",
+  infoButtons:["🏔️ Nuestras zonas","🌍 Clientela internacional","🤝 Nuestro acompañamiento","⬅️ Menú"],
+  sectorsText:"🏔️ *Nuestras zonas*: centro de Megève, Mont d'Arbois, Rochebrune, así como Combloux, Demi-Quartier y alrededores. Chalets, granjas rehabilitadas, apartamentos de lujo y terrenos edificables.",
+  intlText:"🌍 *Clientela internacional*: acompañamos a clientes franceses y extranjeros. Tu asesor puede atenderte en varios idiomas y te guía en cada etapa, a distancia o in situ.",
+  supportText:"🤝 *Nuestro acompañamiento*: búsqueda a medida, visitas organizadas, puesta en valor de la propiedad en venta y contacto con colaboradores de confianza. No ofrecemos asesoramiento jurídico ni fiscal, pero podemos orientarte hacia los interlocutores adecuados.",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de Antonin Allard 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *comprar*, *vender* o *valorar* una propiedad, presentarte nuestras *zonas* — o pasarte con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Antonin Allard**, your prestige real-estate agency in Megève.\nI can help you *buy*, *sell* or *value* a property, and arrange a meeting with an advisor — in under a minute. How can I help?",
+  menu:["🔑 Buy","🏡 Sell","📊 Value my property","💬 Talk to a human"],
+  menuLabel:"Menu",
+  askSector:"📍 Which area is your project focused on?",
+  sectorOpts:["Megève centre","Mont d'Arbois / Rochebrune","Nearby (Combloux, Demi-Quartier…)","Not sure yet"],
+  askVisit:"Would you rather *view properties* or first *speak with an advisor*?",
+  visitOpts:["🗝️ Arrange a viewing","☕ Advisory meeting"],
+  askName:"🙋 What name should I pass your request under?",
+  askPhone:"📱 Great, {name}! A mobile number so your advisor can call you back (and send a confirmation)?",
+  buyStart:"With pleasure — let's refine your search 🙌",
+  askType:"🏠 What type of property are you looking for?",
+  typeOpts:["Chalet","Apartment","Land plot","Rental investment"],
+  askBudget:"💰 What budget do you have in mind?",
+  budgetOpts:["< €1.5M","€1.5 – 3M","€3 – 6M","> €6M"],
+  sellStart:"Very good — let's talk about the property you're selling 🙌",
+  askSellType:"🏠 What type of property would you like to sell?",
+  sellTypeOpts:["Chalet","Apartment","Land plot","Other property"],
+  estimateStart:"Gladly — let's set up your valuation 📊",
+  askEstimateType:"🏠 Which property would you like valued?",
+  estimateTypeOpts:["Chalet","Apartment","Land plot","Other property"],
+  estimateNote:"Our advisor provides a tailored valuation after an on-site visit — more reliable than an automated figure, and with no obligation.",
+  summaryTitle:"📋 Your request summary",
+  summaryProject:"Project", summarySector:"Area", summaryType:"Property type", summaryBudget:"Budget", summaryVisit:"Meeting", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Antonin Allard team. An advisor will contact you shortly to arrange a meeting and refine your project. 🔔 You'll receive a confirmation by message.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'm reaching out via the Alex assistant about a real-estate project with Antonin Allard:",
+  projBuy:"Buy", projSell:"Sell", projEstimate:"Value",
+  visitVisit:"Property viewing", visitAdvice:"Advisory meeting",
+  listingsIntro:"Here's an illustrative selection of prestige properties in Megève and nearby 🏔️:",
+  listingsChalets:"Chalets", listingsApparts:"Apartments", listingsTerrains:"Land & projects",
+  listingsCardTitle:"Current selection",
+  listingsCardPrice:"On request",
+  listingsDemoNote:"Illustrative properties shown for demonstration — the team will share the actually available properties.",
+  listingsButtons:["🗝️ Arrange a viewing","📊 Value my property","⬅️ Menu"],
+  infoTitle:"What would you like to know?",
+  infoButtons:["🏔️ Our areas","🌍 International clients","🤝 Our support","⬅️ Menu"],
+  sectorsText:"🏔️ *Our areas*: Megève centre, Mont d'Arbois, Rochebrune, as well as Combloux, Demi-Quartier and the surroundings. Chalets, renovated farmhouses, premium apartments and building plots.",
+  intlText:"🌍 *International clients*: we assist both French and international clients. Your advisor is happy to speak several languages and guides you at every step, remotely or on site.",
+  supportText:"🤝 *Our support*: bespoke search, organised viewings, showcasing your property for sale, and connections with trusted partners. We don't provide legal or tax advice, but we can point you to the right professionals.",
+  humanHandoff:"Of course — I'll connect you directly with the Antonin Allard team 👇",
+  fallback:"Good question! I can help you *buy*, *sell* or *value* a property, present our *areas* — or hand you to an advisor. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual d'**Antonin Allard**, la teva agència immobiliària de prestigi a Megève.\nT'acompanyo per *comprar*, *vendre* o *valorar* un immoble, i puc concertar una cita amb un assessor — en menys d'un minut. En què et puc ajudar?",
+  menu:["🔑 Comprar","🏡 Vendre","📊 Valorar el meu immoble","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  askSector:"📍 En quina zona se centra el teu projecte?",
+  sectorOpts:["Centre de Megève","Mont d'Arbois / Rochebrune","Rodalia (Combloux, Demi-Quartier…)","Encara no ho sé"],
+  askVisit:"Prefereixes *visitar immobles* o primer *parlar amb un assessor*?",
+  visitOpts:["🗝️ Organitzar una visita","☕ Cita d'assessorament"],
+  askName:"🙋 A nom de qui transmeto la teva sol·licitud?",
+  askPhone:"📱 Perfecte {name}! Un mòbil perquè el teu assessor et truqui (i t'enviï una confirmació)?",
+  buyStart:"Amb molt de gust, concretem la teva cerca 🙌",
+  askType:"🏠 Quin tipus d'immoble busques?",
+  typeOpts:["Xalet","Apartament","Terreny","Inversió per llogar"],
+  askBudget:"💰 Quin pressupost tens en ment?",
+  budgetOpts:["< 1,5 M€","1,5 – 3 M€","3 – 6 M€","> 6 M€"],
+  sellStart:"Molt bé, parlem del teu immoble en venda 🙌",
+  askSellType:"🏠 Quin tipus d'immoble vols vendre?",
+  sellTypeOpts:["Xalet","Apartament","Terreny","Un altre immoble"],
+  estimateStart:"Amb molt de gust — preparem la teva valoració 📊",
+  askEstimateType:"🏠 Quin immoble vols fer valorar?",
+  estimateTypeOpts:["Xalet","Apartament","Terreny","Un altre immoble"],
+  estimateNote:"El nostre assessor fa una valoració personalitzada després d'una visita in situ — és més fiable que una xifra automàtica i sense compromís.",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryProject:"Projecte", summarySector:"Zona", summaryType:"Tipus d'immoble", summaryBudget:"Pressupost", summaryVisit:"Cita", summaryName:"Nom", summaryPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip d'Antonin Allard. Un assessor et contactarà aviat per concertar una cita i afinar el teu projecte. 🔔 Rebràs una confirmació per missatge.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Us contacto a través de l'assistent Alex sobre un projecte immobiliari amb Antonin Allard:",
+  projBuy:"Comprar", projSell:"Vendre", projEstimate:"Valorar",
+  visitVisit:"Visita d'immobles", visitAdvice:"Cita d'assessorament",
+  listingsIntro:"Aquí tens una selecció il·lustrativa d'immobles de prestigi a Megève i rodalia 🏔️:",
+  listingsChalets:"Xalets", listingsApparts:"Apartaments", listingsTerrains:"Terrenys i projectes",
+  listingsCardTitle:"Selecció del moment",
+  listingsCardPrice:"A consultar",
+  listingsDemoNote:"Immobles il·lustratius a tall de demostració — l'equip et facilita els immobles realment disponibles.",
+  listingsButtons:["🗝️ Organitzar una visita","📊 Valorar el meu immoble","⬅️ Menú"],
+  infoTitle:"Què vols saber?",
+  infoButtons:["🏔️ Les nostres zones","🌍 Clientela internacional","🤝 El nostre acompanyament","⬅️ Menú"],
+  sectorsText:"🏔️ *Les nostres zones*: centre de Megève, Mont d'Arbois, Rochebrune, així com Combloux, Demi-Quartier i la rodalia. Xalets, masies rehabilitades, apartaments d'estànding i terrenys edificables.",
+  intlText:"🌍 *Clientela internacional*: acompanyem clients francesos i estrangers. El teu assessor t'atén de gust en diverses llengües i et guia a cada etapa, a distància o in situ.",
+  supportText:"🤝 *El nostre acompanyament*: cerca a mida, visites organitzades, posada en valor de l'immoble en venda i contacte amb col·laboradors de confiança. No oferim assessorament jurídic ni fiscal, però et podem orientar cap als professionals adequats.",
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip d'Antonin Allard 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *comprar*, *vendre* o *valorar* un immoble, presentar-te les nostres *zones* — o passar-te amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let req = null; // {project, step, sector, type, budget, visit, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBuy()", cls:"primary"},
+    {label:m[1], onclick:"startSell()"},
+    {label:m[2], onclick:"startEstimate()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= BIENS / SÉLECTION ================= */
+function listingsCardHtml(){
+  const cats = [
+    {key:'chalet', label:t('listingsChalets')},
+    {key:'appartement', label:t('listingsApparts')},
+    {key:'terrain', label:t('listingsTerrains')}
+  ];
+  let body = '';
+  cats.forEach(c=>{
+    body += `<div class="spec-row"><span class="spec">${c.label}</span></div>`;
+    LISTINGS.filter(d=>d.cat===c.key).forEach(d=>{
+      body += `<div class="dish"><div class="dname">${esc(d.name[lang])}</div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+    });
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">🏔️ ${t('listingsCardTitle')}</span><span class="cprice">${t('listingsCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('listingsDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showListings(){
+  addBotText(t('listingsIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${listingsCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', t('listingsButtons').map((label,i)=>{
+      const acts = ["startBuy()","startEstimate()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===0?'primary':''};
+    }));
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 700);
+}
+
+/* ================= INFOS AGENCE ================= */
+function showInfo(){
+  addBotText(t('infoTitle'), t('infoButtons').map((label,i)=>{
+    const acts=["showSectors()","showIntl()","showSupport()","showMenu()"];
+    return {label, onclick:acts[i]};
+  }), 350);
+}
+
+function showSectors(){
+  addUser(t('infoButtons')[0]);
+  addBotText(t('sectorsText'), [
+    {label:t('menu')[0], onclick:"startBuy()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showIntl(){
+  addUser(t('infoButtons')[1]);
+  addBotText(t('intlText'), [
+    {label:t('menu')[0], onclick:"startBuy()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showSupport(){
+  addUser(t('infoButtons')[2]);
+  addBotText(t('supportText'), [
+    {label:t('menu')[2], onclick:"startEstimate()", cls:'primary'},
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'}
+  ], 450);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= FLUX QUALIFICATION ================= */
+function startBuy(){
+  addUser(t('menu')[0]);
+  req = {project:t('projBuy'), pkey:'buy', step:'sector', sector:null, type:null, budget:null, visit:null, name:null, phone:null};
+  addBotText(t('buyStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askSector'), t('sectorOpts').map(l=>({label:l, onclick:`pickSector('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function startSell(){
+  addUser(t('menu')[1]);
+  req = {project:t('projSell'), pkey:'sell', step:'sector', sector:null, type:null, budget:null, visit:null, name:null, phone:null};
+  addBotText(t('sellStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askSector'), t('sectorOpts').map(l=>({label:l, onclick:`pickSector('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function startEstimate(){
+  addUser(t('menu')[2]);
+  req = {project:t('projEstimate'), pkey:'estimate', step:'sector', sector:null, type:null, budget:null, visit:null, name:null, phone:null};
+  addBotText(t('estimateStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askSector'), t('sectorOpts').map(l=>({label:l, onclick:`pickSector('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function pickSector(label){
+  addUser(label);
+  req.sector = label;
+  req.step='type';
+  let opts, ask;
+  if(req.pkey==='buy'){ opts=t('typeOpts'); ask=t('askType'); }
+  else if(req.pkey==='sell'){ opts=t('sellTypeOpts'); ask=t('askSellType'); }
+  else { opts=t('estimateTypeOpts'); ask=t('askEstimateType'); }
+  addBotText(ask, opts.map(l=>({label:l, onclick:`pickType('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function pickType(label){
+  addUser(label);
+  req.type = label;
+  if(req.pkey==='buy'){
+    req.step='budget';
+    addBotText(t('askBudget'), t('budgetOpts').map(l=>({label:l, onclick:`pickBudget('${l.replace(/'/g,"\\'")}')`})), 450);
+  } else if(req.pkey==='estimate'){
+    req.step='visit';
+    addBotText(t('estimateNote'), null, 400);
+    setTimeout(()=>{
+      addBotText(t('askVisit'), t('visitOpts').map((l,i)=>({label:l, onclick:`pickVisit(${i})`})), 450);
+    }, 850);
+  } else {
+    req.step='visit';
+    addBotText(t('askVisit'), t('visitOpts').map((l,i)=>({label:l, onclick:`pickVisit(${i})`})), 450);
+  }
+}
+
+function pickBudget(label){
+  addUser(label);
+  req.budget = label;
+  req.step='visit';
+  addBotText(t('askVisit'), t('visitOpts').map((l,i)=>({label:l, onclick:`pickVisit(${i})`})), 450);
+}
+
+function pickVisit(i){
+  const label = t('visitOpts')[i];
+  addUser(label);
+  req.visit = i===0 ? t('visitVisit') : t('visitAdvice');
+  req.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function reqHandleText(text){
+  if(!req) return false;
+  if(req.step==='name'){
+    req.name = text;
+    req.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(req.step==='phone'){
+    req.phone = text;
+    finishRequest();
+    return true;
+  }
+  return false;
+}
+
+function finishRequest(){
+  req.step='done';
+  showTyping(()=>{
+    let rows = `<b>${t('summaryProject')} :</b> ${esc(req.project)}<br>`;
+    rows += `<b>${t('summarySector')} :</b> ${esc(req.sector)}<br>`;
+    rows += `<b>${t('summaryType')} :</b> ${esc(req.type)}<br>`;
+    if(req.budget){ rows += `<b>${t('summaryBudget')} :</b> ${esc(req.budget)}<br>`; }
+    rows += `<b>${t('summaryVisit')} :</b> ${esc(req.visit)}<br>`;
+    rows += `<b>${t('summaryName')} :</b> ${esc(req.name)}<br>`;
+    rows += `<b>${t('summaryPhone')} :</b> ${esc(req.phone)}`;
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          ${rows}
+          <hr style="border:none;border-top:1px solid #ece2d0;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    let waText = `${t('waPrefix')}\n${t('summaryProject')}: ${req.project}\n${t('summarySector')}: ${req.sector}\n${t('summaryType')}: ${req.type}\n`;
+    if(req.budget){ waText += `${t('summaryBudget')}: ${req.budget}\n`; }
+    waText += `${t('summaryVisit')}: ${req.visit}\n${t('summaryName')}: ${req.name}\n${t('summaryPhone')}: ${req.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  req = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','acheter','vendre','estimer','estimation','chalet','appartement','terrain','budget','visite','rendez-vous','megeve','merci','oui','non','bien','maison'];
+  const en = ['hello','hi ','hey','buy','sell','value','valuation','chalet','apartment','flat','land','budget','viewing','appointment','thanks','yes','no ','property','house'];
+  const es = ['hola','buenas','comprar','vender','valorar','valoracion','chalet','apartamento','terreno','presupuesto','visita','cita','gracias','si','propiedad','casa'];
+  const ca = ['hola','bona tarda','comprar','vendre','valorar','valoracio','xalet','apartament','terreny','pressupost','visita','cita','gracies','immoble','casa','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  req = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(req && (req.step==='name'||req.step==='phone')){
+    reqHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['estim','valor','valuation','value','prix de vente','how much'])){ startEstimate(); return; }
+  if(normalizedIncludesAny(n,['vendre','vender','sell','vendel','a vendre','mettre en vente','posar en venda'])){ startSell(); return; }
+  if(normalizedIncludesAny(n,['achet','acheter','comprar','buy','recherche','busco','looking for','cerco','busca'])){ startBuy(); return; }
+  if(normalizedIncludesAny(n,['secteur','zone','quartier','sector','area','megeve','arbois','rochebrune','combloux'])){ showSectors(); return; }
+  if(normalizedIncludesAny(n,['international','etranger','langue','language','idioma','extranjer'])){ showIntl(); return; }
+  if(normalizedIncludesAny(n,['accompagn','service','support','acompan','ajuda'])){ showSupport(); return; }
+  if(normalizedIncludesAny(n,['bien','biens','listing','property','propiedad','immoble','disponible','portefeuille','chalet','appartement','terrain'])){ showListings(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','conseiller','asesor','advisor','equipe','equipo','equip','appeler','llamar','call','telephone'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-antoninallard-w9m2', {method:'POST', body:'Visite demo Antonin Allard · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

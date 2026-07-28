@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · L'Impertinent</title>
+<meta name="description" content="Alex, l'assistant virtuel de L'Impertinent — réservez une table, découvrez la carte et les horaires en 1 minute.">
+<style>
+:root{
+  --plum:#241f2b;
+  --plum-dark:#171319;
+  --wine:#5e4a63;
+  --terra:#b08d57;
+  --terra-dark:#8f6f3d;
+  --olive:#6b7f52;
+  --bg:#f5f1ea;
+  --paper:#fffdf9;
+  --ink:#26221f;
+  --muted:#8a8079;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #362d3f 0%, var(--plum) 55%, var(--plum-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--plum) 0%,var(--wine) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--wine);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--wine),var(--terra));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--wine);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e7ddcf;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--plum),var(--wine));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #ede2d4;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--wine);font-size:13.8px;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--wine);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.spec.veg{background:#e2f0d9;color:#3f6b28;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--terra);
+  color:var(--terra-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--terra);color:#fff;}
+.qbtn.primary{background:var(--terra);border-color:var(--terra-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--terra-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece1d3;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e4d8c9;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--terra);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(143,111,61,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#dccbb8;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🍽️</div>
+    <div class="hinfo">
+      <div class="name">Alex · L'Impertinent</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour L'Impertinent · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Carte ILLUSTRATIVE de démonstration — ne reflète pas la vraie carte du restaurant */
+const DISHES = [
+  {cat:"starter", veg:true,  name:{fr:"Velouté de légumes du marché",es:"Crema de verduras de mercado",en:"Market vegetable velouté",ca:"Vellutada de verdures de mercat"},
+    desc:{fr:"herbes fraîches, huile de noisette",es:"hierbas frescas, aceite de avellana",en:"fresh herbs, hazelnut oil",ca:"herbes fresques, oli d'avellana"}},
+  {cat:"starter", veg:false, name:{fr:"Poisson de la côte basque en tartare",es:"Tartar de pescado de la costa vasca",en:"Basque-coast fish tartare",ca:"Tàrtar de peix de la costa basca"},
+    desc:{fr:"agrumes, aneth, pain grillé au levain",es:"cítricos, eneldo, pan de masa madre",en:"citrus, dill, sourdough toast",ca:"cítrics, anet, pa de massa mare"}},
+  {cat:"main", veg:false, name:{fr:"Volaille fermière rôtie",es:"Ave de corral asada",en:"Roasted free-range poultry",ca:"Aviram de pagès rostit"},
+    desc:{fr:"légumes de saison, jus corsé",es:"verduras de temporada, jugo intenso",en:"seasonal vegetables, rich jus",ca:"verdures de temporada, suc intens"}},
+  {cat:"main", veg:true, name:{fr:"Risotto de saison aux champignons",es:"Risotto de temporada con setas",en:"Seasonal mushroom risotto",ca:"Risotto de temporada amb bolets"},
+    desc:{fr:"herbes fraîches — 100% végétarien",es:"hierbas frescas — 100% vegetariano",en:"fresh herbs — 100% vegetarian",ca:"herbes fresques — 100% vegetarià"}},
+  {cat:"dessert", veg:true, name:{fr:"Fruit de saison poché",es:"Fruta de temporada escalfada",en:"Poached seasonal fruit",ca:"Fruita de temporada escalfada"},
+    desc:{fr:"caramel léger, glace maison",es:"caramelo suave, helado casero",en:"light caramel, house ice cream",ca:"caramel suau, gelat de la casa"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **L'Impertinent**, votre restaurant à Biarritz.\nJe vous aide à réserver une table, découvrir la carte ou les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🍽️ Réserver une table","📜 Voir la carte","🕐 Horaires & accès","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* réservation */
+  bookStart:"Avec plaisir, préparons votre réservation 🙌",
+  askDate:"📅 Pour quelle date souhaitez-vous réserver ?",
+  dateOpts:["Ce soir","Demain soir","Ce week-end","Autre date"],
+  askCovers:"👥 Combien serez-vous à table ?",
+  coversOpts:["2 personnes","3-4 personnes","5-6 personnes","7 et +"],
+  askPlace:"🪑 Vous préférez en **salle** ou en **terrasse** ?",
+  placeOpts:["🕯️ En salle","☀️ En terrasse"],
+  askSlot:"⏰ Voici les créneaux encore ouverts pour ce service — lequel vous convient ?",
+  slotOpts:["19h30","20h15","21h00"],
+  askName:"🙋 À quel prénom dois-je noter la réservation ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre réservation",
+  summaryDate:"Date", summaryCovers:"Couverts", summaryPlace:"Emplacement", summarySlot:"Heure", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de L'Impertinent, qui vous confirme la table. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer la table si un imprévu survient.",
+  reminderTeaser:"Petit plus : je vous enverrai un rappel automatique la veille pour limiter les no-shows.",
+  sendWa:"📲 Envoyer ma réservation par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite réserver une table chez L'Impertinent :",
+  /* carte */
+  menuIntro:"Voici un aperçu de notre carte, qui évolue avec les saisons 🍂 (options végétariennes signalées 🌱) :",
+  menuStarters:"Entrées", menuMains:"Plats", menuDesserts:"Desserts",
+  menuCardTitle:"La carte du moment",
+  menuCardPrice:"Menu dégustation",
+  menuDemoNote:"Carte illustrative présentée à titre de démonstration — l'équipe vous communique la carte et les prix du jour.",
+  vegLine:"🌱 Plusieurs plats végétariens à la carte, et je peux demander une adaptation à la cuisine.",
+  menuButtons:["🥗 Options végé & allergies","🍽️ Réserver","⬅️ Menu"],
+  allergyLine:"🌿 *Allergies & régimes* : indiquez-moi vos allergies (gluten, fruits à coque, lactose…) et je les transmets à la cuisine avec votre réservation. Je ne peux pas garantir l'absence de traces à leur place, mais l'équipe fait toujours son maximum pour adapter les plats.",
+  /* horaires & accès */
+  hoursTitle:"🕐 Horaires & accès",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nMardi au samedi — déjeuner 12h00–14h00 · dîner 19h00–22h30\nDimanche midi 12h00–14h30 · fermé dimanche soir et lundi.",
+  accessText:"📍 *Accès* : en plein cœur de Biarritz, à quelques minutes à pied de la Grande Plage. 🅿️ Parkings publics à proximité et arceaux vélos devant la façade. Local accessible de plain-pied.",
+  groupsText:"🎉 *Groupes & privatisation* : pour une tablée de 8 personnes et plus, ou une privatisation, je note votre demande et l'équipe vous propose un menu adapté. Dites-moi la date et le nombre de convives.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🌱 Végé & allergies","🎉 Groupes","📍 Accès & parking","⬅️ Menu"],
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de L'Impertinent 👇",
+  fallback:"Bonne question ! Je peux vous aider à *réserver une table*, voir *la carte* ou les *horaires* — ou je vous passe l'équipe. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷",
+  coversLabel:"couverts"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **L'Impertinent**, tu restaurante en Biarritz.\nTe ayudo a reservar mesa, ver la carta o los horarios — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🍽️ Reservar mesa","📜 Ver la carta","🕐 Horarios y cómo llegar","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  bookStart:"¡Encantado, preparamos tu reserva! 🙌",
+  askDate:"📅 ¿Para qué fecha quieres reservar?",
+  dateOpts:["Esta noche","Mañana noche","Este fin de semana","Otra fecha"],
+  askCovers:"👥 ¿Cuántos seréis en la mesa?",
+  coversOpts:["2 personas","3-4 personas","5-6 personas","7 y +"],
+  askPlace:"🪑 ¿Prefieres **sala** o **terraza**?",
+  placeOpts:["🕯️ En sala","☀️ En terraza"],
+  askSlot:"⏰ Estos son los turnos aún disponibles para este servicio — ¿cuál te viene bien?",
+  slotOpts:["19:30","20:15","21:00"],
+  askName:"🙋 ¿A nombre de quién anoto la reserva?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu reserva",
+  summaryDate:"Fecha", summaryCovers:"Comensales", summaryPlace:"Ubicación", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo de L'Impertinent, que te confirma la mesa. 🔔 Recibirás un recordatorio la víspera para no olvidarlo — y liberar la mesa si surge un imprevisto.",
+  reminderTeaser:"Un plus: te enviaré un recordatorio automático la víspera para reducir los no-shows.",
+  sendWa:"📲 Enviar mi reserva por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero reservar una mesa en L'Impertinent:",
+  menuIntro:"Aquí tienes un vistazo a nuestra carta, que cambia con las estaciones 🍂 (opciones vegetarianas señaladas 🌱):",
+  menuStarters:"Entrantes", menuMains:"Principales", menuDesserts:"Postres",
+  menuCardTitle:"La carta del momento",
+  menuCardPrice:"Menú degustación",
+  menuDemoNote:"Carta ilustrativa a modo de demostración — el equipo te facilita la carta y los precios del día.",
+  vegLine:"🌱 Varios platos vegetarianos en carta, y puedo pedir una adaptación a la cocina.",
+  menuButtons:["🥗 Vegetariano y alergias","🍽️ Reservar","⬅️ Menú"],
+  allergyLine:"🌿 *Alergias y dietas*: dime tus alergias (gluten, frutos secos, lactosa…) y las paso a la cocina con tu reserva. No puedo garantizar la ausencia de trazas en su lugar, pero el equipo siempre hace lo posible por adaptar los platos.",
+  hoursTitle:"🕐 Horarios y cómo llegar",
+  hoursText:"🕐 *Horarios* (ejemplo de demostración)\nDe martes a sábado — comida 12:00–14:00 · cena 19:00–22:30\nDomingo mediodía 12:00–14:30 · cerrado domingo noche y lunes.",
+  accessText:"📍 *Cómo llegar*: en pleno centro de Biarritz, a pocos minutos a pie de la Grande Plage. 🅿️ Aparcamientos públicos cerca y aparcabicis frente a la fachada. Local accesible a pie llano.",
+  groupsText:"🎉 *Grupos y privatización*: para una mesa de 8 o más, o una privatización, anoto tu solicitud y el equipo te propone un menú a medida. Dime la fecha y el número de comensales.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🌱 Vegetariano y alergias","🎉 Grupos","📍 Cómo llegar","⬅️ Menú"],
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de L'Impertinent 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *reservar mesa*, ver *la carta* o los *horarios* — o te paso con el equipo. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸",
+  coversLabel:"comensales"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **L'Impertinent**, your restaurant in Biarritz.\nI can help you book a table, browse the menu or check opening hours — in under a minute. How can I help?",
+  menu:["🍽️ Book a table","📜 See the menu","🕐 Hours & directions","💬 Talk to a human"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's set up your booking 🙌",
+  askDate:"📅 What date would you like to book?",
+  dateOpts:["Tonight","Tomorrow night","This weekend","Another date"],
+  askCovers:"👥 How many will be at the table?",
+  coversOpts:["2 people","3-4 people","5-6 people","7+"],
+  askPlace:"🪑 Would you prefer **indoors** or on the **terrace**?",
+  placeOpts:["🕯️ Indoors","☀️ Terrace"],
+  askSlot:"⏰ Here are the slots still open for this service — which suits you?",
+  slotOpts:["7:30 pm","8:15 pm","9:00 pm"],
+  askName:"🙋 What name should I put the booking under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your booking summary",
+  summaryDate:"Date", summaryCovers:"Guests", summaryPlace:"Seating", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the L'Impertinent team, who will confirm your table. 🔔 You'll get a reminder the day before so nothing slips your mind — and the table can be freed if plans change.",
+  reminderTeaser:"A little extra: I'll send an automatic reminder the day before to cut down no-shows.",
+  sendWa:"📲 Send my booking via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book a table at L'Impertinent:",
+  menuIntro:"Here's a taste of our menu, which changes with the seasons 🍂 (vegetarian options flagged 🌱):",
+  menuStarters:"Starters", menuMains:"Mains", menuDesserts:"Desserts",
+  menuCardTitle:"Today's menu",
+  menuCardPrice:"Tasting menu",
+  menuDemoNote:"Illustrative menu shown for demonstration — the team will share the current menu and prices.",
+  vegLine:"🌱 Several vegetarian dishes on the menu, and I can ask the kitchen to adapt a dish.",
+  menuButtons:["🥗 Veggie & allergies","🍽️ Book","⬅️ Menu"],
+  allergyLine:"🌿 *Allergies & diets*: tell me your allergies (gluten, tree nuts, lactose…) and I'll pass them to the kitchen with your booking. I can't guarantee the absence of traces on their behalf, but the team always does its best to adapt the dishes.",
+  hoursTitle:"🕐 Hours & directions",
+  hoursText:"🕐 *Hours* (demonstration example)\nTuesday to Saturday — lunch 12:00–14:00 · dinner 19:00–22:30\nSunday lunch 12:00–14:30 · closed Sunday evening and Monday.",
+  accessText:"📍 *Getting here*: right in central Biarritz, a few minutes' walk from the Grande Plage. 🅿️ Public car parks nearby and bike racks out front. Step-free access.",
+  groupsText:"🎉 *Groups & private hire*: for a table of 8 or more, or a private event, I'll note your request and the team will propose a tailored menu. Just tell me the date and number of guests.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🌱 Veggie & allergies","🎉 Groups","📍 Directions","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the L'Impertinent team 👇",
+  fallback:"Good question! I can help you *book a table*, see *the menu* or the *hours* — or I can hand you to the team. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧",
+  coversLabel:"guests"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **L'Impertinent**, el teu restaurant a Biarritz.\nT'ajudo a reservar taula, veure la carta o els horaris — en menys d'un minut. En què et puc ajudar?",
+  menu:["🍽️ Reservar taula","📜 Veure la carta","🕐 Horaris i com arribar","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  bookStart:"Amb molt de gust, preparem la teva reserva! 🙌",
+  askDate:"📅 Per a quina data vols reservar?",
+  dateOpts:["Aquest vespre","Demà al vespre","Aquest cap de setmana","Una altra data"],
+  askCovers:"👥 Quants sereu a taula?",
+  coversOpts:["2 persones","3-4 persones","5-6 persones","7 i +"],
+  askPlace:"🪑 Prefereixes **sala** o **terrassa**?",
+  placeOpts:["🕯️ A la sala","☀️ A la terrassa"],
+  askSlot:"⏰ Aquests són els torns encara oberts per a aquest servei — quin et va bé?",
+  slotOpts:["19:30","20:15","21:00"],
+  askName:"🙋 A nom de qui anoto la reserva?",
+  askPhone:"📱 Perfecte {name}! Un mòbil per enviar-te la confirmació (i el recordatori la vigília)?",
+  summaryTitle:"📋 Resum de la teva reserva",
+  summaryDate:"Data", summaryCovers:"Comensals", summaryPlace:"Ubicació", summarySlot:"Hora", summaryName:"Nom", summaryPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de L'Impertinent, que et confirma la taula. 🔔 Rebràs un recordatori la vigília per no oblidar-ho — i alliberar la taula si sorgeix un imprevist.",
+  reminderTeaser:"Un plus: t'enviaré un recordatori automàtic la vigília per reduir els no-shows.",
+  sendWa:"📲 Enviar la meva reserva per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull reservar una taula a L'Impertinent:",
+  menuIntro:"Aquí tens un tast de la nostra carta, que canvia amb les estacions 🍂 (opcions vegetarianes marcades 🌱):",
+  menuStarters:"Entrants", menuMains:"Principals", menuDesserts:"Postres",
+  menuCardTitle:"La carta del moment",
+  menuCardPrice:"Menú degustació",
+  menuDemoNote:"Carta il·lustrativa a tall de demostració — l'equip et facilita la carta i els preus del dia.",
+  vegLine:"🌱 Diversos plats vegetarians a la carta, i puc demanar una adaptació a la cuina.",
+  menuButtons:["🥗 Vegetarià i al·lèrgies","🍽️ Reservar","⬅️ Menú"],
+  allergyLine:"🌿 *Al·lèrgies i dietes*: digues-me les teves al·lèrgies (gluten, fruits secs, lactosa…) i les passo a la cuina amb la teva reserva. No puc garantir l'absència de traces en el seu lloc, però l'equip sempre fa el màxim per adaptar els plats.",
+  hoursTitle:"🕐 Horaris i com arribar",
+  hoursText:"🕐 *Horaris* (exemple de demostració)\nDe dimarts a dissabte — dinar 12:00–14:00 · sopar 19:00–22:30\nDiumenge migdia 12:00–14:30 · tancat diumenge al vespre i dilluns.",
+  accessText:"📍 *Com arribar*: al ple centre de Biarritz, a pocs minuts a peu de la Grande Plage. 🅿️ Aparcaments públics a prop i aparcabicis davant la façana. Local accessible sense esgraons.",
+  groupsText:"🎉 *Grups i privatització*: per a una taula de 8 o més, o una privatització, anoto la teva sol·licitud i l'equip et proposa un menú a mida. Digues-me la data i el nombre de comensals.",
+  faqTitle:"Què vols saber?",
+  faqButtons:["🌱 Vegetarià i al·lèrgies","🎉 Grups","📍 Com arribar","⬅️ Menú"],
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de L'Impertinent 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *reservar taula*, veure *la carta* o els *horaris* — o et passo amb l'equip. Què prefereixes?",
+  langSwitched:"Canviat a català",
+  coversLabel:"comensals"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, date, covers, place, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showCarte()"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= CARTE ================= */
+function carteCardHtml(){
+  const cats = [
+    {key:'starter', label:t('menuStarters')},
+    {key:'main', label:t('menuMains')},
+    {key:'dessert', label:t('menuDesserts')}
+  ];
+  let body = '';
+  cats.forEach(c=>{
+    body += `<div class="spec-row"><span class="spec">${c.label}</span></div>`;
+    DISHES.filter(d=>d.cat===c.key).forEach(d=>{
+      body += `<div class="dish"><div class="dname">${esc(d.name[lang])} ${d.veg?'🌱':''}</div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+    });
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">🍂 ${t('menuCardTitle')}</span><span class="cprice">${t('menuCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('menuDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showCarte(){
+  addUser(t('menu')[1]);
+  addBotText(t('menuIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${carteCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('vegLine')), t('menuButtons').map((label,i)=>{
+      const acts = ["showAllergies()","startBooking()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===1?'primary':''};
+    }));
+  }, 700);
+}
+
+function showAllergies(){
+  addUser(t('menuButtons')[0]);
+  addBotText(t('allergyLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+/* ================= HORAIRES & ACCÈS ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['veg','groups','access','menu'];
+    const map={veg:"showAllergies()",groups:"showGroups()",access:"showAccess()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function showGroups(){
+  addUser(t('faqButtons')[1]);
+  addBotText(t('groupsText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'}
+  ], 450);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= RÉSERVATION ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'date', date:null, covers:null, place:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='covers';
+  addBotText(t('askCovers'), t('coversOpts').map(l=>({label:l, onclick:`bookingCovers('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingCovers(label){
+  addUser(label);
+  booking.covers = label;
+  booking.step='place';
+  addBotText(t('askPlace'), t('placeOpts').map(l=>({label:l, onclick:`bookingPlace('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingPlace(label){
+  addUser(label);
+  booking.place = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    booking.step='covers';
+    addBotText(t('askCovers'), t('coversOpts').map(l=>({label:l, onclick:`bookingCovers('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryDate')} :</b> ${esc(booking.date)}<br>
+          <b>${t('summaryCovers')} :</b> ${esc(booking.covers)}<br>
+          <b>${t('summaryPlace')} :</b> ${esc(booking.place)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #ede2d4;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryDate')}: ${booking.date}\n${t('summaryCovers')}: ${booking.covers}\n${t('summaryPlace')}: ${booking.place}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','table','reserver','reservation','carte','menu','horaire','terrasse','merci','oui','non','allergie','vegetarien','couvert','ce soir'];
+  const en = ['hello','hi ','hey','table','book','booking','menu','hours','terrace','thanks','yes','no ','allerg','vegetarian','tonight','tomorrow'];
+  const es = ['hola','buenas','mesa','reservar','reserva','carta','horario','terraza','gracias','si','no ','alergia','vegetariano','esta noche','comensal'];
+  const ca = ['hola','bona tarda','taula','reservar','reserva','carta','horari','terrassa','gracies','vespre','vegetaria','comensal','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['reserv','table','book','taula','mesa','réserv'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['carte','menu','carta','plat','dish','manger','comer','vegetar','vege'])){
+    if(normalizedIncludesAny(n,['allerg','vegetar','vege','gluten','lactose','sans '])){ showAllergies(); return; }
+    showCarte(); return;
+  }
+  if(normalizedIncludesAny(n,['allerg','gluten','lactose','sans '])){ showAllergies(); return; }
+  if(normalizedIncludesAny(n,['horaire','horari','horario','hour','ouvert','abierto','open','ferme','tancat'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['acces','acceso','direction','parking','metro','venir','llegar','arribar','adresse','address'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['groupe','group','grupo','grup','privatis','anniversaire','event','evento'])){ showGroups(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','equipe','equipo','equip','appeler','llamar','call','telephone'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-limpertinent-f6t2', {method:'POST', body:'Visite demo L Impertinent · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

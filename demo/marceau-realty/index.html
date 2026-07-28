@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Marceau Realty International</title>
+<meta name="description" content="Alex, l'assistant virtuel de Marceau Realty International — achat, vente, estimation et prise de rendez-vous à Paris 16e en une minute.">
+<style>
+:root{
+  --navy:#101d33;
+  --navy-dark:#0a1424;
+  --slate:#1d3155;
+  --gold:#c2a878;
+  --gold-dark:#a2854f;
+  --bg:#f3f0e9;
+  --paper:#fffdf9;
+  --ink:#20242c;
+  --muted:#8a8578;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c3053 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.4);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--slate) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--slate);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--slate),var(--gold-dark));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--slate);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e6ded0;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--slate));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--gold);border-color:var(--gold-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--gold-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece5d6;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e0d7c7;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(162,133,79,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#d8cbb4;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🏛️</div>
+    <div class="hinfo">
+      <div class="name">Alex · Marceau Realty</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour Marceau Realty International · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour et bienvenue ! 👋 Je suis *Alex*, l'assistant virtuel de **Marceau Realty International**, votre agence de prestige à Paris 16e.\nJe vous accompagne pour un achat, une vente ou une estimation, et je peux organiser un rendez-vous avec un conseiller — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🔑 Acheter","🏷️ Vendre","📊 Estimer mon bien","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* démarrages d'intention */
+  buyStart:"Excellent choix — accompagnons votre projet d'acquisition 🙌",
+  sellStart:"Avec plaisir, préparons la mise en vente de votre bien 🏷️",
+  estimateStart:"Volontiers ! Je réunis les premiers éléments pour votre estimation 📊\nℹ️ Alex ne délivre jamais d'estimation ferme : un conseiller réalisera l'évaluation précise avec vous.",
+  /* étapes */
+  askType:"🏠 Quel type de bien vous intéresse ?",
+  typeOpts:["Appartement","Maison / Hôtel particulier","Studio / Pied-à-terre","Autre"],
+  askArea:"📍 Sur quel secteur ? (Paris 16e et alentours)",
+  areaOpts:["Auteuil","Passy / La Muette","Chaillot / Trocadéro","Autre secteur"],
+  askBudget:"💶 Quel budget d'acquisition envisagez-vous ? (fourchette indicative)",
+  budgetOpts:["Moins de 1 M€","1 à 2 M€","2 à 5 M€","Plus de 5 M€"],
+  askSurface:"📐 Quelle surface approximative pour votre bien ?",
+  surfaceOpts:["Moins de 50 m²","50 à 100 m²","100 à 200 m²","Plus de 200 m²"],
+  askSlot:"🗓️ Je vous propose un rendez-vous avec un conseiller. Quel moment vous conviendrait le mieux ?",
+  slotOpts:["En semaine","Ce week-end","En soirée","Autre créneau"],
+  askName:"🙋 À quel prénom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que le conseiller vous recontacte et confirme le rendez-vous ?",
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  summaryProject:"Projet", summaryType:"Type de bien", summaryArea:"Secteur",
+  summaryBudget:"Budget", summarySurface:"Surface", summarySlot:"Rendez-vous",
+  summaryName:"Prénom", summaryPhone:"Téléphone",
+  labelBuy:"Achat", labelSell:"Vente", labelEstimate:"Estimation",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de Marceau Realty International, qui vous recontacte pour confirmer le rendez-vous.\nℹ️ Ceci est une démonstration : Alex ne fournit ni estimation ferme ni conseil juridique ou fiscal — un conseiller valide chaque détail avec vous.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite être recontacté(e) par Marceau Realty International :",
+  /* handoff */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec un conseiller de Marceau Realty International 👇",
+  /* divers */
+  fallback:"Bonne question ! Je peux vous aider à *acheter*, *vendre* ou *estimer* un bien — ou vous mettre en relation avec un conseiller. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola y bienvenido! 👋 Soy *Alex*, el asistente virtual de **Marceau Realty International**, tu agencia de prestigio en París 16.\nTe acompaño en una compra, una venta o una estimación, y puedo organizar una cita con un asesor — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🔑 Comprar","🏷️ Vender","📊 Estimar mi propiedad","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  buyStart:"¡Excelente elección — acompañemos tu proyecto de compra! 🙌",
+  sellStart:"¡Con mucho gusto, preparemos la venta de tu propiedad! 🏷️",
+  estimateStart:"¡Con gusto! Reúno los primeros datos para tu estimación 📊\nℹ️ Alex nunca da una estimación en firme: un asesor realizará la evaluación precisa contigo.",
+  askType:"🏠 ¿Qué tipo de propiedad te interesa?",
+  typeOpts:["Piso","Casa / Palacete","Estudio / Pied-à-terre","Otro"],
+  askArea:"📍 ¿En qué zona? (París 16 y alrededores)",
+  areaOpts:["Auteuil","Passy / La Muette","Chaillot / Trocadéro","Otra zona"],
+  askBudget:"💶 ¿Qué presupuesto de compra contemplas? (horquilla indicativa)",
+  budgetOpts:["Menos de 1 M€","1 a 2 M€","2 a 5 M€","Más de 5 M€"],
+  askSurface:"📐 ¿Qué superficie aproximada tiene tu propiedad?",
+  surfaceOpts:["Menos de 50 m²","50 a 100 m²","100 a 200 m²","Más de 200 m²"],
+  askSlot:"🗓️ Te propongo una cita con un asesor. ¿Qué momento te vendría mejor?",
+  slotOpts:["Entre semana","Este fin de semana","Por la tarde","Otro horario"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para que el asesor te contacte y confirme la cita?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryProject:"Proyecto", summaryType:"Tipo de propiedad", summaryArea:"Zona",
+  summaryBudget:"Presupuesto", summarySurface:"Superficie", summarySlot:"Cita",
+  summaryName:"Nombre", summaryPhone:"Teléfono",
+  labelBuy:"Compra", labelSell:"Venta", labelEstimate:"Estimación",
+  summaryFooter:"✅ Paso tu solicitud al equipo de Marceau Realty International, que te contactará para confirmar la cita.\nℹ️ Esto es una demostración: Alex no ofrece estimaciones en firme ni asesoramiento jurídico o fiscal — un asesor valida cada detalle contigo.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero que Marceau Realty International me contacte:",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con un asesor de Marceau Realty International 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *comprar*, *vender* o *estimar* una propiedad — o ponerte en contacto con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hello and welcome! 👋 I'm *Alex*, the virtual assistant for **Marceau Realty International**, your prestige agency in Paris 16.\nI can guide you through a purchase, a sale or an appraisal, and arrange an appointment with an advisor — in under a minute. How can I help?",
+  menu:["🔑 Buy","🏷️ Sell","📊 Value my property","💬 Talk to a human"],
+  menuLabel:"Menu",
+  buyStart:"Great choice — let's move your purchase project forward 🙌",
+  sellStart:"With pleasure — let's prepare your property for sale 🏷️",
+  estimateStart:"Gladly! I'll gather the first details for your appraisal 📊\nℹ️ Alex never gives a firm valuation: an advisor will carry out the precise appraisal with you.",
+  askType:"🏠 What type of property are you interested in?",
+  typeOpts:["Apartment","House / Mansion","Studio / Pied-à-terre","Other"],
+  askArea:"📍 Which area? (Paris 16 and nearby)",
+  areaOpts:["Auteuil","Passy / La Muette","Chaillot / Trocadéro","Another area"],
+  askBudget:"💶 What purchase budget do you have in mind? (indicative range)",
+  budgetOpts:["Under €1M","€1–2M","€2–5M","Over €5M"],
+  askSurface:"📐 What is the approximate size of your property?",
+  surfaceOpts:["Under 50 m²","50–100 m²","100–200 m²","Over 200 m²"],
+  askSlot:"🗓️ Let me set up an appointment with an advisor. Which time would suit you best?",
+  slotOpts:["Weekday","This weekend","Evening","Another time"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so the advisor can reach out and confirm the appointment?",
+  summaryTitle:"📋 Your request summary",
+  summaryProject:"Project", summaryType:"Property type", summaryArea:"Area",
+  summaryBudget:"Budget", summarySurface:"Size", summarySlot:"Appointment",
+  summaryName:"Name", summaryPhone:"Phone",
+  labelBuy:"Purchase", labelSell:"Sale", labelEstimate:"Appraisal",
+  summaryFooter:"✅ I'm passing your request to the Marceau Realty International team, who will contact you to confirm the appointment.\nℹ️ This is a demonstration: Alex provides no firm valuation and no legal or tax advice — an advisor confirms every detail with you.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like Marceau Realty International to contact me:",
+  humanHandoff:"Of course — I'll connect you directly with a Marceau Realty International advisor 👇",
+  fallback:"Good question! I can help you *buy*, *sell* or *value* a property — or connect you with an advisor. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola i benvingut! 👋 Sóc *Alex*, l'assistent virtual de **Marceau Realty International**, la teva agència de prestigi a París 16è.\nT'acompanyo en una compra, una venda o una estimació, i puc organitzar una cita amb un assessor — en menys d'un minut. En què et puc ajudar?",
+  menu:["🔑 Comprar","🏷️ Vendre","📊 Estimar el meu bé","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  buyStart:"Excel·lent elecció — acompanyem el teu projecte de compra! 🙌",
+  sellStart:"Amb molt de gust, preparem la venda del teu bé! 🏷️",
+  estimateStart:"De gust! Reuneixo les primeres dades per a la teva estimació 📊\nℹ️ L'Alex mai no dóna una estimació en ferm: un assessor farà la valoració precisa amb tu.",
+  askType:"🏠 Quin tipus de bé t'interessa?",
+  typeOpts:["Pis","Casa / Palauet","Estudi / Pied-à-terre","Altre"],
+  askArea:"📍 A quina zona? (París 16è i rodalies)",
+  areaOpts:["Auteuil","Passy / La Muette","Chaillot / Trocadéro","Una altra zona"],
+  askBudget:"💶 Quin pressupost de compra contemples? (forquilla indicativa)",
+  budgetOpts:["Menys d'1 M€","1 a 2 M€","2 a 5 M€","Més de 5 M€"],
+  askSurface:"📐 Quina superfície aproximada té el teu bé?",
+  surfaceOpts:["Menys de 50 m²","50 a 100 m²","100 a 200 m²","Més de 200 m²"],
+  askSlot:"🗓️ Et proposo una cita amb un assessor. Quin moment et va millor?",
+  slotOpts:["Entre setmana","Aquest cap de setmana","Al vespre","Un altre horari"],
+  askName:"🙋 A nom de qui anoto la cita?",
+  askPhone:"📱 Perfecte {name}! Un mòbil perquè l'assessor et contacti i confirmi la cita?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryProject:"Projecte", summaryType:"Tipus de bé", summaryArea:"Zona",
+  summaryBudget:"Pressupost", summarySurface:"Superfície", summarySlot:"Cita",
+  summaryName:"Nom", summaryPhone:"Telèfon",
+  labelBuy:"Compra", labelSell:"Venda", labelEstimate:"Estimació",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de Marceau Realty International, que et contactarà per confirmar la cita.\nℹ️ Això és una demostració: l'Alex no dóna estimacions en ferm ni assessorament jurídic o fiscal — un assessor valida cada detall amb tu.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull que Marceau Realty International em contacti:",
+  humanHandoff:"És clar! Et poso en contacte directe amb un assessor de Marceau Realty International 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *comprar*, *vendre* o *estimar* un bé — o posar-te en contacte amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {intent, step, type, area, value, valueType, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startProject('buy')", cls:"primary"},
+    {label:m[1], onclick:"startProject('sell')"},
+    {label:m[2], onclick:"startProject('estimate')"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= PARCOURS PROJET ================= */
+function intentLabel(intent){
+  return intent==='buy' ? t('labelBuy') : intent==='sell' ? t('labelSell') : t('labelEstimate');
+}
+function menuIndexForIntent(intent){
+  return intent==='buy' ? 0 : intent==='sell' ? 1 : 2;
+}
+
+function startProject(intent){
+  addUser(t('menu')[menuIndexForIntent(intent)]);
+  booking = {intent, step:'type', type:null, area:null, value:null, valueType:(intent==='buy'?'budget':'surface'), slot:null, name:null, phone:null};
+  const startKey = intent==='buy' ? 'buyStart' : intent==='sell' ? 'sellStart' : 'estimateStart';
+  addBotText(t(startKey), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askType'), t('typeOpts').map(l=>({label:l, onclick:`bookingType('${l.replace(/'/g,"\\'")}')`})));
+  }, 750);
+}
+
+function bookingType(label){
+  addUser(label);
+  booking.type = label;
+  booking.step='area';
+  addBotText(t('askArea'), t('areaOpts').map(l=>({label:l, onclick:`bookingArea('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingArea(label){
+  addUser(label);
+  booking.area = label;
+  booking.step='value';
+  if(booking.valueType==='budget'){
+    addBotText(t('askBudget'), t('budgetOpts').map(l=>({label:l, onclick:`bookingValue('${l.replace(/'/g,"\\'")}')`})), 450);
+  }else{
+    addBotText(t('askSurface'), t('surfaceOpts').map(l=>({label:l, onclick:`bookingValue('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingValue(label){
+  addUser(label);
+  booking.value = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const valLabel = booking.valueType==='budget' ? t('summaryBudget') : t('summarySurface');
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryProject')} :</b> ${esc(intentLabel(booking.intent))}<br>
+          <b>${t('summaryType')} :</b> ${esc(booking.type)}<br>
+          <b>${t('summaryArea')} :</b> ${esc(booking.area)}<br>
+          <b>${esc(valLabel)} :</b> ${esc(booking.value)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #ece2d4;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${md(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const valLine = `${valLabel}: ${booking.value}`;
+    const waText = `${t('waPrefix')}\n${t('summaryProject')}: ${intentLabel(booking.intent)}\n${t('summaryType')}: ${booking.type}\n${t('summaryArea')}: ${booking.area}\n${valLine}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','acheter','achat','vendre','vente','estim','appartement','maison','budget','conseiller','rendez','visite','merci','oui','non'];
+  const en = ['hello','hi ','hey','buy','sell','sale','valu','apartment','house','budget','advisor','appointment','viewing','thanks','yes','no '];
+  const es = ['hola','buenas','comprar','vender','venta','estim','piso','casa','presupuesto','asesor','cita','visita','gracias','si','no '];
+  const ca = ['hola','bon dia','comprar','vendre','venda','estim','pis','casa','pressupost','assessor','cita','visita','gracies','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['estim','evalu','valu','valor','taxa','tasac','prix de mon','worth'])){ startProject('estimate'); return; }
+  if(normalizedIncludesAny(n,['vendre','vente','sell','vender','venda','mettre en vente','ceder'])){ startProject('sell'); return; }
+  if(normalizedIncludesAny(n,['achet','achat','acquer','buy','comprar','compra','investir','recherche un','cherche un appart','cherche une maison'])){ startProject('buy'); return; }
+  if(normalizedIncludesAny(n,['humain','human','humano','conseiller','asesor','assessor','agent','appeler','llamar','call','telephone','contacter','whatsapp'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','bon dia'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-marceaurealty-p3k8', {method:'POST', body:'Visite demo Marceau Realty · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

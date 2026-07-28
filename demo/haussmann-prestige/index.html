@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Haussmann Prestige</title>
+<meta name="description" content="Alex, l'assistant virtuel de Haussmann Prestige — acheter, vendre ou estimer un bien de prestige à Paris, et convenir d'un rendez-vous privé.">
+<style>
+:root{
+  --navy:#132741;
+  --navy-dark:#0a1626;
+  --royal:#1c3a5e;
+  --gold:#c2a05a;
+  --gold-dark:#9c7d3f;
+  --gold-soft:#e7d7ac;
+  --bg:#f4f1ea;
+  --paper:#fffefb;
+  --ink:#22303f;
+  --muted:#8a8577;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 620px at 50% -12%, #22456e 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.4);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy-dark) 0%,var(--royal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 12px rgba(0,0,0,.22);
+  border-bottom:1px solid rgba(194,160,90,.35);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:19px;flex-shrink:0;color:var(--navy-dark);font-weight:800;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.35);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;letter-spacing:.2px;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(194,160,90,.5);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:var(--gold);color:var(--navy-dark);border-color:var(--gold);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+  border:1px solid #ece5d6;
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--royal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--gold-dark);}
+.row.user .bubble b{color:var(--gold-soft);}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+  border:1px solid #e6dcc6;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy-dark),var(--royal));
+  color:#fff;padding:10px 13px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  border-bottom:1px solid rgba(194,160,90,.4);
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;letter-spacing:.2px;}
+.card .cardhead .cprice{font-size:12px;background:rgba(194,160,90,.28);color:var(--gold-soft);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:11px 13px;font-size:13.8px;color:var(--ink);line-height:1.55;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:var(--navy-dark);}
+.qbtn.primary{background:var(--navy);border-color:var(--navy-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--navy-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece4d4;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e2d9c6;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:var(--navy-dark);font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(156,125,63,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#dccbb0;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">HP</div>
+    <div class="hinfo">
+      <div class="name">Alex · Haussmann Prestige</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour Haussmann Prestige · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour et bienvenue chez **Haussmann Prestige** 👋\nJe suis *Alex*, votre assistant dédié à l'immobilier de prestige à Paris — hôtels particuliers, appartements d'exception et biens rares.\nComment puis-je vous accompagner aujourd'hui ?",
+  menu:["🔑 Acheter","🏛️ Vendre","📐 Estimer","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* intros par projet */
+  introBuy:"Excellente idée. Quelques précisions me permettront de préparer une sélection confidentielle de biens et une visite privée 🙌",
+  introSell:"Avec plaisir. Cerner votre bien me permet d'organiser un rendez-vous discret avec un conseiller pour votre projet de vente 🙌",
+  introEstimate:"Volontiers. Je réunis les premiers éléments pour qu'un conseiller vous remette une estimation précise en rendez-vous. À titre indicatif, je ne fournis ni estimation ferme ni conseil juridique ou fiscal 🙌",
+  /* quartier */
+  askQuartier:"📍 Sur quel secteur porte votre projet ?",
+  quartierOpts:["Triangle d'Or (8e)","Faubourg Saint-Germain (7e)","Le Marais (3e·4e)","Saint-Germain-des-Prés (6e)","Autre secteur"],
+  /* budget (achat) */
+  askBudget:"💶 Quelle enveloppe budgétaire envisagez-vous ?",
+  budgetOpts:["2 – 5 M€","5 – 10 M€","10 – 20 M€","20 M€ et +"],
+  /* type de bien (vente / estimation) */
+  askType:"🏠 De quel type de bien s'agit-il ?",
+  typeOpts:["Hôtel particulier","Appartement de prestige","Penthouse / dernier étage","Immeuble"],
+  /* rdv */
+  askRdv:"🗓️ Comment préférez-vous que nous poursuivions ?",
+  rdvOptsBuy:["🏛️ Visite privée du bien","🤝 Rendez-vous en agence","🎥 Échange en visioconférence"],
+  rdvOptsAdvisor:["🤝 Rendez-vous en agence","🏠 Visite à mon domicile","🎥 Échange en visioconférence"],
+  /* identité */
+  askName:"🙋 À quel prénom dois-je transmettre votre demande ?",
+  askPhone:"📱 Parfait {name} ! Sur quel numéro un conseiller peut-il vous joindre, en toute discrétion ?",
+  /* récap */
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  summaryProjet:"Projet", summaryQuartier:"Secteur", summaryBien:"Budget / bien", summaryRdv:"Rendez-vous", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à un conseiller Haussmann Prestige, qui vous recontacte en toute confidentialité pour convenir du rendez-vous. Aucune information n'est diffusée. (Démonstration : contenu illustratif.)",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour, je vous contacte depuis l'assistant Haussmann Prestige au sujet de mon projet :",
+  projetWords:{buy:"Acquisition",sell:"Vente",estimate:"Estimation"},
+  /* handoff & divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec un conseiller Haussmann Prestige 👇",
+  fallback:"Avec plaisir. Je peux vous accompagner pour *acheter*, *vendre* ou *estimer* un bien de prestige — ou vous passer un conseiller. Que souhaitez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · respuesta inmediata",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"Hola y bienvenido a **Haussmann Prestige** 👋\nSoy *Alex*, tu asistente dedicado al inmobiliario de prestigio en París — palacetes, pisos de excepción y propiedades singulares.\n¿Cómo puedo ayudarte hoy?",
+  menu:["🔑 Comprar","🏛️ Vender","📐 Valorar","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  introBuy:"Excelente idea. Con algunos detalles prepararé una selección confidencial de propiedades y una visita privada 🙌",
+  introSell:"Con mucho gusto. Conocer tu propiedad me permite organizar una cita discreta con un asesor para tu proyecto de venta 🙌",
+  introEstimate:"Encantado. Reúno los primeros datos para que un asesor te entregue una valoración precisa en una cita. A título indicativo, no facilito valoración firme ni asesoramiento jurídico o fiscal 🙌",
+  askQuartier:"📍 ¿En qué zona se centra tu proyecto?",
+  quartierOpts:["Triangle d'Or (8e)","Faubourg Saint-Germain (7e)","Le Marais (3e·4e)","Saint-Germain-des-Prés (6e)","Otra zona"],
+  askBudget:"💶 ¿Qué presupuesto contemplas?",
+  budgetOpts:["2 – 5 M€","5 – 10 M€","10 – 20 M€","20 M€ y +"],
+  askType:"🏠 ¿De qué tipo de propiedad se trata?",
+  typeOpts:["Palacete (hôtel particulier)","Piso de prestigio","Ático / última planta","Edificio"],
+  askRdv:"🗓️ ¿Cómo prefieres que continuemos?",
+  rdvOptsBuy:["🏛️ Visita privada del inmueble","🤝 Cita en la agencia","🎥 Videollamada"],
+  rdvOptsAdvisor:["🤝 Cita en la agencia","🏠 Visita en mi domicilio","🎥 Videollamada"],
+  askName:"🙋 ¿A nombre de quién transmito tu solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿En qué número puede localizarte un asesor, con total discreción?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryProjet:"Proyecto", summaryQuartier:"Zona", summaryBien:"Presupuesto / bien", summaryRdv:"Cita", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud a un asesor de Haussmann Prestige, que te contactará con total confidencialidad para concertar la cita. Ninguna información se difunde. (Demostración: contenido ilustrativo.)",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva solicitud",
+  waPrefix:"Hola, os contacto desde el asistente Haussmann Prestige sobre mi proyecto:",
+  projetWords:{buy:"Compra",sell:"Venta",estimate:"Valoración"},
+  humanHandoff:"¡Claro! Te pongo en contacto directo con un asesor de Haussmann Prestige 👇",
+  fallback:"Con mucho gusto. Puedo ayudarte a *comprar*, *vender* o *valorar* una propiedad de prestigio — o pasarte con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · instant reply",
+  placeholder:"Type your message...",
+  welcome:"Hello and welcome to **Haussmann Prestige** 👋\nI'm *Alex*, your dedicated assistant for prestige real estate in Paris — private mansions, exceptional apartments and rare properties.\nHow may I assist you today?",
+  menu:["🔑 Buy","🏛️ Sell","📐 Get an estimate","💬 Talk to a human"],
+  menuLabel:"Menu",
+  introBuy:"Excellent choice. A few details will let me prepare a confidential selection of properties and a private viewing 🙌",
+  introSell:"With pleasure. Understanding your property lets me arrange a discreet appointment with an advisor for your sale 🙌",
+  introEstimate:"Gladly. I'll gather the first details so an advisor can give you a precise valuation at an appointment. For guidance only — I don't provide a firm valuation or legal/tax advice 🙌",
+  askQuartier:"📍 Which area is your project focused on?",
+  quartierOpts:["Triangle d'Or (8th)","Faubourg Saint-Germain (7th)","Le Marais (3rd·4th)","Saint-Germain-des-Prés (6th)","Another area"],
+  askBudget:"💶 What budget do you have in mind?",
+  budgetOpts:["€2 – 5M","€5 – 10M","€10 – 20M","€20M and above"],
+  askType:"🏠 What type of property is it?",
+  typeOpts:["Private mansion","Prestige apartment","Penthouse / top floor","Building"],
+  askRdv:"🗓️ How would you prefer to proceed?",
+  rdvOptsBuy:["🏛️ Private viewing","🤝 Meeting at the agency","🎥 Video call"],
+  rdvOptsAdvisor:["🤝 Meeting at the agency","🏠 Visit at my property","🎥 Video call"],
+  askName:"🙋 What name should I pass your request under?",
+  askPhone:"📱 Perfect, {name}! On which number can an advisor reach you, in full discretion?",
+  summaryTitle:"📋 Your request summary",
+  summaryProjet:"Project", summaryQuartier:"Area", summaryBien:"Budget / property", summaryRdv:"Appointment", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to a Haussmann Prestige advisor, who will contact you in full confidentiality to arrange the appointment. No information is shared. (Demonstration: illustrative content.)",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hello, I'm reaching you via the Haussmann Prestige assistant regarding my project:",
+  projetWords:{buy:"Purchase",sell:"Sale",estimate:"Valuation"},
+  humanHandoff:"Of course — I'll connect you directly with a Haussmann Prestige advisor 👇",
+  fallback:"With pleasure. I can help you *buy*, *sell* or *value* a prestige property — or hand you to an advisor. What would you like?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · resposta immediata",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola i benvingut a **Haussmann Prestige** 👋\nSóc *Alex*, el teu assistent dedicat a l'immobiliari de prestigi a París — palauets, pisos d'excepció i propietats singulars.\nEn què et puc ajudar avui?",
+  menu:["🔑 Comprar","🏛️ Vendre","📐 Valorar","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  introBuy:"Excel·lent idea. Amb alguns detalls prepararé una selecció confidencial de propietats i una visita privada 🙌",
+  introSell:"Amb molt de gust. Conèixer la teva propietat em permet organitzar una cita discreta amb un assessor per al teu projecte de venda 🙌",
+  introEstimate:"De bon grat. Reuneixo els primers elements perquè un assessor et lliuri una valoració precisa en una cita. A títol indicatiu, no facilito valoració ferma ni assessorament jurídic o fiscal 🙌",
+  askQuartier:"📍 En quina zona se centra el teu projecte?",
+  quartierOpts:["Triangle d'Or (8è)","Faubourg Saint-Germain (7è)","Le Marais (3r·4t)","Saint-Germain-des-Prés (6è)","Una altra zona"],
+  askBudget:"💶 Quin pressupost tens previst?",
+  budgetOpts:["2 – 5 M€","5 – 10 M€","10 – 20 M€","20 M€ i +"],
+  askType:"🏠 De quin tipus de propietat es tracta?",
+  typeOpts:["Palauet (hôtel particulier)","Pis de prestigi","Àtic / última planta","Edifici"],
+  askRdv:"🗓️ Com prefereixes que continuem?",
+  rdvOptsBuy:["🏛️ Visita privada de l'immoble","🤝 Cita a l'agència","🎥 Videotrucada"],
+  rdvOptsAdvisor:["🤝 Cita a l'agència","🏠 Visita al meu domicili","🎥 Videotrucada"],
+  askName:"🙋 A nom de qui transmeto la teva sol·licitud?",
+  askPhone:"📱 Perfecte {name}! A quin número et pot localitzar un assessor, amb total discreció?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryProjet:"Projecte", summaryQuartier:"Zona", summaryBien:"Pressupost / bé", summaryRdv:"Cita", summaryName:"Nom", summaryPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a un assessor de Haussmann Prestige, que et contactarà amb total confidencialitat per concertar la cita. Cap informació es difon. (Demostració: contingut il·lustratiu.)",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova sol·licitud",
+  waPrefix:"Hola, us contacto des de l'assistent Haussmann Prestige sobre el meu projecte:",
+  projetWords:{buy:"Compra",sell:"Venda",estimate:"Valoració"},
+  humanHandoff:"És clar! Et poso en contacte directe amb un assessor de Haussmann Prestige 👇",
+  fallback:"Amb molt de gust. Et puc ajudar a *comprar*, *vendre* o *valorar* una propietat de prestigi — o passar-te amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {projet, step, quartier, bien, rdv, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startQualif('buy')", cls:"primary"},
+    {label:m[1], onclick:"startQualif('sell')"},
+    {label:m[2], onclick:"startQualif('estimate')"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= QUALIFICATION / RDV ================= */
+function projetIndex(p){ return {buy:0,sell:1,estimate:2}[p]; }
+function projetIntro(p){ return {buy:t('introBuy'),sell:t('introSell'),estimate:t('introEstimate')}[p]; }
+
+function startQualif(projet){
+  addUser(t('menu')[projetIndex(projet)]);
+  booking = {projet, step:'quartier', quartier:null, bien:null, rdv:null, name:null, phone:null};
+  addBotText(projetIntro(projet), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askQuartier'), t('quartierOpts').map(l=>({label:l, onclick:`bookingQuartier('${l.replace(/'/g,"\\'")}')`})));
+  }, 750);
+}
+
+function bookingQuartier(label){
+  addUser(label);
+  booking.quartier = label;
+  booking.step='bien';
+  askBien(450);
+}
+
+function askBien(delay){
+  if(booking.projet==='buy'){
+    addBotText(t('askBudget'), t('budgetOpts').map(l=>({label:l, onclick:`bookingBien('${l.replace(/'/g,"\\'")}')`})), delay);
+  }else{
+    addBotText(t('askType'), t('typeOpts').map(l=>({label:l, onclick:`bookingBien('${l.replace(/'/g,"\\'")}')`})), delay);
+  }
+}
+
+function bookingBien(label){
+  addUser(label);
+  booking.bien = label;
+  booking.step='rdv';
+  const opts = booking.projet==='buy' ? t('rdvOptsBuy') : t('rdvOptsAdvisor');
+  addBotText(t('askRdv'), opts.map(l=>({label:l, onclick:`bookingRdv('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingRdv(label){
+  addUser(label);
+  booking.rdv = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  const projetLabel = t('projetWords')[booking.projet];
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;border:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span><span class="cprice">Haussmann Prestige</span></div>
+        <div class="cardbody">
+          <b>${t('summaryProjet')} :</b> ${esc(projetLabel)}<br>
+          <b>${t('summaryQuartier')} :</b> ${esc(booking.quartier)}<br>
+          <b>${t('summaryBien')} :</b> ${esc(booking.bien)}<br>
+          <b>${t('summaryRdv')} :</b> ${esc(booking.rdv)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #ede4d0;margin:9px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryProjet')}: ${projetLabel}\n${t('summaryQuartier')}: ${booking.quartier}\n${t('summaryBien')}: ${booking.bien}\n${t('summaryRdv')}: ${booking.rdv}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','acheter','achat','vendre','vente','estimer','estimation','appartement','maison','hotel particulier','quartier','budget','visite','rendez-vous','merci','oui','non'];
+  const en = ['hello','hi ','hey','buy','buying','sell','selling','estimate','valuation','apartment','mansion','area','budget','viewing','appointment','thanks','yes','no '];
+  const es = ['hola','buenas','comprar','compra','vender','venta','valorar','valoracion','piso','palacete','zona','presupuesto','visita','cita','gracias','si','no '];
+  const ca = ['hola','bona tarda','comprar','vendre','venda','valorar','valoracio','pis','palauet','zona','pressupost','visita','cita','gracies','vull','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['achet','achat','buy','buying','comprar','compra','acquisition'])){ startQualif('buy'); return; }
+  if(normalizedIncludesAny(n,['vendre','vente','sell','selling','vender','venda'])){ startQualif('sell'); return; }
+  if(normalizedIncludesAny(n,['estim','valuation','valorar','valoraci','prix','price','combien vaut','worth'])){ startQualif('estimate'); return; }
+  if(normalizedIncludesAny(n,['humain','human','humano','conseiller','advisor','asesor','assessor','whatsapp','appeler','llamar','call','telephone','agent'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-haussmannprestige-b2v9', {method:'POST', body:'Visite demo Haussmann Prestige · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

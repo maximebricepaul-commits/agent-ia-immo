@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Barb'Hair Shop</title>
+<meta name="description" content="Alex, l'assistant virtuel de Barb'Hair Shop — prenez rendez-vous, découvrez les prestations et les horaires en 1 minute.">
+<style>
+:root{
+  --ink0:#0e1116;
+  --ink1:#161b22;
+  --steel:#1f2733;
+  --steel2:#2b3543;
+  --amber:#c8912f;
+  --amber-dark:#a8761f;
+  --copper:#d8a24b;
+  --bg:#12161d;
+  --panel:#eef1f5;
+  --paper:#ffffff;
+  --ink:#20262e;
+  --muted:#8b96a4;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #232d3a 0%, var(--steel) 45%, var(--ink0) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--panel);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.5);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--ink1) 0%,var(--steel2) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 12px rgba(0,0,0,.35);
+  border-bottom:2px solid var(--amber);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--amber-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.3);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(255,255,255,.06);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:var(--amber);color:var(--ink0);border-color:var(--amber);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--panel),var(--panel));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.08);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--steel2),var(--amber-dark));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--amber-dark);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.12);
+  border:1px solid #dfe4ea;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--ink1),var(--steel2));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  border-bottom:2px solid var(--amber);
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.14);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #e6eaef;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--steel2);font-size:13.8px;display:flex;justify-content:space-between;gap:8px;}
+.dish .dprice{color:var(--amber-dark);font-weight:700;font-size:12.8px;white-space:nowrap;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--amber);
+  color:var(--amber-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--amber);color:var(--ink0);}
+.qbtn.primary{background:var(--amber);border-color:var(--amber-dark);color:var(--ink0);}
+.qbtn.primary:hover{background:var(--amber-dark);color:#fff;}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e2e7ec;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d7dde4;
+  background:var(--panel);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--amber);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--amber),var(--amber-dark));
+  color:var(--ink0);font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(168,118,31,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c9d1da;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">💈</div>
+    <div class="hinfo">
+      <div class="name">Alex · Barb'Hair Shop</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="it" onclick="forceLang('it')">IT</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démo privée pour Barb'Hair Shop · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Prestations ILLUSTRATIVES de démonstration — ne reflètent pas les vraies prestations ni les tarifs du salon */
+const SERVICES = [
+  {cat:"coupe", name:{fr:"Coupe homme",en:"Men's haircut",es:"Corte de caballero",it:"Taglio uomo"},
+    desc:{fr:"shampoing, coupe, coiffage · env. 30 min",en:"shampoo, cut, styling · approx. 30 min",es:"lavado, corte, peinado · aprox. 30 min",it:"shampoo, taglio, styling · circa 30 min"}, price:"~28 €"},
+  {cat:"combo", name:{fr:"Coupe + barbe",en:"Haircut + beard",es:"Corte + barba",it:"Taglio + barba"},
+    desc:{fr:"coupe complète et taille de barbe · env. 45 min",en:"full cut and beard trim · approx. 45 min",es:"corte completo y arreglo de barba · aprox. 45 min",it:"taglio completo e rifinitura barba · circa 45 min"}, price:"~40 €"},
+  {cat:"barbe", name:{fr:"Taille de barbe",en:"Beard trim",es:"Arreglo de barba",it:"Rifinitura barba"},
+    desc:{fr:"contours, dégradé, soin & huile · env. 25 min",en:"lineup, fade, care & oil · approx. 25 min",es:"contornos, degradado, cuidado y aceite · aprox. 25 min",it:"contorni, sfumatura, cura e olio · circa 25 min"}, price:"~20 €"},
+  {cat:"rasage", name:{fr:"Rasage traditionnel",en:"Traditional shave",es:"Afeitado tradicional",it:"Rasatura tradizionale"},
+    desc:{fr:"serviette chaude, coupe-chou, baume · env. 30 min",en:"hot towel, straight razor, balm · approx. 30 min",es:"toalla caliente, navaja, bálsamo · aprox. 30 min",it:"asciugamano caldo, rasoio a mano libera, balsamo · circa 30 min"}, price:"~30 €"}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Barb'Hair Shop**, votre barbershop Boulevard Carnot à Cannes.\nJe vous aide à prendre rendez-vous, découvrir les prestations ou les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["💈 Prendre RDV","✂️ Prestations","🕐 Horaires & accès","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* rendez-vous */
+  bookStart:"Avec plaisir, réservons votre passage au fauteuil 💈",
+  askService:"✂️ Quelle prestation souhaitez-vous réserver ?",
+  serviceOpts:["💇 Coupe","🧔 Coupe + barbe","✂️ Barbe","🪒 Rasage"],
+  askDate:"📅 Pour quelle date souhaitez-vous venir ?",
+  dateOpts:["Aujourd'hui","Demain","Cette semaine","Ce week-end"],
+  askSlot:"⏰ Voici les créneaux encore libres — lequel vous convient ?",
+  slotOpts:["10h30","14h00","17h30"],
+  askName:"🙋 À quel prénom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryService:"Prestation", summaryDate:"Date", summarySlot:"Heure", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de Barb'Hair Shop, qui vous confirme le créneau. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer la place si un imprévu survient.",
+  reminderTeaser:"Petit plus : je vous enverrai un rappel automatique la veille pour limiter les rendez-vous manqués.",
+  sendWa:"📲 Envoyer mon RDV par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous chez Barb'Hair Shop :",
+  /* prestations */
+  menuIntro:"Voici un aperçu de nos prestations phares ✂️ (durées et tarifs donnés à titre indicatif) :",
+  menuCardTitle:"Nos prestations",
+  menuCardPrice:"à titre indicatif",
+  menuDemoNote:"Prestations et tarifs illustratifs présentés à titre de démonstration — l'équipe vous communique le détail et les tarifs à jour.",
+  vegLine:"💈 Vous hésitez ? Dites-moi ce que vous cherchez (coupe, barbe, rasage, dégradé) et je vous oriente vers la bonne prestation.",
+  menuButtons:["🎓 Étudiant & forfaits","💈 Prendre RDV","⬅️ Menu"],
+  allergyLine:"🧴 *Peau sensible ou préférences* : indiquez-moi vos sensibilités (produits, parfums, type de rasage…) et je les transmets au barbier avec votre rendez-vous, pour adapter les soins et les produits utilisés.",
+  giftLine:"🎓 *Étudiant & forfaits* : tarif étudiant, forfait coupe régulière, carte fidélité… je note votre demande et l'équipe vous propose la meilleure formule. Dites-moi ce qui vous intéresse.",
+  /* horaires & accès */
+  hoursTitle:"🕐 Horaires & accès",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nMardi au vendredi — 9h30–19h30\nSamedi 9h00–18h00 · fermé dimanche et lundi.",
+  accessText:"📍 *Accès* : Boulevard Carnot, en plein cœur de Cannes, à quelques minutes de la Croisette et de la gare. 🅿️ Parkings publics à proximité. Salon accessible de plain-pied.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🧴 Peau sensible & produits","🎓 Étudiant & forfaits","📍 Accès & parking","⬅️ Menu"],
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de Barb'Hair Shop 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, voir *les prestations* ou les *horaires* — ou je vous passe l'équipe. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Barb'Hair Shop**, your barbershop on Boulevard Carnot in Cannes.\nI can help you book an appointment, browse the services or check opening hours — in under a minute. How can I help?",
+  menu:["💈 Book appointment","✂️ Services","🕐 Hours & directions","💬 Talk to a human"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's book your spot in the chair 💈",
+  askService:"✂️ Which service would you like to book?",
+  serviceOpts:["💇 Haircut","🧔 Cut + beard","✂️ Beard","🪒 Shave"],
+  askDate:"📅 What date would you like to come in?",
+  dateOpts:["Today","Tomorrow","This week","This weekend"],
+  askSlot:"⏰ Here are the slots still open — which suits you?",
+  slotOpts:["10:30 am","2:00 pm","5:30 pm"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryService:"Service", summaryDate:"Date", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Barb'Hair Shop team, who will confirm your slot. 🔔 You'll get a reminder the day before so nothing slips your mind — and the slot can be freed if plans change.",
+  reminderTeaser:"A little extra: I'll send an automatic reminder the day before to cut down no-shows.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at Barb'Hair Shop:",
+  menuIntro:"Here's a look at our signature services ✂️ (durations and prices are indicative):",
+  menuCardTitle:"Our services",
+  menuCardPrice:"indicative",
+  menuDemoNote:"Illustrative services and prices shown for demonstration — the team will share the full details and current rates.",
+  vegLine:"💈 Not sure? Tell me what you're after (haircut, beard, shave, fade) and I'll point you to the right service.",
+  menuButtons:["🎓 Student & packages","💈 Book","⬅️ Menu"],
+  allergyLine:"🧴 *Sensitive skin or preferences*: tell me your sensitivities (products, fragrances, type of shave…) and I'll pass them to the barber with your appointment, to adapt the care and products used.",
+  giftLine:"🎓 *Student & packages*: student rate, regular-cut package, loyalty card… I'll note your request and the team will propose the best option. Just tell me what you're interested in.",
+  hoursTitle:"🕐 Hours & directions",
+  hoursText:"🕐 *Hours* (demonstration example)\nTuesday to Friday — 9:30 am–7:30 pm\nSaturday 9:00 am–6:00 pm · closed Sunday and Monday.",
+  accessText:"📍 *Getting here*: Boulevard Carnot, in the heart of Cannes, a few minutes from La Croisette and the train station. 🅿️ Public car parks nearby. Step-free access.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🧴 Sensitive skin & products","🎓 Student & packages","📍 Directions","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the Barb'Hair Shop team 👇",
+  fallback:"Good question! I can help you *book an appointment*, see *the services* or the *hours* — or I can hand you to the team. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Barb'Hair Shop**, tu barbería en el Boulevard Carnot de Cannes.\nTe ayudo a pedir cita, ver los servicios o los horarios — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["💈 Pedir cita","✂️ Servicios","🕐 Horarios y cómo llegar","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  bookStart:"¡Encantado, reservamos tu sitio en el sillón! 💈",
+  askService:"✂️ ¿Qué servicio quieres reservar?",
+  serviceOpts:["💇 Corte","🧔 Corte + barba","✂️ Barba","🪒 Afeitado"],
+  askDate:"📅 ¿Para qué fecha quieres venir?",
+  dateOpts:["Hoy","Mañana","Esta semana","Este fin de semana"],
+  askSlot:"⏰ Estos son los turnos aún libres — ¿cuál te viene bien?",
+  slotOpts:["10:30","14:00","17:30"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryService:"Servicio", summaryDate:"Fecha", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo de Barb'Hair Shop, que te confirma el turno. 🔔 Recibirás un recordatorio la víspera para no olvidarlo — y liberar la plaza si surge un imprevisto.",
+  reminderTeaser:"Un plus: te enviaré un recordatorio automático la víspera para reducir las citas perdidas.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero pedir cita en Barb'Hair Shop:",
+  menuIntro:"Aquí tienes un vistazo a nuestros servicios destacados ✂️ (duraciones y precios orientativos):",
+  menuCardTitle:"Nuestros servicios",
+  menuCardPrice:"orientativo",
+  menuDemoNote:"Servicios y precios ilustrativos a modo de demostración — el equipo te facilita el detalle y las tarifas actualizadas.",
+  vegLine:"💈 ¿Dudas? Dime qué buscas (corte, barba, afeitado, degradado) y te oriento hacia el servicio adecuado.",
+  menuButtons:["🎓 Estudiante y packs","💈 Pedir cita","⬅️ Menú"],
+  allergyLine:"🧴 *Piel sensible o preferencias*: dime tus sensibilidades (productos, perfumes, tipo de afeitado…) y las paso al barbero con tu cita, para adaptar los cuidados y productos.",
+  giftLine:"🎓 *Estudiante y packs*: tarifa estudiante, pack de corte regular, tarjeta de fidelidad… anoto tu solicitud y el equipo te propone la mejor opción. Dime qué te interesa.",
+  hoursTitle:"🕐 Horarios y cómo llegar",
+  hoursText:"🕐 *Horarios* (ejemplo de demostración)\nDe martes a viernes — 9:30–19:30\nSábado 9:00–18:00 · cerrado domingo y lunes.",
+  accessText:"📍 *Cómo llegar*: Boulevard Carnot, en pleno centro de Cannes, a pocos minutos de La Croisette y de la estación. 🅿️ Aparcamientos públicos cerca. Salón accesible a pie llano.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🧴 Piel sensible y productos","🎓 Estudiante y packs","📍 Cómo llegar","⬅️ Menú"],
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de Barb'Hair Shop 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *pedir cita*, ver *los servicios* o los *horarios* — o te paso con el equipo. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+it:{
+  status:"online · risponde subito",
+  placeholder:"Scrivi il tuo messaggio...",
+  welcome:"Ciao! 👋 Sono *Alex*, l'assistente virtuale di **Barb'Hair Shop**, il tuo barbershop in Boulevard Carnot a Cannes.\nTi aiuto a prenotare, scoprire i servizi o gli orari — in meno di un minuto. Come posso aiutarti?",
+  menu:["💈 Prenota","✂️ Servizi","🕐 Orari e come arrivare","💬 Parla con una persona"],
+  menuLabel:"Menu",
+  bookStart:"Con piacere, prenotiamo il tuo posto in poltrona 💈",
+  askService:"✂️ Quale servizio vuoi prenotare?",
+  serviceOpts:["💇 Taglio","🧔 Taglio + barba","✂️ Barba","🪒 Rasatura"],
+  askDate:"📅 Per quale data vuoi venire?",
+  dateOpts:["Oggi","Domani","Questa settimana","Questo weekend"],
+  askSlot:"⏰ Ecco gli orari ancora liberi — quale ti va bene?",
+  slotOpts:["10:30","14:00","17:30"],
+  askName:"🙋 A che nome segno l'appuntamento?",
+  askPhone:"📱 Perfetto {name}! Un numero di cellulare per inviarti la conferma (e il promemoria il giorno prima)?",
+  summaryTitle:"📋 Riepilogo del tuo appuntamento",
+  summaryService:"Servizio", summaryDate:"Data", summarySlot:"Ora", summaryName:"Nome", summaryPhone:"Telefono",
+  summaryFooter:"✅ Passo la tua richiesta al team di Barb'Hair Shop, che ti conferma l'orario. 🔔 Riceverai un promemoria il giorno prima per non dimenticarlo — e liberare il posto in caso di imprevisti.",
+  reminderTeaser:"Un plus: ti invierò un promemoria automatico il giorno prima per ridurre le mancate presenze.",
+  sendWa:"📲 Invia il mio appuntamento su WhatsApp",
+  newQuery:"🔄 Nuova richiesta",
+  waPrefix:"Ciao! Vorrei prenotare un appuntamento da Barb'Hair Shop:",
+  menuIntro:"Ecco uno sguardo ai nostri servizi principali ✂️ (durate e prezzi indicativi):",
+  menuCardTitle:"I nostri servizi",
+  menuCardPrice:"indicativo",
+  menuDemoNote:"Servizi e prezzi illustrativi a scopo dimostrativo — il team ti comunica il dettaglio e le tariffe aggiornate.",
+  vegLine:"💈 Hai dubbi? Dimmi cosa cerchi (taglio, barba, rasatura, sfumatura) e ti indirizzo al servizio giusto.",
+  menuButtons:["🎓 Studenti e pacchetti","💈 Prenota","⬅️ Menu"],
+  allergyLine:"🧴 *Pelle sensibile o preferenze*: dimmi le tue sensibilità (prodotti, profumi, tipo di rasatura…) e le passo al barbiere con il tuo appuntamento, per adattare i trattamenti e i prodotti.",
+  giftLine:"🎓 *Studenti e pacchetti*: tariffa studenti, pacchetto taglio regolare, carta fedeltà… segno la tua richiesta e il team ti propone l'opzione migliore. Dimmi cosa ti interessa.",
+  hoursTitle:"🕐 Orari e come arrivare",
+  hoursText:"🕐 *Orari* (esempio dimostrativo)\nDa martedì a venerdì — 9:30–19:30\nSabato 9:00–18:00 · chiuso domenica e lunedì.",
+  accessText:"📍 *Come arrivare*: Boulevard Carnot, nel cuore di Cannes, a pochi minuti dalla Croisette e dalla stazione. 🅿️ Parcheggi pubblici nelle vicinanze. Salone accessibile senza gradini.",
+  faqTitle:"Cosa vuoi sapere?",
+  faqButtons:["🧴 Pelle sensibile e prodotti","🎓 Studenti e pacchetti","📍 Come arrivare","⬅️ Menu"],
+  humanHandoff:"Certo — ti metto in contatto diretto con il team di Barb'Hair Shop 👇",
+  fallback:"Bella domanda! Posso aiutarti a *prenotare*, vedere *i servizi* o gli *orari* — oppure ti passo il team. Cosa preferisci?",
+  langSwitched:"Passato all'italiano 🇮🇹"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, service, date, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showCarte()"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= PRESTATIONS ================= */
+function carteCardHtml(){
+  let body = '';
+  SERVICES.forEach(d=>{
+    body += `<div class="dish"><div class="dname"><span>${esc(d.name[lang])}</span><span class="dprice">${esc(d.price)}</span></div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">✂️ ${t('menuCardTitle')}</span><span class="cprice">${t('menuCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('menuDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showCarte(){
+  addUser(t('menu')[1]);
+  addBotText(t('menuIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${carteCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('vegLine')), t('menuButtons').map((label,i)=>{
+      const acts = ["showGifts()","startBooking()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===1?'primary':''};
+    }));
+  }, 700);
+}
+
+function showAllergies(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('allergyLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+function showGifts(){
+  addUser(t('menuButtons')[0]);
+  addBotText(t('giftLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'}
+  ], 450);
+}
+
+/* ================= HORAIRES & ACCÈS ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['allergy','gifts','access','menu'];
+    const map={allergy:"showAllergies()",gifts:"showGifts()",access:"showAccess()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= RENDEZ-VOUS ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'service', service:null, date:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askService'), t('serviceOpts').map(l=>({label:l, onclick:`bookingService('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function bookingService(label){
+  addUser(label);
+  booking.service = label;
+  booking.step='date';
+  addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='service'){
+    booking.service = text;
+    booking.step='date';
+    addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='date'){
+    booking.date = text;
+    booking.step='slot';
+    addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryService')} :</b> ${esc(booking.service)}<br>
+          <b>${t('summaryDate')} :</b> ${esc(booking.date)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #e6eaef;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryService')}: ${booking.service}\n${t('summaryDate')}: ${booking.date}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','coupe','barbe','rasage','degrade','horaire','merci','oui','non','prendre','reserver'];
+  const en = ['hello','hi ','hey','appointment','booking','haircut','beard','shave','fade','hours','thanks','yes','no ','book'];
+  const es = ['hola','buenas','cita','corte','barba','afeitado','degradado','horario','gracias','si','no ','reservar','servicio'];
+  const it = ['ciao','buongiorno','buonasera','prenot','taglio','barba','rasatura','sfumatura','orari','grazie','vorrei','servizio'];
+  let scores = {fr:0,en:0,es:0,it:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  it.forEach(w=>{ if(n.includes(w)) scores.it++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='service'||booking.step==='date'||booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['rendez','rdv','reserv','appointment','book','cita','prendre','pedir','prenot'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['prestation','service','servizio','servicio','coupe','barbe','rasage','degrade','haircut','beard','shave','fade','corte','afeitado','taglio','rasatura','sfumatura'])){
+    if(normalizedIncludesAny(n,['sensible','sensitive','peau','piel','skin','pelle','produit','product','producto','prodotto'])){ showAllergies(); return; }
+    showCarte(); return;
+  }
+  if(normalizedIncludesAny(n,['sensible','sensitive','peau','piel','skin','pelle','produit','product','producto','prodotto'])){ showAllergies(); return; }
+  if(normalizedIncludesAny(n,['horaire','horari','horario','orari','hour','ouvert','abierto','open','aperto','ferme','chiuso','cerrado'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['acces','acceso','direction','parking','venir','llegar','arrivare','arrivo','adresse','address','indirizzo','carnot'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['etudiant','student','estudiante','studente','forfait','package','pack','fidelite','loyalty','fedelta','fidelidad','abonnement'])){ showGifts(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','umano','equipe','equipo','team','appeler','llamar','call','chiamare','telephone'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','ciao','buongiorno'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-barbhaircannes-h9d5', {method:'POST', body:'Visite demo Barb Hair · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

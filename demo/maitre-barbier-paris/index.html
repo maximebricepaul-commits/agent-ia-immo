@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Le Maître Barbier Paris</title>
+<meta name="description" content="Alex, l'assistant virtuel du Maître Barbier Paris — prenez rendez-vous, découvrez les prestations et les horaires en 1 minute.">
+<style>
+:root{
+  --plum:#1c2530;
+  --plum-dark:#0f151d;
+  --wine:#2c3a47;
+  --terra:#b98a4e;
+  --terra-dark:#8f6837;
+  --gold:#c9a24b;
+  --bg:#f3f1ec;
+  --paper:#fffefb;
+  --ink:#25272b;
+  --muted:#8b8578;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #2c3a47 0%, var(--plum) 55%, var(--plum-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--plum) 0%,var(--wine) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--wine);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--wine),var(--terra));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--terra-dark);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e6e0d4;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--plum),var(--wine));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #ece5d6;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--terra-dark);font-size:13.8px;display:flex;justify-content:space-between;gap:8px;}
+.dish .dprice{color:var(--gold);font-weight:700;font-size:12.8px;white-space:nowrap;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--terra-dark);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--terra);
+  color:var(--terra-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--terra);color:#fff;}
+.qbtn.primary{background:var(--terra);border-color:var(--terra-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--terra-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #ece5d6;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #e2dac9;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--terra);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(143,104,55,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#d8cfbb;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">💈</div>
+    <div class="hinfo">
+      <div class="name">Alex · Le Maître Barbier Paris</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="ar" onclick="forceLang('ar')">AR</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démo privée pour Le Maître Barbier Paris · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Prestations ILLUSTRATIVES de démonstration — ne reflètent pas les vraies prestations ni les tarifs du salon */
+const SERVICES = [
+  {cat:"coupe", name:{fr:"Coupe homme signature",en:"Signature men's cut",es:"Corte de caballero signature",ar:"قصّة شعر رجالية مميّزة"},
+    desc:{fr:"consultation, coupe aux ciseaux, coiffage · env. 40 min",en:"consultation, scissor cut, styling · approx. 40 min",es:"consulta, corte a tijera, peinado · aprox. 40 min",ar:"استشارة، قصّ بالمقص، تصفيف · حوالي 40 دقيقة"}, price:"~35 €"},
+  {cat:"barbe", name:{fr:"Taille de barbe au rasoir",en:"Razor beard trim",es:"Arreglo de barba a navaja",ar:"تشذيب اللحية بالموس"},
+    desc:{fr:"contours nets, serviette chaude, huile · env. 30 min",en:"clean lines, hot towel, oil · approx. 30 min",es:"contornos definidos, toalla caliente, aceite · aprox. 30 min",ar:"حواف دقيقة، منشفة ساخنة، زيت · حوالي 30 دقيقة"}, price:"~25 €"},
+  {cat:"combo", name:{fr:"Combo coupe + barbe",en:"Cut + beard combo",es:"Combo corte + barba",ar:"كومبو قصّة + لحية"},
+    desc:{fr:"la totale, coupe et barbe assorties · env. 55 min",en:"the full service, matched cut and beard · approx. 55 min",es:"servicio completo, corte y barba a juego · aprox. 55 min",ar:"الخدمة الكاملة، قصّة ولحية متناسقة · حوالي 55 دقيقة"}, price:"~50 €"},
+  {cat:"rasage", name:{fr:"Rasage traditionnel",en:"Traditional wet shave",es:"Afeitado tradicional",ar:"حلاقة تقليدية"},
+    desc:{fr:"coupe-chou, mousse chaude, soin apaisant · env. 45 min",en:"straight razor, hot lather, soothing care · approx. 45 min",es:"navaja, espuma caliente, cuidado calmante · aprox. 45 min",ar:"موس مستقيم، رغوة ساخنة، عناية مهدّئة · حوالي 45 دقيقة"}, price:"~40 €"}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel du **Maître Barbier Paris**, votre barbershop dans le 18e arrondissement.\nJe vous aide à prendre rendez-vous au fauteuil, découvrir les prestations ou les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["💈 Prendre RDV","✂️ Prestations","🕐 Horaires & accès","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* rendez-vous */
+  bookStart:"Avec plaisir, réservons votre passage au fauteuil 💈",
+  askService:"✂️ Quelle prestation souhaitez-vous réserver ?",
+  serviceOpts:["✂️ Coupe homme","🧔 Taille de barbe","💈 Combo coupe + barbe","🪒 Rasage traditionnel"],
+  askDate:"📅 Pour quel jour souhaitez-vous venir ?",
+  dateOpts:["Cette semaine","Ce week-end","La semaine prochaine","Autre date"],
+  askSlot:"⏰ Voici les créneaux encore libres au fauteuil — lequel vous convient ?",
+  slotOpts:["10h00","14h30","18h15"],
+  askName:"🙋 À quel prénom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryService:"Prestation", summaryDate:"Date", summarySlot:"Heure", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande au Maître Barbier, qui vous confirme le créneau. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer le fauteuil si un imprévu survient.",
+  reminderTeaser:"Petit plus : je vous enverrai un rappel automatique la veille pour limiter les rendez-vous manqués.",
+  sendWa:"📲 Envoyer mon RDV par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous au Maître Barbier Paris :",
+  /* prestations */
+  menuIntro:"Voici un aperçu de nos prestations phares ✂️ (durées et tarifs donnés à titre indicatif) :",
+  menuCardTitle:"Nos prestations",
+  menuCardPrice:"à titre indicatif",
+  menuDemoNote:"Prestations et tarifs illustratifs présentés à titre de démonstration — le barbier vous communique le détail et les tarifs à jour.",
+  vegLine:"💈 Vous hésitez ? Dites-moi ce que vous cherchez (coupe nette, barbe travaillée, rasage détente) et je vous oriente vers la bonne prestation.",
+  menuButtons:["🎁 Occasions & forfaits","💈 Prendre RDV","⬅️ Menu"],
+  allergyLine:"🧴 *Peau sensible ou produits* : indiquez-moi vos sensibilités (rasage, huiles, parfums…) et je les transmets au barbier avec votre rendez-vous, pour adapter les soins et les produits utilisés.",
+  giftLine:"🎁 *Occasions & forfaits* : mariage, EVG, carte cadeau… je note votre projet et le barbier vous propose un forfait sur mesure. Dites-moi l'occasion et la date envisagée.",
+  /* horaires & accès */
+  hoursTitle:"🕐 Horaires & accès",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nMardi au vendredi — 10h00–20h00\nSamedi 9h30–19h00 · fermé dimanche et lundi.",
+  accessText:"📍 *Accès* : au cœur du 18e arrondissement de Paris, à quelques minutes à pied du métro. 🚇 Métro et bus à proximité. Salon en rez-de-chaussée.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🧴 Peau sensible & produits","🎁 Occasions & forfaits","📍 Accès & métro","⬅️ Menu"],
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec le Maître Barbier 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, voir *les prestations* ou les *horaires* — ou je vous passe le barbier. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Le Maître Barbier Paris**, your barbershop in the 18th arrondissement.\nI can help you book a chair, browse the services or check opening hours — in under a minute. How can I help?",
+  menu:["💈 Book a chair","✂️ Services","🕐 Hours & directions","💬 Talk to a human"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's book your seat in the chair 💈",
+  askService:"✂️ Which service would you like to book?",
+  serviceOpts:["✂️ Men's cut","🧔 Beard trim","💈 Cut + beard combo","🪒 Traditional shave"],
+  askDate:"📅 What day would you like to come in?",
+  dateOpts:["This week","This weekend","Next week","Another date"],
+  askSlot:"⏰ Here are the chair slots still open — which suits you?",
+  slotOpts:["10:00 am","2:30 pm","6:15 pm"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryService:"Service", summaryDate:"Date", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Master Barber, who will confirm your slot. 🔔 You'll get a reminder the day before so nothing slips your mind — and the chair can be freed if plans change.",
+  reminderTeaser:"A little extra: I'll send an automatic reminder the day before to cut down no-shows.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at Le Maître Barbier Paris:",
+  menuIntro:"Here's a look at our signature services ✂️ (durations and prices are indicative):",
+  menuCardTitle:"Our services",
+  menuCardPrice:"indicative",
+  menuDemoNote:"Illustrative services and prices shown for demonstration — the barber will share the full details and current rates.",
+  vegLine:"💈 Not sure? Tell me what you're after (a sharp cut, a shaped beard, a relaxing shave) and I'll point you to the right service.",
+  menuButtons:["🎁 Occasions & packages","💈 Book","⬅️ Menu"],
+  allergyLine:"🧴 *Sensitive skin or products*: tell me your sensitivities (shaving, oils, fragrances…) and I'll pass them to the barber with your appointment, to adapt the care and products used.",
+  giftLine:"🎁 *Occasions & packages*: wedding, stag party, gift card… I'll note your project and the barber will propose a tailored package. Just tell me the occasion and the date you have in mind.",
+  hoursTitle:"🕐 Hours & directions",
+  hoursText:"🕐 *Hours* (demonstration example)\nTuesday to Friday — 10:00 am–8:00 pm\nSaturday 9:30 am–7:00 pm · closed Sunday and Monday.",
+  accessText:"📍 *Getting here*: in the heart of Paris' 18th arrondissement, a few minutes' walk from the metro. 🚇 Metro and buses nearby. Ground-floor shop.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🧴 Sensitive skin & products","🎁 Occasions & packages","📍 Directions & metro","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the Master Barber 👇",
+  fallback:"Good question! I can help you *book an appointment*, see *the services* or the *hours* — or I can hand you to the barber. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Le Maître Barbier Paris**, tu barbería en el distrito 18 de París.\nTe ayudo a reservar sillón, ver los servicios o los horarios — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["💈 Reservar sillón","✂️ Servicios","🕐 Horarios y cómo llegar","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  bookStart:"¡Encantado, reservamos tu sillón! 💈",
+  askService:"✂️ ¿Qué servicio quieres reservar?",
+  serviceOpts:["✂️ Corte de caballero","🧔 Arreglo de barba","💈 Combo corte + barba","🪒 Afeitado tradicional"],
+  askDate:"📅 ¿Para qué día quieres venir?",
+  dateOpts:["Esta semana","Este fin de semana","La semana que viene","Otra fecha"],
+  askSlot:"⏰ Estos son los turnos de sillón aún libres — ¿cuál te viene bien?",
+  slotOpts:["10:00","14:30","18:15"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryService:"Servicio", summaryDate:"Fecha", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al Maestro Barbero, que te confirma el turno. 🔔 Recibirás un recordatorio la víspera para no olvidarlo — y liberar el sillón si surge un imprevisto.",
+  reminderTeaser:"Un plus: te enviaré un recordatorio automático la víspera para reducir las citas perdidas.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero reservar cita en Le Maître Barbier Paris:",
+  menuIntro:"Aquí tienes un vistazo a nuestros servicios destacados ✂️ (duraciones y precios orientativos):",
+  menuCardTitle:"Nuestros servicios",
+  menuCardPrice:"orientativo",
+  menuDemoNote:"Servicios y precios ilustrativos a modo de demostración — el barbero te facilita el detalle y las tarifas actualizadas.",
+  vegLine:"💈 ¿Dudas? Dime qué buscas (un corte definido, una barba trabajada, un afeitado relajante) y te oriento hacia el servicio adecuado.",
+  menuButtons:["🎁 Ocasiones y packs","💈 Reservar","⬅️ Menú"],
+  allergyLine:"🧴 *Piel sensible o productos*: dime tus sensibilidades (afeitado, aceites, perfumes…) y las paso al barbero con tu cita, para adaptar los cuidados y productos.",
+  giftLine:"🎁 *Ocasiones y packs*: boda, despedida, tarjeta regalo… anoto tu proyecto y el barbero te propone un pack a medida. Dime la ocasión y la fecha prevista.",
+  hoursTitle:"🕐 Horarios y cómo llegar",
+  hoursText:"🕐 *Horarios* (ejemplo de demostración)\nDe martes a viernes — 10:00–20:00\nSábado 9:30–19:00 · cerrado domingo y lunes.",
+  accessText:"📍 *Cómo llegar*: en pleno distrito 18 de París, a pocos minutos a pie del metro. 🚇 Metro y autobuses cerca. Local a pie de calle.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🧴 Piel sensible y productos","🎁 Ocasiones y packs","📍 Cómo llegar y metro","⬅️ Menú"],
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el Maestro Barbero 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *reservar cita*, ver *los servicios* o los *horarios* — o te paso con el barbero. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+ar:{
+  status:"متّصل · يردّ فوراً",
+  placeholder:"اكتب رسالتك...",
+  welcome:"مرحباً! 👋 أنا *Alex*، المساعد الافتراضي لـ **Le Maître Barbier Paris**، صالون الحلاقة الخاص بك في الدائرة 18 بباريس.\nأساعدك في حجز موعد على الكرسي، أو التعرّف على الخدمات والمواعيد — في أقل من دقيقة. كيف يمكنني مساعدتك؟",
+  menu:["💈 حجز موعد","✂️ الخدمات","🕐 المواعيد والوصول","💬 التحدث مع شخص"],
+  menuLabel:"القائمة",
+  bookStart:"بكل سرور، لنحجز مقعدك على الكرسي 💈",
+  askService:"✂️ أي خدمة تودّ حجزها؟",
+  serviceOpts:["✂️ قصّة رجالية","🧔 تشذيب اللحية","💈 كومبو قصّة + لحية","🪒 حلاقة تقليدية"],
+  askDate:"📅 في أي يوم تودّ الحضور؟",
+  dateOpts:["هذا الأسبوع","نهاية الأسبوع","الأسبوع القادم","تاريخ آخر"],
+  askSlot:"⏰ هذه المواعيد المتاحة على الكرسي — أيّها يناسبك؟",
+  slotOpts:["10:00","14:30","18:15"],
+  askName:"🙋 باسم من أسجّل الموعد؟",
+  askPhone:"📱 ممتاز {name}! رقم هاتف محمول لإرسال التأكيد لك (والتذكير في اليوم السابق)؟",
+  summaryTitle:"📋 ملخّص موعدك",
+  summaryService:"الخدمة", summaryDate:"التاريخ", summarySlot:"الوقت", summaryName:"الاسم", summaryPhone:"الهاتف",
+  summaryFooter:"✅ سأنقل طلبك إلى المعلّم الحلّاق الذي يؤكّد لك الموعد. 🔔 ستصلك رسالة تذكير في اليوم السابق حتى لا تنساه — ولتحرير الكرسي إن طرأ أي ظرف.",
+  reminderTeaser:"إضافة صغيرة: سأرسل لك تذكيراً تلقائياً في اليوم السابق للحدّ من المواعيد الفائتة.",
+  sendWa:"📲 إرسال موعدي عبر واتساب",
+  newQuery:"🔄 طلب جديد",
+  waPrefix:"مرحباً! أودّ حجز موعد في Le Maître Barbier Paris:",
+  menuIntro:"إليك لمحة عن خدماتنا المميّزة ✂️ (المدد والأسعار إرشادية):",
+  menuCardTitle:"خدماتنا",
+  menuCardPrice:"إرشادي",
+  menuDemoNote:"خدمات وأسعار توضيحية معروضة بغرض العرض التجريبي — سيوافيك الحلّاق بالتفاصيل والأسعار المحدّثة.",
+  vegLine:"💈 متردّد؟ أخبرني بما تبحث عنه (قصّة دقيقة، لحية منسّقة، حلاقة مريحة) وأوجّهك إلى الخدمة المناسبة.",
+  menuButtons:["🎁 المناسبات والباقات","💈 حجز موعد","⬅️ القائمة"],
+  allergyLine:"🧴 *بشرة حسّاسة أو منتجات*: أخبرني بحساسياتك (الحلاقة، الزيوت، العطور…) وسأنقلها إلى الحلّاق مع موعدك، لتكييف العناية والمنتجات المستخدمة.",
+  giftLine:"🎁 *المناسبات والباقات*: زفاف، حفل عزوبية، بطاقة هدية… أسجّل مشروعك ويقترح عليك الحلّاق باقة مخصّصة. أخبرني بالمناسبة والتاريخ المقترح.",
+  hoursTitle:"🕐 المواعيد والوصول",
+  hoursText:"🕐 *المواعيد* (مثال توضيحي)\nمن الثلاثاء إلى الجمعة — 10:00–20:00\nالسبت 9:30–19:00 · مغلق الأحد والإثنين.",
+  accessText:"📍 *الوصول*: في قلب الدائرة 18 بباريس، على بعد دقائق سيراً من المترو. 🚇 مترو وحافلات قريبة. الصالون في الطابق الأرضي.",
+  faqTitle:"ماذا تودّ أن تعرف؟",
+  faqButtons:["🧴 بشرة حسّاسة ومنتجات","🎁 المناسبات والباقات","📍 الوصول والمترو","⬅️ القائمة"],
+  humanHandoff:"بالطبع — سأصلك مباشرة بالمعلّم الحلّاق 👇",
+  fallback:"سؤال جيّد! يمكنني مساعدتك في *حجز موعد*، أو رؤية *الخدمات* أو *المواعيد* — أو أحوّلك إلى الحلّاق. ماذا تفضّل؟",
+  langSwitched:"تمّ التحويل إلى العربية"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, service, date, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function isRTL(){ return lang==='ar'; }
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble"${isRTL()?' dir="rtl"':''}>${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  const rtl = isRTL()?' dir="rtl"':'';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble"${rtl}>${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showCarte()"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= PRESTATIONS ================= */
+function carteCardHtml(){
+  let body = '';
+  SERVICES.forEach(d=>{
+    body += `<div class="dish"><div class="dname"><span>${esc(d.name[lang])}</span><span class="dprice">${esc(d.price)}</span></div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card"${isRTL()?' dir="rtl"':''}>
+    <div class="cardhead"><span class="cname">✂️ ${t('menuCardTitle')}</span><span class="cprice">${t('menuCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('menuDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showCarte(){
+  addUser(t('menu')[1]);
+  addBotText(t('menuIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${carteCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('vegLine')), t('menuButtons').map((label,i)=>{
+      const acts = ["showGifts()","startBooking()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===1?'primary':''};
+    }));
+  }, 700);
+}
+
+function showAllergies(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('allergyLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+function showGifts(){
+  addUser(t('menuButtons')[0]);
+  addBotText(t('giftLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'}
+  ], 450);
+}
+
+/* ================= HORAIRES & ACCÈS ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['allergy','gifts','access','menu'];
+    const map={allergy:"showAllergies()",gifts:"showGifts()",access:"showAccess()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= RENDEZ-VOUS ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'service', service:null, date:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askService'), t('serviceOpts').map(l=>({label:l, onclick:`bookingService('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function bookingService(label){
+  addUser(label);
+  booking.service = label;
+  booking.step='date';
+  addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='service'){
+    booking.service = text;
+    booking.step='date';
+    addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='date'){
+    booking.date = text;
+    booking.step='slot';
+    addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card"${isRTL()?' dir="rtl"':''}>
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryService')} :</b> ${esc(booking.service)}<br>
+          <b>${t('summaryDate')} :</b> ${esc(booking.date)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #ece5d6;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryService')}: ${booking.service}\n${t('summaryDate')}: ${booking.date}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','coupe','barbe','rasage','coiffeur','barbier','horaire','merci','oui','non','prendre','reserver','fauteuil'];
+  const en = ['hello','hi ','hey','appointment','booking','cut','beard','shave','barber','hours','thanks','yes','no ','book','chair'];
+  const es = ['hola','buenas','cita','corte','barba','afeitado','barbero','horario','gracias','si','no ','reservar','sillon'];
+  const ar = ['مرحبا','السلام','موعد','حجز','قصة','لحية','حلاقة','حلاق','مواعيد','شكرا','نعم'];
+  let scores = {fr:0,en:0,es:0,ar:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ar.forEach(w=>{ if(text.includes(w)) scores.ar++; });
+  if(/[؀-ۿ]/.test(text)) scores.ar += 2;
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function applyDir(){
+  const rtl = isRTL();
+  chatEl.style.direction = rtl ? 'rtl' : 'ltr';
+  inputEl.style.direction = rtl ? 'rtl' : 'ltr';
+  inputEl.style.textAlign = rtl ? 'right' : 'left';
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  applyDir();
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  applyDir();
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='service'||booking.step==='date'||booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['rendez','rdv','reserv','appointment','book','cita','prendre','fauteuil','chair','sillon','موعد','حجز'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['prestation','service','coupe','barbe','rasage','cut','beard','shave','corte','afeitado','combo','قصة','لحية','حلاقة'])){
+    if(normalizedIncludesAny(n,['allerg','sensible','sensitive','peau','piel','skin','producto','produit','product','بشرة','حساس'])){ showAllergies(); return; }
+    showCarte(); return;
+  }
+  if(normalizedIncludesAny(n,['allerg','sensible','sensitive','peau','piel','skin','producto','produit','product','بشرة','حساس'])){ showAllergies(); return; }
+  if(normalizedIncludesAny(n,['horaire','horari','horario','hour','ouvert','abierto','open','ferme','مواعيد','مفتوح'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['acces','acceso','direction','metro','venir','llegar','adresse','address','وصول','مترو','عنوان'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['cadeau','forfait','mariage','evg','gift','package','pack','ocasion','boda','wedding','regalo','despedida','هدية','مناسبة','باقة'])){ showGifts(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','barbier','barber','barbero','appeler','llamar','call','telephone','حلاق'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','مرحبا','السلام'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-maitrebarbier-c3x7', {method:'POST', body:'Visite demo Maitre Barbier · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  applyDir();
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

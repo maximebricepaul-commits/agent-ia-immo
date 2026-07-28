@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Agence du Vieil Antibes</title>
+<meta name="description" content="Alex, l'assistant virtuel de l'Agence du Vieil Antibes — achat, vente, estimation et prise de rendez-vous en moins d'une minute.">
+<style>
+:root{
+  --navy:#12314f;
+  --navy-dark:#0c2338;
+  --azure:#1f6fb2;
+  --gold:#c9a24b;
+  --gold-dark:#a8842f;
+  --sky:#3d8dc4;
+  --bg:#eef3f7;
+  --paper:#ffffff;
+  --ink:#1c2a36;
+  --muted:#7d8a97;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1b4a74 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--azure) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--azure);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--azure),var(--sky));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--azure);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dbe6ef;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--azure));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.listing{padding:7px 0;border-bottom:1px dashed #e2ebf2;}
+.listing:last-child{border-bottom:none;}
+.listing .lname{font-weight:700;color:var(--azure);font-size:13.8px;}
+.listing .ldesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--azure);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--gold);border-color:var(--gold-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--gold-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #dde7ef;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d3e0ea;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--azure);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(168,132,47,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c4d3e0;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🏛️</div>
+    <div class="hinfo">
+      <div class="name">Alex · Agence du Vieil Antibes</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour l'Agence du Vieil Antibes · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Biens ILLUSTRATIFS de démonstration — ne reflètent pas le portefeuille réel de l'agence */
+const LISTINGS = [
+  {cat:"appart", name:{fr:"Appartement vue mer — Cap d'Antibes",es:"Apartamento con vistas al mar — Cap d'Antibes",en:"Sea-view apartment — Cap d'Antibes",ca:"Apartament amb vistes al mar — Cap d'Antibes"},
+    desc:{fr:"3 pièces, terrasse, à deux pas des plages",es:"3 habitaciones, terraza, junto a las playas",en:"3 rooms, terrace, steps from the beaches",ca:"3 habitacions, terrassa, a tocar de les platges"}},
+  {cat:"appart", name:{fr:"Pied-à-terre — cœur du Vieil Antibes",es:"Pied-à-terre — corazón del Vieil Antibes",en:"Pied-à-terre — heart of Old Antibes",ca:"Pied-à-terre — cor del Vieil Antibes"},
+    desc:{fr:"charme ancien, ruelles du marché Provençal",es:"encanto antiguo, callejuelas del mercado Provenzal",en:"period charm, near the Provençal market lanes",ca:"encant antic, carrerons del mercat Provençal"}},
+  {cat:"villa", name:{fr:"Villa avec piscine — quartier résidentiel",es:"Villa con piscina — zona residencial",en:"Villa with pool — residential area",ca:"Vila amb piscina — zona residencial"},
+    desc:{fr:"jardin paysager, garage, au calme",es:"jardín paisajista, garaje, tranquilo",en:"landscaped garden, garage, quiet setting",ca:"jardí paisatgístic, garatge, tranquil·litat"}},
+  {cat:"villa", name:{fr:"Propriété de prestige — front de mer",es:"Propiedad de prestigio — primera línea de mar",en:"Prestige property — seafront",ca:"Propietat de prestigi — primera línia de mar"},
+    desc:{fr:"vue panoramique, prestations haut de gamme",es:"vistas panorámicas, acabados de alta gama",en:"panoramic view, high-end finishes",ca:"vistes panoràmiques, acabats d'alta gamma"}},
+  {cat:"invest", name:{fr:"Studio locatif — proche vieille ville",es:"Estudio para alquilar — cerca del casco antiguo",en:"Rental studio — near the old town",ca:"Estudi per llogar — prop del casc antic"},
+    desc:{fr:"fort potentiel locatif saisonnier",es:"gran potencial de alquiler de temporada",en:"strong seasonal rental potential",ca:"gran potencial de lloguer de temporada"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de l'**Agence du Vieil Antibes**, votre agence immobilière à Antibes.\nJe vous aide à préciser votre projet — achat, vente ou estimation — et à organiser un rendez-vous, en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🔑 Acheter","🏷️ Vendre","📈 Estimer mon bien","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* ACHETER */
+  buyStart:"Excellent, aidons-vous à trouver le bien qui vous ressemble 🙌",
+  askBuySector:"📍 Quel secteur vous intéresse en priorité ?",
+  buySectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Bord de mer","Peu importe"],
+  askBuyType:"🏠 Quel type de bien recherchez-vous ?",
+  buyTypeOpts:["Appartement","Villa / maison","Investissement locatif","Prestige"],
+  askBudget:"💶 Sur quelle enveloppe budgétaire vous situez-vous ?",
+  budgetOpts:["< 500 000 €","500 000 – 900 000 €","900 000 – 2 M€","2 M€ et +"],
+  buyReco:"Merci ! Voici quelques biens *illustratifs* qui correspondent à ce type de recherche 👇",
+  askVisit:"📅 Souhaitez-vous qu'un conseiller vous propose une visite ou un rendez-vous découverte ?",
+  visitOpts:["🏠 Organiser une visite","☕ RDV en agence","📞 Être rappelé(e)"],
+  /* VENDRE */
+  sellStart:"Très bien, préparons la mise en vente de votre bien 🙌",
+  askSellSector:"📍 Où se situe le bien que vous souhaitez vendre ?",
+  sellSectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Bord de mer","Autre secteur d'Antibes"],
+  askSellType:"🏠 De quel type de bien s'agit-il ?",
+  sellTypeOpts:["Appartement","Villa / maison","Terrain","Autre"],
+  askSellTiming:"⏱️ À quelle échéance envisagez-vous la vente ?",
+  sellTimingOpts:["Dès que possible","Dans 3-6 mois","Je me renseigne"],
+  sellReco:"Parfait. Un conseiller peut vous rencontrer sur place pour affiner le prix de mise en vente et le plan de commercialisation.",
+  /* ESTIMER */
+  estimateStart:"Bonne idée — une estimation juste, c'est la clé d'une vente réussie 🙌",
+  askEstSector:"📍 Dans quel secteur se trouve le bien à estimer ?",
+  estSectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Bord de mer","Autre secteur d'Antibes"],
+  askEstType:"🏠 Quel type de bien souhaitez-vous faire estimer ?",
+  estTypeOpts:["Appartement","Villa / maison","Terrain","Autre"],
+  estimateNote:"🔎 *Estimation* : je note les caractéristiques de votre bien pour qu'un conseiller réalise une estimation personnalisée sur place. Je ne peux pas donner de prix ferme à distance — chaque bien est unique.",
+  /* commun RDV */
+  askName:"🙋 À quel prénom dois-je noter la demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de téléphone pour qu'un conseiller vous recontacte (et confirme le rendez-vous) ?",
+  summaryBuyTitle:"📋 Récapitulatif de votre projet d'achat",
+  summarySellTitle:"📋 Récapitulatif de votre projet de vente",
+  summaryEstTitle:"📋 Récapitulatif de votre demande d'estimation",
+  sProject:"Projet", sSector:"Secteur", sType:"Type de bien", sBudget:"Budget", sTiming:"Échéance", sContact:"Souhait", sName:"Prénom", sPhone:"Téléphone",
+  pBuy:"Achat", pSell:"Vente", pEstimate:"Estimation",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de l'Agence du Vieil Antibes, qui vous recontacte pour organiser le rendez-vous. 🔔 Vous recevrez une confirmation, et un conseiller dédié suivra votre projet.",
+  disclaimerLegal:"ℹ️ Je vous accompagne sur votre projet immobilier ; pour les questions juridiques, fiscales ou notariales, l'agence vous orientera vers le bon interlocuteur.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je vous contacte via l'assistant de l'Agence du Vieil Antibes concernant mon projet :",
+  /* biens */
+  listingsIntro:"Voici un aperçu *illustratif* de biens de notre secteur 🌊 :",
+  listCardTitle:"Sélection du moment",
+  listCardPrice:"Antibes · Cap d'Antibes",
+  listDemoNote:"Biens illustratifs présentés à titre de démonstration — l'équipe vous communique les biens réellement disponibles et leurs prix.",
+  listButtons:["🔑 Affiner mon achat","📈 Estimer mon bien","⬅️ Menu"],
+  /* infos */
+  faqTitle:"Que souhaitez-vous savoir ?",
+  faqButtons:["🌊 Secteurs & clientèle","🌍 Clients internationaux","📍 Agence & contact","⬅️ Menu"],
+  sectorsText:"🌊 *Nos secteurs* : Cap d'Antibes, cœur du Vieil Antibes, bord de mer et quartiers résidentiels. Appartements de charme, villas avec piscine et biens de prestige — pour résidence principale, secondaire ou investissement.",
+  intlText:"🌍 *Clientèle internationale* : nous accompagnons de nombreux acquéreurs étrangers. Je parle français, espagnol, anglais et catalan, et l'agence peut assurer le suivi de votre projet à distance jusqu'à la signature.",
+  contactText:"📍 *L'agence* : au cœur d'Antibes, à proximité du Vieil Antibes et du bord de mer. Un conseiller vous reçoit sur rendez-vous. Le plus simple pour démarrer : laissez-moi vos coordonnées, on vous rappelle.",
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de l'Agence du Vieil Antibes 👇",
+  fallback:"Bonne question ! Je peux vous aider à *acheter*, *vendre*, faire *estimer* un bien — ou vous passer un conseiller. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de la **Agence du Vieil Antibes**, tu agencia inmobiliaria en Antibes.\nTe ayudo a precisar tu proyecto — comprar, vender o valorar — y a organizar una cita, en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🔑 Comprar","🏷️ Vender","📈 Valorar mi propiedad","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  buyStart:"¡Excelente, te ayudamos a encontrar la propiedad ideal! 🙌",
+  askBuySector:"📍 ¿Qué zona te interesa en primer lugar?",
+  buySectorOpts:["Cap d'Antibes","Vieil Antibes / centro","Primera línea de mar","Indiferente"],
+  askBuyType:"🏠 ¿Qué tipo de propiedad buscas?",
+  buyTypeOpts:["Apartamento","Villa / casa","Inversión / alquiler","Prestigio"],
+  askBudget:"💶 ¿En qué presupuesto te sitúas?",
+  budgetOpts:["< 500 000 €","500 000 – 900 000 €","900 000 – 2 M€","2 M€ y +"],
+  buyReco:"¡Gracias! Aquí tienes algunas propiedades *ilustrativas* acordes a esta búsqueda 👇",
+  askVisit:"📅 ¿Quieres que un asesor te proponga una visita o una cita?",
+  visitOpts:["🏠 Organizar una visita","☕ Cita en la agencia","📞 Que me llamen"],
+  sellStart:"Muy bien, preparamos la venta de tu propiedad 🙌",
+  askSellSector:"📍 ¿Dónde se encuentra la propiedad que quieres vender?",
+  sellSectorOpts:["Cap d'Antibes","Vieil Antibes / centro","Primera línea de mar","Otra zona de Antibes"],
+  askSellType:"🏠 ¿De qué tipo de propiedad se trata?",
+  sellTypeOpts:["Apartamento","Villa / casa","Terreno","Otro"],
+  askSellTiming:"⏱️ ¿En qué plazo prevés la venta?",
+  sellTimingOpts:["Lo antes posible","En 3-6 meses","Me estoy informando"],
+  sellReco:"Perfecto. Un asesor puede visitarte para afinar el precio de venta y el plan de comercialización.",
+  estimateStart:"¡Buena idea — una valoración justa es la clave de una venta con éxito! 🙌",
+  askEstSector:"📍 ¿En qué zona está la propiedad a valorar?",
+  estSectorOpts:["Cap d'Antibes","Vieil Antibes / centro","Primera línea de mar","Otra zona de Antibes"],
+  askEstType:"🏠 ¿Qué tipo de propiedad quieres valorar?",
+  estTypeOpts:["Apartamento","Villa / casa","Terreno","Otro"],
+  estimateNote:"🔎 *Valoración*: anoto las características de tu propiedad para que un asesor realice una valoración personalizada in situ. No puedo dar un precio cerrado a distancia — cada propiedad es única.",
+  askName:"🙋 ¿A nombre de quién anoto la solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un teléfono para que un asesor te contacte (y confirme la cita)?",
+  summaryBuyTitle:"📋 Resumen de tu proyecto de compra",
+  summarySellTitle:"📋 Resumen de tu proyecto de venta",
+  summaryEstTitle:"📋 Resumen de tu solicitud de valoración",
+  sProject:"Proyecto", sSector:"Zona", sType:"Tipo", sBudget:"Presupuesto", sTiming:"Plazo", sContact:"Preferencia", sName:"Nombre", sPhone:"Teléfono",
+  pBuy:"Compra", pSell:"Venta", pEstimate:"Valoración",
+  summaryFooter:"✅ Paso tu solicitud al equipo de la Agence du Vieil Antibes, que te contactará para organizar la cita. 🔔 Recibirás una confirmación y un asesor dedicado seguirá tu proyecto.",
+  disclaimerLegal:"ℹ️ Te acompaño en tu proyecto inmobiliario; para cuestiones jurídicas, fiscales o notariales, la agencia te orientará al profesional adecuado.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Os contacto a través del asistente de la Agence du Vieil Antibes sobre mi proyecto:",
+  listingsIntro:"Aquí tienes una muestra *ilustrativa* de propiedades de nuestra zona 🌊:",
+  listCardTitle:"Selección del momento",
+  listCardPrice:"Antibes · Cap d'Antibes",
+  listDemoNote:"Propiedades ilustrativas a modo de demostración — el equipo te facilita las propiedades realmente disponibles y sus precios.",
+  listButtons:["🔑 Afinar mi compra","📈 Valorar mi propiedad","⬅️ Menú"],
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🌊 Zonas y clientes","🌍 Clientes internacionales","📍 Agencia y contacto","⬅️ Menú"],
+  sectorsText:"🌊 *Nuestras zonas*: Cap d'Antibes, corazón del Vieil Antibes, primera línea de mar y zonas residenciales. Apartamentos con encanto, villas con piscina y propiedades de prestigio — para residencia principal, secundaria o inversión.",
+  intlText:"🌍 *Clientes internacionales*: acompañamos a numerosos compradores extranjeros. Hablo francés, español, inglés y catalán, y la agencia puede seguir tu proyecto a distancia hasta la firma.",
+  contactText:"📍 *La agencia*: en el corazón de Antibes, cerca del Vieil Antibes y del mar. Un asesor te recibe con cita previa. Lo más sencillo para empezar: déjame tus datos y te llamamos.",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de la Agence du Vieil Antibes 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *comprar*, *vender*, *valorar* una propiedad — o pasarte con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for the **Agence du Vieil Antibes**, your estate agency in Antibes.\nI can help you shape your project — buying, selling or valuation — and arrange an appointment, in under a minute. How can I help?",
+  menu:["🔑 Buy","🏷️ Sell","📈 Value my property","💬 Talk to a human"],
+  menuLabel:"Menu",
+  buyStart:"Wonderful — let's help you find the right property 🙌",
+  askBuySector:"📍 Which area interests you most?",
+  buySectorOpts:["Cap d'Antibes","Old Antibes / centre","Seafront","No preference"],
+  askBuyType:"🏠 What type of property are you looking for?",
+  buyTypeOpts:["Apartment","Villa / house","Buy-to-let","Prestige"],
+  askBudget:"💶 What budget range are you considering?",
+  budgetOpts:["< €500,000","€500,000 – €900,000","€900,000 – €2M","€2M and up"],
+  buyReco:"Thank you! Here are a few *illustrative* properties matching this kind of search 👇",
+  askVisit:"📅 Would you like an adviser to arrange a viewing or a discovery meeting?",
+  visitOpts:["🏠 Arrange a viewing","☕ Meeting at the agency","📞 Get a callback"],
+  sellStart:"Great — let's prepare the sale of your property 🙌",
+  askSellSector:"📍 Where is the property you'd like to sell?",
+  sellSectorOpts:["Cap d'Antibes","Old Antibes / centre","Seafront","Another part of Antibes"],
+  askSellType:"🏠 What type of property is it?",
+  sellTypeOpts:["Apartment","Villa / house","Land","Other"],
+  askSellTiming:"⏱️ What's your timeframe for selling?",
+  sellTimingOpts:["As soon as possible","In 3-6 months","Just researching"],
+  sellReco:"Perfect. An adviser can meet you on site to fine-tune the asking price and the marketing plan.",
+  estimateStart:"Good idea — an accurate valuation is the key to a successful sale 🙌",
+  askEstSector:"📍 Which area is the property to be valued in?",
+  estSectorOpts:["Cap d'Antibes","Old Antibes / centre","Seafront","Another part of Antibes"],
+  askEstType:"🏠 What type of property would you like valued?",
+  estTypeOpts:["Apartment","Villa / house","Land","Other"],
+  estimateNote:"🔎 *Valuation*: I'll note your property's features so an adviser can carry out a personalised on-site valuation. I can't give a firm price remotely — every property is unique.",
+  askName:"🙋 What name should I note the request under?",
+  askPhone:"📱 Great, {name}! A phone number so an adviser can get back to you (and confirm the appointment)?",
+  summaryBuyTitle:"📋 Your buying project summary",
+  summarySellTitle:"📋 Your selling project summary",
+  summaryEstTitle:"📋 Your valuation request summary",
+  sProject:"Project", sSector:"Area", sType:"Property type", sBudget:"Budget", sTiming:"Timeframe", sContact:"Preference", sName:"Name", sPhone:"Phone",
+  pBuy:"Buying", pSell:"Selling", pEstimate:"Valuation",
+  summaryFooter:"✅ I'm passing your request to the Agence du Vieil Antibes team, who will get back to you to arrange the appointment. 🔔 You'll receive a confirmation and a dedicated adviser will follow your project.",
+  disclaimerLegal:"ℹ️ I'll support you through your property project; for legal, tax or notary questions, the agency will point you to the right professional.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'm reaching out via the Agence du Vieil Antibes assistant about my project:",
+  listingsIntro:"Here's an *illustrative* selection of properties from our area 🌊:",
+  listCardTitle:"Current selection",
+  listCardPrice:"Antibes · Cap d'Antibes",
+  listDemoNote:"Illustrative properties shown for demonstration — the team will share the properties actually available and their prices.",
+  listButtons:["🔑 Refine my search","📈 Value my property","⬅️ Menu"],
+  faqTitle:"What would you like to know?",
+  faqButtons:["🌊 Areas & clientele","🌍 International clients","📍 Agency & contact","⬅️ Menu"],
+  sectorsText:"🌊 *Our areas*: Cap d'Antibes, the heart of Old Antibes, seafront and residential neighbourhoods. Characterful apartments, villas with pools and prestige properties — for a main home, second home or investment.",
+  intlText:"🌍 *International clientele*: we support many overseas buyers. I speak French, Spanish, English and Catalan, and the agency can manage your project remotely right through to signing.",
+  contactText:"📍 *The agency*: in the heart of Antibes, near Old Antibes and the seafront. An adviser will see you by appointment. The easiest way to start: leave me your details and we'll call you back.",
+  humanHandoff:"Of course — I'll connect you directly with the Agence du Vieil Antibes team 👇",
+  fallback:"Good question! I can help you *buy*, *sell*, *value* a property — or hand you to an adviser. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de l'**Agence du Vieil Antibes**, la teva agència immobiliària a Antibes.\nT'ajudo a concretar el teu projecte — comprar, vendre o valorar — i a organitzar una cita, en menys d'un minut. En què et puc ajudar?",
+  menu:["🔑 Comprar","🏷️ Vendre","📈 Valorar el meu bé","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  buyStart:"Excel·lent, t'ajudem a trobar el bé ideal! 🙌",
+  askBuySector:"📍 Quina zona t'interessa en primer lloc?",
+  buySectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Primera línia de mar","Indiferent"],
+  askBuyType:"🏠 Quin tipus de bé busques?",
+  buyTypeOpts:["Apartament","Vila / casa","Inversió / lloguer","Prestigi"],
+  askBudget:"💶 En quin pressupost et situes?",
+  budgetOpts:["< 500 000 €","500 000 – 900 000 €","900 000 – 2 M€","2 M€ i +"],
+  buyReco:"Gràcies! Aquí tens alguns béns *il·lustratius* que corresponen a aquesta cerca 👇",
+  askVisit:"📅 Vols que un assessor et proposi una visita o una cita?",
+  visitOpts:["🏠 Organitzar una visita","☕ Cita a l'agència","📞 Que em truquin"],
+  sellStart:"Molt bé, preparem la venda del teu bé 🙌",
+  askSellSector:"📍 On es troba el bé que vols vendre?",
+  sellSectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Primera línia de mar","Una altra zona d'Antibes"],
+  askSellType:"🏠 De quin tipus de bé es tracta?",
+  sellTypeOpts:["Apartament","Vila / casa","Terreny","Altre"],
+  askSellTiming:"⏱️ En quin termini preveus la venda?",
+  sellTimingOpts:["Al més aviat possible","D'aquí a 3-6 mesos","M'estic informant"],
+  sellReco:"Perfecte. Un assessor pot visitar-te in situ per afinar el preu de venda i el pla de comercialització.",
+  estimateStart:"Bona idea — una valoració justa és la clau d'una venda amb èxit! 🙌",
+  askEstSector:"📍 En quina zona es troba el bé a valorar?",
+  estSectorOpts:["Cap d'Antibes","Vieil Antibes / centre","Primera línia de mar","Una altra zona d'Antibes"],
+  askEstType:"🏠 Quin tipus de bé vols valorar?",
+  estTypeOpts:["Apartament","Vila / casa","Terreny","Altre"],
+  estimateNote:"🔎 *Valoració*: anoto les característiques del teu bé perquè un assessor faci una valoració personalitzada in situ. No puc donar un preu tancat a distància — cada bé és únic.",
+  askName:"🙋 A nom de qui anoto la sol·licitud?",
+  askPhone:"📱 Perfecte {name}! Un telèfon perquè un assessor et contacti (i confirmi la cita)?",
+  summaryBuyTitle:"📋 Resum del teu projecte de compra",
+  summarySellTitle:"📋 Resum del teu projecte de venda",
+  summaryEstTitle:"📋 Resum de la teva sol·licitud de valoració",
+  sProject:"Projecte", sSector:"Zona", sType:"Tipus", sBudget:"Pressupost", sTiming:"Termini", sContact:"Preferència", sName:"Nom", sPhone:"Telèfon",
+  pBuy:"Compra", pSell:"Venda", pEstimate:"Valoració",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de l'Agence du Vieil Antibes, que et contactarà per organitzar la cita. 🔔 Rebràs una confirmació i un assessor dedicat farà el seguiment del teu projecte.",
+  disclaimerLegal:"ℹ️ T'acompanyo en el teu projecte immobiliari; per a qüestions jurídiques, fiscals o notarials, l'agència t'orientarà cap al professional adequat.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Us contacto a través de l'assistent de l'Agence du Vieil Antibes sobre el meu projecte:",
+  listingsIntro:"Aquí tens una mostra *il·lustrativa* de béns de la nostra zona 🌊:",
+  listCardTitle:"Selecció del moment",
+  listCardPrice:"Antibes · Cap d'Antibes",
+  listDemoNote:"Béns il·lustratius a tall de demostració — l'equip et facilita els béns realment disponibles i els seus preus.",
+  listButtons:["🔑 Afinar la meva compra","📈 Valorar el meu bé","⬅️ Menú"],
+  faqTitle:"Què vols saber?",
+  faqButtons:["🌊 Zones i clients","🌍 Clients internacionals","📍 Agència i contacte","⬅️ Menú"],
+  sectorsText:"🌊 *Les nostres zones*: Cap d'Antibes, cor del Vieil Antibes, primera línia de mar i barris residencials. Apartaments amb encant, viles amb piscina i béns de prestigi — per a residència principal, secundària o inversió.",
+  intlText:"🌍 *Clients internacionals*: acompanyem molts compradors estrangers. Parlo francès, espanyol, anglès i català, i l'agència pot fer el seguiment del teu projecte a distància fins a la signatura.",
+  contactText:"📍 *L'agència*: al cor d'Antibes, a prop del Vieil Antibes i del mar. Un assessor et rep amb cita prèvia. El més senzill per començar: deixa'm les teves dades i et truquem.",
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de l'Agence du Vieil Antibes 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *comprar*, *vendre*, *valorar* un bé — o passar-te amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let flow = null; // {kind:'buy'|'sell'|'estimate', step, sector, type, budget, timing, contact, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+/* single-quote-safe JS string literal for use inside double-quoted onclick attributes */
+function q(s){ return "'"+String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+"'"; }
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBuy()", cls:"primary"},
+    {label:m[1], onclick:"startSell()"},
+    {label:m[2], onclick:"startEstimate()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  flow = null;
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LISTINGS CARD ================= */
+function listingsCardHtml(){
+  let body = '';
+  LISTINGS.forEach(d=>{
+    body += `<div class="listing"><div class="lname">${esc(d.name[lang])}</div><div class="ldesc">${esc(d.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">🌊 ${t('listCardTitle')}</span><span class="cprice">${t('listCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('listDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+/* ================= ACHETER ================= */
+function startBuy(){
+  addUser(t('menu')[0]);
+  flow = {kind:'buy', step:'sector', sector:null, type:null, budget:null, contact:null, name:null, phone:null};
+  addBotText(t('buyStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askBuySector'), t('buySectorOpts').map(l=>({label:l, onclick:`buyPick('sector',${q(l)})`})));
+  }, 700);
+}
+function buyPick(field, label){
+  addUser(label);
+  flow[field] = label;
+  if(field==='sector'){ flow.step='type';
+    addBotText(t('askBuyType'), t('buyTypeOpts').map(l=>({label:l, onclick:`buyPick('type',${q(l)})`})), 450);
+  } else if(field==='type'){ flow.step='budget';
+    addBotText(t('askBudget'), t('budgetOpts').map(l=>({label:l, onclick:`buyPick('budget',${q(l)})`})), 450);
+  } else if(field==='budget'){ flow.step='reco';
+    addBotText(t('buyReco'), null, 500);
+    setTimeout(()=>{
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${listingsCardHtml()}</div>`;
+      chatEl.appendChild(row);
+      scrollBottom();
+      flow.step='visit';
+      addBot(md(t('askVisit')), t('visitOpts').map(l=>({label:l, onclick:`flowContact(${q(l)})`, cls:'primary'})));
+    }, 900);
+  }
+}
+
+/* ================= VENDRE ================= */
+function startSell(){
+  addUser(t('menu')[1]);
+  flow = {kind:'sell', step:'sector', sector:null, type:null, timing:null, contact:null, name:null, phone:null};
+  addBotText(t('sellStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askSellSector'), t('sellSectorOpts').map(l=>({label:l, onclick:`sellPick('sector',${q(l)})`})));
+  }, 700);
+}
+function sellPick(field, label){
+  addUser(label);
+  flow[field] = label;
+  if(field==='sector'){ flow.step='type';
+    addBotText(t('askSellType'), t('sellTypeOpts').map(l=>({label:l, onclick:`sellPick('type',${q(l)})`})), 450);
+  } else if(field==='type'){ flow.step='timing';
+    addBotText(t('askSellTiming'), t('sellTimingOpts').map(l=>({label:l, onclick:`sellPick('timing',${q(l)})`})), 450);
+  } else if(field==='timing'){ flow.step='visit';
+    addBotText(t('sellReco'), null, 500);
+    setTimeout(()=>{
+      addBot(md(t('askVisit')), t('visitOpts').map(l=>({label:l, onclick:`flowContact(${q(l)})`, cls:'primary'})));
+    }, 800);
+  }
+}
+
+/* ================= ESTIMER ================= */
+function startEstimate(){
+  addUser(t('menu')[2]);
+  flow = {kind:'estimate', step:'sector', sector:null, type:null, contact:null, name:null, phone:null};
+  addBotText(t('estimateStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askEstSector'), t('estSectorOpts').map(l=>({label:l, onclick:`estPick('sector',${q(l)})`})));
+  }, 700);
+}
+function estPick(field, label){
+  addUser(label);
+  flow[field] = label;
+  if(field==='sector'){ flow.step='type';
+    addBotText(t('askEstType'), t('estTypeOpts').map(l=>({label:l, onclick:`estPick('type',${q(l)})`})), 450);
+  } else if(field==='type'){ flow.step='visit';
+    addBotText(t('estimateNote'), null, 500);
+    setTimeout(()=>{
+      addBot(md(t('askVisit')), t('visitOpts').map(l=>({label:l, onclick:`flowContact(${q(l)})`, cls:'primary'})));
+    }, 800);
+  }
+}
+
+/* ================= CONTACT → NOM → TEL ================= */
+function flowContact(label){
+  addUser(label);
+  flow.contact = label;
+  flow.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function flowHandleText(text){
+  if(!flow) return false;
+  if(flow.step==='name'){
+    flow.name = text;
+    flow.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(flow.step==='phone'){
+    flow.phone = text;
+    finishFlow();
+    return true;
+  }
+  return false;
+}
+
+function finishFlow(){
+  flow.step='done';
+  const titleKey = flow.kind==='buy'?'summaryBuyTitle':(flow.kind==='sell'?'summarySellTitle':'summaryEstTitle');
+  const projLabel = flow.kind==='buy'?t('pBuy'):(flow.kind==='sell'?t('pSell'):t('pEstimate'));
+  showTyping(()=>{
+    let rows = `<b>${t('sProject')} :</b> ${esc(projLabel)}<br><b>${t('sSector')} :</b> ${esc(flow.sector)}<br><b>${t('sType')} :</b> ${esc(flow.type)}<br>`;
+    if(flow.kind==='buy') rows += `<b>${t('sBudget')} :</b> ${esc(flow.budget)}<br>`;
+    if(flow.kind==='sell') rows += `<b>${t('sTiming')} :</b> ${esc(flow.timing)}<br>`;
+    rows += `<b>${t('sContact')} :</b> ${esc(flow.contact)}<br><b>${t('sName')} :</b> ${esc(flow.name)}<br><b>${t('sPhone')} :</b> ${esc(flow.phone)}`;
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t(titleKey)}</span></div>
+        <div class="cardbody">
+          ${rows}
+          <hr style="border:none;border-top:1px solid #e2ebf2;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBotText(t('disclaimerLegal'), null, 500);
+    setTimeout(()=>{
+      let waText = `${t('waPrefix')}\n${t('sProject')}: ${projLabel}\n${t('sSector')}: ${flow.sector}\n${t('sType')}: ${flow.type}\n`;
+      if(flow.kind==='buy') waText += `${t('sBudget')}: ${flow.budget}\n`;
+      if(flow.kind==='sell') waText += `${t('sTiming')}: ${flow.timing}\n`;
+      waText += `${t('sContact')}: ${flow.contact}\n${t('sName')}: ${flow.name}\n${t('sPhone')}: ${flow.phone}`;
+      addBot('', [
+        {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+        {label:t('newQuery'), onclick:"resetChat()"}
+      ]);
+      chatEl.lastChild.querySelector('.bubble').style.display='none';
+    }, 1100);
+  }, 600);
+}
+
+function resetChat(){
+  flow = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= INFOS ================= */
+function showInfos(){
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const map=["showSectors()","showIntl()","showContact()","showMenu()"];
+    return {label, onclick: map[i]};
+  }), 350);
+}
+function showSectors(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('sectorsText'), [
+    {label:t('menu')[0], onclick:"startBuy()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+function showIntl(){
+  addUser(t('faqButtons')[1]);
+  addBotText(t('intlText'), [
+    {label:t('menu')[0], onclick:"startBuy()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+function showContact(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('contactText'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','acheter','vendre','estimer','estimation','appartement','villa','maison','achat','vente','budget','visite','rendez','merci','oui','non','secteur'];
+  const en = ['hello','hi ','hey','buy','sell','value','valuation','apartment','villa','house','budget','viewing','appointment','thanks','yes','no ','area','property'];
+  const es = ['hola','buenas','comprar','vender','valorar','valoracion','apartamento','villa','casa','presupuesto','visita','cita','gracias','si','no ','zona','propiedad'];
+  const ca = ['hola','bona tarda','comprar','vendre','valorar','valoracio','apartament','vila','casa','pressupost','visita','cita','gracies','vespre','zona','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  flow = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(flow && (flow.step==='name'||flow.step==='phone')){
+    flowHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['estim','valorar','valorac','valuation','value ','worth'])){ startEstimate(); return; }
+  if(normalizedIncludesAny(n,['vendre','vende','vender','sell','venda','vente'])){ startSell(); return; }
+  if(normalizedIncludesAny(n,['achet','achat','acheter','buy','comprar','comprend','recherche','cherche','looking','busco'])){ startBuy(); return; }
+  if(normalizedIncludesAny(n,['appartement','villa','maison','apartment','apartamento','casa','bien','property','propiedad','terrain'])){ startBuy(); return; }
+  if(normalizedIncludesAny(n,['international','etranger','foreign','extranjero','estranger','langue','english','espanol'])){ showIntl(); return; }
+  if(normalizedIncludesAny(n,['secteur','zone','quartier','area','sector','barri'])){ showSectors(); return; }
+  if(normalizedIncludesAny(n,['agence','contact','adresse','address','llegar','ubicacion','venir','rendez','cita','appointment'])){ showContact(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','equipe','equipo','equip','conseiller','adviser','asesor','appeler','llamar','call','telephone'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-vieilantibes-t5r7', {method:'POST', body:'Visite demo Vieil Antibes · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
