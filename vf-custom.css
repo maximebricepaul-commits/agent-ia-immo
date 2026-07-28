@@ -7,13 +7,9 @@
 .vfrc-widget--launcher svg path {
   fill: #0A0A1A !important;
 }
-/* Lanceur : remplace tout libellé anglais "Talk to AI" par la charte FR */
+/* Lanceur : le TEXTE du libellé est réécrit en JS (voir alexRebrand dans index.html),
+   ici on ne fait que la charte couleurs pour éviter la guerre de spécificité du CDN. */
 .vfrc-launcher__label {
-  font-size: 0 !important;
-}
-.vfrc-launcher__label::after {
-  content: 'Parler à ALEX' !important;
-  font-size: 14px !important;
   font-weight: 700 !important;
   color: #ffffff !important;
 }
