@@ -217,6 +217,41 @@
       },
       launch: { event: { type: 'launch', payload: { language: langCode, pageUrl: window.location.href, referrer: document.referrer || 'direct' } } },
     });
+
+    // --- Rebrand widget-next : le bundle ignore les clés stylesheet/launcher.
+    //     On injecte la charte (couleurs) dans le shadow root ET on réécrit le
+    //     libellé du lanceur en JS (le texte JS gagne toujours sur le CDN). ---
+    (function alexRebrand(){
+      var label = langCode === 'en' ? 'Talk to ALEX'
+                : langCode === 'es' ? 'Hablar con ALEX'
+                : 'Parler à ALEX';
+      function fix(sr){
+        if (!sr) return;
+        if (!sr.querySelector('link[data-alex]')) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = 'https://agentia-immo.com/vf-custom.css?v=2';
+          l.setAttribute('data-alex', '1');
+          sr.appendChild(l);
+        }
+        var lab = sr.querySelector('.vfrc-launcher__label,[class*=launcher__label]');
+        if (lab && lab.textContent !== label) lab.textContent = label;
+      }
+      var n = 0;
+      var iv = setInterval(function(){
+        n++;
+        var host = document.getElementById('voiceflow-chat');
+        var sr = host && host.shadowRoot;
+        if (sr) {
+          fix(sr);
+          if (!host.__alexMO) {
+            host.__alexMO = new MutationObserver(function(){ fix(host.shadowRoot); });
+            host.__alexMO.observe(sr, { childList: true, subtree: true });
+          }
+        }
+        if (n > 60) clearInterval(iv); // ~30s de sécurité
+      }, 500);
+    })();
   };
   v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
   v.type = "text/javascript";
