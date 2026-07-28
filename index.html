@@ -649,6 +649,53 @@
         </tbody>
       </table>
     </div>
+    <div style="text-align:center;margin-top:30px" class="fade-in delay-3">
+      <a href="/dashboard/" class="btn dash-btn" style="background:transparent;color:var(--white);border:1px solid var(--border-a)">📊 Voir le tableau de bord que vous recevez</a>
+    </div>
+  </div>
+</section>
+
+<!-- INTÉGRATIONS -->
+<section class="section section-alt" id="integrations" aria-label="Intégrations d'ALEX">
+  <style>
+    #integrations .integ-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;max-width:960px;margin:0 auto}
+    #integrations .integ-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 22px;transition:var(--transition)}
+    #integrations .integ-card:hover{transform:translateY(-4px);border-color:var(--border-a);box-shadow:var(--shadow-card)}
+    #integrations .integ-ic{width:46px;height:46px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(41,193,255,0.12),rgba(233,79,245,0.12));border:1px solid var(--border-a);border-radius:12px;font-size:1.25rem;margin-bottom:14px}
+    #integrations .integ-name{color:var(--white);font-weight:800;font-size:0.98rem;margin-bottom:6px}
+    #integrations .integ-use{color:var(--muted2);font-size:0.86rem;line-height:1.6}
+  </style>
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">🔌 Intégrations</div></div>
+    <h2 class="section-heading fade-in delay-1">ALEX <span class="text-accent">s'intègre à vos outils</span></h2>
+    <p class="section-sub fade-in delay-2">ALEX se connecte aux outils que vous utilisez déjà — sans changer vos habitudes. On branche uniquement ce dont vous avez besoin.</p>
+    <div class="integ-grid fade-in delay-2">
+      <div class="integ-card">
+        <div class="integ-ic">📅</div>
+        <p class="integ-name">Google Agenda / Cal.com</p>
+        <p class="integ-use">Prise de rendez-vous dans votre agenda réel, en direct.</p>
+      </div>
+      <div class="integ-card">
+        <div class="integ-ic">💬</div>
+        <p class="integ-name">WhatsApp</p>
+        <p class="integ-use">Répond à vos clients là où ils écrivent déjà.</p>
+      </div>
+      <div class="integ-card">
+        <div class="integ-ic">📞</div>
+        <p class="integ-name">Votre téléphone</p>
+        <p class="integ-use">Un numéro dédié ou votre ligne existante.</p>
+      </div>
+      <div class="integ-card">
+        <div class="integ-ic">💳</div>
+        <p class="integ-name">Stripe</p>
+        <p class="integ-use">Encaissez acomptes et paiements en toute sécurité.</p>
+      </div>
+      <div class="integ-card">
+        <div class="integ-ic">✉️</div>
+        <p class="integ-name">Email</p>
+        <p class="integ-use">Récapitulatifs et relances envoyés automatiquement.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -733,6 +780,46 @@
 </section>
 
 <!-- CONTACT -->
+
+<!-- SÉCURITÉ & DONNÉES (RGPD) -->
+<section class="section section-alt" id="securite" aria-label="Sécurité et protection des données">
+  <style>
+    #securite .sec-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;max-width:840px;margin:0 auto}
+    #securite .sec-point{display:flex;align-items:flex-start;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;color:var(--text);font-size:0.92rem;line-height:1.55}
+    #securite .sec-point::before{content:"🔒";flex-shrink:0;font-size:1.05rem;line-height:1.4}
+  </style>
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">🔒 Vos données (RGPD)</div></div>
+    <h2 class="section-heading fade-in delay-1">Vos données, <span class="text-accent">en sécurité</span></h2>
+    <p class="section-sub fade-in delay-2">La confiance d'abord. Vos données et celles de vos clients sont traitées avec le plus grand soin.</p>
+    <ul class="sec-list fade-in delay-2">
+      <li class="sec-point">Conforme au RGPD — traitement des données encadré et transparent.</li>
+      <li class="sec-point">Données hébergées en Europe.</li>
+      <li class="sec-point">Communications chiffrées de bout en bout.</li>
+      <li class="sec-point">Vos données ne sont jamais revendues. Vous restez propriétaire de vos contacts.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- NOTRE ENGAGEMENT -->
+<section class="section" id="engagement" aria-label="Notre engagement">
+  <style>
+    #engagement .guar-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:26px auto 0}
+    #engagement .guar-card{background:var(--card);border:1px solid var(--border-a);border-radius:var(--radius);padding:24px 22px;text-align:left}
+    #engagement .guar-ic{font-size:1.4rem;margin-bottom:10px}
+    #engagement .guar-point{color:var(--white);font-weight:700;font-size:0.95rem;line-height:1.55}
+  </style>
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">🤝 Garantie</div></div>
+    <h2 class="section-heading fade-in delay-1">Notre <span class="text-accent">engagement</span></h2>
+    <p class="section-sub fade-in delay-2">Pas de promesse en l'air. Un engagement simple, tenu, du premier jour à la mise en ligne.</p>
+    <div class="guar-grid fade-in delay-2">
+      <div class="guar-card"><div class="guar-ic">🛠️</div><p class="guar-point">Configuré et testé avec vous avant toute mise en ligne.</p></div>
+      <div class="guar-card"><div class="guar-ic">🔓</div><p class="guar-point">Sans engagement de durée — vous restez libre.</p></div>
+      <div class="guar-card"><div class="guar-ic">🎯</div><p class="guar-point">On ajuste jusqu'à ce que ça fonctionne pour votre activité.</p></div>
+    </div>
+  </div>
+</section>
 
 <!-- FONDATEUR -->
 <section class="section" aria-label="Votre interlocuteur" style="padding-top:0">
@@ -823,6 +910,54 @@
 </section>
 
 
+
+<!-- FAQ -->
+<section class="section section-alt" id="faq" aria-label="Questions fréquentes">
+  <style>
+    #faq .faq-wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+    #faq details{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0 20px;transition:var(--transition)}
+    #faq details[open]{border-color:var(--border-a)}
+    #faq summary{list-style:none;cursor:pointer;color:var(--white);font-weight:700;font-size:0.98rem;padding:18px 0;display:flex;justify-content:space-between;align-items:center;gap:14px}
+    #faq summary::-webkit-details-marker{display:none}
+    #faq summary::after{content:"+";color:var(--accent);font-size:1.4rem;font-weight:800;flex-shrink:0;transition:transform 0.25s}
+    #faq details[open] summary::after{transform:rotate(45deg)}
+    #faq .faq-a{color:var(--muted2);font-size:0.9rem;line-height:1.7;padding:0 0 20px}
+  </style>
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">❓ FAQ</div></div>
+    <h2 class="section-heading fade-in delay-1">Questions <span class="text-accent">fréquentes</span></h2>
+    <div class="faq-wrap fade-in delay-2">
+      <details>
+        <summary class="faq-q">Mes clients sauront-ils que c'est une IA ?</summary>
+        <p class="faq-a">ALEX se présente avec transparence si on le lui demande. Sa voix et ses réponses sont si naturelles que l'échange reste fluide et agréable — jamais robotique.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Dans quelles langues ALEX répond-il ?</summary>
+        <p class="faq-a">En français, espagnol, catalan et anglais. Il détecte la langue du client et bascule tout seul — idéal en zone touristique.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Combien de temps pour l'installer ?</summary>
+        <p class="faq-a">Comptez 5 à 7 jours. On configure ALEX sur votre métier, vos services et vos horaires, puis on teste ensemble avant la mise en ligne.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Et si ALEX ne sait pas répondre ?</summary>
+        <p class="faq-a">Il n'invente jamais. Il prend le message, vous le transmet, propose un rappel ou transfère à la bonne personne. Vous gardez toujours la main.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Puis-je garder mon numéro de téléphone ?</summary>
+        <p class="faq-a">Oui. ALEX fonctionne avec un numéro dédié ou en s'intégrant à votre ligne existante. Vous ne changez rien pour vos clients.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Mes données sont-elles protégées ?</summary>
+        <p class="faq-a">Oui : conforme au RGPD, données hébergées en Europe, communications chiffrées, et jamais revendues. Vous restez propriétaire de vos contacts.</p>
+      </details>
+      <details>
+        <summary class="faq-q">Y a-t-il un engagement de durée ?</summary>
+        <p class="faq-a">Non. Un setup unique puis un abonnement mensuel, résiliable à tout moment. On préfère vous garder parce que ça marche.</p>
+      </details>
+    </div>
+  </div>
+</section>
 
 <!-- TESTER ALEX -->
 <div style="background:var(--bg);border-top:1px solid var(--border);padding:64px 40px;text-align:center" role="complementary" aria-label="Tester ALEX en direct">
@@ -1122,7 +1257,50 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "≈ 16 €/jour":"≈ 16 €/día",
       "faible":"bajo",
       "500 €+/mois":"500 €+/mes",
-      "clients perdus":"clientes perdidos"
+      "clients perdus":"clientes perdidos",
+      "🔌 Intégrations":"🔌 Integraciones",
+      "ALEX s'intègre à vos outils":"ALEX <span class=\"text-accent\">se integra con sus herramientas</span>",
+      "ALEX se connecte aux outils que vous utilisez déjà — sans changer vos habitudes. On branche uniquement ce dont vous avez besoin.":"ALEX se conecta con las herramientas que ya utiliza — sin cambiar sus hábitos. Conectamos únicamente lo que necesita.",
+      "Google Agenda / Cal.com":"Google Calendar / Cal.com",
+      "Prise de rendez-vous dans votre agenda réel, en direct.":"Reserva de citas en su agenda real, en directo.",
+      "WhatsApp":"WhatsApp",
+      "Répond à vos clients là où ils écrivent déjà.":"Responde a sus clientes donde ya le escriben.",
+      "Votre téléphone":"Su teléfono",
+      "Un numéro dédié ou votre ligne existante.":"Un número dedicado o su línea existente.",
+      "Stripe":"Stripe",
+      "Encaissez acomptes et paiements en toute sécurité.":"Cobre anticipos y pagos con total seguridad.",
+      "Email":"Email",
+      "Récapitulatifs et relances envoyés automatiquement.":"Resúmenes y seguimientos enviados automáticamente.",
+      "📊 Voir le tableau de bord que vous recevez":"📊 Ver el panel de control que usted recibe",
+      "🔒 Vos données (RGPD)":"🔒 Sus datos (RGPD)",
+      "Vos données, en sécurité":"Sus datos, <span class=\"text-accent\">a salvo</span>",
+      "La confiance d'abord. Vos données et celles de vos clients sont traitées avec le plus grand soin.":"La confianza primero. Sus datos y los de sus clientes se tratan con el máximo cuidado.",
+      "Conforme au RGPD — traitement des données encadré et transparent.":"Conforme al RGPD — tratamiento de datos regulado y transparente.",
+      "Données hébergées en Europe.":"Datos alojados en Europa.",
+      "Communications chiffrées de bout en bout.":"Comunicaciones cifradas de extremo a extremo.",
+      "Vos données ne sont jamais revendues. Vous restez propriétaire de vos contacts.":"Sus datos nunca se venden. Usted sigue siendo propietario de sus contactos.",
+      "🤝 Garantie":"🤝 Garantía",
+      "Notre engagement":"Nuestro <span class=\"text-accent\">compromiso</span>",
+      "Pas de promesse en l'air. Un engagement simple, tenu, du premier jour à la mise en ligne.":"Nada de promesas vacías. Un compromiso simple y cumplido, desde el primer día hasta la publicación.",
+      "Configuré et testé avec vous avant toute mise en ligne.":"Configurado y probado con usted antes de cualquier publicación.",
+      "Sans engagement de durée — vous restez libre.":"Sin permanencia — usted mantiene total libertad.",
+      "On ajuste jusqu'à ce que ça fonctionne pour votre activité.":"Ajustamos hasta que funcione para su actividad.",
+      "❓ FAQ":"❓ Preguntas frecuentes",
+      "Questions fréquentes":"Preguntas <span class=\"text-accent\">frecuentes</span>",
+      "Mes clients sauront-ils que c'est une IA ?":"¿Sabrán mis clientes que es una IA?",
+      "ALEX se présente avec transparence si on le lui demande. Sa voix et ses réponses sont si naturelles que l'échange reste fluide et agréable — jamais robotique.":"ALEX lo indica con transparencia si se le pregunta. Su voz y sus respuestas son tan naturales que la conversación resulta fluida y agradable — nunca robótica.",
+      "Dans quelles langues ALEX répond-il ?":"¿En qué idiomas responde ALEX?",
+      "En français, espagnol, catalan et anglais. Il détecte la langue du client et bascule tout seul — idéal en zone touristique.":"En francés, español, catalán e inglés. Detecta el idioma del cliente y cambia solo — ideal en zonas turísticas.",
+      "Combien de temps pour l'installer ?":"¿Cuánto tarda la instalación?",
+      "Comptez 5 à 7 jours. On configure ALEX sur votre métier, vos services et vos horaires, puis on teste ensemble avant la mise en ligne.":"De 5 a 7 días. Configuramos ALEX para su sector, sus servicios y sus horarios, y lo probamos juntos antes de publicarlo.",
+      "Et si ALEX ne sait pas répondre ?":"¿Y si ALEX no sabe responder?",
+      "Il n'invente jamais. Il prend le message, vous le transmet, propose un rappel ou transfère à la bonne personne. Vous gardez toujours la main.":"Nunca se lo inventa. Toma el mensaje, se lo transmite, propone una devolución de llamada o lo transfiere a la persona adecuada. Usted siempre mantiene el control.",
+      "Puis-je garder mon numéro de téléphone ?":"¿Puedo conservar mi número de teléfono?",
+      "Oui. ALEX fonctionne avec un numéro dédié ou en s'intégrant à votre ligne existante. Vous ne changez rien pour vos clients.":"Sí. ALEX funciona con un número dedicado o integrándose con su línea existente. Sus clientes no notan ningún cambio.",
+      "Mes données sont-elles protégées ?":"¿Están protegidos mis datos?",
+      "Oui : conforme au RGPD, données hébergées en Europe, communications chiffrées, et jamais revendues. Vous restez propriétaire de vos contacts.":"Sí: conforme al RGPD, datos alojados en Europa, comunicaciones cifradas y nunca vendidos. Usted sigue siendo propietario de sus contactos.",
+      "Y a-t-il un engagement de durée ?":"¿Hay permanencia?",
+      "Non. Un setup unique puis un abonnement mensuel, résiliable à tout moment. On préfère vous garder parce que ça marche.":"No. Una instalación única y luego una suscripción mensual, cancelable en cualquier momento. Preferimos retenerle porque funciona."
     },
     en: {
       "Secteurs":"Sectors","Offres":"Pricing","Blog":"Blog","Immobilier":"Real Estate","Nautique":"Boating","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
@@ -1193,10 +1371,53 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "≈ 16 €/jour":"≈ €16/day",
       "faible":"low",
       "500 €+/mois":"€500+/mo",
-      "clients perdus":"lost customers"
+      "clients perdus":"lost customers",
+      "🔌 Intégrations":"🔌 Integrations",
+      "ALEX s'intègre à vos outils":"ALEX <span class=\"text-accent\">integrates with your tools</span>",
+      "ALEX se connecte aux outils que vous utilisez déjà — sans changer vos habitudes. On branche uniquement ce dont vous avez besoin.":"ALEX connects to the tools you already use — without changing your habits. We plug in only what you need.",
+      "Google Agenda / Cal.com":"Google Calendar / Cal.com",
+      "Prise de rendez-vous dans votre agenda réel, en direct.":"Appointment booking in your real calendar, live.",
+      "WhatsApp":"WhatsApp",
+      "Répond à vos clients là où ils écrivent déjà.":"Replies to your customers where they already write.",
+      "Votre téléphone":"Your phone",
+      "Un numéro dédié ou votre ligne existante.":"A dedicated number or your existing line.",
+      "Stripe":"Stripe",
+      "Encaissez acomptes et paiements en toute sécurité.":"Collect deposits and payments securely.",
+      "Email":"Email",
+      "Récapitulatifs et relances envoyés automatiquement.":"Summaries and follow-ups sent automatically.",
+      "📊 Voir le tableau de bord que vous recevez":"📊 See the dashboard you receive",
+      "🔒 Vos données (RGPD)":"🔒 Your data (GDPR)",
+      "Vos données, en sécurité":"Your data, <span class=\"text-accent\">kept safe</span>",
+      "La confiance d'abord. Vos données et celles de vos clients sont traitées avec le plus grand soin.":"Trust first. Your data and your customers' data are handled with the utmost care.",
+      "Conforme au RGPD — traitement des données encadré et transparent.":"GDPR-compliant — regulated, transparent data processing.",
+      "Données hébergées en Europe.":"Data hosted in Europe.",
+      "Communications chiffrées de bout en bout.":"End-to-end encrypted communications.",
+      "Vos données ne sont jamais revendues. Vous restez propriétaire de vos contacts.":"Your data is never sold. You remain the owner of your contacts.",
+      "🤝 Garantie":"🤝 Guarantee",
+      "Notre engagement":"Our <span class=\"text-accent\">commitment</span>",
+      "Pas de promesse en l'air. Un engagement simple, tenu, du premier jour à la mise en ligne.":"No empty promises. A simple commitment, kept, from day one to going live.",
+      "Configuré et testé avec vous avant toute mise en ligne.":"Set up and tested with you before anything goes live.",
+      "Sans engagement de durée — vous restez libre.":"No fixed-term commitment — you stay free.",
+      "On ajuste jusqu'à ce que ça fonctionne pour votre activité.":"We fine-tune until it works for your business.",
+      "❓ FAQ":"❓ FAQ",
+      "Questions fréquentes":"Frequently asked <span class=\"text-accent\">questions</span>",
+      "Mes clients sauront-ils que c'est une IA ?":"Will my customers know it's an AI?",
+      "ALEX se présente avec transparence si on le lui demande. Sa voix et ses réponses sont si naturelles que l'échange reste fluide et agréable — jamais robotique.":"ALEX says so transparently if asked. Its voice and answers are so natural the conversation stays smooth and pleasant — never robotic.",
+      "Dans quelles langues ALEX répond-il ?":"What languages does ALEX speak?",
+      "En français, espagnol, catalan et anglais. Il détecte la langue du client et bascule tout seul — idéal en zone touristique.":"French, Spanish, Catalan and English. It detects the customer's language and switches on its own — ideal in tourist areas.",
+      "Combien de temps pour l'installer ?":"How long does setup take?",
+      "Comptez 5 à 7 jours. On configure ALEX sur votre métier, vos services et vos horaires, puis on teste ensemble avant la mise en ligne.":"About 5 to 7 days. We set ALEX up for your trade, your services and your hours, then test it together before going live.",
+      "Et si ALEX ne sait pas répondre ?":"What if ALEX doesn't know the answer?",
+      "Il n'invente jamais. Il prend le message, vous le transmet, propose un rappel ou transfère à la bonne personne. Vous gardez toujours la main.":"It never makes things up. It takes the message, passes it to you, offers a callback or transfers to the right person. You always stay in control.",
+      "Puis-je garder mon numéro de téléphone ?":"Can I keep my phone number?",
+      "Oui. ALEX fonctionne avec un numéro dédié ou en s'intégrant à votre ligne existante. Vous ne changez rien pour vos clients.":"Yes. ALEX works with a dedicated number or by integrating with your existing line. Nothing changes for your customers.",
+      "Mes données sont-elles protégées ?":"Is my data protected?",
+      "Oui : conforme au RGPD, données hébergées en Europe, communications chiffrées, et jamais revendues. Vous restez propriétaire de vos contacts.":"Yes: GDPR-compliant, data hosted in Europe, encrypted communications, and never sold. You remain the owner of your contacts.",
+      "Y a-t-il un engagement de durée ?":"Is there a fixed-term contract?",
+      "Non. Un setup unique puis un abonnement mensuel, résiliable à tout moment. On préfère vous garder parce que ça marche.":"No. A one-time setup then a monthly subscription, cancellable anytime. We'd rather keep you because it works."
     }
   };
-  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2, #compare .cmp-col, #compare .cmp-crit, #compare .cmp-val';
+  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2, #compare .cmp-col, #compare .cmp-crit, #compare .cmp-val, #integrations .integ-name, #integrations .integ-use, #securite .sec-point, #engagement .guar-point, #faq .faq-q, #faq .faq-a';
   const norm = s => s.replace(/\s+/g,' ').trim();
   let els = [];
   function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined){ el.dataset.o = el.innerHTML; el.dataset.k = norm(el.textContent); } }); }
