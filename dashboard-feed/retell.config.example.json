@@ -1,0 +1,11 @@
+{
+  "_comment": "Copie ce fichier en 'retell.config.json' (dans le meme dossier) et colle ta cle API Retell. retell.config.json est ignore par git (voir .gitignore) : ta cle ne sera JAMAIS publiee.",
+  "apiKey": "COLLE_TA_CLE_RETELL_ICI",
+  "clientLabel": "ALEX — vos appels en direct",
+  "panierMoyenEuros": 200,
+  "abonnementMensuel": 490,
+  "heureOuverture": 9,
+  "heureFermeture": 20,
+  "champLangue": "language",
+  "champRdv": "appointment_booked"
+}

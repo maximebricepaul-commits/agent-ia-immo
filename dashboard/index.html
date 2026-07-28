@@ -109,11 +109,11 @@
       <div class="logo">A</div>
       <div>
         <h1>Tableau de bord ALEX</h1>
-        <div class="who">Restaurant La Table · établissement démo</div>
+        <div class="who" id="whoLine">Restaurant La Table · établissement démo</div>
       </div>
     </div>
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <span class="demo-badge">Aperçu · données d'exemple</span>
+      <span class="demo-badge" id="modeBadge">Aperçu · données d'exemple</span>
       <div class="seg" id="seg">
         <button data-p="7">7 jours</button>
         <button data-p="30" class="on">30 jours</button>
@@ -197,7 +197,7 @@
     <div class="tblwrap">
       <table>
         <thead><tr><th>Heure</th><th>Langue</th><th>Demande</th><th>Résultat</th></tr></thead>
-        <tbody>
+        <tbody id="recentBody">
           <tr><td class="tnum">21:47</td><td><span class="lang">ES</span></td><td>Reserva mesa 4 pers.</td><td class="res rdv">Réservation prise <span class="off">hors horaire</span></td></tr>
           <tr><td class="tnum">20:05</td><td><span class="lang">FR</span></td><td>Menu de groupe (12 pers.)</td><td class="res rap">Rappel programmé <span class="off">hors horaire</span></td></tr>
           <tr><td class="tnum">13:12</td><td><span class="lang">FR</span></td><td>Horaires + terrasse</td><td class="res info">Info donnée</td></tr>
@@ -339,7 +339,43 @@
     render(b.getAttribute("data-p"));
   });
 
+  // ---- Flux réel (vrais appels Retell) avec repli propre sur la démo ----
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+  function renderRecent(list){
+    var tb = document.getElementById("recentBody"); if(!tb || !list || !list.length) return;
+    tb.innerHTML = "";
+    list.forEach(function(c){
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td class="tnum">'+esc(c.time)+'</td>'+
+        '<td><span class="lang">'+esc(c.lang)+'</span></td>'+
+        '<td>'+esc(c.demande)+'</td>'+
+        '<td class="res '+esc(c.resultClass||"info")+'">'+esc(c.result)+
+        (c.off?' <span class="off">hors horaire</span>':'')+'</td>';
+      tb.appendChild(tr);
+    });
+  }
+  function applyFeed(feed){
+    // On n'affiche du "réel" que si le flux existe ET contient de vrais appels.
+    if(!feed || !feed.windows || !feed.windows["30"] || !(feed.windows["30"].recus > 0)) return false;
+    DATA = feed.windows;
+    var badge = document.getElementById("modeBadge");
+    if(badge){ badge.textContent = "🟢 En direct · vos vrais appels"; badge.style.color = "var(--good)"; badge.style.borderColor = "rgba(52,229,196,.4)"; }
+    var who = document.getElementById("whoLine");
+    if(who && feed.client) who.textContent = feed.client;
+    if(feed.recent) renderRecent(feed.recent);
+    var cur = document.querySelector("#seg button.on");
+    render(cur ? cur.getAttribute("data-p") : "30");
+    return true;
+  }
+  function loadFeed(){
+    fetch("/dashboard-data.json", {cache:"no-store"})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ if(j) applyFeed(j); })
+      .catch(function(){ /* pas de flux → on garde la démo */ });
+  }
+
   render("30");
+  loadFeed();
 })();
 </script>
 </body>

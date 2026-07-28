@@ -1,0 +1,2 @@
+# Secrets — ne JAMAIS committer la config qui contient la clé API Retell
+dashboard-feed/retell.config.json
