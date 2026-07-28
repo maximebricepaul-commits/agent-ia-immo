@@ -247,6 +247,9 @@
       if(p < 1) requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
+    // Filet de sécurité : rAF est mis en pause si l'onglet n'est pas au premier plan.
+    // On garantit la valeur finale exacte quoi qu'il arrive.
+    setTimeout(function(){ el.textContent = fmt(target)+suffix; }, dur+120);
   }
 
   function drawChart(d){
