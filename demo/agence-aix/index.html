@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · L'Agence d'Aix-en-Provence</title>
+<meta name="description" content="Alex, l'assistant virtuel de L'Agence d'Aix-en-Provence — achat, vente et estimation de biens de prestige à Aix-en-Provence, en 1 minute.">
+<style>
+:root{
+  --navy:#12314a;
+  --navy-dark:#0c2033;
+  --teal:#1f6f78;
+  --teal-dark:#155159;
+  --gold:#c39a4d;
+  --gold-dark:#a17c33;
+  --bg:#eef2f3;
+  --paper:#ffffff;
+  --ink:#1b2a33;
+  --muted:#7b8a92;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c4a63 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--teal-dark);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--teal-dark);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dfe6e8;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--teal);border-color:var(--teal-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--teal-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e4eaeb;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d8e0e2;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(21,81,89,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c8d2d5;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🏡</div>
+    <div class="hinfo">
+      <div class="name">Alex · L'Agence d'Aix-en-Provence</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour L'Agence d'Aix-en-Provence · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **L'Agence d'Aix-en-Provence**, votre spécialiste des biens de prestige à Aix-en-Provence.\nJe vous aide à préparer votre projet — achat, vente ou estimation — et à convenir d'un rendez-vous, en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🔑 Acheter un bien","🏷️ Vendre mon bien","📊 Faire estimer","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* intros par projet */
+  buyStart:"Excellent choix 🙌 Le marché d'Aix-en-Provence offre de belles opportunités. Précisons votre recherche.",
+  sellStart:"Avec plaisir 🙌 Voyons ensemble votre bien pour préparer sa mise en vente.",
+  estimateStart:"Volontiers 🙌 Je prépare votre demande d'estimation.\n_À noter : je ne donne pas d'estimation ferme ni de conseil juridique ou fiscal — un conseiller de l'agence vous remettra une vraie estimation après étude du bien._",
+  /* secteur */
+  askSector:"📍 Sur quel secteur d'Aix-en-Provence se situe votre projet ?",
+  sectorOpts:["Centre-ville","Quartiers résidentiels","Périphérie proche","Autre secteur"],
+  askSectorSell:"📍 Dans quel secteur se trouve votre bien ?",
+  /* type de bien */
+  askBienBuy:"🏡 Quel type de bien recherchez-vous ?",
+  askBienSell:"🏡 Quel type de bien souhaitez-vous vendre ?",
+  bienOpts:["🏡 Maison","🏢 Appartement","🏬 Immeuble / local","📐 Terrain / autre"],
+  /* budget (achat) */
+  askBudget:"💶 Quel budget avez-vous en tête pour cet achat ?",
+  budgetOpts:["150 – 300 k€","300 – 500 k€","500 – 800 k€","+ de 800 k€"],
+  /* surface (vente / estimation) */
+  askSurface:"📐 Quelle est la surface approximative du bien ?",
+  surfaceOpts:["moins de 80 m²","80 – 150 m²","150 – 300 m²","plus de 300 m²"],
+  /* rdv */
+  askRdv:"🗓️ Comment préférez-vous échanger avec un conseiller ?",
+  rdvOpts:["🏡 Visite d'un bien","🏢 RDV à l'agence","📞 Échange visio / téléphone"],
+  /* nom / tel */
+  askName:"🙋 À quel prénom dois-je noter la demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que le conseiller vous rappelle et confirme le rendez-vous ?",
+  /* récap */
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  summaryProject:"Projet", summarySector:"Secteur", summaryBien:"Type de bien",
+  summaryCriteria:"Budget", summaryCriteriaSell:"Surface",
+  summaryRdv:"Rendez-vous", summaryName:"Prénom", summaryPhone:"Téléphone",
+  projBuy:"Achat", projSell:"Vente", projEstimate:"Estimation",
+  summaryFooter:"✅ Je transmets votre demande à un conseiller de L'Agence d'Aix-en-Provence, qui vous recontacte pour affiner votre projet et fixer le rendez-vous. 🔔 Aucune estimation n'est définitive à ce stade : elle sera établie après visite du bien.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Voici ma demande auprès de L'Agence d'Aix-en-Provence :",
+  /* handoff */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec un conseiller de L'Agence d'Aix-en-Provence 👇",
+  fallback:"Bonne question ! Je peux vous aider à *acheter*, *vendre* ou *faire estimer* un bien à Aix-en-Provence — ou vous passer un conseiller. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷",
+  backMenu:"⬅️ Menu"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **L'Agence d'Aix-en-Provence**, tu especialista en propiedades de prestigio en Aix-en-Provence.\nTe ayudo a preparar tu proyecto — compra, venta o valoración — y a concertar una cita, en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🔑 Comprar","🏷️ Vender mi propiedad","📊 Solicitar valoración","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  buyStart:"¡Excelente elección! 🙌 El mercado de Aix-en-Provence ofrece grandes oportunidades. Afinemos tu búsqueda.",
+  sellStart:"¡Encantado! 🙌 Veamos tu propiedad para preparar su venta.",
+  estimateStart:"¡Con gusto! 🙌 Preparo tu solicitud de valoración.\n_Nota: no doy una valoración firme ni asesoramiento jurídico o fiscal — un asesor de la agencia te entregará una valoración real tras estudiar la propiedad._",
+  askSector:"📍 ¿En qué zona de Aix-en-Provence se sitúa tu proyecto?",
+  sectorOpts:["Centro","Zonas residenciales","Periferia cercana","Otra zona"],
+  askSectorSell:"📍 ¿En qué zona se encuentra tu propiedad?",
+  askBienBuy:"🏡 ¿Qué tipo de propiedad buscas?",
+  askBienSell:"🏡 ¿Qué tipo de propiedad quieres vender?",
+  bienOpts:["🏡 Casa","🏢 Piso","🏬 Edificio / local","📐 Terreno / otro"],
+  askBudget:"💶 ¿Qué presupuesto tienes en mente para la compra?",
+  budgetOpts:["150 – 300 k€","300 – 500 k€","500 – 800 k€","+ de 800 k€"],
+  askSurface:"📐 ¿Cuál es la superficie aproximada de la propiedad?",
+  surfaceOpts:["menos de 80 m²","80 – 150 m²","150 – 300 m²","más de 300 m²"],
+  askRdv:"🗓️ ¿Cómo prefieres hablar con un asesor?",
+  rdvOpts:["🏡 Visita de una propiedad","🏢 Cita en la agencia","📞 Videollamada / teléfono"],
+  askName:"🙋 ¿A nombre de quién anoto la solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para que el asesor te llame y confirme la cita?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryProject:"Proyecto", summarySector:"Zona", summaryBien:"Tipo de propiedad",
+  summaryCriteria:"Presupuesto", summaryCriteriaSell:"Superficie",
+  summaryRdv:"Cita", summaryName:"Nombre", summaryPhone:"Teléfono",
+  projBuy:"Compra", projSell:"Venta", projEstimate:"Valoración",
+  summaryFooter:"✅ Paso tu solicitud a un asesor de L'Agence d'Aix-en-Provence, que te contactará para afinar tu proyecto y fijar la cita. 🔔 Ninguna valoración es definitiva en esta fase: se establecerá tras visitar la propiedad.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Esta es mi solicitud a L'Agence d'Aix-en-Provence:",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con un asesor de L'Agence d'Aix-en-Provence 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *comprar*, *vender* o *valorar* una propiedad junto al Aix-en-Provence — o pasarte con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸",
+  backMenu:"⬅️ Menú"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **L'Agence d'Aix-en-Provence**, your specialist in prestige properties in Aix-en-Provence.\nI can help you prepare your project — buying, selling or a valuation — and set up an appointment, in under a minute. How can I help?",
+  menu:["🔑 Buy a property","🏷️ Sell my property","📊 Get a valuation","💬 Talk to a human"],
+  menuLabel:"Menu",
+  buyStart:"Excellent choice 🙌 The Aix-en-Provence market offers great opportunities. Let's refine your search.",
+  sellStart:"With pleasure 🙌 Let's look at your property to prepare its sale.",
+  estimateStart:"Gladly 🙌 I'm preparing your valuation request.\n_Please note: I don't give a firm valuation or any legal or tax advice — an agency adviser will provide a proper valuation after inspecting the property._",
+  askSector:"📍 Which area of Aix-en-Provence is your project in?",
+  sectorOpts:["Town centre","Residential areas","Near suburbs","Other area"],
+  askSectorSell:"📍 Which area is your property in?",
+  askBienBuy:"🏡 What type of property are you looking for?",
+  askBienSell:"🏡 What type of property would you like to sell?",
+  bienOpts:["🏡 House","🏢 Apartment","🏬 Building / premises","📐 Land / other"],
+  askBudget:"💶 What budget do you have in mind for this purchase?",
+  budgetOpts:["150 – 300 k€","300 – 500 k€","500 – 800 k€","800 k€ +"],
+  askSurface:"📐 What's the approximate floor area of the property?",
+  surfaceOpts:["under 80 m²","80 – 150 m²","150 – 300 m²","over 300 m²"],
+  askRdv:"🗓️ How would you prefer to speak with an adviser?",
+  rdvOpts:["🏡 Property viewing","🏢 Meeting at the agency","📞 Video call / phone"],
+  askName:"🙋 What name should I note the request under?",
+  askPhone:"📱 Great, {name}! A mobile number so the adviser can call you back and confirm the appointment?",
+  summaryTitle:"📋 Your request summary",
+  summaryProject:"Project", summarySector:"Area", summaryBien:"Property type",
+  summaryCriteria:"Budget", summaryCriteriaSell:"Floor area",
+  summaryRdv:"Appointment", summaryName:"Name", summaryPhone:"Phone",
+  projBuy:"Purchase", projSell:"Sale", projEstimate:"Valuation",
+  summaryFooter:"✅ I'm passing your request to an adviser at L'Agence d'Aix-en-Provence, who will contact you to refine your project and set the appointment. 🔔 No valuation is final at this stage: it will be established after visiting the property.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! Here is my request to L'Agence d'Aix-en-Provence:",
+  humanHandoff:"Of course — I'll connect you directly with an adviser at L'Agence d'Aix-en-Provence 👇",
+  fallback:"Good question! I can help you *buy*, *sell* or *get a valuation* on a property by Aix-en-Provence — or hand you to an adviser. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧",
+  backMenu:"⬅️ Menu"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **L'Agence d'Aix-en-Provence**, el teu especialista en propietats de prestigi a Aix-en-Provence.\nT'ajudo a preparar el teu projecte — compra, venda o valoració — i a concertar una cita, en menys d'un minut. En què et puc ajudar?",
+  menu:["🔑 Comprar","🏷️ Vendre el meu bé","📊 Demanar valoració","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  buyStart:"Excel·lent elecció! 🙌 El mercat de Aix-en-Provence ofereix grans oportunitats. Afinem la teva cerca.",
+  sellStart:"Amb molt de gust! 🙌 Vegem el teu bé per preparar-ne la venda.",
+  estimateStart:"De bon grat! 🙌 Preparo la teva sol·licitud de valoració.\n_Nota: no dono una valoració ferma ni assessorament jurídic o fiscal — un assessor de l'agència et lliurarà una valoració real després d'estudiar el bé._",
+  askSector:"📍 En quina zona de Aix-en-Provence es troba el teu projecte?",
+  sectorOpts:["Centre","Zones residencials","Perifèria propera","Altra zona"],
+  askSectorSell:"📍 En quina zona es troba el teu bé?",
+  askBienBuy:"🏡 Quin tipus de bé busques?",
+  askBienSell:"🏡 Quin tipus de bé vols vendre?",
+  bienOpts:["🏡 Casa","🏢 Pis","🏬 Edifici / local","📐 Terreny / altres"],
+  askBudget:"💶 Quin pressupost tens en ment per a la compra?",
+  budgetOpts:["150 – 300 k€","300 – 500 k€","500 – 800 k€","+ de 800 k€"],
+  askSurface:"📐 Quina és la superfície aproximada del bé?",
+  surfaceOpts:["menys de 80 m²","80 – 150 m²","150 – 300 m²","més de 300 m²"],
+  askRdv:"🗓️ Com prefereixes parlar amb un assessor?",
+  rdvOpts:["🏡 Visita d'un bé","🏢 Cita a l'agència","📞 Videotrucada / telèfon"],
+  askName:"🙋 A nom de qui anoto la sol·licitud?",
+  askPhone:"📱 Perfecte {name}! Un mòbil perquè l'assessor et truqui i confirmi la cita?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryProject:"Projecte", summarySector:"Zona", summaryBien:"Tipus de bé",
+  summaryCriteria:"Pressupost", summaryCriteriaSell:"Superfície",
+  summaryRdv:"Cita", summaryName:"Nom", summaryPhone:"Telèfon",
+  projBuy:"Compra", projSell:"Venda", projEstimate:"Valoració",
+  summaryFooter:"✅ Passo la teva sol·licitud a un assessor de L'Agence d'Aix-en-Provence, que et contactarà per afinar el teu projecte i fixar la cita. 🔔 Cap valoració és definitiva en aquesta fase: s'establirà després de visitar el bé.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Aquesta és la meva sol·licitud a L'Agence d'Aix-en-Provence:",
+  humanHandoff:"És clar! Et poso en contacte directe amb un assessor de L'Agence d'Aix-en-Provence 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *comprar*, *vendre* o *valorar* un bé a Aix-en-Provence — o passar-te amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català",
+  backMenu:"⬅️ Menú"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let deal = null; // {type, step, sector, bien, criteria, rdv, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/_(.+?)_/g,'<i>$1</i>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startDeal('buy')", cls:"primary"},
+    {label:m[1], onclick:"startDeal('sell')"},
+    {label:m[2], onclick:"startDeal('estimate')"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return t('backMenu'); }
+
+function showMenu(){
+  deal = null;
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= QUALIFICATION / RDV ================= */
+function q(str){ return str.replace(/'/g,"\\'"); }
+
+function startDeal(type){
+  const m = t('menu');
+  const idx = {buy:0, sell:1, estimate:2}[type];
+  addUser(m[idx]);
+  deal = {type, step:'sector', sector:null, bien:null, criteria:null, rdv:null, name:null, phone:null};
+  const intro = type==='buy' ? t('buyStart') : type==='sell' ? t('sellStart') : t('estimateStart');
+  addBotText(intro, null, 300);
+  setTimeout(()=>{
+    const askKey = type==='buy' ? 'askSector' : 'askSectorSell';
+    addBotText(t(askKey), t('sectorOpts').map(l=>({label:l, onclick:`dealSector('${q(l)}')`})));
+  }, 750);
+}
+
+function dealSector(label){
+  addUser(label);
+  deal.sector = label;
+  deal.step='bien';
+  const askKey = deal.type==='buy' ? 'askBienBuy' : 'askBienSell';
+  addBotText(t(askKey), t('bienOpts').map(l=>({label:l, onclick:`dealBien('${q(l)}')`})), 450);
+}
+
+function dealBien(label){
+  addUser(label);
+  deal.bien = label;
+  deal.step='criteria';
+  if(deal.type==='buy'){
+    addBotText(t('askBudget'), t('budgetOpts').map(l=>({label:l, onclick:`dealCriteria('${q(l)}')`})), 450);
+  }else{
+    addBotText(t('askSurface'), t('surfaceOpts').map(l=>({label:l, onclick:`dealCriteria('${q(l)}')`})), 450);
+  }
+}
+
+function dealCriteria(label){
+  addUser(label);
+  deal.criteria = label;
+  deal.step='rdv';
+  addBotText(t('askRdv'), t('rdvOpts').map(l=>({label:l, onclick:`dealRdv('${q(l)}')`})), 450);
+}
+
+function dealRdv(label){
+  addUser(label);
+  deal.rdv = label;
+  deal.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function dealHandleText(text){
+  if(!deal) return false;
+  if(deal.step==='name'){
+    deal.name = text;
+    deal.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(deal.step==='phone'){
+    deal.phone = text;
+    finishDeal();
+    return true;
+  }
+  return false;
+}
+
+function projLabel(){
+  return deal.type==='buy' ? t('projBuy') : deal.type==='sell' ? t('projSell') : t('projEstimate');
+}
+
+function finishDeal(){
+  deal.step='done';
+  const critLabel = deal.type==='buy' ? t('summaryCriteria') : t('summaryCriteriaSell');
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryProject')} :</b> ${esc(projLabel())}<br>
+          <b>${t('summarySector')} :</b> ${esc(deal.sector)}<br>
+          <b>${t('summaryBien')} :</b> ${esc(deal.bien)}<br>
+          <b>${esc(critLabel)} :</b> ${esc(deal.criteria)}<br>
+          <b>${t('summaryRdv')} :</b> ${esc(deal.rdv)}<br>
+          <b>${t('summaryName')} :</b> ${esc(deal.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(deal.phone)}
+          <hr style="border:none;border-top:1px solid #e2e9ea;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+          <div class="demo-note">ℹ️ Contenu illustratif présenté à titre de démonstration.</div>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryProject')}: ${projLabel()}\n${t('summarySector')}: ${deal.sector}\n${t('summaryBien')}: ${deal.bien}\n${critLabel}: ${deal.criteria}\n${t('summaryRdv')}: ${deal.rdv}\n${t('summaryName')}: ${deal.name}\n${t('summaryPhone')}: ${deal.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+function resetChat(){
+  deal = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','acheter','vendre','estimer','estimation','villa','appartement','maison','bien','budget','lac','visite','rendez','merci','oui','non','recherche'];
+  const en = ['hello','hi ','hey','buy','sell','estimate','valuation','villa','apartment','house','property','budget','lake','viewing','appointment','thanks','yes','no ','looking'];
+  const es = ['hola','buenas','comprar','vender','valorar','valoracion','villa','piso','casa','propiedad','presupuesto','lago','visita','cita','gracias','si','busco'];
+  const ca = ['hola','bon dia','comprar','vendre','valorar','valoracio','vila','pis','casa','propietat','pressupost','llac','visita','cita','gracies','vull','cerco'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  deal = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(deal && (deal.step==='name'||deal.step==='phone')){
+    dealHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['estim','valorar','valoracio','valuation'])){ startDeal('estimate'); return; }
+  if(normalizedIncludesAny(n,['vendre','vender','sell','vente','venda'])){ startDeal('sell'); return; }
+  if(normalizedIncludesAny(n,['achet','acquer','buy','compra','comprar','recherch','looking','busco','cerco','villa','appartement','apartment','piso','maison','house','casa','bien','propiet','propied'])){ startDeal('buy'); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','conseiller','asesor','equipe','equipo','equip','appeler','llamar','call','telephone','agent'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','bon dia'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-agenceaix-w6f2', {method:'POST', body:'Visite demo L'Agence d'Aix-en-Provence · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>

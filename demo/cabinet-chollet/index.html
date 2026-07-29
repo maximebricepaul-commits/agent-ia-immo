@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Cabinet du Dr Chollet</title>
+<meta name="description" content="Alex, el asistente virtual de la Cabinet du Dr Chollet (Tours) — pide cita, urgencias, horario y dirección en menos de un minuto.">
+<style>
+:root{
+  --navy:#123a4f;
+  --navy-dark:#0c2735;
+  --teal:#0e7c86;
+  --teal2:#14a2ac;
+  --accent:#1aa0b0;
+  --accent-dark:#127a88;
+  --mint:#3fb6a8;
+  --bg:#eef4f6;
+  --paper:#ffffff;
+  --ink:#20343d;
+  --muted:#7c8b92;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --alert:#d9534f;
+  --alert-dark:#b73f3b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1a5468 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--teal);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--accent));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--teal);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dbe7ea;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead.alert{background:linear-gradient(135deg,var(--alert-dark),var(--alert));}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #e2ecee;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--teal);font-size:13.8px;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--teal);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--accent);
+  color:var(--accent-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--accent);color:#fff;}
+.qbtn.primary{background:var(--accent);border-color:var(--accent-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--accent-dark);}
+.qbtn.alert{background:var(--alert);border-color:var(--alert-dark);color:#fff;}
+.qbtn.alert:hover{background:var(--alert-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #dde8ea;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d3e0e3;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--accent);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(18,122,136,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c6d6d9;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🦷</div>
+    <div class="hinfo">
+      <div class="name">Alex · Cabinet du Dr Chollet</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démonstration privée pour Cabinet du Dr Chollet · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Tratamientos ILUSTRATIVOS de demostración — no reflejan la oferta real de la clínica */
+const TREATS = [
+  {cat:"prev", name:{es:"Revisión y diagnóstico",ca:"Revisió i diagnòstic",fr:"Bilan et diagnostic",en:"Check-up & diagnosis"},
+    desc:{es:"exploración completa y plan de tratamiento",ca:"exploració completa i pla de tractament",fr:"examen complet et plan de soins",en:"full exam and treatment plan"}},
+  {cat:"prev", name:{es:"Limpieza / higiene dental",ca:"Neteja / higiene dental",fr:"Détartrage / hygiène",en:"Cleaning / hygiene"},
+    desc:{es:"eliminación de sarro y consejos de higiene",ca:"eliminació de tosca i consells d'higiene",fr:"élimination du tartre et conseils",en:"tartar removal and hygiene advice"}},
+  {cat:"gen", name:{es:"Odontología general",ca:"Odontologia general",fr:"Dentisterie générale",en:"General dentistry"},
+    desc:{es:"empastes, endodoncia, tratamiento de caries",ca:"empastaments, endodòncia, tractament de càries",fr:"soins, endodontie, traitement des caries",en:"fillings, root canal, caries care"}},
+  {cat:"esth", name:{es:"Estética dental",ca:"Estètica dental",fr:"Esthétique dentaire",en:"Cosmetic dentistry"},
+    desc:{es:"blanqueamiento y carillas",ca:"blanquejament i carilles",fr:"blanchiment et facettes",en:"whitening and veneers"}},
+  {cat:"impl", name:{es:"Implantes y prótesis",ca:"Implants i pròtesis",fr:"Implants et prothèses",en:"Implants & prosthetics"},
+    desc:{es:"soluciones para dientes ausentes",ca:"solucions per a dents absents",fr:"solutions pour dents manquantes",en:"solutions for missing teeth"}}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de la **Cabinet du Dr Chollet**, en Tours.\nTe ayudo a pedir cita, resolver una urgencia o consultar el horario — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🦷 Pedir cita","🚨 Urgencia","🕐 Horario y dirección","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  /* cita */
+  bookStart:"¡Perfecto, preparamos tu cita! 🙌",
+  askMotivo:"🦷 ¿Cuál es el motivo de tu visita?",
+  motivoOpts:["🔍 Revisión","✨ Limpieza","😣 Dolor / molestia","➕ Otro motivo"],
+  askUrgent:"⏱️ ¿Necesitas que sea lo antes posible?",
+  urgentOpts:["🚨 Sí, es urgente","🗓️ No, puede esperar"],
+  urgentNote:"Entendido, lo marco como *prioritario*. Recuerda que soy un asistente y *no puedo dar consejo médico*: si tienes dolor intenso, sangrado o un golpe fuerte, es mejor que el equipo te atienda cuanto antes. Te propongo el primer hueco disponible y aviso a la clínica.",
+  askSlotUrgent:"⏰ Estos son los primeros huecos *prioritarios* de hoy — ¿cuál te viene mejor?",
+  slotUrgentOpts:["Hoy 13:30 (prioritario)","Hoy 18:45 (prioritario)"],
+  askSlot:"⏰ Estos son los próximos huecos disponibles — ¿cuál te viene bien?",
+  slotOpts:["Mañana 10:00","Jueves 17:30","Viernes 12:15"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryMotivo:"Motivo", summaryUrgent:"Prioridad", summarySlot:"Hueco", summaryName:"Nombre", summaryPhone:"Teléfono",
+  urgentYes:"Prioritario 🚨", urgentNo:"Normal",
+  summaryFooter:"✅ Paso tu solicitud al equipo de la Cabinet du Dr Chollet, que confirma la cita. 🔔 Recibirás un recordatorio la víspera para no olvidarlo — y liberar el hueco si surge un imprevisto.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero pedir cita en la Cabinet du Dr Chollet:",
+  waPrefixUrg:"¡Hola! Tengo una URGENCIA dental y necesito cita en la Cabinet du Dr Chollet:",
+  /* urgencia (entrada directa) */
+  urgentStart:"🚨 Entiendo, vamos a gestionar tu *urgencia* con prioridad.\nSoy un asistente y *no doy consejo médico ni recomiendo medicamentos*. Si tienes un dolor muy fuerte, sangrado que no para, hinchazón importante o un traumatismo, contacta cuanto antes con la clínica o, si es grave, con urgencias médicas. Ahora tomo tus datos para que el equipo te atienda lo antes posible.",
+  /* tratamientos */
+  treatIntro:"Aquí tienes un vistazo a los tratamientos de la clínica 🦷 (información ilustrativa de demostración):",
+  treatPrev:"Prevención", treatGen:"General", treatEsth:"Estética", treatImpl:"Implantes",
+  treatCardTitle:"Nuestros tratamientos",
+  treatCardTag:"Presupuesto sin compromiso",
+  treatDemoNote:"Listado ilustrativo a modo de demostración — el equipo te informa de los tratamientos y precios en tu visita.",
+  treatButtons:["🦷 Pedir cita","🪥 Primera visita","⬅️ Menú"],
+  firstVisitLine:"🪥 *Primera visita*: incluye una exploración y, si hace falta, un plan de tratamiento personalizado. Recuerda que soy un asistente y no sustituyo el diagnóstico del dentista — cualquier valoración clínica la hace el equipo en consulta. Trae tu documentación y, si tienes, informes previos.",
+  /* horario & dirección */
+  hoursTitle:"🕐 Horario y dirección",
+  hoursText:"🕐 *Horario* (ejemplo de demostración)\nDe lunes a viernes — mañanas 9:00–13:30 · tardes 15:30–20:00\nSábados solo con cita previa · domingos cerrado.",
+  accessText:"📍 *Dirección*: en el centro de Tours, bien comunicada y de fácil acceso. 🅿️ Aparcamiento público cerca. Clínica accesible sin escalones.",
+  firstVisitTitle:"Primera visita",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🦷 Tratamientos","🪥 Primera visita","📍 Cómo llegar","⬅️ Menú"],
+  /* varios */
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de la Cabinet du Dr Chollet 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *pedir cita*, gestionar una *urgencia* o darte el *horario y la dirección* — o te paso con el equipo. Recuerda que soy un asistente y no doy consejo médico. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de la **Cabinet du Dr Chollet**, a Tours.\nT'ajudo a demanar hora, resoldre una urgència o consultar l'horari — en menys d'un minut. En què et puc ajudar?",
+  menu:["🦷 Demanar hora","🚨 Urgència","🕐 Horari i adreça","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  bookStart:"Perfecte, preparem la teva hora! 🙌",
+  askMotivo:"🦷 Quin és el motiu de la visita?",
+  motivoOpts:["🔍 Revisió","✨ Neteja","😣 Dolor / molèstia","➕ Un altre motiu"],
+  askUrgent:"⏱️ Necessites que sigui com més aviat millor?",
+  urgentOpts:["🚨 Sí, és urgent","🗓️ No, pot esperar"],
+  urgentNote:"Entesos, ho marco com a *prioritari*. Recorda que sóc un assistent i *no puc donar consell mèdic*: si tens dolor intens, sagnat o un cop fort, és millor que l'equip t'atengui com abans millor. Et proposo el primer torn disponible i aviso la clínica.",
+  askSlotUrgent:"⏰ Aquests són els primers torns *prioritaris* d'avui — quin et va millor?",
+  slotUrgentOpts:["Avui 13:30 (prioritari)","Avui 18:45 (prioritari)"],
+  askSlot:"⏰ Aquests són els propers torns disponibles — quin et va bé?",
+  slotOpts:["Demà 10:00","Dijous 17:30","Divendres 12:15"],
+  askName:"🙋 A nom de qui anoto la visita?",
+  askPhone:"📱 Perfecte {name}! Un mòbil per enviar-te la confirmació (i el recordatori la vigília)?",
+  summaryTitle:"📋 Resum de la teva visita",
+  summaryMotivo:"Motiu", summaryUrgent:"Prioritat", summarySlot:"Torn", summaryName:"Nom", summaryPhone:"Telèfon",
+  urgentYes:"Prioritari 🚨", urgentNo:"Normal",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de la Cabinet du Dr Chollet, que confirma la visita. 🔔 Rebràs un recordatori la vigília per no oblidar-ho — i alliberar el torn si sorgeix un imprevist.",
+  sendWa:"📲 Enviar la meva hora per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull demanar hora a la Cabinet du Dr Chollet:",
+  waPrefixUrg:"Hola! Tinc una URGÈNCIA dental i necessito hora a la Cabinet du Dr Chollet:",
+  urgentStart:"🚨 Entesos, gestionem la teva *urgència* amb prioritat.\nSóc un assistent i *no dono consell mèdic ni recomano medicaments*. Si tens un dolor molt fort, sagnat que no s'atura, inflor important o un traumatisme, contacta com abans millor amb la clínica o, si és greu, amb urgències mèdiques. Ara prenc les teves dades perquè l'equip t'atengui al més aviat possible.",
+  treatIntro:"Aquí tens un tast dels tractaments de la clínica 🦷 (informació il·lustrativa de demostració):",
+  treatPrev:"Prevenció", treatGen:"General", treatEsth:"Estètica", treatImpl:"Implants",
+  treatCardTitle:"Els nostres tractaments",
+  treatCardTag:"Pressupost sense compromís",
+  treatDemoNote:"Llistat il·lustratiu a tall de demostració — l'equip t'informa dels tractaments i preus a la teva visita.",
+  treatButtons:["🦷 Demanar hora","🪥 Primera visita","⬅️ Menú"],
+  firstVisitLine:"🪥 *Primera visita*: inclou una exploració i, si cal, un pla de tractament personalitzat. Recorda que sóc un assistent i no substitueixo el diagnòstic del dentista — qualsevol valoració clínica la fa l'equip a consulta. Porta la teva documentació i, si en tens, informes previs.",
+  hoursTitle:"🕐 Horari i adreça",
+  hoursText:"🕐 *Horari* (exemple de demostració)\nDe dilluns a divendres — matins 9:00–13:30 · tardes 15:30–20:00\nDissabtes només amb hora concertada · diumenges tancat.",
+  accessText:"📍 *Adreça*: al centre de Tours, ben comunicada i de fàcil accés. 🅿️ Aparcament públic a prop. Clínica accessible sense esglaons.",
+  firstVisitTitle:"Primera visita",
+  faqTitle:"Què vols saber?",
+  faqButtons:["🦷 Tractaments","🪥 Primera visita","📍 Com arribar","⬅️ Menú"],
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de la Cabinet du Dr Chollet 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *demanar hora*, gestionar una *urgència* o donar-te l'*horari i l'adreça* — o et passo amb l'equip. Recorda que sóc un assistent i no dono consell mèdic. Què prefereixes?",
+  langSwitched:"Canviat a català"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de la **Cabinet du Dr Chollet**, à Tours.\nJe vous aide à prendre rendez-vous, gérer une urgence ou consulter les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🦷 Prendre rendez-vous","🚨 Urgence","🕐 Horaires & adresse","💬 Parler à une personne"],
+  menuLabel:"Menu",
+  bookStart:"Avec plaisir, préparons votre rendez-vous 🙌",
+  askMotivo:"🦷 Quel est le motif de votre visite ?",
+  motivoOpts:["🔍 Contrôle","✨ Détartrage","😣 Douleur / gêne","➕ Autre motif"],
+  askUrgent:"⏱️ Souhaitez-vous être reçu(e) au plus vite ?",
+  urgentOpts:["🚨 Oui, c'est urgent","🗓️ Non, ça peut attendre"],
+  urgentNote:"Compris, je le note comme *prioritaire*. Je suis un assistant et *je ne donne pas de conseil médical* : en cas de douleur intense, de saignement ou de choc, il vaut mieux que l'équipe vous reçoive au plus vite. Je vous propose le premier créneau disponible et je préviens la clinique.",
+  askSlotUrgent:"⏰ Voici les premiers créneaux *prioritaires* d'aujourd'hui — lequel vous convient ?",
+  slotUrgentOpts:["Aujourd'hui 13h30 (prioritaire)","Aujourd'hui 18h45 (prioritaire)"],
+  askSlot:"⏰ Voici les prochains créneaux disponibles — lequel vous convient ?",
+  slotOpts:["Demain 10h00","Jeudi 17h30","Vendredi 12h15"],
+  askName:"🙋 À quel nom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryMotivo:"Motif", summaryUrgent:"Priorité", summarySlot:"Créneau", summaryName:"Nom", summaryPhone:"Téléphone",
+  urgentYes:"Prioritaire 🚨", urgentNo:"Normal",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de la Cabinet du Dr Chollet, qui confirme le rendez-vous. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer le créneau en cas d'imprévu.",
+  sendWa:"📲 Envoyer mon rendez-vous par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous à la Cabinet du Dr Chollet :",
+  waPrefixUrg:"Bonjour ! J'ai une URGENCE dentaire et je souhaite un rendez-vous à la Cabinet du Dr Chollet :",
+  urgentStart:"🚨 Compris, gérons votre *urgence* en priorité.\nJe suis un assistant et *je ne donne pas de conseil médical ni de nom de médicament*. En cas de douleur très forte, de saignement qui ne s'arrête pas, de gonflement important ou d'un traumatisme, contactez au plus vite la clinique ou, si c'est grave, les urgences médicales. Je prends maintenant vos coordonnées pour que l'équipe vous reçoive au plus vite.",
+  treatIntro:"Voici un aperçu des soins proposés par la clinique 🦷 (informations illustratives de démonstration) :",
+  treatPrev:"Prévention", treatGen:"Général", treatEsth:"Esthétique", treatImpl:"Implants",
+  treatCardTitle:"Nos soins",
+  treatCardTag:"Devis sans engagement",
+  treatDemoNote:"Liste illustrative présentée à titre de démonstration — l'équipe vous informe des soins et des tarifs lors de votre visite.",
+  treatButtons:["🦷 Prendre RDV","🪥 Première visite","⬅️ Menu"],
+  firstVisitLine:"🪥 *Première visite* : elle comprend un examen et, si besoin, un plan de soins personnalisé. Je suis un assistant et je ne remplace pas le diagnostic du dentiste — toute évaluation clinique est faite par l'équipe en consultation. Pensez à apporter vos documents et, le cas échéant, vos comptes rendus antérieurs.",
+  hoursTitle:"🕐 Horaires & adresse",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nDu lundi au vendredi — matin 9h00–13h30 · après-midi 15h30–20h00\nSamedi uniquement sur rendez-vous · dimanche fermé.",
+  accessText:"📍 *Adresse* : au centre de Tours, bien desservie et d'accès facile. 🅿️ Parking public à proximité. Clinique accessible de plain-pied.",
+  firstVisitTitle:"Première visite",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🦷 Soins","🪥 Première visite","📍 Accès","⬅️ Menu"],
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de la Cabinet du Dr Chollet 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, gérer une *urgence* ou vous donner les *horaires et l'adresse* — ou je vous passe l'équipe. Je suis un assistant et je ne donne pas de conseil médical. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for the **Cabinet du Dr Chollet**, in Tours.\nI can help you book an appointment, handle an emergency or check the opening hours — in under a minute. How can I help?",
+  menu:["🦷 Book an appointment","🚨 Emergency","🕐 Hours & address","💬 Talk to a person"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's set up your appointment 🙌",
+  askMotivo:"🦷 What's the reason for your visit?",
+  motivoOpts:["🔍 Check-up","✨ Cleaning","😣 Pain / discomfort","➕ Other reason"],
+  askUrgent:"⏱️ Do you need to be seen as soon as possible?",
+  urgentOpts:["🚨 Yes, it's urgent","🗓️ No, it can wait"],
+  urgentNote:"Understood, I'll mark it as *priority*. I'm an assistant and *I can't give medical advice*: if you have severe pain, bleeding or a strong knock, it's best the team sees you as soon as possible. I'll offer the first available slot and alert the clinic.",
+  askSlotUrgent:"⏰ Here are today's first *priority* slots — which suits you best?",
+  slotUrgentOpts:["Today 1:30 pm (priority)","Today 6:45 pm (priority)"],
+  askSlot:"⏰ Here are the next available slots — which works for you?",
+  slotOpts:["Tomorrow 10:00","Thursday 17:30","Friday 12:15"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryMotivo:"Reason", summaryUrgent:"Priority", summarySlot:"Slot", summaryName:"Name", summaryPhone:"Phone",
+  urgentYes:"Priority 🚨", urgentNo:"Normal",
+  summaryFooter:"✅ I'm passing your request to the Cabinet du Dr Chollet team, who will confirm your appointment. 🔔 You'll get a reminder the day before so nothing slips your mind — and the slot can be freed if plans change.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at the Cabinet du Dr Chollet:",
+  waPrefixUrg:"Hi! I have a dental EMERGENCY and need an appointment at the Cabinet du Dr Chollet:",
+  urgentStart:"🚨 Understood, let's handle your *emergency* as a priority.\nI'm an assistant and *I don't give medical advice or medication names*. If you have very strong pain, bleeding that won't stop, significant swelling or a trauma, contact the clinic as soon as possible or, if it's serious, emergency medical services. I'll now take your details so the team can see you as soon as possible.",
+  treatIntro:"Here's a glimpse of the treatments offered by the clinic 🦷 (illustrative demonstration information):",
+  treatPrev:"Prevention", treatGen:"General", treatEsth:"Cosmetic", treatImpl:"Implants",
+  treatCardTitle:"Our treatments",
+  treatCardTag:"Free quote",
+  treatDemoNote:"Illustrative list shown for demonstration — the team will inform you of treatments and prices during your visit.",
+  treatButtons:["🦷 Book","🪥 First visit","⬅️ Menu"],
+  firstVisitLine:"🪥 *First visit*: it includes an exam and, if needed, a personalised treatment plan. I'm an assistant and I don't replace the dentist's diagnosis — any clinical assessment is made by the team in consultation. Please bring your documents and, if you have them, previous reports.",
+  hoursTitle:"🕐 Hours & address",
+  hoursText:"🕐 *Hours* (demonstration example)\nMonday to Friday — mornings 9:00–13:30 · afternoons 15:30–20:00\nSaturdays by appointment only · closed Sundays.",
+  accessText:"📍 *Address*: in central Tours, well connected and easy to reach. 🅿️ Public parking nearby. Step-free access.",
+  firstVisitTitle:"First visit",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🦷 Treatments","🪥 First visit","📍 Directions","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the Cabinet du Dr Chollet team 👇",
+  fallback:"Good question! I can help you *book an appointment*, handle an *emergency* or give you the *hours and address* — or I can hand you to the team. I'm an assistant and I don't give medical advice. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, motivo, urgent, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"startUrgent()", cls:"alert"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= TRATAMIENTOS ================= */
+function treatCardHtml(){
+  const cats = [
+    {key:'prev', label:t('treatPrev')},
+    {key:'gen', label:t('treatGen')},
+    {key:'esth', label:t('treatEsth')},
+    {key:'impl', label:t('treatImpl')}
+  ];
+  let body = '';
+  TREATS.forEach(d=>{
+    body += `<div class="dish"><div class="dname">${esc(d.name[lang])}</div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">🦷 ${t('treatCardTitle')}</span><span class="cprice">${t('treatCardTag')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('treatDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showTreats(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('treatIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${treatCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', t('treatButtons').map((label,i)=>{
+      const acts = ["startBooking()","showFirstVisit()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===0?'primary':''};
+    }));
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 700);
+}
+
+function showFirstVisit(){
+  addUser(t('faqButtons')[1]);
+  addBotText(t('firstVisitLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+/* ================= HORARIO & DIRECCIÓN ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const map=["showTreats()","showFirstVisit()","showAccess()","showMenu()"];
+    return {label, onclick: map[i]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= HANDOFF HUMANO ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= CITA (flujo) ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'motivo', motivo:null, urgent:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askMotivo'), t('motivoOpts').map(l=>({label:l, onclick:`bookingMotivo('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function startUrgent(){
+  addUser(t('menu')[1]);
+  booking = {step:'slot', motivo:t('motivoOpts')[2], urgent:true, slot:null, name:null, phone:null};
+  addBotText(t('urgentStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askSlotUrgent'), t('slotUrgentOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`, cls:'alert'})), 500);
+  }, 900);
+}
+
+function bookingMotivo(label){
+  addUser(label);
+  booking.motivo = label;
+  booking.step='urgent';
+  addBotText(t('askUrgent'), t('urgentOpts').map((l,i)=>({label:l, onclick:`bookingUrgent(${i===0})`, cls:i===0?'alert':''})), 450);
+}
+
+function bookingUrgent(isUrgent){
+  addUser(isUrgent ? t('urgentOpts')[0] : t('urgentOpts')[1]);
+  booking.urgent = isUrgent;
+  booking.step='slot';
+  if(isUrgent){
+    addBotText(t('urgentNote'), null, 400);
+    setTimeout(()=>{
+      addBotText(t('askSlotUrgent'), t('slotUrgentOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`, cls:'alert'})));
+    }, 950);
+  }else{
+    addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const urgentTxt = booking.urgent ? t('urgentYes') : t('urgentNo');
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead${booking.urgent?' alert':''}"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryMotivo')} :</b> ${esc(booking.motivo)}<br>
+          <b>${t('summaryUrgent')} :</b> ${esc(urgentTxt)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #e2ecee;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waPrefix = booking.urgent ? t('waPrefixUrg') : t('waPrefix');
+    const waText = `${waPrefix}\n${t('summaryMotivo')}: ${booking.motivo}\n${t('summaryUrgent')}: ${booking.urgent?t('urgentYes'):t('urgentNo')}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= IDIOMA ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const es = ['hola','buenas','cita','pedir','revision','limpieza','dolor','urgencia','urgente','horario','direccion','gracias','muela','diente','dentista'];
+  const ca = ['hola','bon dia','bona tarda','hora','demanar','revisio','neteja','dolor','urgencia','urgent','horari','adreca','gracies','queixal','dent','voldria'];
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','controle','detartrage','douleur','urgence','horaire','adresse','merci','dent','dentiste'];
+  const en = ['hello','hi ','hey','appointment','book','check','cleaning','pain','emergency','urgent','hours','address','thanks','tooth','teeth','dentist'];
+  let scores = {es:0,ca:0,fr:0,en:0};
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTO LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['urgen','emergenc','dolor','duele','mal de','molest','pain','douleur','mal aux','queixal','sangr','hincha','inflam','golpe','trauma'])){ startUrgent(); return; }
+  if(normalizedIncludesAny(n,['cita','pedir','hora','reserv','appointment','book','rendez','rdv','revision','revisio','limpieza','neteja','controle','detartrage','check','cleaning'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['tratamiento','tractament','soin','treatment','implant','carilla','blanque','estetic','esthetic','cosmetic','endodon','empaste','caries'])){ showTreats(); return; }
+  if(normalizedIncludesAny(n,['primera','primer','first','premiere','premier'])){ showFirstVisit(); return; }
+  if(normalizedIncludesAny(n,['horario','horari','horaire','hour','abierto','obert','ouvert','open','cerrado','tancat','ferme'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['direccion','adreca','adresse','address','como llegar','com arribar','parking','aparcamiento','venir','llegar'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','huma','humain','human','persona','equipo','equip','equipe','team','llamar','telefon','call','appeler'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bon dia','bona tarda','bonjour','salut','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-chollet-x7k4', {method:'POST', body:'Visite demo Cabinet du Dr Chollet · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
