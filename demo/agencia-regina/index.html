@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Agència Regina · Démo ALEX</title>
+<meta name="description" content="Alex, l'assistant virtuel de l'Agència Regina — location saisonnière et achat sur la Costa Brava (L'Escala) en une minute.">
+<style>
+:root{
+  --navy:#0d3b52;
+  --navy-dark:#082a3c;
+  --slate:#0f7d8c;
+  --gold:#e0a44e;
+  --gold-dark:#c07f2c;
+  --bg:#eef6f7;
+  --paper:#ffffff;
+  --ink:#1d2f36;
+  --muted:#7c9298;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #12617a 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.4);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--slate) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.2);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--slate);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--slate),var(--gold-dark));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--slate);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #d9e8ea;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--slate));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--gold);border-color:var(--gold-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--gold-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #dcecec;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d0e2e3;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--gold);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(192,127,44,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c4dbdd;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🌅</div>
+    <div class="hinfo">
+      <div class="name">Alex · Agència Regina</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línia · respon a l'instant</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escriu el teu missatge..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demostració privada per a l'Agència Regina · amb la tecnologia d'Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* ================= I18N STRINGS ================= */
+const S = {
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola i benvingut/da! 👋 Sóc *Alex*, l'assistent virtual de l'**Agència Regina**, la teva agència de lloguer de vacances i venda a L'Escala (Costa Brava).\nT'ajudo a trobar un apartament amb vistes al mar, una vila per a les vacances o un bé per comprar — i a concertar una visita, en menys d'un minut. En què et puc ajudar?",
+  menu:["🏖️ Llogar (vacances)","🔑 Comprar","🏷️ Vendre / posar en lloguer","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  rentStart:"Perfecte! 🙌 A L'Escala tenim racons preciosos vora el mar. Afinem la teva estada.",
+  buyStart:"Excel·lent elecció! 🙌 T'acompanyo en el teu projecte de compra a la Costa Brava.",
+  sellStart:"Amb molt de gust! 🙌 Vegem el teu bé per preparar-ne la venda o el lloguer.",
+  askType:"🏠 Quin tipus d'allotjament busques?",
+  typeOpts:["🌊 Apartament vista mar","🏡 Vila / casa","🛏️ Estudi / apartament petit","➕ Altre"],
+  askZone:"📍 A quina zona de L'Escala?",
+  zoneOpts:["L'Escala centre","Riells / Platja","Empúries / Sant Martí","Una altra zona"],
+  askDates:"🗓️ Per a quines dates vols l'estada?",
+  datesOpts:["Juliol","Agost","Setembre","Altres dates"],
+  askBudgetRent:"💶 Quin pressupost per setmana tens en ment? (orientatiu de demostració)",
+  budgetRentOpts:["Menys de 700 €/set.","700 – 1.200 €/set.","1.200 – 2.000 €/set.","+ de 2.000 €/set."],
+  askBudgetBuy:"💶 Quin pressupost de compra contemples? (forquilla orientativa)",
+  budgetBuyOpts:["Menys de 200 k€","200 – 400 k€","400 – 700 k€","+ de 700 k€"],
+  askSurface:"📐 Quina superfície aproximada té el teu bé?",
+  surfaceOpts:["menys de 60 m²","60 – 100 m²","100 – 180 m²","més de 180 m²"],
+  askSlot:"🗓️ Et proposo un contacte amb un assessor. Quin moment et va millor?",
+  slotOpts:["Entre setmana","Aquest cap de setmana","Al matí","A la tarda"],
+  askName:"🙋 A nom de qui anoto la sol·licitud?",
+  askPhone:"📱 Perfecte {name}! Un mòbil perquè l'assessor et contacti i confirmi la proposta?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryProject:"Projecte", summaryType:"Allotjament", summaryZone:"Zona",
+  summaryDates:"Dates", summaryBudget:"Pressupost", summarySurface:"Superfície",
+  summarySlot:"Contacte", summaryName:"Nom", summaryPhone:"Telèfon",
+  projRent:"Lloguer de vacances", projBuy:"Compra", projSell:"Venda / lloguer",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de l'Agència Regina, que et contactarà amb propostes de biens i possibles visites.\nℹ️ Això és una demostració: l'Alex no reserva de manera ferma ni dóna assessorament jurídic — un assessor valida cada detall amb tu.",
+  sendWa:"📲 Enviar la meva sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull que l'Agència Regina em contacti:",
+  humanHandoff:"És clar! Et poso en contacte directe amb un assessor de l'Agència Regina 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *llogar* per a vacances, *comprar* o *vendre* un bé a L'Escala — o passar-te amb un assessor. Què prefereixes?",
+  langSwitched:"Canviat a català"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola y bienvenido/a! 👋 Soy *Alex*, el asistente virtual de la **Agència Regina**, tu agencia de alquiler vacacional y venta en L'Escala (Costa Brava).\nTe ayudo a encontrar un apartamento con vistas al mar, una villa para las vacaciones o una propiedad en venta — y a concertar una visita, en menos de un minuto. ¿En qué te ayudo?",
+  menu:["🏖️ Alquilar (vacaciones)","🔑 Comprar","🏷️ Vender / poner en alquiler","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  rentStart:"¡Perfecto! 🙌 En L'Escala tenemos rincones preciosos junto al mar. Afinemos tu estancia.",
+  buyStart:"¡Excelente elección! 🙌 Te acompaño en tu proyecto de compra en la Costa Brava.",
+  sellStart:"¡Con mucho gusto! 🙌 Veamos tu propiedad para preparar su venta o alquiler.",
+  askType:"🏠 ¿Qué tipo de alojamiento buscas?",
+  typeOpts:["🌊 Apartamento vistas al mar","🏡 Villa / casa","🛏️ Estudio / apartamento pequeño","➕ Otro"],
+  askZone:"📍 ¿En qué zona de L'Escala?",
+  zoneOpts:["L'Escala centro","Riells / Playa","Empúries / Sant Martí","Otra zona"],
+  askDates:"🗓️ ¿Para qué fechas quieres la estancia?",
+  datesOpts:["Julio","Agosto","Septiembre","Otras fechas"],
+  askBudgetRent:"💶 ¿Qué presupuesto por semana tienes en mente? (orientativo de demostración)",
+  budgetRentOpts:["Menos de 700 €/sem.","700 – 1.200 €/sem.","1.200 – 2.000 €/sem.","+ de 2.000 €/sem."],
+  askBudgetBuy:"💶 ¿Qué presupuesto de compra contemplas? (horquilla orientativa)",
+  budgetBuyOpts:["Menos de 200 k€","200 – 400 k€","400 – 700 k€","+ de 700 k€"],
+  askSurface:"📐 ¿Qué superficie aproximada tiene tu propiedad?",
+  surfaceOpts:["menos de 60 m²","60 – 100 m²","100 – 180 m²","más de 180 m²"],
+  askSlot:"🗓️ Te propongo un contacto con un asesor. ¿Qué momento te viene mejor?",
+  slotOpts:["Entre semana","Este fin de semana","Por la mañana","Por la tarde"],
+  askName:"🙋 ¿A nombre de quién anoto la solicitud?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para que el asesor te contacte y confirme la propuesta?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryProject:"Proyecto", summaryType:"Alojamiento", summaryZone:"Zona",
+  summaryDates:"Fechas", summaryBudget:"Presupuesto", summarySurface:"Superficie",
+  summarySlot:"Contacto", summaryName:"Nombre", summaryPhone:"Teléfono",
+  projRent:"Alquiler vacacional", projBuy:"Compra", projSell:"Venta / alquiler",
+  summaryFooter:"✅ Paso tu solicitud al equipo de la Agència Regina, que te contactará con propuestas de propiedades y posibles visitas.\nℹ️ Esto es una demostración: Alex no reserva en firme ni da asesoramiento jurídico — un asesor valida cada detalle contigo.",
+  sendWa:"📲 Enviar mi solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero que la Agència Regina me contacte:",
+  humanHandoff:"¡Claro! Te pongo en contacto directo con un asesor de la Agència Regina 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *alquilar* para vacaciones, *comprar* o *vender* una propiedad en L'Escala — o pasarte con un asesor. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour et bienvenue ! 👋 Je suis *Alex*, l'assistant virtuel de l'**Agència Regina**, votre agence de location saisonnière et de vente à L'Escala (Costa Brava).\nJe vous aide à trouver un appartement vue mer, une villa pour les vacances ou un bien à l'achat — et à convenir d'une visite, en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["🏖️ Louer (vacances)","🔑 Acheter","🏷️ Vendre / mettre en location","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  rentStart:"Parfait ! 🙌 À L'Escala, nous avons de très beaux coins face à la mer. Précisons votre séjour.",
+  buyStart:"Excellent choix ! 🙌 Je vous accompagne dans votre projet d'achat sur la Costa Brava.",
+  sellStart:"Avec plaisir ! 🙌 Voyons votre bien pour préparer sa vente ou sa mise en location.",
+  askType:"🏠 Quel type de logement recherchez-vous ?",
+  typeOpts:["🌊 Appartement vue mer","🏡 Villa / maison","🛏️ Studio / petit appartement","➕ Autre"],
+  askZone:"📍 Dans quel secteur de L'Escala ?",
+  zoneOpts:["L'Escala centre","Riells / Plage","Empúries / Sant Martí","Un autre secteur"],
+  askDates:"🗓️ Pour quelles dates souhaitez-vous le séjour ?",
+  datesOpts:["Juillet","Août","Septembre","Autres dates"],
+  askBudgetRent:"💶 Quel budget par semaine avez-vous en tête ? (indicatif de démonstration)",
+  budgetRentOpts:["Moins de 700 €/sem.","700 – 1 200 €/sem.","1 200 – 2 000 €/sem.","+ de 2 000 €/sem."],
+  askBudgetBuy:"💶 Quel budget d'achat envisagez-vous ? (fourchette indicative)",
+  budgetBuyOpts:["Moins de 200 k€","200 – 400 k€","400 – 700 k€","+ de 700 k€"],
+  askSurface:"📐 Quelle surface approximative pour votre bien ?",
+  surfaceOpts:["moins de 60 m²","60 – 100 m²","100 – 180 m²","plus de 180 m²"],
+  askSlot:"🗓️ Je vous propose un contact avec un conseiller. Quel moment vous conviendrait le mieux ?",
+  slotOpts:["En semaine","Ce week-end","Le matin","L'après-midi"],
+  askName:"🙋 À quel prénom dois-je noter la demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que le conseiller vous recontacte et confirme la proposition ?",
+  summaryTitle:"📋 Récapitulatif de votre demande",
+  summaryProject:"Projet", summaryType:"Logement", summaryZone:"Secteur",
+  summaryDates:"Dates", summaryBudget:"Budget", summarySurface:"Surface",
+  summarySlot:"Contact", summaryName:"Prénom", summaryPhone:"Téléphone",
+  projRent:"Location saisonnière", projBuy:"Achat", projSell:"Vente / location",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de l'Agència Regina, qui vous recontacte avec des propositions de biens et d'éventuelles visites.\nℹ️ Ceci est une démonstration : Alex ne réserve pas de façon ferme et ne donne aucun conseil juridique — un conseiller valide chaque détail avec vous.",
+  sendWa:"📲 Envoyer ma demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite être recontacté(e) par l'Agència Regina :",
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec un conseiller de l'Agència Regina 👇",
+  fallback:"Bonne question ! Je peux vous aider à *louer* pour les vacances, *acheter* ou *vendre* un bien à L'Escala — ou vous passer un conseiller. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hello and welcome! 👋 I'm *Alex*, the virtual assistant for the **Agència Regina**, your holiday-rental and sales agency in L'Escala (Costa Brava).\nI can help you find a sea-view apartment, a villa for the holidays or a property to buy — and arrange a viewing, in under a minute. How can I help?",
+  menu:["🏖️ Rent (holiday)","🔑 Buy","🏷️ Sell / list for rent","💬 Talk to a human"],
+  menuLabel:"Menu",
+  rentStart:"Great! 🙌 L'Escala has some lovely spots right by the sea. Let's refine your stay.",
+  buyStart:"Excellent choice! 🙌 I'll guide you through your purchase project on the Costa Brava.",
+  sellStart:"With pleasure! 🙌 Let's look at your property to prepare its sale or rental.",
+  askType:"🏠 What type of accommodation are you looking for?",
+  typeOpts:["🌊 Sea-view apartment","🏡 Villa / house","🛏️ Studio / small apartment","➕ Other"],
+  askZone:"📍 Which area of L'Escala?",
+  zoneOpts:["L'Escala centre","Riells / Beach","Empúries / Sant Martí","Another area"],
+  askDates:"🗓️ Which dates would you like for your stay?",
+  datesOpts:["July","August","September","Other dates"],
+  askBudgetRent:"💶 What weekly budget do you have in mind? (indicative demo range)",
+  budgetRentOpts:["Under €700/wk","€700 – 1,200/wk","€1,200 – 2,000/wk","Over €2,000/wk"],
+  askBudgetBuy:"💶 What purchase budget do you have in mind? (indicative range)",
+  budgetBuyOpts:["Under €200k","€200 – 400k","€400 – 700k","Over €700k"],
+  askSurface:"📐 What is the approximate size of your property?",
+  surfaceOpts:["under 60 m²","60 – 100 m²","100 – 180 m²","over 180 m²"],
+  askSlot:"🗓️ Let me set up a contact with an advisor. Which time would suit you best?",
+  slotOpts:["Weekday","This weekend","Morning","Afternoon"],
+  askName:"🙋 What name should I note the request under?",
+  askPhone:"📱 Great, {name}! A mobile number so the advisor can reach out and confirm the proposal?",
+  summaryTitle:"📋 Your request summary",
+  summaryProject:"Project", summaryType:"Accommodation", summaryZone:"Area",
+  summaryDates:"Dates", summaryBudget:"Budget", summarySurface:"Size",
+  summarySlot:"Contact", summaryName:"Name", summaryPhone:"Phone",
+  projRent:"Holiday rental", projBuy:"Purchase", projSell:"Sale / rental",
+  summaryFooter:"✅ I'm passing your request to the Agència Regina team, who will contact you with property suggestions and possible viewings.\nℹ️ This is a demonstration: Alex makes no firm booking and gives no legal advice — an advisor confirms every detail with you.",
+  sendWa:"📲 Send my request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like the Agència Regina to contact me:",
+  humanHandoff:"Of course — I'll connect you directly with an Agència Regina advisor 👇",
+  fallback:"Good question! I can help you *rent* for the holidays, *buy* or *sell* a property in L'Escala — or connect you with an advisor. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {intent, step, type, zone, dates, value, valueType, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.ca)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startProject('rent')", cls:"primary"},
+    {label:m[1], onclick:"startProject('buy')"},
+    {label:m[2], onclick:"startProject('sell')"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= PARCOURS PROJET ================= */
+function intentLabel(intent){
+  return intent==='rent' ? t('projRent') : intent==='buy' ? t('projBuy') : t('projSell');
+}
+function menuIndexForIntent(intent){
+  return intent==='rent' ? 0 : intent==='buy' ? 1 : 2;
+}
+
+function startProject(intent){
+  addUser(t('menu')[menuIndexForIntent(intent)]);
+  const valueType = intent==='rent' ? 'budgetRent' : intent==='buy' ? 'budgetBuy' : 'surface';
+  booking = {intent, step:'type', type:null, zone:null, dates:null, value:null, valueType, slot:null, name:null, phone:null};
+  const startKey = intent==='rent' ? 'rentStart' : intent==='buy' ? 'buyStart' : 'sellStart';
+  addBotText(t(startKey), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askType'), t('typeOpts').map(l=>({label:l, onclick:`bookingType('${l.replace(/'/g,"\\'")}')`})));
+  }, 750);
+}
+
+function bookingType(label){
+  addUser(label);
+  booking.type = label;
+  booking.step='zone';
+  addBotText(t('askZone'), t('zoneOpts').map(l=>({label:l, onclick:`bookingZone('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingZone(label){
+  addUser(label);
+  booking.zone = label;
+  if(booking.intent==='rent'){
+    booking.step='dates';
+    addBotText(t('askDates'), t('datesOpts').map(l=>({label:l, onclick:`bookingDates('${l.replace(/'/g,"\\'")}')`})), 450);
+  }else{
+    booking.step='value';
+    askValue();
+  }
+}
+
+function bookingDates(label){
+  addUser(label);
+  booking.dates = label;
+  booking.step='value';
+  askValue();
+}
+
+function askValue(){
+  if(booking.valueType==='budgetRent'){
+    addBotText(t('askBudgetRent'), t('budgetRentOpts').map(l=>({label:l, onclick:`bookingValue('${l.replace(/'/g,"\\'")}')`})), 450);
+  }else if(booking.valueType==='budgetBuy'){
+    addBotText(t('askBudgetBuy'), t('budgetBuyOpts').map(l=>({label:l, onclick:`bookingValue('${l.replace(/'/g,"\\'")}')`})), 450);
+  }else{
+    addBotText(t('askSurface'), t('surfaceOpts').map(l=>({label:l, onclick:`bookingValue('${l.replace(/'/g,"\\'")}')`})), 450);
+  }
+}
+
+function bookingValue(label){
+  addUser(label);
+  booking.value = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function valueLabelText(){
+  return booking.valueType==='surface' ? t('summarySurface') : t('summaryBudget');
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const valLabel = valueLabelText();
+    const datesLine = booking.dates ? `<b>${t('summaryDates')} :</b> ${esc(booking.dates)}<br>` : '';
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryProject')} :</b> ${esc(intentLabel(booking.intent))}<br>
+          <b>${t('summaryType')} :</b> ${esc(booking.type)}<br>
+          <b>${t('summaryZone')} :</b> ${esc(booking.zone)}<br>
+          ${datesLine}
+          <b>${esc(valLabel)} :</b> ${esc(booking.value)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #dcecec;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${md(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const datesWa = booking.dates ? `\n${t('summaryDates')}: ${booking.dates}` : '';
+    const waText = `${t('waPrefix')}\n${t('summaryProject')}: ${intentLabel(booking.intent)}\n${t('summaryType')}: ${booking.type}\n${t('summaryZone')}: ${booking.zone}${datesWa}\n${valLabel}: ${booking.value}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const ca = ['hola','bon dia','llogar','lloguer','comprar','vendre','venda','pis','apartament','vila','casa','mar','vistes','pressupost','assessor','visita','gracies','voldria','vull'];
+  const es = ['hola','buenas','alquilar','alquiler','comprar','vender','venta','piso','apartamento','villa','casa','mar','vistas','presupuesto','asesor','visita','gracias','quiero'];
+  const fr = ['bonjour','salut','bonsoir','louer','location','acheter','achat','vendre','vente','appartement','villa','maison','mer','vue','budget','conseiller','visite','merci'];
+  const en = ['hello','hi ','hey','rent','rental','buy','sell','sale','apartment','villa','house','sea','view','budget','advisor','viewing','thanks'];
+  let scores = {ca:0,es:0,fr:0,en:0};
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['louer','location','llogar','lloguer','alquil','rent','vacances','vacaciones','vacacional','holiday','saison','estada','estancia','sejour'])){ startProject('rent'); return; }
+  if(normalizedIncludesAny(n,['vendre','vente','vender','venda','sell','mettre en location','posar en lloguer'])){ startProject('sell'); return; }
+  if(normalizedIncludesAny(n,['achet','achat','acquer','buy','comprar','compra','investir'])){ startProject('buy'); return; }
+  if(normalizedIncludesAny(n,['humain','human','humano','huma','conseiller','asesor','assessor','agent','appeler','llamar','call','telephone','telefon','contacter','whatsapp'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','bon dia'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'ca';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-regina-7k3m', {method:'POST', body:'Visite demo Agencia Regina · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'ca';
+  document.querySelector('.langbtn[data-lang="ca"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
