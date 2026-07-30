@@ -1,2 +1,5 @@
 # Secrets — ne JAMAIS committer la config qui contient la clé API Retell
 dashboard-feed/retell.config.json
+
+# Batches de prospection : emails de prospects, ne JAMAIS publier sur GitHub Pages
+_batches/
