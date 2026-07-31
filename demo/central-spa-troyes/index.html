@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Central Spa</title>
+<meta name="description" content="Alex, l'assistant virtuel de Central Spa — prenez rendez-vous, découvrez les prestations et les horaires en 1 minute.">
+<style>
+:root{
+  --plum:#5b3a56;
+  --plum-dark:#3d2439;
+  --wine:#9c5a7d;
+  --terra:#c98aa0;
+  --terra-dark:#a5637f;
+  --gold:#c9a24b;
+  --bg:#f7eef1;
+  --paper:#fffcfd;
+  --ink:#3a2c33;
+  --muted:#9c8790;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #7a4a6c 0%, var(--plum) 55%, var(--plum-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--plum) 0%,var(--wine) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--wine);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--wine),var(--terra));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--wine);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #efdde4;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--plum),var(--wine));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed #f0e2e8;}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--wine);font-size:13.8px;display:flex;justify-content:space-between;gap:8px;}
+.dish .dprice{color:var(--gold);font-weight:700;font-size:12.8px;white-space:nowrap;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--wine);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--terra);
+  color:var(--terra-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--terra);color:#fff;}
+.qbtn.primary{background:var(--terra);border-color:var(--terra-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--terra-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #f0e3e8;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #ead9e0;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--terra);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--terra),var(--terra-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(165,99,127,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#e3ccd6;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">💅</div>
+    <div class="hinfo">
+      <div class="name">Alex · Central Spa</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Démo privée pour Central Spa · propulsé par Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // +33 7 74 60 20 08
+
+/* Prestations ILLUSTRATIVES de démonstration — ne reflètent pas les vraies prestations ni les tarifs de l'institut */
+const SERVICES = [
+  {cat:"visage", name:{fr:"Soin visage éclat",es:"Tratamiento facial luminosidad",en:"Radiance facial",ca:"Tractament facial lluminositat"},
+    desc:{fr:"nettoyage, gommage, masque hydratant · env. 60 min",es:"limpieza, exfoliación, mascarilla hidratante · aprox. 60 min",en:"cleanse, scrub, hydrating mask · approx. 60 min",ca:"neteja, exfoliació, mascareta hidratant · aprox. 60 min"}, price:"~55 €"},
+  {cat:"epilation", name:{fr:"Épilation demi-jambes",es:"Depilación media pierna",en:"Half-leg waxing",ca:"Depilació mitja cama"},
+    desc:{fr:"cire tiède, finition apaisante · env. 30 min",es:"cera templada, acabado calmante · aprox. 30 min",en:"warm wax, soothing finish · approx. 30 min",ca:"cera tèbia, acabat calmant · aprox. 30 min"}, price:"~25 €"},
+  {cat:"mains", name:{fr:"Manucure & pose vernis",es:"Manicura y esmaltado",en:"Manicure & polish",ca:"Manicura i esmaltat"},
+    desc:{fr:"soin des ongles, vernis semi-permanent · env. 45 min",es:"cuidado de uñas, esmalte semipermanente · aprox. 45 min",en:"nail care, semi-permanent polish · approx. 45 min",ca:"cura d'ungles, esmalt semipermanent · aprox. 45 min"}, price:"~35 €"},
+  {cat:"massage", name:{fr:"Massage relaxant",es:"Masaje relajante",en:"Relaxing massage",ca:"Massatge relaxant"},
+    desc:{fr:"dos & nuque, huiles chaudes · env. 50 min",es:"espalda y cuello, aceites cálidos · aprox. 50 min",en:"back & neck, warm oils · approx. 50 min",ca:"esquena i clatell, olis càlids · aprox. 50 min"}, price:"~60 €"}
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Central Spa**, votre institut de beauté au cœur du centre-ville de Troyes.\nJe vous aide à prendre rendez-vous, découvrir les prestations ou les horaires — en moins d'une minute. Que puis-je faire pour vous ?",
+  menu:["💆 Prendre RDV","✨ Prestations","🕐 Horaires & accès","💬 Parler à un humain"],
+  menuLabel:"Menu",
+  /* rendez-vous */
+  bookStart:"Avec plaisir, réservons votre moment beauté 🌸",
+  askService:"💫 Quelle prestation souhaitez-vous réserver ?",
+  serviceOpts:["🌿 Soin visage","🕯️ Épilation","💅 Manucure","💆 Massage"],
+  askDate:"📅 Pour quelle date souhaitez-vous venir ?",
+  dateOpts:["Cette semaine","Ce week-end","La semaine prochaine","Autre date"],
+  askSlot:"⏰ Voici les créneaux encore libres — lequel vous convient ?",
+  slotOpts:["10h00","14h30","17h15"],
+  askName:"🙋 À quel prénom dois-je noter le rendez-vous ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation (et le rappel la veille) ?",
+  summaryTitle:"📋 Récapitulatif de votre rendez-vous",
+  summaryService:"Prestation", summaryDate:"Date", summarySlot:"Heure", summaryName:"Prénom", summaryPhone:"Téléphone",
+  summaryFooter:"✅ Je transmets votre demande à l'équipe de Central Spa, qui vous confirme le créneau. 🔔 Vous recevrez un rappel la veille pour éviter les oublis — et libérer la place si un imprévu survient.",
+  reminderTeaser:"Petit plus : je vous enverrai un rappel automatique la veille pour limiter les rendez-vous manqués.",
+  sendWa:"📲 Envoyer mon RDV par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre rendez-vous à Central Spa :",
+  /* prestations */
+  menuIntro:"Voici un aperçu de nos prestations phares ✨ (durées et tarifs donnés à titre indicatif) :",
+  menuCardTitle:"Nos prestations",
+  menuCardPrice:"à titre indicatif",
+  menuDemoNote:"Prestations et tarifs illustratifs présentés à titre de démonstration — l'équipe vous communique le détail et les tarifs à jour.",
+  vegLine:"🌸 Vous hésitez ? Dites-moi ce qui vous ferait plaisir (détente, éclat, mains, épilation) et je vous oriente vers la bonne prestation.",
+  menuButtons:["👰 Occasions & forfaits","💆 Prendre RDV","⬅️ Menu"],
+  allergyLine:"🌿 *Peau sensible ou allergies* : indiquez-moi vos sensibilités (produits, cire, parfums…) et je les transmets à l'esthéticienne avec votre rendez-vous, pour adapter les soins et les produits utilisés.",
+  giftLine:"🎁 *Occasions & forfaits* : mariage, anniversaire, cadeau… je note votre projet et l'équipe vous propose un forfait sur mesure. Dites-moi l'occasion et la date envisagée.",
+  /* horaires & accès */
+  hoursTitle:"🕐 Horaires & accès",
+  hoursText:"🕐 *Horaires* (exemple de démonstration)\nMardi au vendredi — 9h30–19h00\nSamedi 9h30–18h00 · fermé dimanche et lundi.",
+  accessText:"📍 *Accès* : en plein centre-ville de Troyes, à quelques minutes à pied des principaux arrêts de transport. 🅿️ Parkings publics à proximité. Institut accessible de plain-pied.",
+  faqTitle:"Que voulez-vous savoir ?",
+  faqButtons:["🌿 Peau sensible & allergies","🎁 Occasions & forfaits","📍 Accès & parking","⬅️ Menu"],
+  /* divers */
+  humanHandoff:"Bien sûr — je vous mets en relation directe avec l'équipe de Central Spa 👇",
+  fallback:"Bonne question ! Je peux vous aider à *prendre rendez-vous*, voir *les prestations* ou les *horaires* — ou je vous passe l'équipe. Que préférez-vous ?",
+  langSwitched:"Passé en français 🇫🇷"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Central Spa**, tu centro de belleza en pleno centro de Troyes.\nTe ayudo a pedir cita, ver los tratamientos o los horarios — en menos de un minuto. ¿En qué te ayudo?",
+  menu:["💆 Pedir cita","✨ Tratamientos","🕐 Horarios y cómo llegar","💬 Hablar con una persona"],
+  menuLabel:"Menú",
+  bookStart:"¡Encantado, reservamos tu momento de belleza! 🌸",
+  askService:"💫 ¿Qué tratamiento quieres reservar?",
+  serviceOpts:["🌿 Facial","🕯️ Depilación","💅 Manicura","💆 Masaje"],
+  askDate:"📅 ¿Para qué fecha quieres venir?",
+  dateOpts:["Esta semana","Este fin de semana","La semana que viene","Otra fecha"],
+  askSlot:"⏰ Estos son los turnos aún libres — ¿cuál te viene bien?",
+  slotOpts:["10:00","14:30","17:15"],
+  askName:"🙋 ¿A nombre de quién anoto la cita?",
+  askPhone:"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación (y el recordatorio la víspera)?",
+  summaryTitle:"📋 Resumen de tu cita",
+  summaryService:"Tratamiento", summaryDate:"Fecha", summarySlot:"Hora", summaryName:"Nombre", summaryPhone:"Teléfono",
+  summaryFooter:"✅ Paso tu solicitud al equipo de Central Spa, que te confirma el turno. 🔔 Recibirás un recordatorio la víspera para no olvidarlo — y liberar la plaza si surge un imprevisto.",
+  reminderTeaser:"Un plus: te enviaré un recordatorio automático la víspera para reducir las citas perdidas.",
+  sendWa:"📲 Enviar mi cita por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quiero pedir cita en Central Spa:",
+  menuIntro:"Aquí tienes un vistazo a nuestros tratamientos destacados ✨ (duraciones y precios orientativos):",
+  menuCardTitle:"Nuestros tratamientos",
+  menuCardPrice:"orientativo",
+  menuDemoNote:"Tratamientos y precios ilustrativos a modo de demostración — el equipo te facilita el detalle y las tarifas actualizadas.",
+  vegLine:"🌸 ¿Dudas? Dime qué te apetece (relax, luminosidad, manos, depilación) y te oriento hacia el tratamiento adecuado.",
+  menuButtons:["👰 Ocasiones y packs","💆 Pedir cita","⬅️ Menú"],
+  allergyLine:"🌿 *Piel sensible o alergias*: dime tus sensibilidades (productos, cera, perfumes…) y las paso a la esteticista con tu cita, para adaptar los tratamientos y productos.",
+  giftLine:"🎁 *Ocasiones y packs*: boda, cumpleaños, regalo… anoto tu proyecto y el equipo te propone un pack a medida. Dime la ocasión y la fecha prevista.",
+  hoursTitle:"🕐 Horarios y cómo llegar",
+  hoursText:"🕐 *Horarios* (ejemplo de demostración)\nDe martes a viernes — 9:30–19:00\nSábado 9:30–18:00 · cerrado domingo y lunes.",
+  accessText:"📍 *Cómo llegar*: en pleno centro de Troyes, a pocos minutos a pie de las principales paradas de transporte. 🅿️ Aparcamientos públicos cerca. Centro accesible a pie llano.",
+  faqTitle:"¿Qué quieres saber?",
+  faqButtons:["🌿 Piel sensible y alergias","🎁 Ocasiones y packs","📍 Cómo llegar","⬅️ Menú"],
+  humanHandoff:"¡Claro! Te pongo en contacto directo con el equipo de Central Spa 👇",
+  fallback:"¡Buena pregunta! Puedo ayudarte a *pedir cita*, ver *los tratamientos* o los *horarios* — o te paso con el equipo. ¿Qué prefieres?",
+  langSwitched:"Cambiado a español 🇪🇸"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Central Spa**, your beauty salon in the heart of Troyes city centre.\nI can help you book an appointment, browse the treatments or check opening hours — in under a minute. How can I help?",
+  menu:["💆 Book appointment","✨ Treatments","🕐 Hours & directions","💬 Talk to a human"],
+  menuLabel:"Menu",
+  bookStart:"With pleasure — let's book your beauty moment 🌸",
+  askService:"💫 Which treatment would you like to book?",
+  serviceOpts:["🌿 Facial","🕯️ Waxing","💅 Manicure","💆 Massage"],
+  askDate:"📅 What date would you like to come in?",
+  dateOpts:["This week","This weekend","Next week","Another date"],
+  askSlot:"⏰ Here are the slots still open — which suits you?",
+  slotOpts:["10:00 am","2:30 pm","5:15 pm"],
+  askName:"🙋 What name should I put the appointment under?",
+  askPhone:"📱 Great, {name}! A mobile number so I can send you the confirmation (and a reminder the day before)?",
+  summaryTitle:"📋 Your appointment summary",
+  summaryService:"Treatment", summaryDate:"Date", summarySlot:"Time", summaryName:"Name", summaryPhone:"Phone",
+  summaryFooter:"✅ I'm passing your request to the Central Spa team, who will confirm your slot. 🔔 You'll get a reminder the day before so nothing slips your mind — and the slot can be freed if plans change.",
+  reminderTeaser:"A little extra: I'll send an automatic reminder the day before to cut down no-shows.",
+  sendWa:"📲 Send my appointment via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at Central Spa:",
+  menuIntro:"Here's a look at our signature treatments ✨ (durations and prices are indicative):",
+  menuCardTitle:"Our treatments",
+  menuCardPrice:"indicative",
+  menuDemoNote:"Illustrative treatments and prices shown for demonstration — the team will share the full details and current rates.",
+  vegLine:"🌸 Not sure? Tell me what you're after (relaxation, glow, hands, waxing) and I'll point you to the right treatment.",
+  menuButtons:["👰 Occasions & packages","💆 Book","⬅️ Menu"],
+  allergyLine:"🌿 *Sensitive skin or allergies*: tell me your sensitivities (products, wax, fragrances…) and I'll pass them to the beautician with your appointment, to adapt the treatments and products used.",
+  giftLine:"🎁 *Occasions & packages*: wedding, birthday, gift… I'll note your project and the team will propose a tailored package. Just tell me the occasion and the date you have in mind.",
+  hoursTitle:"🕐 Hours & directions",
+  hoursText:"🕐 *Hours* (demonstration example)\nTuesday to Friday — 9:30 am–7:00 pm\nSaturday 9:30 am–6:00 pm · closed Sunday and Monday.",
+  accessText:"📍 *Getting here*: in the heart of Troyes city centre, a few minutes' walk from the main transport stops. 🅿️ Public car parks nearby. Step-free access.",
+  faqTitle:"What would you like to know?",
+  faqButtons:["🌿 Sensitive skin & allergies","🎁 Occasions & packages","📍 Directions","⬅️ Menu"],
+  humanHandoff:"Of course — I'll connect you directly with the Central Spa team 👇",
+  fallback:"Good question! I can help you *book an appointment*, see *the treatments* or the *hours* — or I can hand you to the team. What would you prefer?",
+  langSwitched:"Switched to English 🇬🇧"
+},
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **Central Spa**, el teu centre de bellesa al ple centre de Troyes.\nT'ajudo a demanar cita, veure els tractaments o els horaris — en menys d'un minut. En què et puc ajudar?",
+  menu:["💆 Demanar cita","✨ Tractaments","🕐 Horaris i com arribar","💬 Parlar amb una persona"],
+  menuLabel:"Menú",
+  bookStart:"Amb molt de gust, reservem el teu moment de bellesa! 🌸",
+  askService:"💫 Quin tractament vols reservar?",
+  serviceOpts:["🌿 Facial","🕯️ Depilació","💅 Manicura","💆 Massatge"],
+  askDate:"📅 Per a quina data vols venir?",
+  dateOpts:["Aquesta setmana","Aquest cap de setmana","La setmana vinent","Una altra data"],
+  askSlot:"⏰ Aquests són els torns encara lliures — quin et va bé?",
+  slotOpts:["10:00","14:30","17:15"],
+  askName:"🙋 A nom de qui anoto la cita?",
+  askPhone:"📱 Perfecte {name}! Un mòbil per enviar-te la confirmació (i el recordatori la vigília)?",
+  summaryTitle:"📋 Resum de la teva cita",
+  summaryService:"Tractament", summaryDate:"Data", summarySlot:"Hora", summaryName:"Nom", summaryPhone:"Telèfon",
+  summaryFooter:"✅ Passo la teva sol·licitud a l'equip de Central Spa, que et confirma el torn. 🔔 Rebràs un recordatori la vigília per no oblidar-ho — i alliberar la plaça si sorgeix un imprevist.",
+  reminderTeaser:"Un plus: t'enviaré un recordatori automàtic la vigília per reduir les cites perdudes.",
+  sendWa:"📲 Enviar la meva cita per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull demanar cita a Central Spa:",
+  menuIntro:"Aquí tens una ullada als nostres tractaments destacats ✨ (durades i preus orientatius):",
+  menuCardTitle:"Els nostres tractaments",
+  menuCardPrice:"orientatiu",
+  menuDemoNote:"Tractaments i preus il·lustratius a tall de demostració — l'equip et facilita el detall i les tarifes actualitzades.",
+  vegLine:"🌸 Dubtes? Digues-me què et ve de gust (relax, lluminositat, mans, depilació) i t'oriento cap al tractament adequat.",
+  menuButtons:["👰 Ocasions i packs","💆 Demanar cita","⬅️ Menú"],
+  allergyLine:"🌿 *Pell sensible o al·lèrgies*: digues-me les teves sensibilitats (productes, cera, perfums…) i les passo a l'esteticista amb la teva cita, per adaptar els tractaments i productes.",
+  giftLine:"🎁 *Ocasions i packs*: casament, aniversari, regal… anoto el teu projecte i l'equip et proposa un pack a mida. Digues-me l'ocasió i la data prevista.",
+  hoursTitle:"🕐 Horaris i com arribar",
+  hoursText:"🕐 *Horaris* (exemple de demostració)\nDe dimarts a divendres — 9:30–19:00\nDissabte 9:30–18:00 · tancat diumenge i dilluns.",
+  accessText:"📍 *Com arribar*: al ple centre de Troyes, a pocs minuts a peu de les principals parades de transport. 🅿️ Aparcaments públics a prop. Centre accessible sense esgraons.",
+  faqTitle:"Què vols saber?",
+  faqButtons:["🌿 Pell sensible i al·lèrgies","🎁 Ocasions i packs","📍 Com arribar","⬅️ Menú"],
+  humanHandoff:"És clar! Et poso en contacte directe amb l'equip de Central Spa 👇",
+  fallback:"Bona pregunta! Puc ajudar-te a *demanar cita*, veure *els tractaments* o els *horaris* — o et passo amb l'equip. Què prefereixes?",
+  langSwitched:"Canviat a català"
+}
+};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, service, date, slot, name, phone}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.fr)[key]; }
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU (navigation) ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"startBooking()", cls:"primary"},
+    {label:m[1], onclick:"showCarte()"},
+    {label:m[2], onclick:"showHours()"},
+    {label:m[3], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function backLabel(){ return "⬅️ "+t('menuLabel'); }
+
+function showMenu(){
+  addBotText(t('welcome').split('\n').slice(1).join('\n') || t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= PRESTATIONS ================= */
+function carteCardHtml(){
+  let body = '';
+  SERVICES.forEach(d=>{
+    body += `<div class="dish"><div class="dname"><span>${esc(d.name[lang])}</span><span class="dprice">${esc(d.price)}</span></div><div class="ddesc">${esc(d.desc[lang])}</div></div>`;
+  });
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">✨ ${t('menuCardTitle')}</span><span class="cprice">${t('menuCardPrice')}</span></div>
+    <div class="cardbody">
+      ${body}
+      <div class="demo-note">ℹ️ ${esc(t('menuDemoNote'))}</div>
+    </div>
+  </div>`;
+}
+
+function showCarte(){
+  addUser(t('menu')[1]);
+  addBotText(t('menuIntro'), null, 400);
+  setTimeout(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">${carteCardHtml()}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('vegLine')), t('menuButtons').map((label,i)=>{
+      const acts = ["showGifts()","startBooking()","showMenu()"];
+      return {label, onclick:acts[i], cls: i===1?'primary':''};
+    }));
+  }, 700);
+}
+
+function showAllergies(){
+  addUser(t('faqButtons')[0]);
+  addBotText(t('allergyLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 450);
+}
+
+function showGifts(){
+  addUser(t('menuButtons')[0]);
+  addBotText(t('giftLine'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'}
+  ], 450);
+}
+
+/* ================= HORAIRES & ACCÈS ================= */
+function showHours(){
+  addUser(t('menu')[2]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['allergy','gifts','access','menu'];
+    const map={allergy:"showAllergies()",gifts:"showGifts()",access:"showAccess()",menu:"showMenu()"};
+    return {label, onclick: map[keys[i]]};
+  }), 350);
+  setTimeout(()=>{
+    addBot(md(t('hoursText')+"\n\n"+t('accessText')), [
+      {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+      {label:backLabel(), onclick:"showMenu()"}
+    ]);
+  }, 900);
+}
+
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  addBotText(t('accessText'), [
+    {label:t('menu')[0], onclick:"startBooking()", cls:'primary'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= HANDOFF HUMAIN ================= */
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:backLabel(), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= RENDEZ-VOUS ================= */
+function startBooking(){
+  addUser(t('menu')[0]);
+  booking = {step:'service', service:null, date:null, slot:null, name:null, phone:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{
+    addBotText(t('askService'), t('serviceOpts').map(l=>({label:l, onclick:`bookingService('${l.replace(/'/g,"\\'")}')`})));
+  }, 700);
+}
+
+function bookingService(label){
+  addUser(label);
+  booking.service = label;
+  booking.step='date';
+  addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingDate(label){
+  addUser(label);
+  booking.date = label;
+  booking.step='slot';
+  addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+}
+
+function bookingSlot(label){
+  addUser(label);
+  booking.slot = label;
+  booking.step='name';
+  addBotText(t('askName'), null, 450);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='service'){
+    booking.service = text;
+    booking.step='date';
+    addBotText(t('askDate'), t('dateOpts').map(l=>({label:l, onclick:`bookingDate('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='date'){
+    booking.date = text;
+    booking.step='slot';
+    addBotText(t('askSlot'), t('slotOpts').map(l=>({label:l, onclick:`bookingSlot('${l.replace(/'/g,"\\'")}')`})), 450);
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    booking.step='phone';
+    addBotText(t('askPhone').replace('{name}', text), null, 400);
+    return true;
+  }
+  if(booking.step==='phone'){
+    booking.phone = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function finishBooking(){
+  booking.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryService')} :</b> ${esc(booking.service)}<br>
+          <b>${t('summaryDate')} :</b> ${esc(booking.date)}<br>
+          <b>${t('summarySlot')} :</b> ${esc(booking.slot)}<br>
+          <b>${t('summaryName')} :</b> ${esc(booking.name)}<br>
+          <b>${t('summaryPhone')} :</b> ${esc(booking.phone)}
+          <hr style="border:none;border-top:1px solid #f0e2e8;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(t('summaryFooter'))}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryService')}: ${booking.service}\n${t('summaryDate')}: ${booking.date}\n${t('summarySlot')}: ${booking.slot}\n${t('summaryName')}: ${booking.name}\n${t('summaryPhone')}: ${booking.phone}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bonsoir','rendez','rdv','soin','visage','epilation','manucure','massage','horaire','merci','oui','non','allergie','prendre','reserver'];
+  const en = ['hello','hi ','hey','appointment','booking','facial','waxing','manicure','massage','hours','thanks','yes','no ','allerg','book'];
+  const es = ['hola','buenas','cita','facial','depilacion','manicura','masaje','horario','gracias','si','no ','alergia','reservar','tratamiento'];
+  const ca = ['hola','bona tarda','cita','facial','depilacio','manicura','massatge','horari','gracies','tractament','voldria'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+/* ================= TEXTE LIBRE ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(booking && (booking.step==='service'||booking.step==='date'||booking.step==='name'||booking.step==='phone')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  if(normalizedIncludesAny(n,['rendez','rdv','reserv','appointment','book','cita','prendre','pedir','demanar'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['prestation','soin','visage','epilation','manucure','massage','tratamiento','treatment','facial','waxing','manicur','tractament','depilac'])){
+    if(normalizedIncludesAny(n,['allerg','sensible','sensitive','peau','piel','skin','pell'])){ showAllergies(); return; }
+    showCarte(); return;
+  }
+  if(normalizedIncludesAny(n,['allerg','sensible','sensitive','peau','piel','skin','pell'])){ showAllergies(); return; }
+  if(normalizedIncludesAny(n,['horaire','horari','horario','hour','ouvert','abierto','open','ferme','tancat'])){ showHours(); return; }
+  if(normalizedIncludesAny(n,['acces','acceso','direction','parking','venir','llegar','arribar','adresse','address'])){ showAccess(); return; }
+  if(normalizedIncludesAny(n,['cadeau','forfait','mariage','anniversaire','gift','package','pack','ocasion','ocasio','boda','wedding','regalo','regal'])){ showGifts(); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humain','human','humano','equipe','equipo','equip','appeler','llamar','call','telephone'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'fr';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-centralspa-w3n6', {method:'POST', body:'Visite demo Central Spa (Troyes) '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
