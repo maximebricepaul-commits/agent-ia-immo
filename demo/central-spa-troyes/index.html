@@ -740,7 +740,7 @@ inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
 try{
   if(location.hash !== '#test'){
     const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    fetch('https://ntfy.sh/agentia-demo-centralspa-w3n6', {method:'POST', body:'Visite demo Central Spa (Troyes) '+device+' · '+(navigator.language||'?')});
+    fetch('https://ntfy.sh/agentia-demo-centralspa-w3n6', {method:'POST', body:'Visite demo Central Spa (Troyes) · '+device+' · '+(navigator.language||'?')});
   }
 }catch(e){}
 

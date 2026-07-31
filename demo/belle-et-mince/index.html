@@ -740,7 +740,7 @@ inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
 try{
   if(location.hash !== '#test'){
     const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    fetch('https://ntfy.sh/agentia-demo-belleetmince-v6r3', {method:'POST', body:'Visite demo Belle et Mince (Metz) '+device+' · '+(navigator.language||'?')});
+    fetch('https://ntfy.sh/agentia-demo-belleetmince-v6r3', {method:'POST', body:'Visite demo Belle et Mince (Metz) · '+device+' · '+(navigator.language||'?')});
   }
 }catch(e){}
 
