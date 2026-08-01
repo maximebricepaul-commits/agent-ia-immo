@@ -489,11 +489,11 @@
 
     <!-- WEB CALL EN DIRECT — widget Retell officiel (sans backend, clé publique restreinte au domaine) -->
     <div style="max-width:540px;margin:0 auto 24px;background:linear-gradient(165deg,var(--card),var(--magenta-dim));border:1px solid var(--accent2);border-radius:var(--radius);padding:26px 24px;box-shadow:var(--shadow-card);text-align:center">
-      <div class="tag" style="background:var(--magenta-dim);border-color:var(--border-m);color:var(--accent2);margin-bottom:12px">🔴 EN DIRECT · SANS TÉLÉPHONER</div>
-      <p style="color:var(--white);font-weight:900;font-size:1.32rem;line-height:1.25;margin-bottom:8px">Parlez à ALEX <span class="accent">maintenant.</span></p>
+      <div id="alex-voix-tag" class="tag" style="background:var(--magenta-dim);border-color:var(--border-m);color:var(--accent2);margin-bottom:12px">🔴 EN DIRECT · SANS TÉLÉPHONER</div>
+      <p id="alex-voix-title" style="color:var(--white);font-weight:900;font-size:1.32rem;line-height:1.25;margin-bottom:8px">Parlez à ALEX <span class="accent">maintenant.</span></p>
       <p id="alex-voix-hint" style="color:var(--text);font-size:0.95rem;margin-bottom:18px">Cliquez, autorisez votre micro, et parlez à ALEX de vive voix — comme un vrai appel, directement dans votre navigateur.</p>
       <button id="alex-voix-call" type="button" class="btn btn-lg" style="background:var(--accent-gradient);color:#08101f;border:none;font-weight:800;cursor:pointer;font-size:1.05rem">🎙️ Parler à ALEX en direct</button>
-      <p style="color:var(--muted2);font-size:0.78rem;margin-top:12px">Démo vocale gratuite · aucune installation</p>
+      <p id="alex-voix-note" style="color:var(--muted2);font-size:0.78rem;margin-top:12px">Démo vocale gratuite · aucune installation</p>
     </div>
 
     <a href="#contact" class="btn btn-primary btn-lg">📞 Je veux ALEX Voix pour mon commerce</a>
@@ -1498,7 +1498,7 @@ window.openAlexVoix = function(){
   try { var w = window.RetellWidget || window.retellWidget || window.retell; if (w && typeof w.open === 'function'){ w.open(); return true; } } catch(e){}
   var clickIn = function(root){
     if(!root || !root.querySelector) return false;
-    var sels = ['#retell-widget-fab','.retell-widget-fab','[class*="fab" i]','[class*="launcher" i]','[aria-label*="ALEX" i]','[aria-label*="chat" i]','button'];
+    var sels = ['button[class*="fabBase" i]','button[class*="fab" i]','button[aria-label*="assistant" i]','button[aria-label*="open" i]','button[aria-label*="ALEX" i]','button[aria-label*="chat" i]','button'];
     for(var i=0;i<sels.length;i++){ var el = root.querySelector(sels[i]); if(el){ el.click(); return true; } }
     return false;
   };
@@ -1508,7 +1508,20 @@ window.openAlexVoix = function(){
   for(var j=0;j<all.length && !done;j++){ if(all[j].shadowRoot && clickIn(all[j].shadowRoot)) done=true; }
   return done;
 };
+/* Localisation autonome du bloc web-call (suit la langue du site : fr / es / en) */
+var ALEX_VOIX_L = {
+  fr:{tag:'🔴 EN DIRECT · SANS TÉLÉPHONER', title:'Parlez à ALEX <span class="accent">maintenant.</span>', hint:'Cliquez, autorisez votre micro, et parlez à ALEX de vive voix — comme un vrai appel, directement dans votre navigateur.', btn:'🎙️ Parler à ALEX en direct', note:'Démo vocale gratuite · aucune installation'},
+  es:{tag:'🔴 EN DIRECTO · SIN LLAMAR', title:'Hable con ALEX <span class="accent">ahora.</span>', hint:'Haga clic, permita su micrófono y hable con ALEX de viva voz — como una llamada real, directamente en su navegador.', btn:'🎙️ Hablar con ALEX en directo', note:'Demo de voz gratis · sin instalación'},
+  en:{tag:'🔴 LIVE · NO PHONE NEEDED', title:'Talk to ALEX <span class="accent">now.</span>', hint:'Click, allow your mic, and talk to ALEX out loud — like a real phone call, right in your browser.', btn:'🎙️ Talk to ALEX live', note:'Free voice demo · no install'}
+};
+function alexVoixLocalize(){
+  var l = document.documentElement.lang; if(!ALEX_VOIX_L[l]) l='fr'; var t=ALEX_VOIX_L[l];
+  var set=function(id,html){var e=document.getElementById(id); if(e) e.innerHTML=html;};
+  set('alex-voix-tag',t.tag); set('alex-voix-title',t.title); set('alex-voix-hint',t.hint); set('alex-voix-call',t.btn); set('alex-voix-note',t.note);
+}
 document.addEventListener('DOMContentLoaded', function(){
+  alexVoixLocalize();
+  new MutationObserver(alexVoixLocalize).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
   var b = document.getElementById('alex-voix-call');
   if(b){ b.addEventListener('click', function(){ window.openAlexVoix(); if(window.trackEvent) trackEvent('click_webcall','CTA','voix_section',0); }); }
 });
