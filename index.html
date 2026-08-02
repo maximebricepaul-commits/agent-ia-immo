@@ -1041,11 +1041,11 @@
 <style>
   .vfrc-launcher__label { font-size: 0 !important; }
   .vfrc-launcher__label::after {
-    content: 'Parler à ALEX' !important;
+    content: '💬 Écrire à ALEX' !important;
     font-size: 14px !important; font-weight: 700 !important; color: #fff !important;
   }
-  html[lang="es"] .vfrc-launcher__label::after { content: 'Hablar con ALEX' !important; }
-  html[lang="en"] .vfrc-launcher__label::after { content: 'Talk to ALEX' !important; }
+  html[lang="es"] .vfrc-launcher__label::after { content: '💬 Escribir a ALEX' !important; }
+  html[lang="en"] .vfrc-launcher__label::after { content: '💬 Message ALEX' !important; }
 </style>
 
 <!-- VOICEFLOW WIDGET -->
@@ -1090,9 +1090,9 @@
       },
 
       launcher: {
-        text: langCode === 'en' ? 'Talk to ALEX'
-             : langCode === 'es' ? 'Hablar con ALEX'
-             : 'Parler à ALEX'
+        text: langCode === 'en' ? '💬 Message ALEX'
+             : langCode === 'es' ? '💬 Escribir a ALEX'
+             : '💬 Écrire à ALEX'
       },
 
       launch: {
@@ -1125,15 +1125,15 @@
     //     On injecte la charte (couleurs) dans le shadow root ET on réécrit le
     //     libellé du lanceur en JS (le texte JS gagne toujours sur le CDN). ---
     (function alexRebrand(){
-      var label = langCode === 'en' ? 'Talk to ALEX'
-                : langCode === 'es' ? 'Hablar con ALEX'
-                : 'Parler à ALEX';
+      var label = langCode === 'en' ? '💬 Message ALEX'
+                : langCode === 'es' ? '💬 Escribir a ALEX'
+                : '💬 Écrire à ALEX';
       function fix(sr){
         if (!sr) return;
         if (!sr.querySelector('link[data-alex]')) {
           var l = document.createElement('link');
           l.rel = 'stylesheet';
-          l.href = 'https://alexagent.io/vf-custom.css?v=2';
+          l.href = 'https://alexagent.io/vf-custom.css?v=3';
           l.setAttribute('data-alex', '1');
           sr.appendChild(l);
         }
@@ -1525,6 +1525,34 @@ document.addEventListener('DOMContentLoaded', function(){
   var b = document.getElementById('alex-voix-call');
   if(b){ b.addEventListener('click', function(){ window.openAlexVoix(); if(window.trackEvent) trackEvent('click_webcall','CTA','voix_section',0); }); }
 });
+</script>
+<!-- ALEX VOIX — rebrand du widget : masque "Powered by Retell" + réécrit le sous-titre "Your RetellAI assistant" -->
+<script>
+(function alexVoixRebrand(){
+  var SUB = {fr:'Votre assistant vocal', es:'Su asistente de voz', en:'Your voice assistant'};
+  function lang(){ var l=document.documentElement.lang; return SUB[l]?l:'fr'; }
+  function host(){
+    var h=null;
+    document.querySelectorAll('body *').forEach(function(n){
+      if(n.shadowRoot && n.id!=='voiceflow-chat' && n.shadowRoot.querySelector &&
+         n.shadowRoot.querySelector('[class*="fab" i],[class*="brandSubtitle" i],[class*="poweredBy" i]')) h=n;
+    });
+    return h;
+  }
+  function fix(){
+    var h=host(); if(!h||!h.shadowRoot) return;
+    var sr=h.shadowRoot;
+    if(!sr.querySelector('style[data-alexvoix]')){
+      var st=document.createElement('style'); st.setAttribute('data-alexvoix','1');
+      st.textContent='[class*="poweredBy"]{display:none!important}';
+      sr.appendChild(st);
+    }
+    var s=sr.querySelector('[class*="brandSubtitle" i]');
+    if(s){ var w=SUB[lang()]; if(s.textContent!==w) s.textContent=w; }
+  }
+  var n=0, iv=setInterval(function(){ n++; fix(); if(n>120) clearInterval(iv); }, 500);
+  document.addEventListener('click', function(){ setTimeout(fix,250); setTimeout(fix,800); });
+})();
 </script>
 </body>
 </html>
