@@ -1,11 +1,11 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-01T21:02:05",
+    "generatedAt":  "2026-08-02T14:30:37",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  47,
-                              "manques":  8,
+                              "recus":  48,
+                              "manques":  9,
                               "rdv":  4,
                               "heures":  1,
                               "ca":  800,
@@ -15,26 +15,26 @@
                               "mult":  "×7",
                               "chart":  {
                                             "labels":  [
-                                                           "25/07",
                                                            "26/07",
                                                            "27/07",
                                                            "28/07",
                                                            "29/07",
                                                            "30/07",
-                                                           "31/07"
+                                                           "31/07",
+                                                           "01/08"
                                                        ],
                                             "app":  [
-                                                        8,
-                                                        21,
+                                                        14,
+                                                        15,
                                                         0,
                                                         0,
                                                         0,
-                                                        0,
-                                                        18
+                                                        16,
+                                                        3
                                                     ],
                                             "rdv":  [
-                                                        0,
-                                                        4,
+                                                        3,
+                                                        1,
                                                         0,
                                                         0,
                                                         0,
@@ -50,8 +50,8 @@
                                           }
                           },
                     "30":  {
-                               "recus":  47,
-                               "manques":  8,
+                               "recus":  48,
+                               "manques":  9,
                                "rdv":  4,
                                "heures":  1,
                                "ca":  800,
@@ -70,7 +70,7 @@
                                                          0,
                                                          0,
                                                          0,
-                                                         47
+                                                         48
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -87,8 +87,8 @@
                                            }
                            },
                     "90":  {
-                               "recus":  47,
-                               "manques":  8,
+                               "recus":  48,
+                               "manques":  9,
                                "rdv":  4,
                                "heures":  1,
                                "ca":  800,
@@ -105,7 +105,7 @@
                                              "app":  [
                                                          0,
                                                          0,
-                                                         47
+                                                         48
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -122,6 +122,14 @@
                            }
                 },
     "recent":  [
+                   {
+                       "time":  "21:37",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  true
+                   },
                    {
                        "time":  "14:57",
                        "lang":  "FR",
@@ -164,14 +172,6 @@
                    },
                    {
                        "time":  "13:39",
-                       "lang":  "FR",
-                       "demande":  "Demande d\u0027information",
-                       "result":  "Info donnée",
-                       "resultClass":  "info",
-                       "off":  false
-                   },
-                   {
-                       "time":  "13:38",
                        "lang":  "FR",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
