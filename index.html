@@ -555,6 +555,34 @@
   </div>
 </section>
 
+<!-- COÛT DES APPELS MANQUÉS (preuve de douleur, chiffres sourcés) -->
+<section class="section" id="cout" aria-label="Le coût des appels manqués">
+  <div class="container">
+    <div style="text-align:center" class="fade-in"><div class="tag">📊 Ce que disent les études</div></div>
+    <h2 class="section-heading fade-in delay-1">Un appel manqué, c'est un client <span class="text-accent">chez le concurrent.</span></h2>
+    <p class="section-sub fade-in delay-2">Les chiffres du secteur sont sans appel. Voici ce que coûte, chaque jour, un téléphone qui sonne dans le vide.</p>
+    <div class="fade-in delay-2" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;max-width:960px;margin:8px auto 0">
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px 20px;text-align:center">
+        <div class="stat-num" style="font-size:2.6rem;font-weight:900;background:var(--accent-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1">~60 %</div>
+        <p class="stat-label" style="color:var(--muted2);font-size:0.9rem;margin-top:12px">des appels aux petites entreprises restent sans réponse (100 % après les heures d'ouverture)</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px 20px;text-align:center">
+        <div class="stat-num" style="font-size:2.6rem;font-weight:900;background:var(--accent-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1">62 %</div>
+        <p class="stat-label" style="color:var(--muted2);font-size:0.9rem;margin-top:12px">des appelants manqués appellent directement un concurrent</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px 20px;text-align:center">
+        <div class="stat-num" style="font-size:2.6rem;font-weight:900;background:var(--accent-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1">85 %</div>
+        <p class="stat-label" style="color:var(--muted2);font-size:0.9rem;margin-top:12px">des clients manqués ne rappellent jamais</p>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border-m);border-radius:var(--radius);padding:26px 20px;text-align:center">
+        <div class="stat-num" style="font-size:2.6rem;font-weight:900;background:var(--accent-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;line-height:1">126 000 $</div>
+        <p class="stat-label" style="color:var(--muted2);font-size:0.9rem;margin-top:12px">de chiffre d'affaires perdu par an, en moyenne, à cause des appels manqués</p>
+      </div>
+    </div>
+    <p class="stat-src fade-in delay-3" style="text-align:center;color:var(--muted);font-size:0.85rem;margin:22px auto 0;max-width:780px">Sources : études sectorielles (getaira, AgentZap, Nerolia), 2025-2026. <strong style="color:var(--white)">ALEX, lui, répond à 100 % des appels — jour et nuit, en 4 langues.</strong></p>
+  </div>
+</section>
+
 <!-- CE QUE FAIT ALEX -->
 <section class="section section-alt" id="fonctions" aria-label="Ce que fait ALEX">
   <div class="container">
@@ -1200,6 +1228,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 (function(){
   const D = {
     es: {
+      "📊 Ce que disent les études":"📊 Lo que dicen los estudios",
+      "Un appel manqué, c'est un client chez le concurrent.":"Una llamada perdida es un cliente <span class=\"text-accent\">que se va a la competencia.</span>",
+      "Les chiffres du secteur sont sans appel. Voici ce que coûte, chaque jour, un téléphone qui sonne dans le vide.":"Las cifras del sector son claras. Esto es lo que cuesta, cada día, un teléfono que suena sin respuesta.",
+      "des appels aux petites entreprises restent sans réponse (100 % après les heures d'ouverture)":"de las llamadas a pequeñas empresas quedan sin respuesta (100 % fuera del horario)",
+      "des appelants manqués appellent directement un concurrent":"de las personas cuya llamada no se atiende llaman directamente a la competencia",
+      "des clients manqués ne rappellent jamais":"de los clientes perdidos nunca vuelven a llamar",
+      "de chiffre d'affaires perdu par an, en moyenne, à cause des appels manqués":"de facturación perdida al año, de media, por las llamadas perdidas",
+      "Sources : études sectorielles (getaira, AgentZap, Nerolia), 2025-2026. ALEX, lui, répond à 100 % des appels — jour et nuit, en 4 langues.":"Fuentes: estudios del sector (getaira, AgentZap, Nerolia), 2025-2026. <strong style=\"color:var(--white)\">ALEX sí responde al 100 % de las llamadas — día y noche, en 4 idiomas.</strong>",
       "Secteurs":"Sectores","Offres":"Precios","Blog":"Blog","Immobilier":"Inmobiliario","Nautique":"Náutica","Acquisition":"Captación de leads","Demander une démo →":"Solicitar una demo →",
       "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — El futuro de la automatización comercial",
       "Ne perdez plus un client. Ni un rendez-vous.":"No pierda ni un cliente.<br><span class=\"accent\">Ni una cita.</span>",
@@ -1314,6 +1350,14 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Non. Un setup unique puis un abonnement mensuel, résiliable à tout moment. On préfère vous garder parce que ça marche.":"No. Una instalación única y luego una suscripción mensual, cancelable en cualquier momento. Preferimos retenerle porque funciona."
     },
     en: {
+      "📊 Ce que disent les études":"📊 What the studies show",
+      "Un appel manqué, c'est un client chez le concurrent.":"A missed call is a customer <span class=\"text-accent\">who calls a competitor.</span>",
+      "Les chiffres du secteur sont sans appel. Voici ce que coûte, chaque jour, un téléphone qui sonne dans le vide.":"The industry numbers are brutal. Here's what a phone ringing out costs you, every single day.",
+      "des appels aux petites entreprises restent sans réponse (100 % après les heures d'ouverture)":"of calls to small businesses go unanswered (100% after hours)",
+      "des appelants manqués appellent directement un concurrent":"of missed callers call a competitor directly",
+      "des clients manqués ne rappellent jamais":"of missed customers never call back",
+      "de chiffre d'affaires perdu par an, en moyenne, à cause des appels manqués":"in revenue lost per year, on average, to missed calls",
+      "Sources : études sectorielles (getaira, AgentZap, Nerolia), 2025-2026. ALEX, lui, répond à 100 % des appels — jour et nuit, en 4 langues.":"Sources: industry studies (getaira, AgentZap, Nerolia), 2025-2026. <strong style=\"color:var(--white)\">ALEX answers 100% of calls — day and night, in 4 languages.</strong>",
       "Secteurs":"Sectors","Offres":"Pricing","Blog":"Blog","Immobilier":"Real Estate","Nautique":"Boating","Acquisition":"Lead Gen","Demander une démo →":"Book a demo →",
       "🤖 ALEX — L'avenir de l'automatisation commerciale":"🤖 ALEX — The future of sales automation",
       "Ne perdez plus un client. Ni un rendez-vous.":"Never lose a customer.<br><span class=\"accent\">Or an appointment.</span>",
@@ -1428,7 +1472,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
       "Non. Un setup unique puis un abonnement mensuel, résiliable à tout moment. On préfère vous garder parce que ça marche.":"No. A one-time setup then a monthly subscription, cancellable anytime. We'd rather keep you because it works."
     }
   };
-  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2, #compare .cmp-col, #compare .cmp-crit, #compare .cmp-val, #integrations .integ-name, #integrations .integ-use, #securite .sec-point, #engagement .guar-point, #faq .faq-q, #faq .faq-a';
+  const SEL = 'nav .nav-links a, nav > a.btn, .tag, h1, h2, .hero-sub, .hero-note, .hero-btns a, header span[style], .section-sub, .pc-name, .pc-setup, .pc a, .pricing-note, #voix p, #voix a.btn, .btn, .form-label, footer a, footer p, .reassure-item, #voix-phare .vfx-badge, #voix-phare .vfx-h2, #voix-phare .vfx-sub, #voix-phare .vfx-chip, #voix-phare .vfx-cta, #voix-phare .vfx-cta2, #compare .cmp-col, #compare .cmp-crit, #compare .cmp-val, #integrations .integ-name, #integrations .integ-use, #securite .sec-point, #engagement .guar-point, #faq .faq-q, #faq .faq-a, #cout .stat-label, #cout .stat-src';
   const norm = s => s.replace(/\s+/g,' ').trim();
   let els = [];
   function collect(){ els = [...document.querySelectorAll(SEL)]; els.forEach(el=>{ if(el.dataset.o===undefined){ el.dataset.o = el.innerHTML; el.dataset.k = norm(el.textContent); } }); }
