@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-03T00:03:06",
+    "generatedAt":  "2026-08-03T11:34:53",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -69,8 +69,8 @@
                                              "app":  [
                                                          0,
                                                          0,
-                                                         0,
-                                                         48
+                                                         8,
+                                                         40
                                                      ],
                                              "rdv":  [
                                                          0,
