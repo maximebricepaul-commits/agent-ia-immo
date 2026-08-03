@@ -1,18 +1,18 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-03T15:03:04",
+    "generatedAt":  "2026-08-03T18:02:47",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  39,
+                              "recus":  36,
                               "manques":  1,
-                              "rdv":  1,
+                              "rdv":  0,
                               "heures":  0,
-                              "ca":  200,
+                              "ca":  0,
                               "zero":  0,
                               "cost":  "114 €",
-                              "ca_s":  "200 €",
-                              "mult":  "×2",
+                              "ca_s":  "0 €",
+                              "mult":  "×0",
                               "chart":  {
                                             "labels":  [
                                                            "27/07",
@@ -24,7 +24,7 @@
                                                            "02/08"
                                                        ],
                                             "app":  [
-                                                        15,
+                                                        12,
                                                         0,
                                                         0,
                                                         0,
@@ -33,7 +33,7 @@
                                                         5
                                                     ],
                                             "rdv":  [
-                                                        1,
+                                                        0,
                                                         0,
                                                         0,
                                                         0,
