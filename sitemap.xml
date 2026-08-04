@@ -44,9 +44,15 @@
   </url>
   <url>
     <loc>https://alexagent.io/blog/</loc>
-    <lastmod>2026-07-28</lastmod>
+    <lastmod>2026-08-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alexagent.io/blog/automatiser-prise-de-rendez-vous/</loc>
+    <lastmod>2026-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://alexagent.io/blog/chatbot-vs-assistant-commercial-ia/</loc>
