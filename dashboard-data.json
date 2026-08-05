@@ -1,10 +1,10 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-05T13:00:27",
+    "generatedAt":  "2026-08-05T15:02:06",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  24,
+                              "recus":  34,
                               "manques":  1,
                               "rdv":  0,
                               "heures":  0,
@@ -26,11 +26,11 @@
                                             "app":  [
                                                         0,
                                                         0,
-                                                        3,
-                                                        16,
-                                                        0,
+                                                        18,
+                                                        1,
                                                         5,
-                                                        0
+                                                        0,
+                                                        10
                                                     ],
                                             "rdv":  [
                                                         0,
@@ -43,14 +43,14 @@
                                                     ]
                                         },
                               "langues":  {
-                                              "FR":  100,
-                                              "ES":  0,
-                                              "CA":  0,
+                                              "FR":  88,
+                                              "ES":  3,
+                                              "CA":  9,
                                               "EN":  0
                                           }
                           },
                     "30":  {
-                               "recus":  53,
+                               "recus":  63,
                                "manques":  9,
                                "rdv":  4,
                                "heures":  1,
@@ -70,7 +70,7 @@
                                                          0,
                                                          0,
                                                          29,
-                                                         24
+                                                         34
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -80,14 +80,14 @@
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  100,
-                                               "ES":  0,
-                                               "CA":  0,
+                                               "FR":  94,
+                                               "ES":  2,
+                                               "CA":  5,
                                                "EN":  0
                                            }
                            },
                     "90":  {
-                               "recus":  53,
+                               "recus":  63,
                                "manques":  9,
                                "rdv":  4,
                                "heures":  1,
@@ -105,7 +105,7 @@
                                              "app":  [
                                                          0,
                                                          0,
-                                                         53
+                                                         63
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -114,16 +114,16 @@
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  100,
-                                               "ES":  0,
-                                               "CA":  0,
+                                               "FR":  94,
+                                               "ES":  2,
+                                               "CA":  5,
                                                "EN":  0
                                            }
                            }
                 },
     "recent":  [
                    {
-                       "time":  "14:32",
+                       "time":  "14:20",
                        "lang":  "FR",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
@@ -131,7 +131,23 @@
                        "off":  false
                    },
                    {
-                       "time":  "14:32",
+                       "time":  "14:20",
+                       "lang":  "ES",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "14:20",
+                       "lang":  "CA",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
+                   {
+                       "time":  "14:09",
                        "lang":  "FR",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
@@ -139,7 +155,7 @@
                        "off":  false
                    },
                    {
-                       "time":  "14:13",
+                       "time":  "14:08",
                        "lang":  "FR",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
@@ -147,31 +163,15 @@
                        "off":  false
                    },
                    {
-                       "time":  "14:12",
-                       "lang":  "FR",
+                       "time":  "14:08",
+                       "lang":  "CA",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
                        "resultClass":  "info",
                        "off":  false
                    },
                    {
-                       "time":  "13:13",
-                       "lang":  "FR",
-                       "demande":  "Demande d\u0027information",
-                       "result":  "Info donnée",
-                       "resultClass":  "info",
-                       "off":  false
-                   },
-                   {
-                       "time":  "21:37",
-                       "lang":  "FR",
-                       "demande":  "Demande d\u0027information",
-                       "result":  "Info donnée",
-                       "resultClass":  "info",
-                       "off":  true
-                   },
-                   {
-                       "time":  "14:57",
+                       "time":  "14:08",
                        "lang":  "FR",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
