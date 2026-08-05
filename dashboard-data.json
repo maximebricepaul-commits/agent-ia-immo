@@ -1,10 +1,10 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-05T18:02:57",
+    "generatedAt":  "2026-08-05T21:02:29",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  52,
+                              "recus":  53,
                               "manques":  1,
                               "rdv":  0,
                               "heures":  1,
@@ -30,7 +30,7 @@
                                                         1,
                                                         5,
                                                         0,
-                                                        28
+                                                        29
                                                     ],
                                             "rdv":  [
                                                         0,
@@ -43,14 +43,14 @@
                                                     ]
                                         },
                               "langues":  {
-                                              "FR":  67,
+                                              "FR":  68,
                                               "ES":  13,
-                                              "CA":  12,
+                                              "CA":  11,
                                               "EN":  8
                                           }
                           },
                     "30":  {
-                               "recus":  81,
+                               "recus":  82,
                                "manques":  9,
                                "rdv":  4,
                                "heures":  1,
@@ -70,7 +70,7 @@
                                                          0,
                                                          0,
                                                          29,
-                                                         52
+                                                         53
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -87,7 +87,7 @@
                                            }
                            },
                     "90":  {
-                               "recus":  81,
+                               "recus":  82,
                                "manques":  9,
                                "rdv":  4,
                                "heures":  1,
@@ -105,7 +105,7 @@
                                              "app":  [
                                                          0,
                                                          0,
-                                                         81
+                                                         82
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -122,6 +122,14 @@
                            }
                 },
     "recent":  [
+                   {
+                       "time":  "19:31",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
                    {
                        "time":  "17:17",
                        "lang":  "EN",
@@ -165,14 +173,6 @@
                    {
                        "time":  "16:52",
                        "lang":  "FR",
-                       "demande":  "Demande d\u0027information",
-                       "result":  "Info donnée",
-                       "resultClass":  "info",
-                       "off":  false
-                   },
-                   {
-                       "time":  "16:51",
-                       "lang":  "ES",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
                        "resultClass":  "info",
