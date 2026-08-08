@@ -1,11 +1,11 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-08T21:05:07",
+    "generatedAt":  "2026-08-09T00:39:10",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  79,
-                              "manques":  1,
+                              "recus":  78,
+                              "manques":  0,
                               "rdv":  0,
                               "heures":  1,
                               "ca":  0,
@@ -15,16 +15,16 @@
                               "mult":  "×0",
                               "chart":  {
                                             "labels":  [
-                                                           "01/08",
                                                            "02/08",
                                                            "03/08",
                                                            "04/08",
                                                            "05/08",
                                                            "06/08",
-                                                           "07/08"
+                                                           "07/08",
+                                                           "08/08"
                                                        ],
                                             "app":  [
-                                                        1,
+                                                        0,
                                                         5,
                                                         0,
                                                         29,
@@ -43,7 +43,7 @@
                                                     ]
                                         },
                               "langues":  {
-                                              "FR":  41,
+                                              "FR":  40,
                                               "ES":  28,
                                               "CA":  27,
                                               "EN":  5
