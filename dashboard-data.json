@@ -1,10 +1,10 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-08T12:06:36",
+    "generatedAt":  "2026-08-08T15:22:50",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  97,
+                              "recus":  79,
                               "manques":  1,
                               "rdv":  0,
                               "heures":  1,
@@ -24,13 +24,13 @@
                                                            "07/08"
                                                        ],
                                             "app":  [
-                                                        19,
-                                                        0,
+                                                        1,
                                                         5,
                                                         0,
-                                                        68,
-                                                        2,
-                                                        3
+                                                        10,
+                                                        60,
+                                                        3,
+                                                        0
                                                     ],
                                             "rdv":  [
                                                         0,
@@ -43,10 +43,10 @@
                                                     ]
                                         },
                               "langues":  {
-                                              "FR":  52,
-                                              "ES":  23,
-                                              "CA":  22,
-                                              "EN":  4
+                                              "FR":  41,
+                                              "ES":  28,
+                                              "CA":  27,
+                                              "EN":  5
                                           }
                           },
                     "30":  {
