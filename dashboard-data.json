@@ -1,10 +1,10 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-14T13:02:38",
+    "generatedAt":  "2026-08-14T15:34:14",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  3,
+                              "recus":  0,
                               "manques":  0,
                               "rdv":  0,
                               "heures":  0,
@@ -24,7 +24,7 @@
                                                            "13/08"
                                                        ],
                                             "app":  [
-                                                        3,
+                                                        0,
                                                         0,
                                                         0,
                                                         0,
@@ -43,9 +43,9 @@
                                                     ]
                                         },
                               "langues":  {
-                                              "FR":  33,
-                                              "ES":  33,
-                                              "CA":  33,
+                                              "FR":  0,
+                                              "ES":  0,
+                                              "CA":  0,
                                               "EN":  0
                                           }
                           },
