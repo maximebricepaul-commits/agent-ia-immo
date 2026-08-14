@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Essayez ALEX — assistant d'une auto-école</title>
+<meta name="description" content="Testez ALEX, l'assistant qui répond aux questions d'un futur élève, directement dans le chat.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<style>
+  :root{
+    --bg:#0b1220;
+    --bg2:#101a2e;
+    --card:#141f36;
+    --ink:#eef3fb;
+    --muted:#9fb0c9;
+    --accent:#29c1ff;
+    --accent-soft:rgba(41,193,255,.12);
+    --border:rgba(255,255,255,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:radial-gradient(1200px 600px at 50% -100px, var(--bg2), var(--bg));
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;
+  }
+  main{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:48px 20px 140px; /* marge basse : ne pas recouvrir la bulle du chat */
+    text-align:center;
+  }
+  .logo{width:64px;height:64px;border-radius:16px;margin-bottom:20px;box-shadow:0 8px 30px rgba(41,193,255,.25)}
+  h1{font-size:clamp(1.5rem,4.5vw,2.3rem);font-weight:800;line-height:1.2;max-width:620px}
+  .sub{
+    margin-top:14px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.15rem);
+    line-height:1.55;max-width:560px;
+  }
+  .try{
+    margin-top:34px;display:inline-flex;align-items:center;gap:10px;
+    background:var(--accent);color:#04121e;font-weight:800;font-size:1.05rem;
+    border:none;border-radius:14px;padding:16px 30px;cursor:pointer;
+    box-shadow:0 10px 34px rgba(41,193,255,.35);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .try:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(41,193,255,.45)}
+  .hint{margin-top:12px;color:var(--muted);font-size:.85rem}
+  .note{
+    margin-top:42px;max-width:560px;background:var(--card);
+    border:1px solid var(--border);border-radius:14px;padding:18px 20px;
+    color:var(--muted);font-size:.92rem;line-height:1.55;
+  }
+  .note strong{color:var(--ink);font-weight:600}
+  footer{
+    padding:18px;text-align:center;color:var(--muted);font-size:.8rem;
+    border-top:1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <img class="logo" src="/alex-logo-256.png" alt="ALEX" onerror="this.src='/alex-logo.png'">
+  <h1>Essayez ALEX comme assistant d'une auto&#8209;école</h1>
+  <p class="sub">Posez-lui une question comme le ferait un futur élève&nbsp;: tarifs, permis, horaires, inscription, financement…</p>
+
+  <button class="try" onclick="if(window.voiceflow&&window.voiceflow.chat){window.voiceflow.chat.open();return false;}">
+    💬 Testez-le maintenant
+  </button>
+  <p class="hint">Le chat s'ouvre en bas à droite — répondez-lui comme à un SMS.</p>
+
+  <div class="note">
+    <strong>Ce que vous testez ici est le fonctionnement réel d'ALEX.</strong><br>
+    La configuration et les réponses sont ensuite adaptées à l'activité de l'entreprise.
+  </div>
+</main>
+
+<footer>Test gratuit · aucune inscription nécessaire</footer>
+
+<!-- Ping de visite (obligatoire sur chaque démo) — anonyme : device + langue uniquement -->
+<script>
+(function(){
+  try{
+    var device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/alex-demo-autoecole-x7k2p9', {method:'POST', body:'Visite demo Auto-école · '+device+' · '+(navigator.language||'?')});
+  }catch(e){}
+})();
+</script>
+
+<!-- WIDGET ALEX CHAT — même composant réel que la page principale (Voiceflow, projet ALEX) -->
+<script type="text/javascript">
+(function(d, t) {
+  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  v.onload = function() {
+    window.voiceflow.chat.load({
+      verify: { projectID: '6a50f720a304d092f7166812' },
+      url: 'https://general-runtime.voiceflow.com',
+      userID: (function(){
+        var k = 'alex-uid-demo-auto-ecole';
+        var u = localStorage.getItem(k);
+        if (!u) { u = 'web-demo-autoecole-' + Math.random().toString(36).slice(2,10); localStorage.setItem(k, u); }
+        return u;
+      })(),
+      versionID: 'main',
+      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://alexagent.io', 'https://www.alexagent.io'],
+      stylesheet: 'https://alexagent.io/vf-custom.css',
+
+      assistant: {
+        title: 'ALEX',
+        description: 'Votre assistant — répond en quelques secondes',
+        image: 'https://alexagent.io/alex-logo.png',
+        color: '#29c1ff',
+        header: { title: 'ALEX' },
+        banner: {
+          title: 'ALEX',
+          description: 'Bonjour ! Posez-moi une question comme le ferait un futur élève 👋'
+        },
+      },
+
+      launcher: { text: '💬 Tester ALEX' },
+
+      launch: {
+        event: {
+          type: 'launch',
+          payload: {
+            language: 'fr',
+            pageUrl: window.location.href,
+            referrer: document.referrer || 'direct',
+            context: 'demo-auto-ecole',
+          }
+        }
+      },
+
+      proactive: {
+        delay: 12000,
+        messages: [{
+          type: 'text',
+          payload: { message: 'Bonjour ! Posez-moi une question, comme un futur élève 👋' }
+        }]
+      },
+    });
+
+    // Rebrand widget-next (identique index.html) : charte + libellé lanceur
+    (function alexRebrand(){
+      var label = '💬 Tester ALEX';
+      function fix(sr){
+        if (!sr) return;
+        if (!sr.querySelector('link[data-alex]')) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = 'https://alexagent.io/vf-custom.css?v=3';
+          l.setAttribute('data-alex', '1');
+          sr.appendChild(l);
+        }
+        var lab = sr.querySelector('.vfrc-launcher__label,[class*=launcher__label]');
+        if (lab && lab.textContent !== label) lab.textContent = label;
+      }
+      var n = 0;
+      var iv = setInterval(function(){
+        n++;
+        var host = document.getElementById('voiceflow-chat');
+        var sr = host && host.shadowRoot;
+        if (sr) {
+          fix(sr);
+          if (!host.__alexMO) {
+            host.__alexMO = new MutationObserver(function(){ fix(host.shadowRoot); });
+            host.__alexMO.observe(sr, { childList: true, subtree: true });
+          }
+        }
+        if (n > 60) clearInterval(iv);
+      }, 500);
+    })();
+  };
+  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+  v.type = "text/javascript";
+  s.parentNode.insertBefore(v, s);
+})(document, 'script');
+</script>
+
+</body>
+</html>
