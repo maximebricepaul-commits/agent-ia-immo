@@ -2,183 +2,478 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Essayez ALEX — assistant d'une auto-école</title>
-<meta name="description" content="Testez ALEX, l'assistant qui répond aux questions d'un futur élève, directement dans le chat.">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>ALEX · Démonstration assistant auto-école</title>
+<meta name="description" content="Démonstration d'ALEX, l'assistant qui répond aux futurs élèves d'une auto-école : permis B, tarifs, horaires, inscription, financement.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
-  :root{
-    --bg:#0b1220;
-    --bg2:#101a2e;
-    --card:#141f36;
-    --ink:#eef3fb;
-    --muted:#9fb0c9;
-    --accent:#29c1ff;
-    --accent-soft:rgba(41,193,255,.12);
-    --border:rgba(255,255,255,.08);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    background:radial-gradient(1200px 600px at 50% -100px, var(--bg2), var(--bg));
-    color:var(--ink);
-    -webkit-font-smoothing:antialiased;
-    display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;
-  }
-  main{
-    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:48px 20px 140px; /* marge basse : ne pas recouvrir la bulle du chat */
-    text-align:center;
-  }
-  .logo{width:64px;height:64px;border-radius:16px;margin-bottom:20px;box-shadow:0 8px 30px rgba(41,193,255,.25)}
-  h1{font-size:clamp(1.5rem,4.5vw,2.3rem);font-weight:800;line-height:1.2;max-width:620px}
-  .sub{
-    margin-top:14px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.15rem);
-    line-height:1.55;max-width:560px;
-  }
-  .try{
-    margin-top:34px;display:inline-flex;align-items:center;gap:10px;
-    background:var(--accent);color:#04121e;font-weight:800;font-size:1.05rem;
-    border:none;border-radius:14px;padding:16px 30px;cursor:pointer;
-    box-shadow:0 10px 34px rgba(41,193,255,.35);
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .try:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(41,193,255,.45)}
-  .hint{margin-top:12px;color:var(--muted);font-size:.85rem}
-  .note{
-    margin-top:42px;max-width:560px;background:var(--card);
-    border:1px solid var(--border);border-radius:14px;padding:18px 20px;
-    color:var(--muted);font-size:.92rem;line-height:1.55;
-  }
-  .note strong{color:var(--ink);font-weight:600}
-  footer{
-    padding:18px;text-align:center;color:var(--muted);font-size:.8rem;
-    border-top:1px solid var(--border);
-  }
+:root{
+  --navy:#0f2a4a;
+  --navy-dark:#0a1c33;
+  --blue:#1d6fd1;
+  --blue-dark:#155096;
+  --amber:#e8a020;
+  --amber-dark:#c07f0d;
+  --bg:#eef2f6;
+  --paper:#ffffff;
+  --ink:#18242f;
+  --muted:#7a8894;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%, #1a4570 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* BANDEAU DÉMONSTRATION */
+#demoBanner{
+  background:var(--amber);
+  color:#3c2a05;
+  font-size:11.5px;
+  font-weight:700;
+  text-align:center;
+  padding:5px 10px;
+  letter-spacing:.4px;
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--amber-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15px;line-height:1.25;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--blue-dark);}
+.row.user .bubble b{color:#fff;}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dde5ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--amber);
+  color:var(--amber-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--amber);color:#fff;}
+.qbtn.primary{background:var(--blue);border-color:var(--blue-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--blue-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e2e9ee;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d5dee6;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--blue);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(21,80,150,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:7px 10px 4px;
+  background:var(--paper);
+  line-height:1.5;
+}
+.footerbadge a{color:var(--blue-dark);font-weight:600;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c6d1da;border-radius:3px;}
 </style>
 </head>
 <body>
-
-<main>
-  <img class="logo" src="/alex-logo-256.png" alt="ALEX" onerror="this.src='/alex-logo.png'">
-  <h1>Essayez ALEX comme assistant d'une auto&#8209;école</h1>
-  <p class="sub">Posez-lui une question comme le ferait un futur élève&nbsp;: tarifs, permis, horaires, inscription, financement…</p>
-
-  <button class="try" onclick="if(window.voiceflow&&window.voiceflow.chat){window.voiceflow.chat.open();return false;}">
-    💬 Testez-le maintenant
-  </button>
-  <p class="hint">Le chat s'ouvre en bas à droite — répondez-lui comme à un SMS.</p>
-
-  <div class="note">
-    <strong>Ce que vous testez ici est le fonctionnement réel d'ALEX.</strong><br>
-    La configuration et les réponses sont ensuite adaptées à l'activité de l'entreprise.
+<div id="app">
+  <div id="demoBanner">⚠️ DÉMONSTRATION — réponses préconfigurées à titre d'exemple</div>
+  <header>
+    <div class="avatar">🚗</div>
+    <div class="hinfo">
+      <div class="name" id="headerName">ALEX · assistant auto-école</div>
+      <div class="status"><span class="dot"></span><span>disponible à toute heure · répond en quelques secondes</span></div>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez comme un futur élève…" autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
   </div>
-</main>
+  <div class="footerbadge">
+    Démonstration illustrative (réponses préconfigurées, aucune donnée réelle de l'auto-école) · propulsé par ALEX<br>
+    🎧 <a href="/alex-voix-demo.mp3" target="_blank">Écouter la vraie IA ALEX en action (enregistrement audio réel)</a>
+  </div>
+</div>
 
-<footer>Test gratuit · aucune inscription nécessaire</footer>
-
-<!-- Ping de visite (obligatoire sur chaque démo) — anonyme : device + langue uniquement -->
 <script>
-(function(){
-  try{
-    var device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
-    fetch('https://ntfy.sh/alex-demo-autoecole-x7k2p9', {method:'POST', body:'Visite demo Auto-école · '+device+' · '+(navigator.language||'?')});
-  }catch(e){}
-})();
+/* ============ PERSONNALISATION PAR PROSPECT (nom + ville uniquement, rien d'inventé) ============ */
+const ECOLES = {
+  triskell:   {nom:"Triskell Auto-Moto",  ville:"Rennes"},
+  stop:       {nom:"STOP Auto-École",     ville:"Toulouse"},
+  celtic:     {nom:"Celtic School",       ville:"Rennes"},
+  millebornes:{nom:"Mille Bornes",        ville:"Rennes"},
+  dave:       {nom:"Dave Conduite",       ville:"Bretagne"},
+  alpha:      {nom:"Alpha Conduite",      ville:"Strasbourg"}
+};
+const eKey = new URLSearchParams(location.search).get('e');
+const ECOLE = ECOLES[eKey] || null;
+const ECOLE_LABEL = ECOLE ? ECOLE.nom : "votre auto-école";
+if (ECOLE) document.getElementById('headerName').textContent = "ALEX · démo pour " + ECOLE.nom;
+document.title = ECOLE ? ("ALEX · Démonstration pour " + ECOLE.nom) : document.title;
+
+/* ============ TEXTES ============ */
+const T = {
+  welcome:"Bonjour ! 👋 Je suis *ALEX*, un assistant qui répond aux futurs élèves d'une auto-école — à toute heure, même le soir et le week-end.\n\nCeci est une **démonstration** : posez-moi une question comme le ferait un futur élève, ou choisissez un sujet 👇",
+  menu:["🚗 M'inscrire au permis B","💶 Tarifs & financement","🕐 Horaires & questions","📄 Documents nécessaires"],
+  fallback:"Bonne question ! Dans cette démonstration je peux vous montrer comment je réponds sur : *l'inscription au permis B*, *les tarifs et le financement*, *les horaires* ou *les documents nécessaires*. Dans une version configurée pour " + ECOLE_LABEL + ", je répondrais avec ses vraies informations. Que voulez-vous voir ?",
+  /* --- inscription --- */
+  inscStart:"Avec plaisir 🙌 Je vais préparer votre demande d'inscription en 1 minute.\n_Exemple de parcours : dans la vraie version, les formules et créneaux affichés seraient ceux de " + ECOLE_LABEL + "._",
+  askFormule:"🚗 Quelle formule vous intéresse ?",
+  formuleOpts:["Permis B classique","Conduite accompagnée (AAC)","Boîte automatique","Je ne sais pas encore"],
+  askCode:"📚 Où en êtes-vous du code de la route ?",
+  codeOpts:["Pas commencé","En cours","Code obtenu ✅"],
+  askDispo:"🗓️ Quelles disponibilités avez-vous pour les leçons de conduite ?",
+  dispoOpts:["Semaine en journée","Soirs après 18h","Week-end","Variable"],
+  askName:"🙋 À quel prénom dois-je noter la demande ?",
+  askPhone:"📱 Parfait {name} ! Un numéro de portable pour que l'équipe vous rappelle et finalise l'inscription ?",
+  summaryTitle:"📋 Demande d'inscription (exemple)",
+  sumFormule:"Formule", sumCode:"Code", sumDispo:"Disponibilités", sumName:"Prénom", sumPhone:"Téléphone",
+  summaryFooter:"✅ Dans la version réelle, cette demande serait transmise immédiatement à l'équipe de " + ECOLE_LABEL + " — même si l'élève écrit un dimanche soir. L'école le rappelle dès l'ouverture : l'élève est déjà capté.",
+  /* --- tarifs --- */
+  tarifs:"Voici comment je présenterais les formules — *avec des montants d'exemple, pas les vrais tarifs de " + ECOLE_LABEL + "* :\n\n🚗 **Formule permis B « classique »** — code en ligne + 20 h de conduite (montant : celui de votre école)\n🚙 **Conduite accompagnée (AAC)** — dès 15 ans, taux de réussite supérieur\n⚙️ **Boîte automatique** — 13 h minimum, idéal en ville\n\nJe peux aussi expliquer *heure supplémentaire, frais de présentation à l'examen, évaluation de départ*… tout ce qu'un élève demande d'habitude par téléphone.",
+  tarifsBtns:["💰 Et le financement ?","🚗 M'inscrire","🕐 Les horaires"],
+  financement:"Très bonne question — c'est LA question que les élèves posent le soir 😊 Voici ce que je sais expliquer automatiquement :\n\n💳 **CPF** — le permis B est finançable via le Compte Personnel de Formation (sous conditions)\n🏦 **Permis à 1 €/jour** — prêt à taux zéro pour les 15-25 ans, en partenariat avec les banques\n🎓 **Aides régionales/missions locales** — selon la situation de l'élève\n\n_Dans la version configurée, je précise les dispositifs que " + ECOLE_LABEL + " accepte réellement._",
+  finBtns:["🚗 M'inscrire","📄 Documents nécessaires"],
+  /* --- horaires --- */
+  horaires:"C'est justement ma force 💪 :\n\n🕐 Le bureau d'une auto-école a des horaires d'accueil limités — mais les futurs élèves, eux, cherchent *le soir, le week-end, entre deux cours*.\n\nMoi je réponds **24h/24, 7j/7**, immédiatement. Un élève qui écrit un dimanche à 22h reçoit une vraie réponse — au lieu d'aller voir l'auto-école d'à côté.\n\n_Dans la version réelle, j'annonce bien sûr les vrais horaires d'accueil et de conduite de " + ECOLE_LABEL + "._",
+  horairesBtns:["🚗 M'inscrire","💶 Tarifs & financement"],
+  /* --- documents --- */
+  documents:"Voici ce que je réponds à « quels papiers pour m'inscrire ? » :\n\n📄 **Pièce d'identité** en cours de validité\n🏠 **Justificatif de domicile** de moins de 6 mois (ou attestation d'hébergement)\n📷 **Photo-signature numérique agréée** (e-photo ANTS)\n🎓 **ASSR2 ou ASR** pour les moins de 21 ans\n🇫🇷 **Certificat JDC** (17-25 ans)\n\nEt je guide l'élève pas à pas s'il lui manque un document — sans mobiliser la secrétaire.",
+  docBtns:["🚗 M'inscrire","💶 Tarifs & financement"],
+  newQuery:"🔄 Recommencer la démonstration"
+};
+
+/* ============ MOTEUR (réutilisé des démos existantes) ============ */
+let deal = null;
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/_(.+?)_/g,'<i>$1</i>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{ row.remove(); cb(); }, delay || 550);
+}
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function addBotText(text, buttons, delay){ showTyping(()=>addBot(md(text), buttons), delay); }
+function q(str){ return str.replace(/'/g,"\\'"); }
+
+/* ============ MENU ============ */
+function mainMenuButtons(){
+  return [
+    {label:T.menu[0], onclick:"startInscription()", cls:"primary"},
+    {label:T.menu[1], onclick:"showTarifs()"},
+    {label:T.menu[2], onclick:"showHoraires()"},
+    {label:T.menu[3], onclick:"showDocuments()"}
+  ];
+}
+function resetChat(){
+  deal = null;
+  addBotText(T.welcome, mainMenuButtons(), 300);
+}
+
+/* ============ PARCOURS INSCRIPTION ============ */
+function startInscription(){
+  addUser(T.menu[0]);
+  deal = {step:'formule'};
+  addBotText(T.inscStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.askFormule, T.formuleOpts.map(l=>({label:l, onclick:`pickFormule('${q(l)}')`})));
+  }, 800);
+}
+function pickFormule(label){
+  addUser(label); deal.formule=label; deal.step='code';
+  addBotText(T.askCode, T.codeOpts.map(l=>({label:l, onclick:`pickCode('${q(l)}')`})), 450);
+}
+function pickCode(label){
+  addUser(label); deal.code=label; deal.step='dispo';
+  addBotText(T.askDispo, T.dispoOpts.map(l=>({label:l, onclick:`pickDispo('${q(l)}')`})), 450);
+}
+function pickDispo(label){
+  addUser(label); deal.dispo=label; deal.step='name';
+  addBotText(T.askName, null, 450);
+}
+function dealHandleText(text){
+  if(!deal) return false;
+  if(deal.step==='name'){
+    deal.name = text; deal.step='phone';
+    addBotText(T.askPhone.replace('{name}', text), null, 400);
+    return true;
+  }
+  if(deal.step==='phone'){
+    deal.phone = text; finishInscription();
+    return true;
+  }
+  return false;
+}
+function finishInscription(){
+  deal.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${esc(T.summaryTitle)}</span></div>
+        <div class="cardbody">
+          <b>${T.sumFormule} :</b> ${esc(deal.formule)}<br>
+          <b>${T.sumCode} :</b> ${esc(deal.code)}<br>
+          <b>${T.sumDispo} :</b> ${esc(deal.dispo)}<br>
+          <b>${T.sumName} :</b> ${esc(deal.name)}<br>
+          <b>${T.sumPhone} :</b> ${esc(deal.phone)}
+          <hr style="border:none;border-top:1px solid #e2e9ee;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(T.summaryFooter)}</span>
+          <div class="demo-note">ℹ️ Démonstration — aucune donnée n'est transmise ni enregistrée.</div>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', [{label:T.newQuery, onclick:"resetChat()"}]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+/* ============ SUJETS ============ */
+function showTarifs(){
+  addUser(T.menu[1]);
+  addBotText(T.tarifs, [
+    {label:T.tarifsBtns[0], onclick:"showFinancement()"},
+    {label:T.tarifsBtns[1], onclick:"startInscription()", cls:"primary"},
+    {label:T.tarifsBtns[2], onclick:"showHoraires()"}
+  ], 550);
+}
+function showFinancement(){
+  addUser("💰 Et le financement ?");
+  addBotText(T.financement, [
+    {label:T.finBtns[0], onclick:"startInscription()", cls:"primary"},
+    {label:T.finBtns[1], onclick:"showDocuments()"}
+  ], 550);
+}
+function showHoraires(){
+  addUser(T.menu[2]);
+  addBotText(T.horaires, [
+    {label:T.horairesBtns[0], onclick:"startInscription()", cls:"primary"},
+    {label:T.horairesBtns[1], onclick:"showTarifs()"}
+  ], 550);
+}
+function showDocuments(){
+  addUser(T.menu[3]);
+  addBotText(T.documents, [
+    {label:T.docBtns[0], onclick:"startInscription()", cls:"primary"},
+    {label:T.docBtns[1], onclick:"showTarifs()"}
+  ], 550);
+}
+
+/* ============ TEXTE LIBRE ============ */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function nIncludes(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(deal && (deal.step==='name'||deal.step==='phone')){ dealHandleText(text); return; }
+
+  const n = normalize(text);
+  if(nIncludes(n,['financ','cpf','1 euro','1€','aide','payer en plusieurs','echelonn'])){ showFinancement2(); return; }
+  if(nIncludes(n,['tarif','prix','combien','cout','coute','formule'])){ showTarifs2(); return; }
+  if(nIncludes(n,['inscri','commencer','demarre','permis b','conduite accompagnee','aac','boite auto'])){ startInscription2(); return; }
+  if(nIncludes(n,['horaire','ouvert','ferme','quand','heure','dispo','soir','week','dimanche','samedi'])){ showHoraires2(); return; }
+  if(nIncludes(n,['document','papier','piece','justificatif','photo','ants','assr','jdc','dossier'])){ showDocuments2(); return; }
+  if(nIncludes(n,['bonjour','salut','bonsoir','hello','coucou'])){ addBotText(T.welcome, mainMenuButtons(), 400); return; }
+
+  addBotText(T.fallback, mainMenuButtons(), 500);
+}
+/* variantes texte libre (sans re-afficher le bouton cliqué en bulle user : déjà affiché) */
+function showTarifs2(){ addBotText(T.tarifs, [
+  {label:T.tarifsBtns[0], onclick:"showFinancement()"},
+  {label:T.tarifsBtns[1], onclick:"startInscription()", cls:"primary"},
+  {label:T.tarifsBtns[2], onclick:"showHoraires()"}], 550); }
+function showFinancement2(){ addBotText(T.financement, [
+  {label:T.finBtns[0], onclick:"startInscription()", cls:"primary"},
+  {label:T.finBtns[1], onclick:"showDocuments()"}], 550); }
+function showHoraires2(){ addBotText(T.horaires, [
+  {label:T.horairesBtns[0], onclick:"startInscription()", cls:"primary"},
+  {label:T.horairesBtns[1], onclick:"showTarifs()"}], 550); }
+function showDocuments2(){ addBotText(T.documents, [
+  {label:T.docBtns[0], onclick:"startInscription()", cls:"primary"},
+  {label:T.docBtns[1], onclick:"showTarifs()"}], 550); }
+function startInscription2(){
+  deal = {step:'formule'};
+  addBotText(T.inscStart, null, 350);
+  setTimeout(()=>{ addBotText(T.askFormule, T.formuleOpts.map(l=>({label:l, onclick:`pickFormule('${q(l)}')`}))); }, 800);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  handleFreeText(val);
+}
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ============ PING DE VISITE (obligatoire démos) ============ */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/alex-demo-autoecole-x7k2p9', {method:'POST',
+      body:'Visite demo Auto-ecole ['+(eKey||'generique')+'] · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ============ INIT ============ */
+addBotText(T.welcome, mainMenuButtons(), 250);
 </script>
-
-<!-- WIDGET ALEX CHAT — même composant réel que la page principale (Voiceflow, projet ALEX) -->
-<script type="text/javascript">
-(function(d, t) {
-  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-  v.onload = function() {
-    window.voiceflow.chat.load({
-      verify: { projectID: '6a50f720a304d092f7166812' },
-      url: 'https://general-runtime.voiceflow.com',
-      userID: (function(){
-        var k = 'alex-uid-demo-auto-ecole';
-        var u = localStorage.getItem(k);
-        if (!u) { u = 'web-demo-autoecole-' + Math.random().toString(36).slice(2,10); localStorage.setItem(k, u); }
-        return u;
-      })(),
-      versionID: 'main',
-      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://alexagent.io', 'https://www.alexagent.io'],
-      stylesheet: 'https://alexagent.io/vf-custom.css',
-
-      assistant: {
-        title: 'ALEX',
-        description: 'Votre assistant — répond en quelques secondes',
-        image: 'https://alexagent.io/alex-logo.png',
-        color: '#29c1ff',
-        header: { title: 'ALEX' },
-        banner: {
-          title: 'ALEX',
-          description: 'Bonjour ! Posez-moi une question comme le ferait un futur élève 👋'
-        },
-      },
-
-      launcher: { text: '💬 Tester ALEX' },
-
-      launch: {
-        event: {
-          type: 'launch',
-          payload: {
-            language: 'fr',
-            pageUrl: window.location.href,
-            referrer: document.referrer || 'direct',
-            context: 'demo-auto-ecole',
-          }
-        }
-      },
-
-      proactive: {
-        delay: 12000,
-        messages: [{
-          type: 'text',
-          payload: { message: 'Bonjour ! Posez-moi une question, comme un futur élève 👋' }
-        }]
-      },
-    });
-
-    // Rebrand widget-next (identique index.html) : charte + libellé lanceur
-    (function alexRebrand(){
-      var label = '💬 Tester ALEX';
-      function fix(sr){
-        if (!sr) return;
-        if (!sr.querySelector('link[data-alex]')) {
-          var l = document.createElement('link');
-          l.rel = 'stylesheet';
-          l.href = 'https://alexagent.io/vf-custom.css?v=3';
-          l.setAttribute('data-alex', '1');
-          sr.appendChild(l);
-        }
-        var lab = sr.querySelector('.vfrc-launcher__label,[class*=launcher__label]');
-        if (lab && lab.textContent !== label) lab.textContent = label;
-      }
-      var n = 0;
-      var iv = setInterval(function(){
-        n++;
-        var host = document.getElementById('voiceflow-chat');
-        var sr = host && host.shadowRoot;
-        if (sr) {
-          fix(sr);
-          if (!host.__alexMO) {
-            host.__alexMO = new MutationObserver(function(){ fix(host.shadowRoot); });
-            host.__alexMO.observe(sr, { childList: true, subtree: true });
-          }
-        }
-        if (n > 60) clearInterval(iv);
-      }, 500);
-    })();
-  };
-  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-  v.type = "text/javascript";
-  s.parentNode.insertBefore(v, s);
-})(document, 'script');
-</script>
-
 </body>
 </html>
