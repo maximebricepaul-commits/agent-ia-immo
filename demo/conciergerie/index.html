@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>ALEX · Démonstration assistant conciergerie</title>
+<meta name="description" content="Démonstration d'ALEX, l'assistant qui répond aux voyageurs d'une conciergerie 24h/24 : arrivées, codes, dépannage, réservations — et capte les nouveaux propriétaires.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<style>
+:root{
+  --navy:#0f2a4a;
+  --navy-dark:#0a1c33;
+  --blue:#1d6fd1;
+  --blue-dark:#155096;
+  --amber:#e8a020;
+  --amber-dark:#c07f0d;
+  --bg:#eef2f6;
+  --paper:#ffffff;
+  --ink:#18242f;
+  --muted:#7a8894;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%, #1a4570 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+#demoBanner{
+  background:var(--amber);
+  color:#3c2a05;
+  font-size:11.5px;
+  font-weight:700;
+  text-align:center;
+  padding:5px 10px;
+  letter-spacing:.4px;
+}
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--blue) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--amber-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15px;line-height:1.25;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--blue-dark);}
+.row.user .bubble b{color:#fff;}
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dde5ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--amber);
+  color:var(--amber-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--amber);color:#fff;}
+.qbtn.primary{background:var(--blue);border-color:var(--blue-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--blue-dark);}
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e2e9ee;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d5dee6;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--blue);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(21,80,150,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:7px 10px 4px;
+  background:var(--paper);
+  line-height:1.5;
+}
+.footerbadge a{color:var(--blue-dark);font-weight:600;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c6d1da;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="demoBanner">⚠️ DÉMONSTRATION — réponses préconfigurées à titre d'exemple</div>
+  <header>
+    <div class="avatar">🔑</div>
+    <div class="hinfo">
+      <div class="name" id="headerName">ALEX · assistant conciergerie</div>
+      <div class="status"><span class="dot"></span><span>disponible 24h/24 · répond en 4 langues</span></div>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez comme un voyageur… ou un propriétaire" autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">
+    Démonstration illustrative (réponses préconfigurées, aucune donnée réelle de la conciergerie) · propulsé par ALEX<br>
+    🎧 <a href="/alex-voix-demo.mp3" target="_blank">Écouter la vraie IA ALEX en action (enregistrement audio réel)</a>
+  </div>
+</div>
+
+<script>
+/* ============ PERSONNALISATION PAR PROSPECT (nom + ville uniquement, rien d'inventé) ============ */
+const SOCIETES = {
+  joyeuse:    {nom:"La Joyeuse Conciergerie", ville:"Nice"},
+  colette:    {nom:"Les Clés de Colette",     ville:"La Rochelle"},
+  leman:      {nom:"Conciergerie Leman",      ville:"Annecy"},
+  "16bis":    {nom:"16Bis Conciergerie",      ville:"Annecy"},
+  sk:         {nom:"SK Conciergerie",         ville:"La Rochelle"},
+  zerochelle: {nom:"ZeRochelle",              ville:"La Rochelle"},
+  lla:        {nom:"LLA Selections",          ville:"lac d'Annecy"},
+  sweethome:  {nom:"Sweethome Holidays",      ville:"Biarritz"},
+  keyweek:    {nom:"Keyweek",                 ville:"Biarritz"},
+  manasteos:  {nom:"Manasteos",               ville:"Côte d'Azur"},
+  akoya:      {nom:"Akoya Conserjería",       ville:"Empuriabrava"},
+  blausitges: {nom:"Blausitges",              ville:"Sitges"},
+  destino:    {nom:"Destino Sitges",          ville:"Sitges"},
+  sitgesgroup:{nom:"Sitges Group Apartments", ville:"Sitges"},
+  llaves:     {nom:"87 Llaves",               ville:"Valence"},
+  freehost:   {nom:"Freehost",                ville:"Valence"},
+  welcs:      {nom:"Welcs",                   ville:"Empuriabrava"},
+  floritflats:{nom:"Florit Flats",            ville:"Valence"},
+  apartrent:  {nom:"Apart-Rent",              ville:"Empuriabrava"},
+  conciergebb:{nom:"Concierge BB",            ville:"La Rochelle / Île de Ré"},
+  sejourneur: {nom:"Sejourneur",              ville:"La Rochelle"},
+  savemybed:  {nom:"Save My Bed",             ville:"Annecy / Megève"},
+  hostbya:    {nom:"Host by A",               ville:"Cannes"},
+  bc:         {nom:"B&C Conciergerie",        ville:"Nice"}
+};
+const eKey = new URLSearchParams(location.search).get('e');
+const SOC = SOCIETES[eKey] || null;
+const SOC_LABEL = SOC ? SOC.nom : "votre conciergerie";
+if (SOC) document.getElementById('headerName').textContent = "ALEX · démo pour " + SOC.nom;
+document.title = SOC ? ("ALEX · Démonstration pour " + SOC.nom) : document.title;
+
+/* ============ TEXTES ============ */
+const T = {
+  welcome:"Bonjour ! 👋 Je suis *ALEX*, un assistant qui répond aux voyageurs d'une conciergerie — **24h/24, en 4 langues** (🇫🇷 🇬🇧 🇪🇸 🇩🇪), même quand toute l'équipe est sur le terrain.\n\nCeci est une **démonstration** : écrivez-moi comme le ferait un voyageur (ou un propriétaire), ou choisissez un sujet 👇",
+  menu:["🔑 Mon arrivée / check-in","🛠️ Un souci dans le logement","📅 Disponibilités & réservation","🏠 Propriétaire : confier votre bien"],
+  fallback:"Bonne question ! Dans cette démonstration je peux vous montrer comment je gère : *une arrivée*, *un souci dans le logement*, *une demande de réservation* ou *un propriétaire qui veut confier son bien*. Dans la version configurée pour " + SOC_LABEL + ", je répondrais avec ses vraies informations. Que voulez-vous voir ?",
+  /* --- check-in --- */
+  ciStart:"Avec plaisir 🙌 C'est LA question qui tombe à 22h un samedi — et j'y réponds en quelques secondes.\n_Exemple de parcours : dans la vraie version, je reconnais le voyageur et son logement._",
+  ciAskWhen:"🕐 À quelle heure pensez-vous arriver ?",
+  ciWhenOpts:["Avant 16h","Entre 16h et 20h","Après 20h (arrivée tardive)","Je ne sais pas encore"],
+  ciAnswer:"Parfait, c'est noté ✅ Voici ce que je communiquerais automatiquement :\n\n📍 **Adresse exacte + itinéraire** depuis la gare ou l'aéroport\n🔐 **Code de la boîte à clés** (envoyé au bon moment, pas avant)\n🅿️ **Où se garer**, comment fonctionne l'ascenseur, le wifi…\n📸 Avec **photos pas-à-pas** si le logement est difficile à trouver\n\n_Une arrivée tardive n'est plus un appel de panique à 23h : le voyageur est autonome, l'équipe dort._",
+  ciBtns:["🛠️ Et si j'ai un souci ?","🏠 Je suis propriétaire","🔄 Menu principal"],
+  /* --- souci --- */
+  soStart:"Je gère ça immédiatement 💪 Quel type de souci ?",
+  soOpts:["📶 Wifi qui ne marche pas","🔐 Code / clés introuvables","🌡️ Chauffage ou clim","🚿 Autre problème"],
+  soAnswer:"Voici comment je réagirais :\n\n1️⃣ **Je donne la solution immédiate** — redémarrer la box (photo à l'appui), le double du code, le mode d'emploi du thermostat… 80 % des soucis se règlent comme ça, sans déranger personne.\n\n2️⃣ **Si ça ne suffit pas : j'alerte l'équipe en temps réel** avec le logement, le nom du voyageur et le problème déjà qualifié. Vous rappelez en connaissant le dossier.\n\n_Résultat : moins d'appels d'urgence, et des avis 5 étoiles qui mentionnent « réponse immédiate »._",
+  soBtns:["🔑 Voir le check-in","🏠 Je suis propriétaire","🔄 Menu principal"],
+  /* --- résa --- */
+  reStart:"Bien sûr ! Dans la vraie version, je connais le calendrier de chaque logement. Exemple de parcours 👇",
+  reAskWhen:"📅 Pour quelles dates cherchez-vous ?",
+  reWhenOpts:["Ce week-end","Semaine prochaine","Cet été","Dates flexibles"],
+  reAskWho:"👥 Pour combien de personnes ?",
+  reWhoOpts:["2 personnes","3-4 personnes","5-6 personnes","Plus de 6"],
+  reAnswer:"✅ Voici ce que je ferais avec cette demande :\n\n🏠 Je présente les **logements disponibles** correspondants (photos, capacité, quartier)\n🔗 J'envoie le **lien de réservation direct** — sans commission de plateforme\n📋 Et si le voyageur hésite, **je transmets sa demande à l'équipe** avec dates + nombre de personnes déjà qualifiés\n\n_Une demande qui arrive un dimanche soir n'attend plus le lundi matin : elle est captée avant que le voyageur réserve ailleurs._",
+  reBtns:["🔑 Voir le check-in","🏠 Je suis propriétaire","🔄 Menu principal"],
+  /* --- propriétaire (le lead qui vaut de l'or) --- */
+  prStart:"Excellente nouvelle 🙌 — c'est exactement le message que " + SOC_LABEL + " rêve de recevoir, et il arrive souvent le soir ou le dimanche.\n_Exemple de parcours de qualification automatique :_",
+  prAskType:"🏠 Quel type de bien souhaitez-vous confier ?",
+  prTypeOpts:["Appartement","Maison / villa","Plusieurs biens","Autre"],
+  prAskUsage:"📊 Ce bien est actuellement…",
+  prUsageOpts:["Déjà en location saisonnière","En location classique","Vide / résidence secondaire","En cours d'achat"],
+  prAskName:"🙋 À quel prénom dois-je noter la demande ?",
+  prAskPhone:"📱 Merci {name} ! Un numéro pour que l'équipe vous rappelle avec une estimation de revenus ?",
+  prSummaryTitle:"🏠 Nouveau propriétaire à rappeler (exemple)",
+  prSumType:"Bien", prSumUsage:"Situation", prSumName:"Prénom", prSumPhone:"Téléphone",
+  prSummaryFooter:"✅ Dans la version réelle, cette fiche arrive immédiatement par email ou WhatsApp à l'équipe de " + SOC_LABEL + ". Un propriétaire capté un dimanche soir = un mandat de plus — c'est lui qui paie l'assistant, le reste est du confort.",
+  newQuery:"🔄 Recommencer la démonstration"
+};
+
+/* ============ MOTEUR (réutilisé des démos existantes) ============ */
+let deal = null;
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/_(.+?)_/g,'<i>$1</i>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{ row.remove(); cb(); }, delay || 550);
+}
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function addBotText(text, buttons, delay){ showTyping(()=>addBot(md(text), buttons), delay); }
+function q(str){ return str.replace(/'/g,"\\'"); }
+
+/* ============ MENU ============ */
+function mainMenuButtons(){
+  return [
+    {label:T.menu[0], onclick:"startCheckin()"},
+    {label:T.menu[1], onclick:"startSouci()"},
+    {label:T.menu[2], onclick:"startResa()"},
+    {label:T.menu[3], onclick:"startProprio()", cls:"primary"}
+  ];
+}
+function resetChat(){
+  deal = null;
+  addBotText(T.welcome, mainMenuButtons(), 300);
+}
+function backMenu(){
+  addUser("🔄 Menu principal");
+  resetChat();
+}
+
+/* ============ CHECK-IN ============ */
+function startCheckin(){
+  addUser(T.menu[0]);
+  checkin2();
+}
+function checkin2(){
+  addBotText(T.ciStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.ciAskWhen, T.ciWhenOpts.map(l=>({label:l, onclick:`pickCiWhen('${q(l)}')`})));
+  }, 800);
+}
+function pickCiWhen(label){
+  addUser(label);
+  addBotText(T.ciAnswer, [
+    {label:T.ciBtns[0], onclick:"startSouci()"},
+    {label:T.ciBtns[1], onclick:"startProprio()", cls:"primary"},
+    {label:T.ciBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ SOUCI ============ */
+function startSouci(){
+  addUser(T.menu[1]);
+  souci2();
+}
+function souci2(){
+  addBotText(T.soStart, T.soOpts.map(l=>({label:l, onclick:`pickSouci('${q(l)}')`})), 450);
+}
+function pickSouci(label){
+  addUser(label);
+  addBotText(T.soAnswer, [
+    {label:T.soBtns[0], onclick:"startCheckin()"},
+    {label:T.soBtns[1], onclick:"startProprio()", cls:"primary"},
+    {label:T.soBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ RÉSA ============ */
+function startResa(){
+  addUser(T.menu[2]);
+  resa2();
+}
+function resa2(){
+  addBotText(T.reStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.reAskWhen, T.reWhenOpts.map(l=>({label:l, onclick:`pickReWhen('${q(l)}')`})));
+  }, 800);
+}
+function pickReWhen(label){
+  addUser(label);
+  addBotText(T.reAskWho, T.reWhoOpts.map(l=>({label:l, onclick:`pickReWho('${q(l)}')`})), 450);
+}
+function pickReWho(label){
+  addUser(label);
+  addBotText(T.reAnswer, [
+    {label:T.reBtns[0], onclick:"startCheckin()"},
+    {label:T.reBtns[1], onclick:"startProprio()", cls:"primary"},
+    {label:T.reBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ PROPRIÉTAIRE (parcours lead) ============ */
+function startProprio(){
+  addUser(T.menu[3]);
+  proprio2();
+}
+function proprio2(){
+  deal = {step:'type'};
+  addBotText(T.prStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.prAskType, T.prTypeOpts.map(l=>({label:l, onclick:`pickPrType('${q(l)}')`})));
+  }, 800);
+}
+function pickPrType(label){
+  addUser(label); deal.type=label; deal.step='usage';
+  addBotText(T.prAskUsage, T.prUsageOpts.map(l=>({label:l, onclick:`pickPrUsage('${q(l)}')`})), 450);
+}
+function pickPrUsage(label){
+  addUser(label); deal.usage=label; deal.step='name';
+  addBotText(T.prAskName, null, 450);
+}
+function dealHandleText(text){
+  if(!deal) return false;
+  if(deal.step==='name'){
+    deal.name = text; deal.step='phone';
+    addBotText(T.prAskPhone.replace('{name}', text), null, 400);
+    return true;
+  }
+  if(deal.step==='phone'){
+    deal.phone = text; finishProprio();
+    return true;
+  }
+  return false;
+}
+function finishProprio(){
+  deal.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${esc(T.prSummaryTitle)}</span></div>
+        <div class="cardbody">
+          <b>${T.prSumType} :</b> ${esc(deal.type)}<br>
+          <b>${T.prSumUsage} :</b> ${esc(deal.usage)}<br>
+          <b>${T.prSumName} :</b> ${esc(deal.name)}<br>
+          <b>${T.prSumPhone} :</b> ${esc(deal.phone)}
+          <hr style="border:none;border-top:1px solid #e2e9ee;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(T.prSummaryFooter)}</span>
+          <div class="demo-note">ℹ️ Démonstration — aucune donnée n'est transmise ni enregistrée.</div>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', [{label:T.newQuery, onclick:"resetChat()"}]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+/* ============ TEXTE LIBRE ============ */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function nIncludes(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(deal && (deal.step==='name'||deal.step==='phone')){ dealHandleText(text); return; }
+
+  const n = normalize(text);
+  if(nIncludes(n,['proprietaire','confier','gestion','revenus','estimation','mandat','rentab','mon bien','mon appart','ma maison'])){ proprio2(); return; }
+  if(nIncludes(n,['arriv','check','checkin','check-in','code','cle','cles','boite','entrer','acces','adresse'])){ checkin2(); return; }
+  if(nIncludes(n,['wifi','panne','marche pas','chauffage','clim','eau chaude','probleme','souci','casse','fuite'])){ souci2(); return; }
+  if(nIncludes(n,['dispo','reserv','libre','date','nuit','sejour','louer','week-end','weekend','semaine','vacance'])){ resa2(); return; }
+  if(nIncludes(n,['bonjour','salut','bonsoir','hello','coucou','hola'])){ addBotText(T.welcome, mainMenuButtons(), 400); return; }
+  if(nIncludes(n,['langue','anglais','espagnol','allemand','english','espanol'])){ addBotText("Yes! 🇬🇧 ¡Claro! 🇪🇸 Natürlich! 🇩🇪\n\nDans la version réelle, je détecte automatiquement la langue du voyageur et je réponds dans SA langue — anglais, espagnol, allemand, français. Ici, la démonstration est en français pour rester simple.", mainMenuButtons(), 500); return; }
+
+  addBotText(T.fallback, mainMenuButtons(), 500);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  handleFreeText(val);
+}
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ============ PING DE VISITE (obligatoire démos) ============ */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/alex-demo-conciergerie-x7k2p9', {method:'POST',
+      body:'Visite demo Conciergerie ['+(eKey||'generique')+'] · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ============ INIT ============ */
+addBotText(T.welcome, mainMenuButtons(), 250);
+</script>
+</body>
+</html>
