@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>ALEX × We Rent Tunisia · Démonstration</title>
+<meta name="description" content="Démonstration d'ALEX pour We Rent Tunisia : l'assistant qui répond aux voyageurs 24h/24 en plusieurs langues — arrivées, conciergerie, réservations, propriétaires.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<style>
+:root{
+  --deep:#0b3446;
+  --deep-dark:#072433;
+  --teal:#0e8f8b;
+  --teal-dark:#0a6a67;
+  --gold:#d9a441;
+  --gold-dark:#b5832a;
+  --bg:#eef4f4;
+  --paper:#ffffff;
+  --ink:#16262e;
+  --muted:#75878e;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%, #12546e 0%, var(--deep) 55%, var(--deep-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+#demoBanner{
+  background:var(--gold);
+  color:#3c2a05;
+  font-size:11.5px;
+  font-weight:700;
+  text-align:center;
+  padding:5px 10px;
+  letter-spacing:.4px;
+}
+header{
+  background:linear-gradient(135deg,var(--deep) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15px;line-height:1.25;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langswitch{
+  display:flex;gap:4px;flex-shrink:0;
+}
+.langbtn{
+  background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.35);
+  color:#fff;font-size:12px;font-weight:700;
+  padding:5px 9px;border-radius:14px;cursor:pointer;
+}
+.langbtn.active{background:#fff;color:var(--teal-dark);}
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--deep));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--teal-dark);}
+.row.user .bubble b{color:#fff;}
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #d8e4e4;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--deep),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--gold);
+  color:var(--gold-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--gold);color:#fff;}
+.qbtn.primary{background:var(--teal);border-color:var(--teal-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--teal-dark);}
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #dfe9e9;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #cfdede;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(10,106,103,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:7px 10px 4px;
+  background:var(--paper);
+  line-height:1.5;
+}
+.footerbadge a{color:var(--teal-dark);font-weight:600;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c2d2d2;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="demoBanner">⚠️ DÉMONSTRATION / DEMO — réponses préconfigurées · preconfigured example answers</div>
+  <header>
+    <div class="avatar">🌊</div>
+    <div class="hinfo">
+      <div class="name">ALEX × We Rent Tunisia</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">disponible 24h/24 · FR · EN · العربية</span></div>
+    </div>
+    <div class="langswitch">
+      <button class="langbtn active" id="btnFR" onclick="setLang('fr')">FR</button>
+      <button class="langbtn" id="btnEN" onclick="setLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez comme un voyageur… ou un propriétaire" autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">
+    Démonstration illustrative pour We Rent Tunisia (réponses préconfigurées, aucune donnée réelle) · propulsé par ALEX<br>
+    🎧 <a href="/alex-voix-demo.mp3" target="_blank">Écouter la vraie IA ALEX en action (enregistrement audio réel)</a>
+  </div>
+</div>
+
+<script>
+/* ============ TEXTES FR + EN (bascule en direct = preuve du multilingue) ============ */
+const SOCIETE = "We Rent Tunisia";
+const LANGS = {
+fr: {
+  placeholder:"Écrivez comme un voyageur… ou un propriétaire",
+  status:"disponible 24h/24 · FR · EN · العربية",
+  welcome:"Bonjour ! 👋 Je suis *ALEX*, l'assistant de **" + SOCIETE + "** — je réponds aux voyageurs **24h/24**, en français, anglais et arabe 🇹🇳\n\nCeci est une **démonstration** (basculez en EN en haut à droite pour voir le multilingue !) : écrivez-moi comme un voyageur, ou choisissez 👇",
+  menu:["🔑 Mon arrivée / check-in","🛎️ Conciergerie & extras","📅 Disponibilités & réservation","🛠️ Un souci dans le logement","🏠 Propriétaire : confier votre bien"],
+  fallback:"Bonne question ! Dans cette démonstration je peux vous montrer : *une arrivée*, *les extras conciergerie*, *une réservation*, *un souci dans le logement* ou *un propriétaire qui confie son bien*. Dans la version réelle de " + SOCIETE + ", je répondrais avec ses vraies informations. Que voulez-vous voir ?",
+  ciStart:"Avec plaisir 🙌 C'est LA question qui arrive à 23h quand l'avion a du retard — et j'y réponds en quelques secondes.",
+  ciAskWhen:"🕐 À quelle heure pensez-vous arriver ?",
+  ciWhenOpts:["Avant 16h","Entre 16h et 20h","Tard le soir (vol retardé ✈️)","Je ne sais pas encore"],
+  ciAnswer:"Parfait, c'est noté ✅ Voici ce que j'enverrais automatiquement :\n\n📍 **Adresse exacte + itinéraire** depuis l'aéroport\n🚕 **Transfert** : je propose le chauffeur partenaire de " + SOCIETE + " si le voyageur le souhaite\n🔐 **Instructions d'entrée** (code, gardien, clés) envoyées au bon moment\n📶 **Wifi, clim, eau** — tout le pratique en un message\n\n_Une arrivée à minuit n'est plus un appel de panique : le voyageur est autonome, l'équipe dort._",
+  ciBtns:["🛎️ Voir les extras","🏠 Je suis propriétaire","🔄 Menu"],
+  exStart:"C'est la force d'une vraie conciergerie — et je sais la vendre 😊 Exemples de ce que je gère automatiquement :",
+  exAskWhat:"🛎️ Qu'est-ce qui ferait plaisir ?",
+  exOpts:["🚕 Transfert aéroport","🧺 Ménage supplémentaire","🍽️ Chef / courses à l'arrivée","🐪 Excursions & découvertes"],
+  exAnswer:"Excellent choix ✅ Voici comment je réagirais :\n\n1️⃣ **Je présente l'option** avec les infos configurées par " + SOCIETE + " (partenaires, conditions, délais)\n2️⃣ **Je prends la demande** : dates, nombre de personnes, préférences\n3️⃣ **Je transmets à l'équipe** — la demande arrive qualifiée, il ne reste qu'à confirmer\n\n💰 _Chaque extra vendu = du chiffre en plus sans effort commercial. L'assistant propose systématiquement, sans jamais oublier ni dormir._",
+  exBtns:["🔑 Voir le check-in","📅 Réserver un séjour","🔄 Menu"],
+  reStart:"Bien sûr ! Dans la version réelle, je connais le calendrier de chaque logement de " + SOCIETE + ". Exemple 👇",
+  reAskWhen:"📅 Pour quelles dates ?",
+  reWhenOpts:["Ce week-end","La semaine prochaine","Cet été","Dates flexibles"],
+  reAskWho:"👥 Combien de personnes ?",
+  reWhoOpts:["2 personnes","3-4 personnes","5-8 personnes","Grand groupe"],
+  reAnswer:"✅ Avec cette demande, voici ce que je ferais :\n\n🏠 Je présente **les logements disponibles** (photos, capacité, quartier, plage à proximité)\n🔗 J'envoie le **lien de réservation direct** — sans commission de plateforme\n📋 Si le voyageur hésite : **je transmets la demande qualifiée** à l'équipe (dates + personnes + budget)\n\n_Une demande du dimanche soir est captée avant que le voyageur ne réserve ailleurs._",
+  reBtns:["🛎️ Les extras","🏠 Je suis propriétaire","🔄 Menu"],
+  soStart:"Je gère ça immédiatement 💪 Quel type de souci ?",
+  soOpts:["📶 Wifi","🌡️ Climatisation","🔐 Clés / code","🚿 Autre problème"],
+  soAnswer:"Voici ma réaction :\n\n1️⃣ **Solution immédiate** — redémarrer la box (photo à l'appui), mode d'emploi de la clim, double du code… 80 % des soucis se règlent sans déranger personne\n2️⃣ **Sinon : j'alerte l'équipe en temps réel** avec le logement, le voyageur et le problème déjà qualifié\n\n_Résultat : moins d'appels d'urgence, des avis 5 étoiles qui disent « réponse immédiate, équipe au top »._",
+  soBtns:["🔑 Le check-in","🛎️ Les extras","🔄 Menu"],
+  prStart:"Excellente nouvelle 🙌 — c'est LE message que " + SOCIETE + " rêve de recevoir, et il arrive souvent le soir ou le dimanche.",
+  prAskType:"🏠 Quel type de bien souhaitez-vous confier ?",
+  prTypeOpts:["Appartement","Villa / maison","Plusieurs biens","Autre"],
+  prAskUsage:"📊 Ce bien est actuellement…",
+  prUsageOpts:["Déjà en location saisonnière","Vide / résidence secondaire","En location classique","En cours d'achat"],
+  prAskName:"🙋 À quel prénom dois-je noter la demande ?",
+  prAskPhone:"📱 Merci {name} ! Un numéro (WhatsApp de préférence) pour que l'équipe vous rappelle avec une estimation de revenus ?",
+  prSummaryTitle:"🏠 Nouveau propriétaire à rappeler (exemple)",
+  prSumType:"Bien", prSumUsage:"Situation", prSumName:"Prénom", prSumPhone:"Téléphone",
+  prSummaryFooter:"✅ Dans la version réelle, cette fiche arrive immédiatement sur le WhatsApp de l'équipe " + SOCIETE + ". Un propriétaire capté un dimanche soir = un bien de plus au portefeuille — c'est lui qui paie l'assistant, tout le reste est du bonus.",
+  langDemo:"Yes! 🇬🇧 I switch languages instantly — try the EN button at the top right. In the real version, I detect the traveler's language automatically and answer in **French, English or Arabic** — nothing to configure on their side.",
+  newQuery:"🔄 Recommencer la démonstration",
+  menuBack:"🔄 Menu"
+},
+en: {
+  placeholder:"Type like a guest… or a property owner",
+  status:"available 24/7 · FR · EN · العربية",
+  welcome:"Hello! 👋 I'm *ALEX*, the assistant of **" + SOCIETE + "** — I answer guests **24/7**, in French, English and Arabic 🇹🇳\n\nThis is a **demo** (switch back to FR anytime!): type like a guest would, or pick a topic 👇",
+  menu:["🔑 My arrival / check-in","🛎️ Concierge & extras","📅 Availability & booking","🛠️ A problem in the flat","🏠 Owner: entrust your property"],
+  fallback:"Good question! In this demo I can show you: *an arrival*, *concierge extras*, *a booking*, *a problem in the flat* or *an owner entrusting a property*. In the real version of " + SOCIETE + ", I would answer with its actual information. What would you like to see?",
+  ciStart:"With pleasure 🙌 THE question that lands at 11pm when the flight is delayed — I answer it in seconds.",
+  ciAskWhen:"🕐 What time do you expect to arrive?",
+  ciWhenOpts:["Before 4pm","Between 4 and 8pm","Late at night (delayed flight ✈️)","Not sure yet"],
+  ciAnswer:"Perfect, noted ✅ Here's what I would send automatically:\n\n📍 **Exact address + directions** from the airport\n🚕 **Transfer**: I offer " + SOCIETE + "'s partner driver if the guest wants one\n🔐 **Entry instructions** (code, caretaker, keys) sent at the right moment\n📶 **Wifi, AC, water** — all the practical info in one message\n\n_A midnight arrival is no longer a panic call: the guest is autonomous, the team sleeps._",
+  ciBtns:["🛎️ See the extras","🏠 I'm an owner","🔄 Menu"],
+  exStart:"That's the strength of a real concierge service — and I know how to sell it 😊 Examples of what I handle automatically:",
+  exAskWhat:"🛎️ What would you like?",
+  exOpts:["🚕 Airport transfer","🧺 Extra cleaning","🍽️ Chef / groceries on arrival","🐪 Excursions & experiences"],
+  exAnswer:"Excellent choice ✅ Here's how I'd react:\n\n1️⃣ **I present the option** with the info configured by " + SOCIETE + " (partners, conditions, lead times)\n2️⃣ **I take the request**: dates, number of people, preferences\n3️⃣ **I pass it to the team** — the request arrives qualified, they just confirm\n\n💰 _Every extra sold = additional revenue with zero sales effort. The assistant offers systematically — it never forgets and never sleeps._",
+  exBtns:["🔑 See check-in","📅 Book a stay","🔄 Menu"],
+  reStart:"Of course! In the real version, I know each property's calendar. Example 👇",
+  reAskWhen:"📅 Which dates?",
+  reWhenOpts:["This weekend","Next week","This summer","Flexible dates"],
+  reAskWho:"👥 How many people?",
+  reWhoOpts:["2 people","3-4 people","5-8 people","Large group"],
+  reAnswer:"✅ With this request, here's what I would do:\n\n🏠 I show **available properties** (photos, capacity, neighbourhood, distance to the beach)\n🔗 I send the **direct booking link** — no platform commission\n📋 If the guest hesitates: **I pass the qualified request** to the team (dates + people + budget)\n\n_A Sunday-evening enquiry is captured before the guest books elsewhere._",
+  reBtns:["🛎️ The extras","🏠 I'm an owner","🔄 Menu"],
+  soStart:"I handle it right away 💪 What kind of problem?",
+  soOpts:["📶 Wifi","🌡️ Air conditioning","🔐 Keys / code","🚿 Something else"],
+  soAnswer:"Here's my reaction:\n\n1️⃣ **Immediate fix** — restart the router (with a photo), AC instructions, backup code… 80% of issues get solved without disturbing anyone\n2️⃣ **Otherwise: I alert the team in real time** with the property, the guest and the problem already qualified\n\n_Result: fewer emergency calls, and 5-star reviews saying "instant answers, great team"._",
+  soBtns:["🔑 Check-in","🛎️ The extras","🔄 Menu"],
+  prStart:"Great news 🙌 — THE message " + SOCIETE + " dreams of receiving, and it often comes on a Sunday evening.",
+  prAskType:"🏠 What type of property would you like to entrust?",
+  prTypeOpts:["Apartment","Villa / house","Several properties","Other"],
+  prAskUsage:"📊 This property is currently…",
+  prUsageOpts:["Already on short-term rental","Empty / second home","On long-term rental","Being purchased"],
+  prAskName:"🙋 What first name should I note?",
+  prAskPhone:"📱 Thanks {name}! A phone number (WhatsApp preferred) so the team can call you back with a revenue estimate?",
+  prSummaryTitle:"🏠 New owner to call back (example)",
+  prSumType:"Property", prSumUsage:"Status", prSumName:"First name", prSumPhone:"Phone",
+  prSummaryFooter:"✅ In the real version, this lead lands instantly on the " + SOCIETE + " team's WhatsApp. An owner captured on a Sunday evening = one more property in the portfolio — that alone pays for the assistant.",
+  langDemo:"Oui ! 🇫🇷 Je change de langue instantanément — dans la version réelle je détecte la langue du voyageur automatiquement : **français, anglais ou arabe**.",
+  newQuery:"🔄 Restart the demo",
+  menuBack:"🔄 Menu"
+}
+};
+let LANG = 'fr';
+let T = LANGS.fr;
+
+function setLang(l){
+  if(LANG===l) return;
+  LANG = l; T = LANGS[l];
+  document.getElementById('btnFR').classList.toggle('active', l==='fr');
+  document.getElementById('btnEN').classList.toggle('active', l==='en');
+  document.getElementById('msgInput').placeholder = T.placeholder;
+  document.getElementById('statusTxt').textContent = T.status;
+  deal = null;
+  addBotText(T.welcome, mainMenuButtons(), 250);
+}
+
+/* ============ MOTEUR ============ */
+let deal = null;
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/_(.+?)_/g,'<i>$1</i>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{ row.remove(); cb(); }, delay || 550);
+}
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function addBotText(text, buttons, delay){ showTyping(()=>addBot(md(text), buttons), delay); }
+function q(str){ return str.replace(/'/g,"\\'"); }
+
+/* ============ MENU ============ */
+function mainMenuButtons(){
+  return [
+    {label:T.menu[0], onclick:"startCheckin()"},
+    {label:T.menu[1], onclick:"startExtras()"},
+    {label:T.menu[2], onclick:"startResa()"},
+    {label:T.menu[3], onclick:"startSouci()"},
+    {label:T.menu[4], onclick:"startProprio()", cls:"primary"}
+  ];
+}
+function resetChat(){
+  deal = null;
+  addBotText(T.welcome, mainMenuButtons(), 300);
+}
+function backMenu(){
+  addUser(T.menuBack);
+  resetChat();
+}
+
+/* ============ CHECK-IN ============ */
+function startCheckin(){ addUser(T.menu[0]); checkin2(); }
+function checkin2(){
+  addBotText(T.ciStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.ciAskWhen, T.ciWhenOpts.map(l=>({label:l, onclick:`pickCiWhen('${q(l)}')`})));
+  }, 800);
+}
+function pickCiWhen(label){
+  addUser(label);
+  addBotText(T.ciAnswer, [
+    {label:T.ciBtns[0], onclick:"startExtras()"},
+    {label:T.ciBtns[1], onclick:"startProprio()", cls:"primary"},
+    {label:T.ciBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ EXTRAS CONCIERGERIE ============ */
+function startExtras(){ addUser(T.menu[1]); extras2(); }
+function extras2(){
+  addBotText(T.exStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.exAskWhat, T.exOpts.map(l=>({label:l, onclick:`pickExtra('${q(l)}')`})));
+  }, 800);
+}
+function pickExtra(label){
+  addUser(label);
+  addBotText(T.exAnswer, [
+    {label:T.exBtns[0], onclick:"startCheckin()"},
+    {label:T.exBtns[1], onclick:"startResa()"},
+    {label:T.exBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ RÉSA ============ */
+function startResa(){ addUser(T.menu[2]); resa2(); }
+function resa2(){
+  addBotText(T.reStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.reAskWhen, T.reWhenOpts.map(l=>({label:l, onclick:`pickReWhen('${q(l)}')`})));
+  }, 800);
+}
+function pickReWhen(label){
+  addUser(label);
+  addBotText(T.reAskWho, T.reWhoOpts.map(l=>({label:l, onclick:`pickReWho('${q(l)}')`})), 450);
+}
+function pickReWho(label){
+  addUser(label);
+  addBotText(T.reAnswer, [
+    {label:T.reBtns[0], onclick:"startExtras()"},
+    {label:T.reBtns[1], onclick:"startProprio()", cls:"primary"},
+    {label:T.reBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ SOUCI ============ */
+function startSouci(){ addUser(T.menu[3]); souci2(); }
+function souci2(){
+  addBotText(T.soStart, T.soOpts.map(l=>({label:l, onclick:`pickSouci('${q(l)}')`})), 450);
+}
+function pickSouci(label){
+  addUser(label);
+  addBotText(T.soAnswer, [
+    {label:T.soBtns[0], onclick:"startCheckin()"},
+    {label:T.soBtns[1], onclick:"startExtras()"},
+    {label:T.soBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ PROPRIÉTAIRE ============ */
+function startProprio(){ addUser(T.menu[4]); proprio2(); }
+function proprio2(){
+  deal = {step:'type'};
+  addBotText(T.prStart, null, 350);
+  setTimeout(()=>{
+    addBotText(T.prAskType, T.prTypeOpts.map(l=>({label:l, onclick:`pickPrType('${q(l)}')`})));
+  }, 800);
+}
+function pickPrType(label){
+  addUser(label); deal.type=label; deal.step='usage';
+  addBotText(T.prAskUsage, T.prUsageOpts.map(l=>({label:l, onclick:`pickPrUsage('${q(l)}')`})), 450);
+}
+function pickPrUsage(label){
+  addUser(label); deal.usage=label; deal.step='name';
+  addBotText(T.prAskName, null, 450);
+}
+function dealHandleText(text){
+  if(!deal) return false;
+  if(deal.step==='name'){
+    deal.name = text; deal.step='phone';
+    addBotText(T.prAskPhone.replace('{name}', text), null, 400);
+    return true;
+  }
+  if(deal.step==='phone'){
+    deal.phone = text; finishProprio();
+    return true;
+  }
+  return false;
+}
+function finishProprio(){
+  deal.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${esc(T.prSummaryTitle)}</span></div>
+        <div class="cardbody">
+          <b>${T.prSumType} :</b> ${esc(deal.type)}<br>
+          <b>${T.prSumUsage} :</b> ${esc(deal.usage)}<br>
+          <b>${T.prSumName} :</b> ${esc(deal.name)}<br>
+          <b>${T.prSumPhone} :</b> ${esc(deal.phone)}
+          <hr style="border:none;border-top:1px solid #dfe9e9;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(T.prSummaryFooter)}</span>
+          <div class="demo-note">ℹ️ Démonstration — aucune donnée n'est transmise ni enregistrée. / Demo — no data is sent or stored.</div>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', [{label:T.newQuery, onclick:"resetChat()"}]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+/* ============ TEXTE LIBRE ============ */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function nIncludes(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(deal && (deal.step==='name'||deal.step==='phone')){ dealHandleText(text); return; }
+
+  const n = normalize(text);
+  if(nIncludes(n,['proprietaire','confier','gestion','revenus','estimation','rentab','mon bien','ma villa','mon appart','owner','entrust','my property','my villa'])){ proprio2(); return; }
+  if(nIncludes(n,['arriv','check','code','cle','cles','acces','adresse','arrival','key','address','get in'])){ checkin2(); return; }
+  if(nIncludes(n,['transfert','chauffeur','taxi','menage','chef','course','excursion','extra','transfer','driver','cleaning','groceries','tour'])){ extras2(); return; }
+  if(nIncludes(n,['wifi','clim','panne','probleme','souci','fuite','marche pas','broken','problem','issue','not working','ac '])){ souci2(); return; }
+  if(nIncludes(n,['dispo','reserv','libre','date','nuit','sejour','louer','week','semaine','vacance','book','available','stay','night'])){ resa2(); return; }
+  if(nIncludes(n,['bonjour','salut','bonsoir','hello','hi ','coucou','salam','ahla'])){ addBotText(T.welcome, mainMenuButtons(), 400); return; }
+  if(nIncludes(n,['langue','anglais','arabe','english','arabic','francais','french','language'])){ addBotText(T.langDemo, mainMenuButtons(), 500); return; }
+
+  addBotText(T.fallback, mainMenuButtons(), 500);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  handleFreeText(val);
+}
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ============ PING DE VISITE (obligatoire démos) ============ */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/alex-demo-conciergerie-x7k2p9', {method:'POST',
+      body:'Visite demo WE RENT TUNISIA · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ============ INIT ============ */
+addBotText(LANGS.fr.welcome, mainMenuButtons(), 250);
+</script>
+</body>
+</html>
