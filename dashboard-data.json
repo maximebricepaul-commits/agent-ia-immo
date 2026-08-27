@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-08-17T12:02:20",
+    "generatedAt":  "2026-08-27T12:13:00",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -15,13 +15,13 @@
                               "mult":  "×0",
                               "chart":  {
                                             "labels":  [
-                                                           "10/08",
-                                                           "11/08",
-                                                           "12/08",
-                                                           "13/08",
-                                                           "14/08",
-                                                           "15/08",
-                                                           "16/08"
+                                                           "20/08",
+                                                           "21/08",
+                                                           "22/08",
+                                                           "23/08",
+                                                           "24/08",
+                                                           "25/08",
+                                                           "26/08"
                                                        ],
                                             "app":  [
                                                         0,
@@ -50,15 +50,15 @@
                                           }
                           },
                     "30":  {
-                               "recus":  126,
-                               "manques":  9,
-                               "rdv":  4,
-                               "heures":  2,
-                               "ca":  800,
+                               "recus":  98,
+                               "manques":  1,
+                               "rdv":  0,
+                               "heures":  1,
+                               "ca":  0,
                                "zero":  0,
                                "cost":  "490 €",
-                               "ca_s":  "800 €",
-                               "mult":  "×2",
+                               "ca_s":  "0 €",
+                               "mult":  "×0",
                                "chart":  {
                                              "labels":  [
                                                             "Sem. 1",
@@ -67,27 +67,27 @@
                                                             "Sem. 4"
                                                         ],
                                              "app":  [
-                                                         0,
-                                                         48,
-                                                         78,
+                                                         24,
+                                                         73,
+                                                         1,
                                                          0
                                                      ],
                                              "rdv":  [
                                                          0,
-                                                         4,
+                                                         0,
                                                          0,
                                                          0
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  63,
-                                               "ES":  17,
-                                               "CA":  17,
-                                               "EN":  3
+                                               "FR":  52,
+                                               "ES":  22,
+                                               "CA":  21,
+                                               "EN":  4
                                            }
                            },
                     "90":  {
-                               "recus":  126,
+                               "recus":  127,
                                "manques":  9,
                                "rdv":  4,
                                "heures":  2,
@@ -104,13 +104,13 @@
                                                         ],
                                              "app":  [
                                                          0,
-                                                         0,
-                                                         126
+                                                         29,
+                                                         98
                                                      ],
                                              "rdv":  [
                                                          0,
-                                                         0,
-                                                         4
+                                                         4,
+                                                         0
                                                      ]
                                          },
                                "langues":  {
@@ -122,6 +122,14 @@
                            }
                 },
     "recent":  [
+                   {
+                       "time":  "18:26",
+                       "lang":  "FR",
+                       "demande":  "Demande d\u0027information",
+                       "result":  "Info donnée",
+                       "resultClass":  "info",
+                       "off":  false
+                   },
                    {
                        "time":  "14:36",
                        "lang":  "FR",
@@ -165,14 +173,6 @@
                    {
                        "time":  "11:52",
                        "lang":  "FR",
-                       "demande":  "Demande d\u0027information",
-                       "result":  "Info donnée",
-                       "resultClass":  "info",
-                       "off":  false
-                   },
-                   {
-                       "time":  "11:52",
-                       "lang":  "ES",
                        "demande":  "Demande d\u0027information",
                        "result":  "Info donnée",
                        "resultClass":  "info",
