@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Ortho Châtelet</title>
+<meta name="description" content="Démonstration privée : Alex, l'assistant virtuel de Ortho Châtelet à Orléans — répond, qualifie et prend les rendez-vous 24h/24, en 4 langues.">
+<meta name="robots" content="noindex">
+<style>
+:root{--a:#123a46;--b:#0b2730;--c:#166b7d;--d:#2fa8b8;--e:#1c8494;--bg:#eef6f7;--paper:#fbfefe;--ink:#20343a;--muted:#6f8b91;--line:#d6e8ec;--line2:#e0eef1;--line3:#cfe4e8;--line4:#dceaed;--wa:#25d366;--wa-dark:#1ebe5b;--radius:18px;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 600px at 50% -10%, var(--c) 0%, var(--a) 55%, var(--b) 100%);min-height:100%;display:flex;justify-content:center;color:var(--ink);}
+#app{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;background:var(--bg);display:flex;flex-direction:column;position:relative;box-shadow:0 0 60px rgba(0,0,0,.35);}
+header{background:linear-gradient(135deg,var(--a) 0%,var(--c) 100%);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+.avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--d),var(--e));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:11px;font-weight:700;padding:5px 7px;border-radius:8px;cursor:pointer;letter-spacing:.3px;}
+.langbtn.active{background:#fff;color:var(--c);}
+#chat{flex:1;overflow-y:auto;padding:16px 12px 12px;display:flex;flex-direction:column;gap:10px;}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{max-width:84%;padding:10px 13px;border-radius:var(--radius);font-size:14.5px;line-height:1.45;white-space:pre-wrap;box-shadow:0 1px 2px rgba(0,0,0,.06);}
+.row.bot .bubble{background:var(--paper);border-bottom-left-radius:4px;color:var(--ink);}
+.row.user .bubble{background:linear-gradient(135deg,var(--c),var(--d));color:#fff;border-bottom-right-radius:4px;}
+.bubble b{color:var(--c);}
+.row.user .bubble b{color:#fff;}
+.card{background:var(--paper);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid var(--line);}
+.card .cardhead{background:linear-gradient(135deg,var(--a),var(--c));color:#fff;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.dish{padding:7px 0;border-bottom:1px dashed var(--line2);}
+.dish:last-child{border-bottom:none;}
+.dish .dname{font-weight:700;color:var(--c);font-size:13.8px;}
+.dish .ddesc{color:var(--muted);font-size:12.5px;margin-top:1px;}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 2px;}
+.spec{background:var(--bg);color:var(--c);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{background:#fff;border:1.5px solid var(--d);color:var(--e);font-size:13px;font-weight:600;padding:8px 12px;border-radius:20px;cursor:pointer;transition:.15s;}
+.qbtn:hover{background:var(--d);color:#fff;}
+.qbtn.primary{background:var(--d);border-color:var(--e);color:#fff;}
+.qbtn.primary:hover{background:var(--e);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+#inputbar{display:flex;align-items:center;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:var(--paper);border-top:1px solid var(--line4);position:sticky;bottom:0;}
+#msgInput{flex:1;border:1.5px solid var(--line3);background:var(--bg);border-radius:22px;padding:11px 16px;font-size:14.5px;outline:none;color:var(--ink);}
+#msgInput:focus{border-color:var(--d);}
+#sendBtn{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--d),var(--e));color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25);}
+#sendBtn:active{transform:scale(.93);}
+.footerbadge{text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;background:var(--paper);}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#b9d6dc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">🦷</div>
+    <div class="hinfo">
+      <div class="name" id="hName"></div>
+      <div class="status"><span class="dot"></span><span id="statusTxt"></span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="fr">FR</button>
+      <button class="langbtn" data-lang="es">ES</button>
+      <button class="langbtn" data-lang="en">EN</button>
+      <button class="langbtn" data-lang="ca">CA</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" autocomplete="off" />
+    <button id="sendBtn">&#10148;</button>
+  </div>
+  <div class="footerbadge" id="footerBadge"></div>
+</div>
+
+<script>
+/* Demo ALEX — assistant scripte autonome, 4 langues. Aucune donnee reelle du commerce. */
+var CFG = {"name":"Ortho Châtelet","city":"Orléans","emoji":"🦷","wa":"33774602008","topic":"agentia-demo-orthochatelet-q5x9","S":{"fr":{"status":"en ligne · réponse immédiate","placeholder":"Écrivez votre message...","menuLabel":"Menu","back":"⬅️ ","askName":"🙋 À quel prénom dois-je noter votre demande ?","askPhone":"📱 Parfait {name} ! Un numéro de portable pour vous envoyer la confirmation ?","summaryTitle":"📋 Récapitulatif","lName":"Prénom","lPhone":"Téléphone","sendWa":"📲 Envoyer ma demande par WhatsApp","newQuery":"🔄 Nouvelle demande","faqTitle":"Que voulez-vous savoir ?","cardBadge":"Aperçu","demoNote":"Contenu illustratif présenté à titre de démonstration — l'équipe vous confirme les informations exactes.","footer":"🔒 Démonstration privée pour Ortho Châtelet · propulsé par Alex AI","accessTitle":"📍 Accès","welcome":"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel du cabinet **Ortho Châtelet**, à Orléans.\nJe note les demandes de rendez-vous et réponds aux questions pendant que l'équipe est au fauteuil. Que puis-je faire pour vous ?","menu":["📅 Demander un rendez-vous","🦷 Motifs de consultation","🕐 Horaires & accès","💬 Parler au secrétariat"],"flowStart":"Très bien, je note votre demande 🙌","steps":[{"label":"Motif","ask":"🦷 Quel est le motif de votre demande ?","opts":["Contrôle / détartrage","Douleur ou urgence","Suivi de traitement","Esthétique / alignement","Autre motif"]},{"label":"Patient","ask":"👤 Êtes-vous déjà patient du cabinet ?","opts":["Oui, patient suivi","Non, nouveau patient"]},{"label":"Délai","ask":"📅 Dans quel délai souhaitez-vous être vu ?","opts":["Dès que possible","Cette semaine","Dans le mois","Peu importe"]},{"label":"Moment","ask":"⏰ Vous préférez plutôt le matin ou l'après-midi ?","opts":["🌅 Matin","🌇 Après-midi","Indifférent"]}],"summaryFooter":"✅ Je transmets votre demande au secrétariat de Ortho Châtelet, qui vous rappelle pour fixer l'horaire précis. ⚠️ En cas de douleur intense, de traumatisme ou de saignement, appelez directement le cabinet ou le 15 — je ne remplace pas un avis médical.","waPrefix":"Bonjour ! Je souhaite un rendez-vous au cabinet Ortho Châtelet :","cardIntro":"Voici les principaux motifs pour lesquels je peux noter un rendez-vous 🦷 :","cardTitle":"🦷 Motifs de consultation","sections":[{"label":"Soins courants","items":[{"n":"Contrôle annuel & détartrage","d":"bilan, radios si nécessaire"},{"n":"Carie, sensibilité, douleur","d":"créneau d'urgence gardé chaque jour"}]},{"label":"Traitements","items":[{"n":"Prothèses & implants","d":"plan de traitement expliqué avant tout devis"},{"n":"Suivi de traitement en cours","d":"contrôle, réglage, fin de soins"}]},{"label":"Esthétique","items":[{"n":"Alignement & éclaircissement","d":"première consultation d'évaluation"}]}],"extraLine":"⚠️ *Urgences* : douleur qui empêche de dormir, gonflement, dent expulsée après un choc → appelez le cabinet sans attendre. En dehors des horaires, contactez le service d'urgence dentaire de votre secteur ou le 15.","cardButtons":["⚠️ Urgences","📅 Demander un RDV","⬅️ Menu"],"faqButtons":["⚠️ Urgences","💳 Prise en charge","📍 Accès & parking","⬅️ Menu"],"hoursText":"🕐 *Horaires* (exemple de démonstration)\nDu lundi au vendredi — 8h30–12h00 et 13h30–18h00\nFermé le week-end ; un créneau d'urgence est gardé chaque matin.","accessText":"📍 *Accès* : cabinet situé à Orléans, desservi par les transports. 🅿️ Stationnement à proximité. Merci de signaler tout besoin d'accessibilité, l'équipe s'organise.","groupsText":"💳 *Prise en charge* : je note votre mutuelle et le type de soin envisagé ; le secrétariat vous précise le reste à charge et vous remet un devis avant tout traitement. Aucun montant n'est annoncé par l'assistant.","fallback":"Bonne question ! Je peux noter une *demande de rendez-vous*, expliquer les *motifs de consultation* ou les *horaires* — ou vous passer le secrétariat. Que préférez-vous ?"},"es":{"status":"en línea · responde al instante","placeholder":"Escribe tu mensaje...","menuLabel":"Menú","back":"⬅️ ","askName":"🙋 ¿A nombre de quién anoto tu solicitud?","askPhone":"📱 ¡Perfecto {name}! ¿Un móvil para enviarte la confirmación?","summaryTitle":"📋 Resumen","lName":"Nombre","lPhone":"Teléfono","sendWa":"📲 Enviar mi solicitud por WhatsApp","newQuery":"🔄 Nueva consulta","faqTitle":"¿Qué quieres saber?","cardBadge":"Vista previa","demoNote":"Contenido ilustrativo mostrado a modo de demostración — el equipo te confirma la información exacta.","footer":"🔒 Demostración privada para Ortho Châtelet · con tecnología Alex AI","accessTitle":"📍 Cómo llegar","welcome":"¡Hola! 👋 Soy *Alex*, el asistente virtual de la clínica **Ortho Châtelet**, en Orléans.\nAnoto las solicitudes de cita y respondo preguntas mientras el equipo está en el sillón. ¿En qué te ayudo?","menu":["📅 Pedir cita","🦷 Motivos de consulta","🕐 Horarios y cómo llegar","💬 Hablar con recepción"],"flowStart":"Muy bien, anoto tu solicitud 🙌","steps":[{"label":"Motivo","ask":"🦷 ¿Cuál es el motivo de tu solicitud?","opts":["Revisión / limpieza","Dolor o urgencia","Seguimiento de tratamiento","Estética / alineación","Otro motivo"]},{"label":"Paciente","ask":"👤 ¿Ya eres paciente de la clínica?","opts":["Sí, paciente habitual","No, paciente nuevo"]},{"label":"Plazo","ask":"📅 ¿En qué plazo quieres que te vean?","opts":["Lo antes posible","Esta semana","Este mes","Me da igual"]},{"label":"Momento","ask":"⏰ ¿Prefieres mañana o tarde?","opts":["🌅 Mañana","🌇 Tarde","Indiferente"]}],"summaryFooter":"✅ Paso tu solicitud a recepción de Ortho Châtelet, que te llama para fijar la hora exacta. ⚠️ Si tienes dolor intenso, un traumatismo o sangrado, llama directamente a la clínica o a urgencias — no sustituyo un consejo médico.","waPrefix":"¡Hola! Quiero una cita en la clínica Ortho Châtelet:","cardIntro":"Estos son los principales motivos por los que puedo anotar una cita 🦷:","cardTitle":"🦷 Motivos de consulta","sections":[{"label":"Cuidados habituales","items":[{"n":"Revisión anual y limpieza","d":"chequeo, radiografías si es necesario"},{"n":"Caries, sensibilidad, dolor","d":"hueco de urgencia reservado cada día"}]},{"label":"Tratamientos","items":[{"n":"Prótesis e implantes","d":"plan de tratamiento explicado antes del presupuesto"},{"n":"Seguimiento de tratamiento","d":"control, ajuste, fin de tratamiento"}]},{"label":"Estética","items":[{"n":"Alineación y blanqueamiento","d":"primera consulta de evaluación"}]}],"extraLine":"⚠️ *Urgencias*: dolor que impide dormir, hinchazón, diente arrancado tras un golpe → llama a la clínica sin esperar. Fuera del horario, contacta con el servicio de urgencias dental de tu zona.","cardButtons":["⚠️ Urgencias","📅 Pedir cita","⬅️ Menú"],"faqButtons":["⚠️ Urgencias","💳 Cobertura","📍 Cómo llegar","⬅️ Menú"],"hoursText":"🕐 *Horarios* (ejemplo de demostración)\nDe lunes a viernes — 8:30–12:00 y 13:30–18:00\nCerrado el fin de semana; cada mañana se reserva un hueco de urgencia.","accessText":"📍 *Cómo llegar*: clínica situada en Orléans, con transporte público cerca. 🅿️ Aparcamiento en las inmediaciones. Indícanos cualquier necesidad de accesibilidad.","groupsText":"💳 *Cobertura*: anoto tu mutua y el tipo de tratamiento previsto; recepción te indica el importe a cargo y te entrega un presupuesto antes de cualquier tratamiento. El asistente no anuncia importes.","fallback":"¡Buena pregunta! Puedo anotar una *solicitud de cita*, explicar los *motivos de consulta* o los *horarios* — o pasarte con recepción. ¿Qué prefieres?"},"en":{"status":"online · replies instantly","placeholder":"Type your message...","menuLabel":"Menu","back":"⬅️ ","askName":"🙋 What name should I put your request under?","askPhone":"📱 Great, {name}! A mobile number so I can send you the confirmation?","summaryTitle":"📋 Summary","lName":"Name","lPhone":"Phone","sendWa":"📲 Send my request via WhatsApp","newQuery":"🔄 New request","faqTitle":"What would you like to know?","cardBadge":"Preview","demoNote":"Illustrative content shown for demonstration — the team will confirm the exact details.","footer":"🔒 Private demonstration for Ortho Châtelet · powered by Alex AI","accessTitle":"📍 Getting here","welcome":"Hi! 👋 I'm *Alex*, the virtual assistant for the **Ortho Châtelet** practice in Orléans.\nI take appointment requests and answer questions while the team is chairside. How can I help?","menu":["📅 Request an appointment","🦷 Reasons for a visit","🕐 Hours & directions","💬 Talk to reception"],"flowStart":"Certainly — let me note your request 🙌","steps":[{"label":"Reason","ask":"🦷 What is your request about?","opts":["Check-up / scale & polish","Pain or emergency","Ongoing treatment","Cosmetic / alignment","Something else"]},{"label":"Patient","ask":"👤 Are you already a patient here?","opts":["Yes, existing patient","No, new patient"]},{"label":"Timeframe","ask":"📅 How soon would you like to be seen?","opts":["As soon as possible","This week","Within the month","No preference"]},{"label":"Time of day","ask":"⏰ Morning or afternoon?","opts":["🌅 Morning","🌇 Afternoon","No preference"]}],"summaryFooter":"✅ I'm passing your request to the Ortho Châtelet reception, who will call you to set the exact time. ⚠️ For severe pain, trauma or bleeding, call the practice or emergency services directly — I don't replace medical advice.","waPrefix":"Hi! I'd like an appointment at the Ortho Châtelet practice:","cardIntro":"Here are the main reasons I can log an appointment for 🦷:","cardTitle":"🦷 Reasons for a visit","sections":[{"label":"Routine care","items":[{"n":"Annual check-up & cleaning","d":"assessment, X-rays if needed"},{"n":"Decay, sensitivity, pain","d":"an emergency slot is kept each day"}]},{"label":"Treatments","items":[{"n":"Prosthetics & implants","d":"treatment plan explained before any quote"},{"n":"Ongoing treatment follow-up","d":"review, adjustment, completion"}]},{"label":"Cosmetic","items":[{"n":"Alignment & whitening","d":"initial assessment consultation"}]}],"extraLine":"⚠️ *Emergencies*: pain that keeps you awake, swelling, a tooth knocked out after an impact → call the practice straight away. Outside opening hours, contact your local emergency dental service.","cardButtons":["⚠️ Emergencies","📅 Request an appointment","⬅️ Menu"],"faqButtons":["⚠️ Emergencies","💳 Cover & quotes","📍 Directions","⬅️ Menu"],"hoursText":"🕐 *Hours* (demonstration example)\nMonday to Friday — 8:30–12:00 and 13:30–18:00\nClosed at weekends; an emergency slot is kept each morning.","accessText":"📍 *Getting here*: the practice is in Orléans, served by public transport. 🅿️ Parking nearby. Do mention any accessibility needs and the team will make arrangements.","groupsText":"💳 *Cover & quotes*: I note your insurance and the treatment considered; reception tells you what's left to pay and gives you a written quote before any treatment. The assistant never quotes amounts.","fallback":"Good question! I can log an *appointment request*, explain the *reasons for a visit* or the *hours* — or hand you to reception. What would you prefer?"},"ca":{"status":"en línia · respon a l'instant","placeholder":"Escriu el teu missatge...","menuLabel":"Menú","back":"⬅️ ","askName":"🙋 A nom de qui anoto la teva sol·licitud?","askPhone":"📱 Perfecte {name}! Un mòbil per enviar-te la confirmació?","summaryTitle":"📋 Resum","lName":"Nom","lPhone":"Telèfon","sendWa":"📲 Enviar la meva sol·licitud per WhatsApp","newQuery":"🔄 Nova consulta","faqTitle":"Què vols saber?","cardBadge":"Vista prèvia","demoNote":"Contingut il·lustratiu presentat a tall de demostració — l'equip et confirma la informació exacta.","footer":"🔒 Demostració privada per a Ortho Châtelet · impulsat per Alex AI","accessTitle":"📍 Com arribar","welcome":"Hola! 👋 Sóc *Alex*, l'assistent virtual de la clínica **Ortho Châtelet**, a Orléans.\nAnoto les sol·licituds de cita i responc preguntes mentre l'equip és a la cadira. En què et puc ajudar?","menu":["📅 Demanar cita","🦷 Motius de consulta","🕐 Horaris i com arribar","💬 Parlar amb recepció"],"flowStart":"Molt bé, anoto la teva sol·licitud 🙌","steps":[{"label":"Motiu","ask":"🦷 Quin és el motiu de la teva sol·licitud?","opts":["Revisió / neteja","Dolor o urgència","Seguiment de tractament","Estètica / alineació","Un altre motiu"]},{"label":"Pacient","ask":"👤 Ja ets pacient de la clínica?","opts":["Sí, pacient habitual","No, pacient nou"]},{"label":"Termini","ask":"📅 En quin termini vols que et vegin?","opts":["Al més aviat possible","Aquesta setmana","Aquest mes","M'és igual"]},{"label":"Moment","ask":"⏰ Prefereixes matí o tarda?","opts":["🌅 Matí","🌇 Tarda","Indiferent"]}],"summaryFooter":"✅ Passo la teva sol·licitud a recepció de Ortho Châtelet, que et truca per fixar l'hora exacta. ⚠️ Si tens dolor intens, un traumatisme o sagnat, truca directament a la clínica o a urgències — no substitueixo un consell mèdic.","waPrefix":"Hola! Vull una cita a la clínica Ortho Châtelet:","cardIntro":"Aquests són els principals motius pels quals puc anotar una cita 🦷:","cardTitle":"🦷 Motius de consulta","sections":[{"label":"Cures habituals","items":[{"n":"Revisió anual i neteja","d":"revisió, radiografies si cal"},{"n":"Càries, sensibilitat, dolor","d":"es guarda un torn d'urgència cada dia"}]},{"label":"Tractaments","items":[{"n":"Pròtesis i implants","d":"pla de tractament explicat abans del pressupost"},{"n":"Seguiment de tractament","d":"control, ajust, fi del tractament"}]},{"label":"Estètica","items":[{"n":"Alineació i blanquejament","d":"primera consulta d'avaluació"}]}],"extraLine":"⚠️ *Urgències*: dolor que no deixa dormir, inflor, dent arrencada després d'un cop → truca a la clínica sense esperar. Fora d'horari, contacta el servei d'urgències dental de la teva zona.","cardButtons":["⚠️ Urgències","📅 Demanar cita","⬅️ Menú"],"faqButtons":["⚠️ Urgències","💳 Cobertura","📍 Com arribar","⬅️ Menú"],"hoursText":"🕐 *Horaris* (exemple de demostració)\nDe dilluns a divendres — 8:30–12:00 i 13:30–18:00\nTancat el cap de setmana; cada matí es reserva un torn d'urgència.","accessText":"📍 *Com arribar*: la clínica és a Orléans, ben comunicada amb transport públic. 🅿️ Aparcament a prop. Indica'ns qualsevol necessitat d'accessibilitat.","groupsText":"💳 *Cobertura*: anoto la teva mútua i el tractament previst; recepció t'indica l'import a càrrec i et lliura un pressupost abans de qualsevol tractament. L'assistent no anuncia imports.","fallback":"Bona pregunta! Puc anotar una *sol·licitud de cita*, explicar els *motius de consulta* o els *horaris* — o passar-te amb recepció. Què prefereixes?"}}};
+var lang = 'fr';
+var flow = null;
+var chatEl = document.getElementById('chat');
+var inputEl = document.getElementById('msgInput');
+
+function t(k){ return (CFG.S[lang] || CFG.S.fr)[k]; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(s){ return esc(s).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\*(.+?)\*/g,'<b>$1</b>').replace(/\n/g,'<br>'); }
+function scrollBottom(){ requestAnimationFrame(function(){ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  var row = document.createElement('div');
+  row.className = 'row user';
+  var b = document.createElement('div');
+  b.className = 'bubble';
+  b.innerHTML = md(text);
+  row.appendChild(b);
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function makeButtons(buttons){
+  var wrap = document.createElement('div');
+  wrap.className = 'quick';
+  buttons.forEach(function(b){
+    var el = document.createElement('button');
+    el.className = 'qbtn' + (b.cls ? ' ' + b.cls : '');
+    el.textContent = b.label;
+    el.addEventListener('click', b.fn);
+    wrap.appendChild(el);
+  });
+  return wrap;
+}
+
+function addBot(html, buttons, isNode){
+  var row = document.createElement('div');
+  row.className = 'row bot';
+  var stack = document.createElement('div');
+  stack.className = 'stack';
+  if (html !== null){
+    var b = document.createElement('div');
+    b.className = 'bubble';
+    if (isNode){ b.style.padding='0'; b.style.background='transparent'; b.style.boxShadow='none'; b.style.maxWidth='94%'; b.appendChild(html); }
+    else { b.innerHTML = html; }
+    stack.appendChild(b);
+  }
+  if (buttons && buttons.length){
+    var holder = document.createElement('div');
+    holder.style.marginTop = '6px';
+    holder.appendChild(makeButtons(buttons));
+    stack.appendChild(holder);
+  }
+  row.appendChild(stack);
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  var row = document.createElement('div');
+  row.className = 'row bot';
+  row.innerHTML = '<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>';
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(function(){ row.remove(); cb(); }, delay || 550);
+}
+function say(text, buttons, delay){ showTyping(function(){ addBot(md(text), buttons); }, delay); }
+
+/* ---------- MENU ---------- */
+function mainMenuButtons(){
+  var m = t('menu');
+  return [
+    {label:m[0], fn:startFlow, cls:'primary'},
+    {label:m[1], fn:showCard},
+    {label:m[2], fn:showHours},
+    {label:m[3], fn:humanHandoff, cls:'wa'}
+  ];
+}
+function backBtn(){ return {label: t('back') + t('menuLabel'), fn: showMenu}; }
+function showMenu(){ say(t('welcome'), mainMenuButtons(), 300); }
+
+/* ---------- CARTE / PRESTATIONS ---------- */
+function cardNode(){
+  var wrap = document.createElement('div');
+  wrap.className = 'card';
+  var head = document.createElement('div');
+  head.className = 'cardhead';
+  head.innerHTML = '<span class="cname">' + esc(t('cardTitle')) + '</span><span class="cprice">' + esc(t('cardBadge')) + '</span>';
+  var body = document.createElement('div');
+  body.className = 'cardbody';
+  t('sections').forEach(function(sec){
+    var sr = document.createElement('div');
+    sr.className = 'spec-row';
+    sr.innerHTML = '<span class="spec">' + esc(sec.label) + '</span>';
+    body.appendChild(sr);
+    sec.items.forEach(function(it){
+      var d = document.createElement('div');
+      d.className = 'dish';
+      d.innerHTML = '<div class="dname">' + esc(it.n) + '</div><div class="ddesc">' + esc(it.d) + '</div>';
+      body.appendChild(d);
+    });
+  });
+  var note = document.createElement('div');
+  note.className = 'demo-note';
+  note.textContent = 'ℹ️ ' + t('demoNote');
+  body.appendChild(note);
+  wrap.appendChild(head); wrap.appendChild(body);
+  return wrap;
+}
+
+function showCard(){
+  addUser(t('menu')[1]);
+  say(t('cardIntro'), null, 400);
+  setTimeout(function(){
+    addBot(cardNode(), null, true);
+    var cb = t('cardButtons');
+    addBot(md(t('extraLine')), [
+      {label:cb[0], fn:showExtra},
+      {label:cb[1], fn:startFlow, cls:'primary'},
+      {label:cb[2], fn:showMenu}
+    ]);
+  }, 700);
+}
+
+function showExtra(){
+  addUser(t('cardButtons')[0]);
+  say(t('extraLine'), [{label:t('menu')[0], fn:startFlow, cls:'primary'}, backBtn()], 450);
+}
+
+/* ---------- HORAIRES / INFOS ---------- */
+function showHours(){
+  addUser(t('menu')[2]);
+  var fb = t('faqButtons');
+  say(t('faqTitle'), [
+    {label:fb[0], fn:showExtra},
+    {label:fb[1], fn:showGroups},
+    {label:fb[2], fn:showAccess},
+    {label:fb[3], fn:showMenu}
+  ], 350);
+  setTimeout(function(){
+    addBot(md(t('hoursText') + '\n\n' + t('accessText')), [
+      {label:t('menu')[0], fn:startFlow, cls:'primary'}, backBtn()
+    ]);
+  }, 950);
+}
+function showAccess(){
+  addUser(t('faqButtons')[2]);
+  say(t('accessText'), [{label:t('menu')[0], fn:startFlow, cls:'primary'}, backBtn()], 400);
+}
+function showGroups(){
+  addUser(t('faqButtons')[1]);
+  say(t('groupsText'), [
+    {label:t('menu')[0], fn:startFlow, cls:'primary'},
+    {label:'💬 WhatsApp', fn:openWa, cls:'wa'}
+  ], 450);
+}
+
+/* ---------- HANDOFF ---------- */
+function waLink(text){ return 'https://wa.me/' + CFG.wa + '?text=' + encodeURIComponent(text); }
+function openWa(){ window.open(waLink(t('waPrefix')), '_blank'); }
+function humanHandoff(){
+  addUser(t('menu')[3]);
+  say(t('humanHandoff'), [{label:'💬 WhatsApp', fn:openWa, cls:'wa'}, backBtn()], 400);
+}
+
+/* ---------- FLUX SCRIPTE ---------- */
+function startFlow(){
+  addUser(t('menu')[0]);
+  flow = {i:0, answers:[], stage:'steps', name:null, phone:null};
+  say(t('flowStart'), null, 300);
+  setTimeout(askStep, 700);
+}
+function askStep(){
+  var steps = t('steps');
+  if (flow.i >= steps.length){ flow.stage = 'name'; say(t('askName'), null, 450); return; }
+  var st = steps[flow.i];
+  say(st.ask, st.opts.map(function(o){ return {label:o, fn:function(){ pick(o); }}; }), 450);
+}
+function pick(label){
+  if (!flow || flow.stage !== 'steps') return;
+  addUser(label);
+  flow.answers.push(label);
+  flow.i++;
+  askStep();
+}
+function finish(){
+  flow.stage = 'done';
+  showTyping(function(){
+    var steps = t('steps');
+    var card = document.createElement('div');
+    card.className = 'card';
+    var head = document.createElement('div');
+    head.className = 'cardhead';
+    head.innerHTML = '<span class="cname">' + esc(t('summaryTitle')) + '</span>';
+    var body = document.createElement('div');
+    body.className = 'cardbody';
+    var lines = '';
+    steps.forEach(function(st, i){ lines += '<b>' + esc(st.label) + ' :</b> ' + esc(flow.answers[i] || '—') + '<br>'; });
+    lines += '<b>' + esc(t('lName')) + ' :</b> ' + esc(flow.name) + '<br>';
+    lines += '<b>' + esc(t('lPhone')) + ' :</b> ' + esc(flow.phone);
+    body.innerHTML = lines + '<hr style="border:none;border-top:1px solid var(--line2);margin:8px 0"><span style="font-size:12px;color:var(--muted)">' + esc(t('summaryFooter')) + '</span>';
+    card.appendChild(head); card.appendChild(body);
+    addBot(card, null, true);
+    var waText = t('waPrefix');
+    steps.forEach(function(st, i){ waText += '\n' + st.label + ': ' + (flow.answers[i] || '-'); });
+    waText += '\n' + t('lName') + ': ' + flow.name + '\n' + t('lPhone') + ': ' + flow.phone;
+    addBot(null, [
+      {label:t('sendWa'), fn:function(){ window.open(waLink(waText), '_blank'); }, cls:'wa'},
+      {label:t('newQuery'), fn:resetChat}
+    ]);
+  }, 600);
+}
+function resetChat(){ flow = null; say(t('welcome'), mainMenuButtons(), 300); }
+
+/* ---------- LANGUE ---------- */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+var LANGHINT = {
+  fr:['bonjour','salut','bonsoir','rendez','reserv','horaire','merci','oui','tarif','disponible','souhaite'],
+  es:['hola','buenas','cita','reservar','horario','gracias','quiero','disponible','tarde'],
+  en:['hello','hi ','hey','appointment','book','hours','thanks','please','available','would like'],
+  ca:['bon dia','bona tarda','cita','reservar','horari','gracies','vull','disponible','vespre']
+};
+function detectLang(text){
+  var n = normalize(text), best = null, bs = 0;
+  Object.keys(LANGHINT).forEach(function(l){
+    var s = 0;
+    LANGHINT[l].forEach(function(w){ if (n.indexOf(w) >= 0) s++; });
+    if (s > bs){ bs = s; best = l; }
+  });
+  return bs > 0 ? best : null;
+}
+function applyLang(l, reset){
+  lang = l;
+  var btns = document.querySelectorAll('.langbtn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.toggle('active', btns[i].getAttribute('data-lang') === l);
+  document.getElementById('statusTxt').textContent = t('status');
+  document.getElementById('footerBadge').textContent = t('footer');
+  inputEl.placeholder = t('placeholder');
+  if (reset){ chatEl.innerHTML = ''; flow = null; say(t('welcome'), mainMenuButtons(), 250); }
+}
+
+/* ---------- TEXTE LIBRE ---------- */
+var KW = {
+  flow:['reserv','rendez','rdv','cita','appointment','book','taula','mesa','table','visite','viewing','estimation','valoracion','valoració','urgence','urgencia','emergency','douleur','dolor','pain'],
+  card:['carte','menu','carta','soin','tratamiento','treatment','prestation','motif','bien','propiedad','property','dish','plat'],
+  hours:['horaire','horari','horario','hour','ouvert','abierto','open','ferme','tancat','quand'],
+  access:['acces','acceso','direction','parking','adresse','address','venir','llegar','arribar','ou etes','where'],
+  extra:['allerg','gluten','lactose','sensible','urgence','urgencia','emergency','contre-indication','estimation','valoracion','prix','precio','price'],
+  human:['whatsapp','humain','human','humano','equipe','equipo','equip','appeler','llamar','call','telephone','parler','hablar'],
+  hello:['bonjour','salut','bonsoir','hola','buenas','hello','hi','hey','bon dia']
+};
+function anyOf(n, arr){ for (var i = 0; i < arr.length; i++) if (n.indexOf(arr[i]) >= 0) return true; return false; }
+
+function handleFreeText(raw){
+  var text = raw.trim();
+  if (!text) return;
+  addUser(text);
+  inputEl.value = '';
+  if (flow && flow.stage === 'name'){ flow.name = text; flow.stage = 'phone'; say(t('askPhone').replace('{name}', text), null, 400); return; }
+  if (flow && flow.stage === 'phone'){ flow.phone = text; finish(); return; }
+  var n = normalize(text);
+  if (anyOf(n, KW.human)) { humanHandoff(); return; }
+  if (anyOf(n, KW.extra) && !anyOf(n, KW.flow)) { showExtra(); return; }
+  if (anyOf(n, KW.flow))  { startFlow(); return; }
+  if (anyOf(n, KW.card))  { showCard(); return; }
+  if (anyOf(n, KW.hours)) { showHours(); return; }
+  if (anyOf(n, KW.access)){ showAccess(); return; }
+  if (anyOf(n, KW.hello)) { say(t('welcome'), mainMenuButtons(), 400); return; }
+  say(t('fallback'), mainMenuButtons(), 450);
+}
+function handleSend(){
+  var val = inputEl.value;
+  if (!val.trim()) return;
+  if (!flow){ var d = detectLang(val); if (d && d !== lang) applyLang(d, false); }
+  handleFreeText(val);
+}
+document.getElementById('sendBtn').addEventListener('click', handleSend);
+inputEl.addEventListener('keydown', function(e){ if (e.key === 'Enter') handleSend(); });
+(function(){
+  var btns = document.querySelectorAll('.langbtn');
+  for (var i = 0; i < btns.length; i++){
+    btns[i].addEventListener('click', function(){ applyLang(this.getAttribute('data-lang'), true); });
+  }
+})();
+
+/* ---------- PING DE VISITE ---------- */
+try{
+  if (location.hash !== '#test'){
+    var device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/' + CFG.topic, {method:'POST', body:'Visite demo ' + CFG.name + ' · ' + device + ' · ' + (navigator.language || '?')});
+  }
+}catch(e){}
+
+/* ---------- INIT ---------- */
+document.getElementById('hName').textContent = 'Alex · ' + CFG.name;
+applyLang('fr', false);
+say(t('welcome'), mainMenuButtons(), 200);
+</script>
+</body>
+</html>
