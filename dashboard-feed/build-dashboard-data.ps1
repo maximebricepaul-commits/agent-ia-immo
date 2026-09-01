@@ -41,13 +41,13 @@ $rdvField = if ($cfg.champRdv)     { [string]$cfg.champRdv }     else { "appoint
 $headers = @{ "Authorization" = "Bearer $($cfg.apiKey)"; "Content-Type" = "application/json" }
 $body    = @{ sort_order = "descending"; limit = 1000 } | ConvertTo-Json
 try {
-  $resp = Invoke-RestMethod -Method Post -Uri "https://api.retellai.com/v2/list-calls" -Headers $headers -Body $body -TimeoutSec 40
+  $resp = Invoke-RestMethod -Method Post -Uri "https://api.retellai.com/v3/list-calls" -Headers $headers -Body $body -TimeoutSec 40
 } catch {
   Log "Echec API Retell : $($_.Exception.Message). Abandon (aucun ecrasement)."
   exit 0
 }
-# Retell renvoie soit un tableau, soit un objet { calls: [...] }
-$calls = if ($resp -is [System.Array]) { $resp } elseif ($resp.calls) { $resp.calls } else { @($resp) }
+# API v3 renvoie { items, pagination_key, has_more } ; on garde la retrocompat (tableau / { calls })
+$calls = if ($resp.items) { $resp.items } elseif ($resp -is [System.Array]) { $resp } elseif ($resp.calls) { $resp.calls } else { @($resp) }
 if (-not $calls -or $calls.Count -eq 0) {
   Log "0 appel renvoye par Retell. Abandon (le dashboard garde la demo)."
   exit 0
