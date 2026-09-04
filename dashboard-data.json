@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-09-04T18:57:49",
+    "generatedAt":  "2026-09-04T21:02:14",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -50,7 +50,7 @@
                                           }
                           },
                     "30":  {
-                               "recus":  46,
+                               "recus":  45,
                                "manques":  0,
                                "rdv":  0,
                                "heures":  1,
@@ -67,7 +67,7 @@
                                                             "Sem. 4"
                                                         ],
                                              "app":  [
-                                                         45,
+                                                         44,
                                                          1,
                                                          0,
                                                          0
@@ -80,7 +80,7 @@
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  35,
+                                               "FR":  33,
                                                "ES":  33,
                                                "CA":  33,
                                                "EN":  0
@@ -104,8 +104,8 @@
                                                         ],
                                              "app":  [
                                                          0,
-                                                         81,
-                                                         46
+                                                         82,
+                                                         45
                                                      ],
                                              "rdv":  [
                                                          0,
