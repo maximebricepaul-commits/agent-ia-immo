@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-09-05T09:10:19",
+    "generatedAt":  "2026-09-05T12:02:20",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -50,10 +50,10 @@
                                           }
                           },
                     "30":  {
-                               "recus":  45,
+                               "recus":  6,
                                "manques":  0,
                                "rdv":  0,
-                               "heures":  1,
+                               "heures":  0,
                                "ca":  0,
                                "zero":  0,
                                "cost":  "490 €",
@@ -67,7 +67,7 @@
                                                             "Sem. 4"
                                                         ],
                                              "app":  [
-                                                         44,
+                                                         5,
                                                          1,
                                                          0,
                                                          0
@@ -81,8 +81,8 @@
                                          },
                                "langues":  {
                                                "FR":  33,
-                                               "ES":  33,
-                                               "CA":  33,
+                                               "ES":  17,
+                                               "CA":  50,
                                                "EN":  0
                                            }
                            },
@@ -104,8 +104,8 @@
                                                         ],
                                              "app":  [
                                                          0,
-                                                         82,
-                                                         45
+                                                         121,
+                                                         6
                                                      ],
                                              "rdv":  [
                                                          0,
