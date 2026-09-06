@@ -230,7 +230,21 @@ const SOCIETES = {
   sejourneur: {nom:"Sejourneur",              ville:"La Rochelle"},
   savemybed:  {nom:"Save My Bed",             ville:"Annecy / Megève"},
   hostbya:    {nom:"Host by A",               ville:"Cannes"},
-  bc:         {nom:"B&C Conciergerie",        ville:"Nice"}
+  bc:         {nom:"B&C Conciergerie",        ville:"Nice"},
+  /* --- cibles luxe (sept. 2026) --- */
+  riviera:    {nom:"Riviera Luxury Services", ville:"Côte d'Azur"},
+  canneslux:  {nom:"Conciergerie Cannes",     ville:"Cannes"},
+  megeve:     {nom:"Maison Megève",           ville:"Megève"},
+  vlm:        {nom:"VLM Conciergerie",        ville:"Megève"},
+  care:       {nom:"Care Concierge",          ville:"Chamonix"},
+  ffgr:       {nom:"FFGR Paris",              ville:"Paris"},
+  biarritz:   {nom:"Biarritz In Love",        ville:"Biarritz"},
+  marbella:   {nom:"Marbella Concierge",      ville:"Marbella"},
+  ibizacon:   {nom:"The Ibiza Concierge",     ville:"Ibiza"},
+  uniqibiza:  {nom:"Unique Ibiza Villas",     ville:"Ibiza"},
+  medina:     {nom:"Medina Mallorca Collection", ville:"Majorque"},
+  enso:       {nom:"EnsoVillas",              ville:"Majorque"},
+  villanovo:  {nom:"Villanovo",               ville:"Costa Brava"}
 };
 const eKey = new URLSearchParams(location.search).get('e');
 const SOC = SOCIETES[eKey] || null;
