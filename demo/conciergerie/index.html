@@ -341,7 +341,8 @@ function mainMenuButtons(){
     {label:T.menu[0], onclick:"startCheckin()"},
     {label:T.menu[1], onclick:"startSouci()"},
     {label:T.menu[2], onclick:"startResa()"},
-    {label:T.menu[3], onclick:"startProprio()", cls:"primary"}
+    {label:T.menu[3], onclick:"startProprio()", cls:"primary"},
+    {label:"🌍 Réponse multilingue", onclick:"startMulti()"}
   ];
 }
 function resetChat(){
@@ -351,6 +352,24 @@ function resetChat(){
 function backMenu(){
   addUser("🔄 Menu principal");
   resetChat();
+}
+
+/* ============ MULTILINGUE (démo live) ============ */
+function startMulti(){
+  addUser("🌍 Une réponse dans une autre langue");
+  addBotText("Bien sûr — je détecte automatiquement la langue du voyageur et je réponds dans la sienne. Regardez 👇", null, 350);
+  setTimeout(()=>{ addUser("Hi! What time is check-in? Is there parking?"); }, 1200);
+  setTimeout(()=>{ addBotText("Hello! Check-in is from 3 pm, and yes — free private parking is included. Shall I send you the door code and directions the day before you arrive? 🚗", [
+    {label:"🇩🇪 Et en allemand ?", onclick:"multiDE()", cls:"primary"},
+    {label:"🔄 Menu principal", onclick:"backMenu()"}
+  ], 900); }, 2100);
+}
+function multiDE(){
+  addUser("Guten Tag! Wann ist der Check-in? Gibt es Parkplätze?");
+  addBotText("Guten Tag! Check-in ab 15 Uhr — und ja, kostenlose Privatparkplätze sind inklusive. Soll ich Ihnen am Vortag den Türcode und die Anfahrt senden? 🚗\n\n_(FR/EN/ES/DE — dans la version réelle, ALEX répond dans la langue de chaque voyageur.)_", [
+    {label:"🏠 Propriétaire : confier un bien", onclick:"startProprio()", cls:"primary"},
+    {label:"🔄 Menu principal", onclick:"backMenu()"}
+  ], 900);
 }
 
 /* ============ CHECK-IN ============ */
