@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>ALEX · Démonstration assistant immobilier de prestige</title>
+<meta name="description" content="Démonstration d'ALEX, l'assistant qui répond aux acheteurs et vendeurs d'une agence immobilière de prestige 24h/24 : visites, prix, financement — et capte les mandats.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<style>
+:root{
+  --navy:#132741;
+  --navy-dark:#0a1626;
+  --blue:#1c3a5e;
+  --blue-dark:#12283f;
+  --amber:#c2a05a;
+  --amber-dark:#9c7d3f;
+  --bg:#f4f1ea;
+  --paper:#fffefb;
+  --ink:#22303f;
+  --muted:#8a8577;
+  --radius:16px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 50% -10%, #22456e 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.4);
+}
+#demoBanner{
+  background:var(--amber);
+  color:#3c2a05;
+  font-size:11.5px;
+  font-weight:700;
+  text-align:center;
+  padding:5px 10px;
+  letter-spacing:.4px;
+}
+header{
+  background:linear-gradient(135deg,var(--navy-dark) 0%,var(--blue) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 12px rgba(0,0,0,.22);
+  border-bottom:1px solid rgba(194,160,90,.35);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--amber-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15px;line-height:1.25;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--amber-dark);}
+.row.user .bubble b{color:#fff;}
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #e4ddcb;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--blue));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.demo-note{font-size:11px;color:var(--muted);font-style:italic;margin-top:8px;}
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--amber);
+  color:var(--amber-dark);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--amber);color:#fff;}
+.qbtn.primary{background:var(--blue);border-color:var(--blue-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--blue-dark);}
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e4ddcb;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #d9d0bd;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--amber);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(18,40,63,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:7px 10px 4px;
+  background:var(--paper);
+  line-height:1.5;
+}
+.footerbadge a{color:var(--amber-dark);font-weight:600;text-decoration:none;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#d3c9b3;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="demoBanner">⚠️ DÉMONSTRATION — réponses préconfigurées à titre d'exemple</div>
+  <header>
+    <div class="avatar">🏛️</div>
+    <div class="hinfo">
+      <div class="name" id="headerName">ALEX · assistant agence de prestige</div>
+      <div class="status"><span class="dot"></span><span>disponible 24h/24 · répond en 4 langues</span></div>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez comme un acheteur… ou un vendeur" autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">
+    Démonstration illustrative (réponses préconfigurées, aucune donnée réelle de l'agence) · propulsé par ALEX
+  </div>
+</div>
+
+<script>
+/* ============ PERSONNALISATION PAR PROSPECT (nom + ville uniquement) ============ */
+const SOCIETES = {
+  haussmann:      {nom:"Haussmann Prestige",      ville:"Paris"},
+  amanda:         {nom:"Amanda Properties",       ville:"Cannes"},
+  sgi:            {nom:"Agence SGI International", ville:"Saint-Tropez"},
+  johntaylor:     {nom:"John Taylor",             ville:"Saint-Tropez"},
+  marbellaprop:   {nom:"Marbella Propiedades",    ville:"Marbella"},
+  abarzo:         {nom:"ABARZO",                  ville:"Marbella"},
+  solvilla:       {nom:"Solvilla",                ville:"Marbella"},
+  luxlistings:    {nom:"Luxury Listings Marbella",ville:"Marbella"},
+  villalba:       {nom:"Team Javier Villalba",    ville:"Madrid"},
+  kovtun:         {nom:"Andreu Kovtun",           ville:"Valence"},
+  ibizaestates:   {nom:"Ibiza Estates",           ville:"Ibiza"},
+  ggrealestate:   {nom:"GG Real Estate",          ville:"Barcelone"},
+  costabravahouse:{nom:"Costa Brava House",       ville:"Begur"}
+};
+const eKey = new URLSearchParams(location.search).get('e');
+const SOC = SOCIETES[eKey] || null;
+const SOC_LABEL = SOC ? SOC.nom : "votre agence";
+if (SOC) document.getElementById('headerName').textContent = "ALEX · démo pour " + SOC.nom;
+document.title = SOC ? ("ALEX · Démonstration pour " + SOC.nom) : document.title;
+
+/* ============ TEXTES ============ */
+const T = {
+  welcome:"Bonjour ! 👋 Je suis *ALEX*, l'assistant qui répond aux acheteurs et vendeurs d'une agence de prestige — **24h/24, en 4 langues** (🇫🇷 🇬🇧 🇪🇸 🇷🇺), même le soir et le week-end quand un client international écrit.\n\nCeci est une **démonstration** : écrivez-moi comme le ferait un acheteur (ou un vendeur), ou choisissez un sujet 👇",
+  menu:["🏠 Un bien de votre catalogue","📅 Organiser une visite","💶 Prix & financement","🔑 Vendre / confier un bien"],
+  fallback:"Bonne question ! Dans cette démonstration je peux vous montrer comment je gère : *une demande sur un bien*, *une prise de visite*, *une question de prix/financement* ou *un propriétaire qui veut vendre*. Dans la version configurée pour " + SOC_LABEL + ", je répondrais avec ses vrais biens et informations. Que voulez-vous voir ?",
+  /* --- bien / catalogue --- */
+  biStart:"Avec plaisir 🙌 C'est LA question qui tombe à 22h ou le dimanche, souvent en anglais — et j'y réponds en quelques secondes.\n_Exemple : dans la vraie version, je connais chaque bien de " + SOC_LABEL + "._",
+  biAskType:"🏠 Quel type de bien recherchez-vous ?",
+  biTypeOpts:["Villa / maison","Appartement / penthouse","Terrain / projet","Peu importe"],
+  biAnswer:"Parfait ✅ Voici ce que je communiquerais immédiatement :\n\n📸 **Les biens correspondants** (photos, surface, quartier, prix)\n📍 **Localisation & environnement** (écoles, plages, commodités)\n📄 **Documents clés** (DPE, charges, taxe foncière)\n🌍 Le tout **dans la langue du client** (EN, ES, RU…)\n\n_Un acheteur international qui écrit un dimanche a sa réponse tout de suite — il ne va pas voir l'agence concurrente._",
+  biBtns:["📅 Organiser une visite","🔑 Je veux vendre","🔄 Menu principal"],
+  /* --- prix & financement --- */
+  fiStart:"Je gère ça tout de suite 💪 Quelle est votre question ?",
+  fiOpts:["Prix / marge de négociation","Financement non-résident","Frais (notaire, taxes)","Autre question"],
+  fiAnswer:"Voici comment je réagirais :\n\n1️⃣ **Je réponds sur le prix et le marché** (fourchette, biens comparables) sans faire attendre.\n\n2️⃣ **Financement non-résident** : je qualifie le dossier (apport, pays de résidence) et j'oriente vers votre partenaire bancaire.\n\n3️⃣ **Si c'est sérieux : je transmets à l'agent** le contact déjà qualifié, avec budget et projet.\n\n_Résultat : vos agents ne parlent qu'aux acheteurs réels, pas aux curieux._",
+  fiBtns:["🏠 Voir un bien","🔑 Je veux vendre","🔄 Menu principal"],
+  /* --- visite --- */
+  viStart:"Bien sûr ! Dans la vraie version, je connais l'agenda de vos agents. Exemple de parcours 👇",
+  viAskWhen:"📅 Quand souhaitez-vous visiter ?",
+  viWhenOpts:["Cette semaine","Ce week-end","Je viens de l'étranger","Dates flexibles"],
+  viAskWho:"👥 Vous cherchez pour…",
+  viWhoOpts:["Résidence principale","Résidence secondaire","Investissement","Je préfère ne pas dire"],
+  viAnswer:"✅ Voici ce que je ferais avec cette demande :\n\n🗓️ Je propose **un créneau de visite** selon l'agenda de l'agent\n✈️ Pour un client qui vient de l'étranger, je **coordonne les horaires** et confirme par message\n📋 Et je transmets à l'agent le contact **déjà qualifié** (budget, projet, dates)\n\n_Une demande de visite reçue le dimanche soir n'attend plus le lundi : elle est captée avant que l'acheteur contacte une autre agence._",
+  viBtns:["🏠 Voir un bien","🔑 Je veux vendre","🔄 Menu principal"],
+  /* --- vendre / confier (le lead qui vaut de l'or) --- */
+  seStart:"Excellente nouvelle 🙌 — c'est exactement le message que " + SOC_LABEL + " rêve de recevoir, et il arrive souvent le soir ou le dimanche.\n_Exemple de parcours de qualification automatique :_",
+  seAskType:"🏠 Quel bien souhaitez-vous vendre / confier ?",
+  seTypeOpts:["Villa / maison","Appartement / penthouse","Plusieurs biens","Autre"],
+  seAskWhen:"🗓️ Votre projet de vente est…",
+  seWhenOpts:["Immédiat","Dans les 3 mois","Cette année","J'explore"],
+  seAskName:"🙋 À quel nom dois-je noter la demande ?",
+  seAskPhone:"📱 Merci {name} ! Un numéro pour que votre agent vous rappelle avec une estimation ?",
+  seSummaryTitle:"🔑 Nouveau vendeur à rappeler (exemple)",
+  seSumType:"Bien", seSumWhen:"Échéance", seSumName:"Nom", seSumPhone:"Téléphone",
+  seSummaryFooter:"✅ Dans la version réelle, cette fiche arrive immédiatement par email ou WhatsApp à l'équipe de " + SOC_LABEL + ". Un mandat capté un dimanche soir = une vente de plus — c'est lui qui paie l'assistant, le reste est du confort.",
+  newQuery:"🔄 Recommencer la démonstration"
+};
+
+/* ============ MOTEUR ============ */
+let deal = null;
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function esc(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/_(.+?)_/g,'<i>$1</i>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{ row.remove(); cb(); }, delay || 550);
+}
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+function addBotText(text, buttons, delay){ showTyping(()=>addBot(md(text), buttons), delay); }
+function q(str){ return str.replace(/'/g,"\\'"); }
+
+/* ============ MENU ============ */
+function mainMenuButtons(){
+  return [
+    {label:T.menu[0], onclick:"startBien()"},
+    {label:T.menu[1], onclick:"startVisite()"},
+    {label:T.menu[2], onclick:"startFinance()"},
+    {label:T.menu[3], onclick:"startVendre()", cls:"primary"}
+  ];
+}
+function resetChat(){ deal = null; addBotText(T.welcome, mainMenuButtons(), 300); }
+function backMenu(){ addUser("🔄 Menu principal"); resetChat(); }
+
+/* ============ BIEN / CATALOGUE ============ */
+function startBien(){ addUser(T.menu[0]); bien2(); }
+function bien2(){
+  addBotText(T.biStart, null, 350);
+  setTimeout(()=>{ addBotText(T.biAskType, T.biTypeOpts.map(l=>({label:l, onclick:`pickBi('${q(l)}')`}))); }, 800);
+}
+function pickBi(label){
+  addUser(label);
+  addBotText(T.biAnswer, [
+    {label:T.biBtns[0], onclick:"startVisite()"},
+    {label:T.biBtns[1], onclick:"startVendre()", cls:"primary"},
+    {label:T.biBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ FINANCEMENT ============ */
+function startFinance(){ addUser(T.menu[2]); finance2(); }
+function finance2(){ addBotText(T.fiStart, T.fiOpts.map(l=>({label:l, onclick:`pickFi('${q(l)}')`})), 450); }
+function pickFi(label){
+  addUser(label);
+  addBotText(T.fiAnswer, [
+    {label:T.fiBtns[0], onclick:"startBien()"},
+    {label:T.fiBtns[1], onclick:"startVendre()", cls:"primary"},
+    {label:T.fiBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ VISITE ============ */
+function startVisite(){ addUser(T.menu[1]); visite2(); }
+function visite2(){
+  addBotText(T.viStart, null, 350);
+  setTimeout(()=>{ addBotText(T.viAskWhen, T.viWhenOpts.map(l=>({label:l, onclick:`pickViWhen('${q(l)}')`}))); }, 800);
+}
+function pickViWhen(label){
+  addUser(label);
+  addBotText(T.viAskWho, T.viWhoOpts.map(l=>({label:l, onclick:`pickViWho('${q(l)}')`})), 450);
+}
+function pickViWho(label){
+  addUser(label);
+  addBotText(T.viAnswer, [
+    {label:T.viBtns[0], onclick:"startBien()"},
+    {label:T.viBtns[1], onclick:"startVendre()", cls:"primary"},
+    {label:T.viBtns[2], onclick:"backMenu()"}
+  ], 650);
+}
+
+/* ============ VENDRE (parcours lead) ============ */
+function startVendre(){ addUser(T.menu[3]); vendre2(); }
+function vendre2(){
+  deal = {step:'type'};
+  addBotText(T.seStart, null, 350);
+  setTimeout(()=>{ addBotText(T.seAskType, T.seTypeOpts.map(l=>({label:l, onclick:`pickSeType('${q(l)}')`}))); }, 800);
+}
+function pickSeType(label){
+  addUser(label); deal.type=label; deal.step='when';
+  addBotText(T.seAskWhen, T.seWhenOpts.map(l=>({label:l, onclick:`pickSeWhen('${q(l)}')`})), 450);
+}
+function pickSeWhen(label){
+  addUser(label); deal.when=label; deal.step='name';
+  addBotText(T.seAskName, null, 450);
+}
+function dealHandleText(text){
+  if(!deal) return false;
+  if(deal.step==='name'){
+    deal.name = text; deal.step='phone';
+    addBotText(T.seAskPhone.replace('{name}', text), null, 400);
+    return true;
+  }
+  if(deal.step==='phone'){
+    deal.phone = text; finishVendre();
+    return true;
+  }
+  return false;
+}
+function finishVendre(){
+  deal.step='done';
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:94%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${esc(T.seSummaryTitle)}</span></div>
+        <div class="cardbody">
+          <b>${T.seSumType} :</b> ${esc(deal.type)}<br>
+          <b>${T.seSumWhen} :</b> ${esc(deal.when)}<br>
+          <b>${T.seSumName} :</b> ${esc(deal.name)}<br>
+          <b>${T.seSumPhone} :</b> ${esc(deal.phone)}
+          <hr style="border:none;border-top:1px solid #e4ddcb;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${esc(T.seSummaryFooter)}</span>
+          <div class="demo-note">ℹ️ Démonstration — aucune donnée n'est transmise ni enregistrée.</div>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot('', [{label:T.newQuery, onclick:"resetChat()"}]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+/* ============ TEXTE LIBRE ============ */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function nIncludes(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  if(deal && (deal.step==='name'||deal.step==='phone')){ dealHandleText(text); return; }
+
+  const n = normalize(text);
+  if(nIncludes(n,['vendre','confier','mandat','estimation','estimer','vends','mon bien','ma villa','mon appart'])){ vendre2(); return; }
+  if(nIncludes(n,['visite','visiter','rendez','rdv','voir le bien','venir'])){ visite2(); return; }
+  if(nIncludes(n,['prix','budget','negoci','financ','credit','pret','hypoth','frais','notaire','taxe'])){ finance2(); return; }
+  if(nIncludes(n,['villa','maison','appart','penthouse','bien','dispo','disponible','catalogue','annonce','terrain'])){ bien2(); return; }
+  if(nIncludes(n,['bonjour','salut','bonsoir','hello','coucou','hola','hi'])){ addBotText(T.welcome, mainMenuButtons(), 400); return; }
+  if(nIncludes(n,['langue','anglais','espagnol','russe','english','espanol','russian'])){ addBotText("Yes! 🇬🇧 ¡Claro! 🇪🇸 Да! 🇷🇺\n\nDans la version réelle, je détecte automatiquement la langue du client et je réponds dans SA langue — anglais, espagnol, russe, français. Ici, la démonstration est en français pour rester simple.", mainMenuButtons(), 500); return; }
+
+  addBotText(T.fallback, mainMenuButtons(), 500);
+}
+function handleSend(){ const val = inputEl.value; if(!val.trim()) return; handleFreeText(val); }
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ============ PING DE VISITE (obligatoire démos) ============ */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/alex-demo-immo-prestige-x7k2p9', {method:'POST',
+      body:'Visite demo Immo prestige ['+(eKey||'generique')+'] · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ============ INIT ============ */
+addBotText(T.welcome, mainMenuButtons(), 250);
+</script>
+</body>
+</html>
