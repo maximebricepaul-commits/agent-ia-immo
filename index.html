@@ -1107,118 +1107,69 @@
   html[lang="en"] .vfrc-launcher__label::after { content: '💬 Message ALEX' !important; }
 </style>
 
-<!-- VOICEFLOW WIDGET -->
-<script type="text/javascript">
-(function(d, t) {
-  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
-  v.onload = function() {
-    var userLang = navigator.language || navigator.userLanguage || 'fr-FR';
-    var langCode = userLang.toLowerCase().startsWith('en') ? 'en'
-                 : userLang.toLowerCase().startsWith('es') ? 'es'
-                 : userLang.toLowerCase().startsWith('ca') ? 'es'
-                 : 'fr';
-
-    window.voiceflow.chat.load({
-      verify: { projectID: '6a50f720a304d092f7166812' },
-      url: 'https://general-runtime.voiceflow.com',
-      userID: (function(){
-        var sec = (location.pathname.split('/')[1] || 'accueil');
-        var k = 'alex-uid-' + sec;
-        var v = localStorage.getItem(k);
-        if (!v) { v = 'web-' + sec + '-' + Math.random().toString(36).slice(2,10); localStorage.setItem(k, v); }
-        return v;
-      })(),
-      versionID: 'main',
-      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://alexagent.io', 'https://www.alexagent.io'],
-      stylesheet: 'https://alexagent.io/vf-custom.css',
-
-      assistant: {
-        title: 'ALEX',
-        description: langCode === 'en' ? 'Your assistant — replies in seconds'
-                    : langCode === 'es' ? 'Tu asistente — responde en segundos'
-                    : 'Votre assistant — répond en quelques secondes',
-        image: 'https://alexagent.io/alex-logo.png',
-        color: '#29c1ff',
-        header: { title: 'ALEX' },
-        banner: {
-          title: 'ALEX',
-          description: langCode === 'en' ? 'Hi! I\'m Alex, your AI sales assistant. How can I help?'
-                      : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente comercial IA. ¿Cómo puedo ayudarte?'
-                      : 'Bonjour ! Je suis Alex, votre assistant commercial IA. Comment puis-je vous aider ?'
-        },
-      },
-
-      launcher: {
-        text: langCode === 'en' ? '💬 Message ALEX'
-             : langCode === 'es' ? '💬 Escribir a ALEX'
-             : '💬 Écrire à ALEX'
-      },
-
-      launch: {
-        event: {
-          type: 'launch',
-          payload: {
-            language: langCode,
-            pageUrl: window.location.href,
-            referrer: document.referrer || 'direct',
-          }
-        }
-      },
-
-      proactive: {
-        delay: 25000,
-        messages: [{
-          type: 'text',
-          payload: {
-            message: langCode === 'en'
-              ? 'Hi! Questions about ALEX? I\'m here 👋'
-              : langCode === 'es'
-              ? '¡Hola! ¿Preguntas sobre ALEX? 👋'
-              : 'Bonjour ! Des questions sur ALEX ? Je suis là 👋'
-          }
-        }]
-      },
-    });
-
-    // --- Rebrand widget-next : le bundle ignore les clés stylesheet/launcher.
-    //     On injecte la charte (couleurs) dans le shadow root ET on réécrit le
-    //     libellé du lanceur en JS (le texte JS gagne toujours sur le CDN). ---
-    (function alexRebrand(){
-      var label = langCode === 'en' ? '💬 Message ALEX'
-                : langCode === 'es' ? '💬 Escribir a ALEX'
-                : '💬 Écrire à ALEX';
-      function fix(sr){
-        if (!sr) return;
-        if (!sr.querySelector('link[data-alex]')) {
-          var l = document.createElement('link');
-          l.rel = 'stylesheet';
-          l.href = 'https://alexagent.io/vf-custom.css?v=3';
-          l.setAttribute('data-alex', '1');
-          sr.appendChild(l);
-        }
-        var lab = sr.querySelector('.vfrc-launcher__label,[class*=launcher__label]');
-        if (lab && lab.textContent !== label) lab.textContent = label;
-      }
-      var n = 0;
-      var iv = setInterval(function(){
-        n++;
-        var host = document.getElementById('voiceflow-chat');
-        var sr = host && host.shadowRoot;
-        if (sr) {
-          fix(sr);
-          if (!host.__alexMO) {
-            host.__alexMO = new MutationObserver(function(){ fix(host.shadowRoot); });
-            host.__alexMO.observe(sr, { childList: true, subtree: true });
-          }
-        }
-        if (n > 60) clearInterval(iv); // ~30s de sécurité
-      }, 500);
-    })();
+<!-- CHAT ALEX — widget autonome (gratuit, sans dépendance externe, répond toujours) -->
+<style>
+#alexw-launch{position:fixed;right:20px;bottom:20px;z-index:90;display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#29c1ff,#7a5cff);color:#fff;font-weight:700;font-size:14px;border:none;border-radius:28px;padding:12px 18px;cursor:pointer;box-shadow:0 8px 24px rgba(41,193,255,.35);font-family:inherit}
+#alexw-launch:hover{filter:brightness(1.06)}
+#alexw-panel{position:fixed;right:20px;bottom:84px;z-index:91;width:370px;max-width:calc(100vw - 32px);height:520px;max-height:calc(100vh - 120px);background:#0e1b2a;border:1px solid rgba(41,193,255,.25);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:none;flex-direction:column;overflow:hidden;font-family:inherit}
+#alexw-panel.open{display:flex}
+#alexw-head{display:flex;align-items:center;gap:10px;padding:14px 16px;background:linear-gradient(135deg,#132741,#1c3a5e);color:#fff}
+#alexw-head img{width:34px;height:34px;border-radius:50%}
+#alexw-head .t{font-weight:700;font-size:15px;line-height:1.1}
+#alexw-head .s{font-size:11px;color:#8fd7ff}
+#alexw-head .x{margin-left:auto;background:none;border:none;color:#cbd5e1;font-size:22px;cursor:pointer;line-height:1}
+#alexw-body{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;background:#0e1b2a}
+.aw-row{display:flex;max-width:100%}
+.aw-bot{justify-content:flex-start}.aw-user{justify-content:flex-end}
+.aw-b{max-width:85%;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.45;white-space:pre-wrap}
+.aw-bot .aw-b{background:#17293c;color:#e6eef7;border-bottom-left-radius:4px}
+.aw-user .aw-b{background:linear-gradient(135deg,#29c1ff,#155096);color:#fff;border-bottom-right-radius:4px}
+.aw-q{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.aw-qb{background:#0e1b2a;border:1.5px solid #29c1ff;color:#7fd3ff;font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:16px;cursor:pointer}
+.aw-qb:hover{background:#29c1ff;color:#04121f}
+#alexw-in{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.08);background:#0e1b2a}
+#alexw-in input{flex:1;background:#17293c;border:1px solid #2b4258;border-radius:20px;padding:10px 14px;color:#e6eef7;font-size:14px;outline:none}
+#alexw-in button{background:linear-gradient(135deg,#29c1ff,#155096);border:none;color:#fff;width:40px;border-radius:50%;cursor:pointer;font-size:15px}
+</style>
+<button id="alexw-launch" onclick="AWopen()">💬 Écrire à ALEX</button>
+<div id="alexw-panel" role="dialog" aria-label="Chat ALEX">
+  <div id="alexw-head">
+    <img src="https://alexagent.io/alex-logo.png" alt="ALEX">
+    <div><div class="t">ALEX</div><div class="s">● en ligne · répond en secondes</div></div>
+    <button class="x" onclick="AWclose()" aria-label="Fermer">&times;</button>
+  </div>
+  <div id="alexw-body"></div>
+  <div id="alexw-in"><input id="alexw-text" placeholder="Écrivez votre message…" autocomplete="off"><button onclick="AWsend()" aria-label="Envoyer">➤</button></div>
+</div>
+<script>
+(function(){
+  var body=document.getElementById('alexw-body');var input=document.getElementById('alexw-text');var started=false;
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function scroll(){body.scrollTop=body.scrollHeight;}
+  function user(t){var r=document.createElement('div');r.className='aw-row aw-user';r.innerHTML='<div class="aw-b">'+esc(t)+'</div>';body.appendChild(r);scroll();}
+  function bot(html,qs){setTimeout(function(){var r=document.createElement('div');r.className='aw-row aw-bot';var q='';if(qs&&qs.length){q='<div class="aw-q">'+qs.map(function(b){return '<button class="aw-qb" onclick="'+b.a+'">'+esc(b.l)+'</button>';}).join('')+'</div>';}r.innerHTML='<div><div class="aw-b">'+html+'</div>'+q+'</div>';body.appendChild(r);scroll();},350);}
+  var MENU=[{l:"C'est quoi ALEX ?",a:'AWq(1)'},{l:'Combien ça coûte ?',a:'AWq(2)'},{l:'Prendre un RDV',a:'AWq(3)'},{l:'Quelles langues ?',a:'AWq(4)'}];
+  window.AWopen=function(){document.getElementById('alexw-panel').classList.add('open');if(!started){started=true;bot("Bonjour ! 👋 Je suis <b>ALEX</b>, l'assistant commercial IA. Comment puis-je vous aider ?",MENU);}};
+  window.AWclose=function(){document.getElementById('alexw-panel').classList.remove('open');};
+  window.AWq=function(n){
+    if(n==1){user("C'est quoi ALEX ?");bot("ALEX est un assistant IA qui <b>répond à vos clients 24h/24</b> (téléphone, WhatsApp, site), qualifie les demandes, <b>prend les rendez-vous</b> et relance — dans la langue du client. Pendant que vous travaillez, lui aussi.",[{l:'Combien ça coûte ?',a:'AWq(2)'},{l:'Prendre un RDV',a:'AWq(3)'}]);}
+    if(n==2){user('Combien ça coûte ?');bot("3 offres, sans engagement :\n\n• <b>ALEX Essentiel</b> (chat site + WhatsApp) — <b>129 €/mois</b> +149 € installation\n• <b>ALEX Voix</b> (répond au téléphone) — <b>490 €/mois</b> +490 €\n• <b>ALEX 360</b> (Voix + Chat, tous canaux) — <b>690 €/mois</b> +890 €\n\nInstallation personnalisée incluse, configurée avec vous.",[{l:'Prendre un RDV',a:'AWq(3)'},{l:'Quelles langues ?',a:'AWq(4)'}]);}
+    if(n==3){user('Prendre un RDV');bot("Avec plaisir 🙌 Réservez une <b>démo de 20 min</b> (gratuite, sans engagement) : Maxime vous montre ALEX en direct sur votre métier.",[{l:'📅 Réserver la démo',a:'AWgo()'},{l:'💬 WhatsApp direct',a:'AWwa()'}]);}
+    if(n==4){user('Quelles langues ?');bot("ALEX détecte et répond automatiquement en <b>français, espagnol, catalan et anglais</b> — indispensable en zone touristique.",[{l:'Prendre un RDV',a:'AWq(3)'},{l:'Combien ça coûte ?',a:'AWq(2)'}]);}
   };
-  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
-  v.type = "text/javascript";
-  s.parentNode.insertBefore(v, s);
-})(document, 'script');
+  window.AWgo=function(){AWclose();location.hash='#contact';};
+  window.AWwa=function(){window.open('https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20veux%20une%20d%C3%A9mo%20d%27ALEX','_blank');};
+  window.AWsend=function(){var v=(input.value||'').trim();if(!v)return;user(v);input.value='';var n=v.toLowerCase();
+    if(/prix|tarif|co[uû]t|combien|cher/.test(n)){AWq(2);return;}
+    if(/rdv|rendez|d[eé]mo|appel|contact|r[eé]serv/.test(n)){AWq(3);return;}
+    if(/langue|anglais|espagnol|english|catalan|espa/.test(n)){AWq(4);return;}
+    if(/quoi|c'est|comment|marche|fait|ALEX/i.test(n)){AWq(1);return;}
+    bot("Bonne question ! Pour une réponse précise sur <b>votre activité</b>, le mieux est une démo de 20 min (gratuite) — Maxime vous montre ALEX en direct.",[{l:'📅 Réserver la démo',a:'AWgo()'},{l:'💬 WhatsApp direct',a:'AWwa()'}]);
+  };
+  input.addEventListener('keydown',function(e){if(e.key==='Enter')AWsend();});
+  // Compat : les anciens CTA appelaient window.voiceflow.chat.open()
+  window.voiceflow={chat:{open:function(){AWopen();},load:function(){},hide:function(){},show:function(){}}};
+})();
 </script>
 
 <!-- APP JS -->
