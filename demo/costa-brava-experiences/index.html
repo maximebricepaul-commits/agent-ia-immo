@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Costa Brava Experiences</title>
+<meta name="description" content="Asistente virtual de Costa Brava Experiences">
+<style>
+:root{
+  --navy:#0c3b4f;
+  --navy-dark:#082733;
+  --teal:#12617a;
+  --sand:#e0a45c;
+  --sand-dark:#c8873c;
+  --sea:#3a93a8;
+  --bg:#eef6f8;
+  --paper:#ffffff;
+  --ink:#123241;
+  --muted:#6b8894;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c6b86 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:
+    linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--navy-dark);}
+.row.user .bubble b{color:#fff;}
+.bubble .tag{
+  display:inline-block;background:var(--bg);color:var(--teal);
+  font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:4px;
+}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dfe9ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;}
+.spec{background:var(--bg);color:var(--navy);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.spec.lic-yes{background:#fde3d3;color:#a6480f;}
+.spec.lic-no{background:#d6f3e0;color:#127a3f;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--teal);
+  color:var(--teal);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--teal);color:#fff;}
+.qbtn.primary{background:var(--sand);border-color:var(--sand-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--sand-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e1eaed;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #dbe6ea;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(200,135,60,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c7d7dc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">⛵</div>
+    <div class="hinfo">
+      <div class="name">Alex · Costa Brava Experiences</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demo privada para Costa Brava Experiences · powered by Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // Maxime (demo)
+
+const BOATS = [
+  {
+    id:"atardecer", key:["atardecer","sunset","coucher","puesta"],
+    name:"Salida al Atardecer 🌅",
+    pax:12, length:null, hp:null, location:"Costa Brava",
+    license:"none",
+    priceFrom:45, priceUnit:{es:"persona",fr:"personne",en:"person"},
+    fuel:false,
+    img:"🌅",
+    d:{
+      ca:"La sortida estrella: 2 h navegant al capvespre per la costa, amb copa de cava mentre es pon el sol. Perfecta per a parelles i grups que busquen el moment màgic del dia.",
+      es:"La salida estrella: 2 h navegando al atardecer por la costa, con copa de cava mientras se pone el sol. Perfecta para parejas y grupos que buscan el momento mágico del día.",
+      fr:"La sortie phare : 2 h de navigation au coucher du soleil le long de la côte, avec une coupe de cava pendant que le soleil se couche. Parfaite pour les couples et les groupes.",
+      en:"Our signature outing: 2 h cruising the coast at sunset with a glass of cava as the sun goes down. Perfect for couples and groups chasing the magic hour."
+    },
+    inc:{
+      ca:["Patró professional inclòs","Copa de cava de benvinguda","2 hores de navegació","Fotos de la sortida"],
+      es:["Patrón profesional incluido","Copa de cava de bienvenida","2 horas de navegación","Fotos de la salida"],
+      fr:["Skipper professionnel inclus","Coupe de cava offerte","2 heures de navigation","Photos de la sortie"],
+      en:["Professional skipper included","Welcome glass of cava","2 hours cruising","Photos of the trip"]
+    }
+  },
+  {
+    id:"capdecreus", key:["cap de creus","capdecreus","creus","excursion","excursión"],
+    name:"Excursión Cap de Creus ⛵",
+    pax:12, length:null, hp:null, location:"Costa Brava",
+    license:"none",
+    priceFrom:65, priceUnit:{es:"persona",fr:"personne",en:"person"},
+    fuel:false,
+    img:"⛵",
+    d:{
+      ca:"Mig dia descobrint el Parc Natural del Cap de Creus des del mar: cales verges, aigües turqueses i parades per nedar. La joia de la Costa Brava.",
+      es:"Medio día descubriendo el Parque Natural del Cap de Creus desde el mar: calas vírgenes, aguas turquesas y paradas para nadar. La joya de la Costa Brava.",
+      fr:"Une demi-journée à découvrir le Parc Naturel du Cap de Creus depuis la mer : criques sauvages, eaux turquoise et arrêts baignade. Le joyau de la Costa Brava.",
+      en:"Half a day discovering the Cap de Creus Natural Park from the sea: wild coves, turquoise water and swim stops. The jewel of the Costa Brava."
+    },
+    inc:{
+      ca:["Patró professional inclòs","Parades per nedar","Material de snorkel","Aigua i fruita a bord"],
+      es:["Patrón profesional incluido","Paradas para nadar","Material de snorkel","Agua y fruta a bordo"],
+      fr:["Skipper professionnel inclus","Arrêts baignade","Matériel de snorkeling","Eau et fruits à bord"],
+      en:["Professional skipper included","Swim stops","Snorkelling gear","Water and fruit on board"]
+    }
+  },
+  {
+    id:"snorkel", key:["snorkel","calas","cales","buceo","nadar"],
+    name:"Snorkel & Calas 🤿",
+    pax:10, length:null, hp:null, location:"Costa Brava",
+    license:"none",
+    priceFrom:55, priceUnit:{es:"persona",fr:"personne",en:"person"},
+    fuel:false,
+    img:"🤿",
+    d:{
+      ca:"3 h saltant entre les millors cales per fer snorkel, amb tot el material inclòs i un monitor que t'ensenya els millors racons submarins.",
+      es:"3 h saltando entre las mejores calas para hacer snorkel, con todo el material incluido y un monitor que te enseña los mejores rincones submarinos.",
+      fr:"3 h à explorer les plus belles criques en snorkeling, matériel inclus et un moniteur qui vous montre les meilleurs coins sous-marins.",
+      en:"3 h hopping between the best coves to snorkel, all gear included and a guide showing you the best underwater spots."
+    },
+    inc:{
+      ca:["Monitor titulat","Material de snorkel complet","Beguda de benvinguda","3 hores"],
+      es:["Monitor titulado","Material de snorkel completo","Bebida de bienvenida","3 horas"],
+      fr:["Moniteur diplômé","Matériel de snorkeling complet","Boisson de bienvenue","3 heures"],
+      en:["Certified guide","Full snorkelling gear","Welcome drink","3 hours"]
+    }
+  },
+  {
+    id:"cuevas", key:["cuevas","coves","islas","grutas","ruta"],
+    name:"Ruta Cuevas & Islas 🚤",
+    pax:12, length:null, hp:null, location:"Costa Brava",
+    license:"none",
+    priceFrom:50, priceUnit:{es:"persona",fr:"personne",en:"person"},
+    fuel:false,
+    img:"🚤",
+    d:{
+      ca:"2 h 30 de ruta guiada per coves marines i illots, amb comentaris sobre la història i la natura de la costa. Ideal per a famílies.",
+      es:"2 h 30 de ruta guiada por cuevas marinas e islotes, con comentarios sobre la historia y la naturaleza de la costa. Ideal para familias.",
+      fr:"2 h 30 de balade guidée à travers grottes marines et îlots, avec commentaires sur l'histoire et la nature de la côte. Idéal en famille.",
+      en:"2.5 h guided route through sea caves and islets, with commentary on the coast's history and nature. Great for families."
+    },
+    inc:{
+      ca:["Patró professional inclòs","Comentari guiat","Parada per nedar","Aigua a bord"],
+      es:["Patrón profesional incluido","Comentario guiado","Parada para nadar","Agua a bordo"],
+      fr:["Skipper professionnel inclus","Commentaire guidé","Arrêt baignade","Eau à bord"],
+      en:["Professional skipper included","Guided commentary","Swim stop","Water on board"]
+    }
+  },
+  {
+    id:"privado", key:["privado","privada","charter","chárter","grupo","exclusiva"],
+    name:"Chárter Privado 🛥️",
+    pax:12, length:null, hp:null, location:"Costa Brava",
+    license:"none",
+    priceFrom:450, priceUnit:{es:"grupo",fr:"groupe",en:"group"},
+    fuel:false,
+    img:"🛥️",
+    d:{
+      ca:"Lloga l'embarcació en exclusiva per al teu grup: itinerari a mida, mig dia o dia complet, amb patró. Perfecte per a celebracions i esdeveniments.",
+      es:"Alquila la embarcación en exclusiva para tu grupo: itinerario a medida, medio día o día completo, con patrón. Perfecto para celebraciones y eventos.",
+      fr:"Privatisez le bateau pour votre groupe : itinéraire sur mesure, demi-journée ou journée complète, avec skipper. Parfait pour célébrations et événements.",
+      en:"Charter the boat exclusively for your group: tailor-made itinerary, half or full day, with skipper. Perfect for celebrations and events."
+    },
+    inc:{
+      ca:["Embarcació en exclusiva","Patró professional","Itinerari personalitzat","Fins a 12 persones"],
+      es:["Embarcación en exclusiva","Patrón profesional","Itinerario personalizado","Hasta 12 personas"],
+      fr:["Bateau privatisé","Skipper professionnel","Itinéraire personnalisé","Jusqu'à 12 personnes"],
+      en:["Private boat","Professional skipper","Custom itinerary","Up to 12 people"]
+    }
+  }
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual de **Costa Brava Experiences**.
+T'ajudo a triar excursió, veure preus i reservar en 1 minut. En què et puc ajudar?",
+  menu:["🌊 Veure excursions","💶 Preus","📅 Reservar","❓ Preguntes freqüents","💬 Parlar amb l'equip"],
+  boatsIntro:"Aquestes són les nostres excursions per la Costa Brava 🌊 Toca'n una per veure'n el detall:",
+  askWhichBoat:"Sobre quina excursió vols saber-ne més? Escriu el nom o tria'n una:",
+  notFound:"No he trobat aquesta excursió 🤔 Aquestes són les que oferim:",
+  priceIntro:"Els preus són per persona (el xàrter privat, per grup). Inclouen patró i assegurança. Aquí tens el resum:",
+  licenseIntro:"Totes les nostres sortides van amb patró professional — no cal llicència ni experiència, només ganes! 🌊",
+  licenseNone:"🟢 Amb patró · sense llicència",
+  licenseCaptain:"🟢 Amb patró professional",
+  licenseOptional:"🟢 Amb patró professional",
+  licenseRequired:"🟢 Amb patró professional",
+  faqTitle:"Preguntes freqüents:",
+  faq:{
+    fuel:"✅ *Què inclou*: patró professional, assegurança i, segons la sortida, copa de benvinguda i material de snorkel. Tu només portes ganes i protecció solar.",
+    weather:"🌦️ *Mal temps*: si el mar impedeix sortir, l'equip et proposa canviar la data. T'ho confirmen directament per WhatsApp.",
+    cancel:"🕐 *Horaris*: matí 09:00–13:30 · tarda 14:00–18:30 · sortida al capvespre ~2 h abans de la posta de sol. Sortides privades a mida.",
+    calas:"🗺️ *Rutes*: Cap de Creus, Illes Medes i les millors cales de la costa — aigües cristal·lines i racons només accessibles per mar."
+  },
+  faqButtons:["✅ Què inclou","🌦️ Mal temps","🕐 Horaris","🗺️ Rutes","⬅️ Menú"],
+  bookStart:"Perfecte, preparem la teva reserva 🙌",
+  askDate:"📅 Per a quina data t'agradaria reservar?",
+  askPax:"👥 Quantes persones sou?",
+  paxOpts:["1-4","5-8","9-12","Més de 12"],
+  askLicense:"🕐 Quin moment del dia prefereixes?",
+  licenseOpts:["Matí","Tarda","Capvespre"],
+  suggestBoat:"Amb aquestes dades, et recomano:",
+  askBoatConfirm:"Reservem aquesta excursió, o en vols veure una altra?",
+  confirmBoat:"✅ Reservar aquesta","otherBoat":"Veure altres excursions",
+  askName:"🙋 A nom de qui fem la reserva?",
+  askContact:"📱 Perfecte {name}. Quin és el teu telèfon o email de contacte?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryDate:"Data", summaryPax:"Persones", summaryLicense:"Preferència", summaryBoat:"Excursió", summaryName:"Nom", summaryContact:"Contacte",
+  summaryFooter:"Aquest és un resum orientatiu — l'equip de Costa Brava Experiences confirmarà disponibilitat, preu final i forma de pagament per WhatsApp. Encara no es cobra res!",
+  sendWa:"📲 Enviar sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull reservar amb Costa Brava Experiences:",
+  humanHandoff:"Et poso en contacte directe amb l'equip humà de Costa Brava Experiences 👇",
+  fallback:"Bona pregunta! Et connecto directament amb l'equip, o digues-me si vols veure *excursions*, *preus* o *reservar*.",
+  langSwitched:"Canviat a català",
+  personLabel:"persones"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Costa Brava Experiences**.
+Te ayudo a elegir tu excursión, ver precios y reservar en 1 minuto. ¿En qué te ayudo?",
+  menu:["🌊 Ver excursiones","💶 Precios","📅 Reservar","❓ Preguntas frecuentes","💬 Hablar con el equipo"],
+  boatsIntro:"Estas son nuestras excursiones por la Costa Brava 🌊 Toca una para ver el detalle:",
+  askWhichBoat:"¿Sobre qué excursión quieres saber más? Escribe el nombre o elige una:",
+  notFound:"No he encontrado esa excursión 🤔 Estas son las que ofrecemos:",
+  priceIntro:"Los precios son por persona (el chárter privado, por grupo). Incluyen patrón y seguro. Aquí tienes el resumen:",
+  licenseIntro:"Todas nuestras salidas van con patrón profesional — no necesitas licencia ni experiencia, ¡solo ganas! 🌊",
+  licenseNone:"🟢 Con patrón · sin licencia",
+  licenseCaptain:"🟢 Con patrón profesional",
+  licenseOptional:"🟢 Con patrón profesional",
+  licenseRequired:"🟢 Con patrón profesional",
+  faqTitle:"Preguntas frecuentes:",
+  faq:{
+    fuel:"✅ *Qué incluye*: patrón profesional, seguro y, según la salida, copa de bienvenida y material de snorkel. Tú solo traes ganas y protección solar.",
+    weather:"🌦️ *Mal tiempo*: si el mar impide salir, el equipo te propone cambiar la fecha. Te lo confirman directamente por WhatsApp.",
+    cancel:"🕐 *Horarios*: mañana 09:00–13:30 · tarde 14:00–18:30 · salida al atardecer ~2 h antes de la puesta de sol. Salidas privadas a medida.",
+    calas:"🗺️ *Rutas*: Cap de Creus, Illes Medes y las mejores calas de la costa — aguas cristalinas y rincones solo accesibles por mar."
+  },
+  faqButtons:["✅ Qué incluye","🌦️ Mal tiempo","🕐 Horarios","🗺️ Rutas","⬅️ Menú"],
+  bookStart:"Perfecto, vamos a preparar tu reserva 🙌",
+  askDate:"📅 ¿Para qué fecha te gustaría reservar?",
+  askPax:"👥 ¿Cuántas personas sois?",
+  paxOpts:["1-4","5-8","9-12","Más de 12"],
+  askLicense:"🕐 ¿Qué momento del día prefieres?",
+  licenseOpts:["Mañana","Tarde","Atardecer"],
+  suggestBoat:"Con esos datos, te recomiendo:",
+  askBoatConfirm:"¿Reservamos esta excursión, o prefieres ver otra?",
+  confirmBoat:"✅ Reservar esta","otherBoat":"Ver otras excursiones",
+  askName:"🙋 ¿A nombre de quién hacemos la reserva?",
+  askContact:"📱 Perfecto {name}. ¿Cuál es tu teléfono o email de contacto?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryDate:"Fecha", summaryPax:"Personas", summaryLicense:"Preferencia", summaryBoat:"Excursión", summaryName:"Nombre", summaryContact:"Contacto",
+  summaryFooter:"Este es un resumen orientativo — el equipo de Costa Brava Experiences confirmará disponibilidad, precio final y forma de pago por WhatsApp. ¡No se cobra nada aún!",
+  sendWa:"📲 Enviar solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"Hola! Quiero reservar con Costa Brava Experiences:",
+  humanHandoff:"Te pongo en contacto directo con el equipo humano de Costa Brava Experiences 👇",
+  fallback:"¡Buena pregunta! Para eso te conecto directamente con el equipo, o si prefieres, dime si quieres ver *excursiones*, *precios* o *reservar*.",
+  langSwitched:"Cambiado a español 🇪🇸",
+  personLabel:"personas"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Costa Brava Experiences**.
+Je vous aide à choisir votre sortie, voir les prix et réserver en 1 minute. Que puis-je faire pour vous ?",
+  menu:["🌊 Voir les sorties","💶 Tarifs","📅 Réserver","❓ Questions fréquentes","💬 Parler à l'équipe"],
+  boatsIntro:"Voici nos sorties le long de la Costa Brava 🌊 Touchez-en une pour le détail :",
+  askWhichBoat:"Sur quelle sortie voulez-vous plus d'infos ? Écrivez le nom ou choisissez :",
+  notFound:"Je n'ai pas trouvé cette sortie 🤔 Voici celles que nous proposons :",
+  priceIntro:"Les prix sont par personne (le charter privé, par groupe). Skipper et assurance inclus. Voici le résumé :",
+  licenseIntro:"Toutes nos sorties se font avec un skipper professionnel — aucun permis ni expérience nécessaire, juste l'envie ! 🌊",
+  licenseNone:"🟢 Avec skipper · sans permis",
+  licenseCaptain:"🟢 Avec skipper professionnel",
+  licenseOptional:"🟢 Avec skipper professionnel",
+  licenseRequired:"🟢 Avec skipper professionnel",
+  faqTitle:"Questions fréquentes :",
+  faq:{
+    fuel:"✅ *Ce qui est inclus* : skipper professionnel, assurance et, selon la sortie, coupe de bienvenue et matériel de snorkeling. Vous n'apportez que l'envie et la crème solaire.",
+    weather:"🌦️ *Mauvais temps* : si la mer empêche la sortie, l'équipe vous propose une autre date. Confirmation directe par WhatsApp.",
+    cancel:"🕐 *Horaires* : matin 09h00–13h30 · après-midi 14h00–18h30 · sortie au coucher du soleil ~2 h avant le coucher. Sorties privées sur mesure.",
+    calas:"🗺️ *Itinéraires* : Cap de Creus, îles Medes et les plus belles criques de la côte — eaux cristallines et recoins accessibles uniquement par la mer."
+  },
+  faqButtons:["✅ Inclus","🌦️ Météo","🕐 Horaires","🗺️ Itinéraires","⬅️ Menu"],
+  bookStart:"Parfait, préparons votre réservation 🙌",
+  askDate:"📅 Pour quelle date souhaitez-vous réserver ?",
+  askPax:"👥 Vous serez combien de personnes ?",
+  paxOpts:["1-4","5-8","9-12","Plus de 12"],
+  askLicense:"🕐 Quel moment de la journée préférez-vous ?",
+  licenseOpts:["Matin","Après-midi","Coucher de soleil"],
+  suggestBoat:"D'après ces infos, je vous recommande :",
+  askBoatConfirm:"On réserve cette sortie, ou vous préférez en voir une autre ?",
+  confirmBoat:"✅ Réserver celle-ci","otherBoat":"Voir d'autres sorties",
+  askName:"🙋 Au nom de qui faisons-nous la réservation ?",
+  askContact:"📱 Parfait {name}. Quel est votre téléphone ou email de contact ?",
+  summaryTitle:"📋 Résumé de votre demande",
+  summaryDate:"Date", summaryPax:"Personnes", summaryLicense:"Préférence", summaryBoat:"Sortie", summaryName:"Nom", summaryContact:"Contact",
+  summaryFooter:"Ceci est un résumé indicatif — l'équipe de Costa Brava Experiences confirmera la disponibilité, le prix final et le paiement par WhatsApp. Rien n'est débité pour l'instant !",
+  sendWa:"📲 Envoyer la demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite réserver avec Costa Brava Experiences :",
+  humanHandoff:"Je vous mets en contact direct avec l'équipe de Costa Brava Experiences 👇",
+  fallback:"Bonne question ! Je vous mets en contact avec l'équipe, ou dites-moi si vous voulez voir les *sorties*, les *tarifs* ou *réserver*.",
+  langSwitched:"Changé en français 🇫🇷",
+  personLabel:"personnes"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Costa Brava Experiences**.
+I can help you pick a trip, check prices and book in under a minute. How can I help?",
+  menu:["🌊 See trips","💶 Prices","📅 Book now","❓ FAQ","💬 Talk to the team"],
+  boatsIntro:"Here are our trips along the Costa Brava 🌊 Tap one for details:",
+  askWhichBoat:"Which trip would you like to know more about? Type the name or pick one:",
+  notFound:"I couldn't find that trip 🤔 Here's what we offer:",
+  priceIntro:"Prices are per person (the private charter, per group). Skipper and insurance included. Here's the summary:",
+  licenseIntro:"All our trips run with a professional skipper — no license or experience needed, just show up! 🌊",
+  licenseNone:"🟢 Skipper included · no license",
+  licenseCaptain:"🟢 Professional skipper included",
+  licenseOptional:"🟢 Professional skipper included",
+  licenseRequired:"🟢 Professional skipper included",
+  faqTitle:"Frequently asked questions:",
+  faq:{
+    fuel:"✅ *What's included*: professional skipper, insurance and, depending on the trip, a welcome drink and snorkelling gear. Just bring yourself and sunscreen.",
+    weather:"🌦️ *Bad weather*: if the sea makes sailing unsafe, the team offers you another date. Confirmed directly over WhatsApp.",
+    cancel:"🕐 *Hours*: morning 09:00–13:30 · afternoon 14:00–18:30 · sunset trip ~2 h before sundown. Private trips tailor-made.",
+    calas:"🗺️ *Routes*: Cap de Creus, the Medes Islands and the coast's best coves — crystal-clear water and spots only reachable by sea."
+  },
+  faqButtons:["✅ What's included","🌦️ Weather","🕐 Hours","🗺️ Routes","⬅️ Menu"],
+  bookStart:"Great, let's set up your booking 🙌",
+  askDate:"📅 What date would you like to book?",
+  askPax:"👥 How many people?",
+  paxOpts:["1-4","5-8","9-12","12+"],
+  askLicense:"🕐 What time of day do you prefer?",
+  licenseOpts:["Morning","Afternoon","Sunset"],
+  suggestBoat:"Based on that, I'd recommend:",
+  askBoatConfirm:"Shall we book this trip, or would you like to see others?",
+  confirmBoat:"✅ Book this one","otherBoat":"See other trips",
+  askName:"🙋 Who should we put the booking under?",
+  askContact:"📱 Great, {name}. What's the best phone number or email to reach you?",
+  summaryTitle:"📋 Your request summary",
+  summaryDate:"Date", summaryPax:"People", summaryLicense:"Preference", summaryBoat:"Trip", summaryName:"Name", summaryContact:"Contact",
+  summaryFooter:"This is an indicative summary — the Costa Brava Experiences team will confirm availability, final price and payment over WhatsApp. Nothing is charged yet!",
+  sendWa:"📲 Send request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book with Costa Brava Experiences:",
+  humanHandoff:"Connecting you directly with the Costa Brava Experiences team 👇",
+  fallback:"Good question! Let me connect you with the team — or tell me if you'd like to see *trips*, *prices*, or *book*.",
+  langSwitched:"Switched to English 🇬🇧",
+  personLabel:"people"
+}
+};
+
+const LIC_LABEL_KEY = {none:"licenseNone",captain:"licenseCaptain",optional:"licenseOptional",required:"licenseRequired"};
+const LIC_CLASS = {none:"lic-no",captain:"lic-no",optional:"lic-yes",required:"lic-yes"};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, date, pax, license, boat, name, contact}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"showBoats()"},
+    {label:m[1], onclick:"showPrices()"},
+    {label:m[2], onclick:"startBooking()"},
+    {label:m[3], onclick:"showFaq()"},
+    {label:m[4], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function boatButtons(extraFirst){
+  const btns = BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`showBoatDetail('${b.id}')`}));
+  if(extraFirst) btns.unshift(extraFirst);
+  return btns;
+}
+
+function boatCardHtml(b){
+  const licKey = LIC_LABEL_KEY[b.license];
+  const licTxt = t(licKey);
+  const priceLabel = b.priceFrom ? `~ ${b.priceFrom}€` : `${b.priceHalf}–${b.priceFull}€`;
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">${b.img} ${b.name}</span><span class="cprice">${priceLabel}</span></div>
+    <div class="cardbody">
+      <div>${md(b.d[lang])}</div>
+      <div class="spec-row">
+        <span class="spec">👥 ${b.pax} pax</span>
+        ${b.length ? `<span class="spec">📏 ${b.length}</span>` : ''}
+        ${b.hp ? `<span class="spec">⚙️ ${b.hp}</span>` : ''}
+        <span class="spec">📍 ${b.location}</span>
+        <span class="spec ${LIC_CLASS[b.license]}">${licTxt}</span>
+      </div>
+      <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">${b.inc[lang].map(i=>'• '+i).join('<br>')}</div>
+    </div>
+  </div>`;
+}
+
+function showBoats(){
+  addUser(t('menu')[0]);
+  addBotText(t('boatsIntro'), null, 400);
+  setTimeout(()=>{
+    BOATS.forEach((b,i)=>{
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+      chatEl.appendChild(row);
+    });
+    scrollBottom();
+    addBot(md(t('askWhichBoat')), [{label:t('menu')[2],onclick:"startBooking()"},{label:'⬅️ '+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}]);
+  }, 700);
+}
+
+function showBoatDetail(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('askBoatConfirm')), [
+      {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+      {label:t('otherBoat'), onclick:"showBoats()"}
+    ]);
+  }, 500);
+}
+
+function showPrices(){
+  addUser(t('menu')[1]);
+  addBotText(t('priceIntro'), null, 400);
+  setTimeout(()=>{
+    const lines = BOATS.map(b=>{
+      const fromWord = {es:'desde',ca:'des de',fr:'dès',en:'from'}[lang]||'desde';
+      const price = `${fromWord} ${b.priceFrom}€/${b.priceUnit[lang]||b.priceUnit.es}`;
+      return `<b>${b.name.split(' — ')[0]}</b> (${b.pax} pax) — ${price}`;
+    }).join('<br><br>');
+    addBot(lines, mainMenuButtons(), 400);
+  }, 500);
+}
+
+function showFaq(){
+  addUser(t('menu')[3]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas','menu'];
+    return {label, onclick: keys[i]==='menu' ? 'showMenu()' : `showFaqItem('${keys[i]}')`};
+  }), 400);
+}
+function showFaqItem(key){
+  addUser(t('faqButtons')[['fuel','weather','cancel','calas'].indexOf(key)]);
+  addBotText(t('faq')[key], [...t('faqButtons').slice(0,4).filter(l=>true).map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas'];
+    return {label, onclick:`showFaqItem('${keys[i]}')`};
+  }), {label:t('faqButtons')[4], onclick:"showMenu()"}], 400);
+}
+
+function showMenu(){
+  addBotText(t('welcome').split('\n')[1] || t('welcome'), mainMenuButtons(), 300);
+}
+
+function humanHandoff(){
+  addUser(t('menu')[4]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:"⬅️ "+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= BOOKING FLOW ================= */
+function startBooking(preselectBoatId){
+  addUser(t('menu')[2]);
+  booking = {step:'date', date:null, pax:null, license:null, boat: preselectBoatId ? BOATS.find(b=>b.id===preselectBoatId) : null, name:null, contact:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{ addBotText(t('askDate')); }, 700);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    addBotText(t('askPax'), t('paxOpts').map(l=>({label:l, onclick:`bookingPax('${l}')`})), 450);
+    booking.step='pax';
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    addBotText(t('askContact').replace('{name}', text), null, 400);
+    booking.step='contact';
+    return true;
+  }
+  if(booking.step==='contact'){
+    booking.contact = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function bookingPax(label){
+  addUser(label);
+  booking.pax = label;
+  if(booking.boat){
+    booking.license = 'preset';
+    afterLicenseKnown();
+  } else {
+    addBotText(t('askLicense'), t('licenseOpts').map(l=>({label:l, onclick:`bookingLicense('${l}')`})), 450);
+    booking.step='license';
+  }
+}
+
+function bookingLicense(label){
+  addUser(label);
+  booking.license = label;
+  afterLicenseKnown();
+}
+
+function suggestBoatFor(booking){
+  const maxPax = booking.pax && booking.pax.includes('12+') ? 12 : booking.pax && booking.pax.includes('Más') ? 13 : booking.pax && booking.pax.includes('Plus') ? 13 : parseInt((booking.pax||'').match(/\d+/g)?.slice(-1)[0]) || 4;
+  const noLic = booking.license && /no|non|not/i.test(booking.license) && !/sí|oui|yes/i.test(booking.license);
+  let candidates = BOATS.filter(b=>b.pax>=Math.min(maxPax,12));
+  if(candidates.length===0) candidates = [BOATS[BOATS.length-1]];
+  candidates.sort((a,b)=>a.pax-b.pax);
+  return candidates[0];
+}
+
+function afterLicenseKnown(){
+  if(!booking.boat){
+    const suggestion = suggestBoatFor(booking);
+    showTyping(()=>{
+      addBot(md(t('suggestBoat')));
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(suggestion)}</div>`;
+      chatEl.appendChild(row);
+      scrollBottom();
+      addBot(md(t('askBoatConfirm')), [
+        {label:t('confirmBoat'), onclick:`bookingChooseBoat('${suggestion.id}')`, cls:'primary'},
+        {label:t('otherBoat'), onclick:"showBoatsForBooking()"}
+      ]);
+    }, 500);
+  } else {
+    askNameStep();
+  }
+}
+
+function showBoatsForBooking(){
+  addUser(t('otherBoat'));
+  showTyping(()=>{
+    addBot(md(t('askWhichBoat')), BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`bookingChooseBoat('${b.id}')`})));
+  }, 300);
+}
+
+function bookingChooseBoat(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  booking.boat = b;
+  askNameStep();
+}
+
+function askNameStep(){
+  addBotText(t('askName'), null, 500);
+  booking.step='name';
+}
+
+function finishBooking(){
+  booking.step='done';
+  const licTxt = booking.license==='preset' ? '—' : booking.license;
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryDate')}:</b> ${esc(booking.date)}<br>
+          <b>${t('summaryPax')}:</b> ${esc(booking.pax)}<br>
+          <b>${t('summaryLicense')}:</b> ${esc(licTxt)}<br>
+          <b>${t('summaryBoat')}:</b> ${booking.boat.name}<br>
+          <b>${t('summaryName')}:</b> ${esc(booking.name)}<br>
+          <b>${t('summaryContact')}:</b> ${esc(booking.contact)}
+          <hr style="border:none;border-top:1px solid #e5edf0;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${t('summaryFooter')}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryDate')}: ${booking.date}\n${t('summaryPax')}: ${booking.pax}\n${t('summaryLicense')}: ${licTxt}\n${t('summaryBoat')}: ${booking.boat.name}\n${t('summaryName')}: ${booking.name}\n${t('summaryContact')}: ${booking.contact}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUAGE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bateau','reserver','reservation','prix','combien','merci','oui','non','permis','svp','bonsoir'];
+  const en = ['hello','hi ','hey','boat','book','price','how much','thanks','yes','no ','license','please'];
+  const es = ['hola','buenas','barco','reservar','precio','cuanto','gracias','si','no ','licencia','favor'];
+  const ca = ['hola','bona tarda','barca','vaixell','reservar','preu','quant','gracies','llicencia','sisplau','sisplau','voldria','quantes'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+/* ================= FREE TEXT HANDLING ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  // language auto-switch if very confident and different from current on first real message
+  const detected = detectLang(text);
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='contact')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  // boat name match
+  const boatMatch = BOATS.find(b=>b.key.some(k=>n.includes(normalize(k))));
+  if(boatMatch){ showTyping(()=>showBoatDetailInline(boatMatch), 350); return; }
+
+  if(normalizedIncludesAny(n,['barco','barcos','bateau','bateaux','boat','boats','flota','flotte','fleet'])){ showBoats(); return; }
+  if(normalizedIncludesAny(n,['precio','precios','tarif','prix','price','prices','cuanto cuesta','coste','cout'])){ showPrices(); return; }
+  if(normalizedIncludesAny(n,['reserv','book','réserv'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['licencia','licence','permis','license','titulacion'])){
+    addBotText(t('licenseIntro'), mainMenuButtons(), 400); return;
+  }
+  if(normalizedIncludesAny(n,['cala','crique','cove','medes','montgo','ruta','route'])){ showFaqItem('calas'); return; }
+  if(normalizedIncludesAny(n,['combustible','fuel','carburant','essence','gasolina'])){ showFaqItem('fuel'); return; }
+  if(normalizedIncludesAny(n,['horari','schedule','hour','heure','pesca','fishing','peche'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['tiempo','meteo','weather','lluvia','pluie','rain'])){ showFaqItem('weather'); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','human','equipo','equipe','llamar','appeler','call'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bonjour','salut','hello','hi','hey','bonsoir'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function showBoatDetailInline(b){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  addBot(md(t('askBoatConfirm')), [
+    {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+    {label:t('otherBoat'), onclick:"showBoats()"}
+  ]);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-cbexperiences-x7k3p9', {method:'POST', body:'Visite demo CB Experiences · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'es';
+  document.querySelector('.langbtn[data-lang="es"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
