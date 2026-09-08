@@ -1148,7 +1148,7 @@
   function scroll(){body.scrollTop=body.scrollHeight;}
   function user(t){var r=document.createElement('div');r.className='aw-row aw-user';r.innerHTML='<div class="aw-b">'+esc(t)+'</div>';body.appendChild(r);scroll();}
   function bot(html,qs){setTimeout(function(){var r=document.createElement('div');r.className='aw-row aw-bot';var q='';if(qs&&qs.length){q='<div class="aw-q">'+qs.map(function(b){return '<button class="aw-qb" onclick="'+b.a+'">'+esc(b.l)+'</button>';}).join('')+'</div>';}r.innerHTML='<div><div class="aw-b">'+html+'</div>'+q+'</div>';body.appendChild(r);scroll();},350);}
-  var MENU=[{l:"C'est quoi ALEX ?",a:'AWq(1)'},{l:'Combien ça coûte ?',a:'AWq(2)'},{l:'Prendre un RDV',a:'AWq(3)'},{l:'Quelles langues ?',a:'AWq(4)'}];
+  var MENU=[{l:"C'est quoi ALEX ?",a:'AWq(1)'},{l:'Combien ça coûte ?',a:'AWq(2)'},{l:'💸 Ce que vous perdez',a:'AWcalc()'},{l:'Prendre un RDV',a:'AWq(3)'},{l:'Quelles langues ?',a:'AWq(4)'}];
   window.AWopen=function(){document.getElementById('alexw-panel').classList.add('open');if(!started){started=true;bot("Bonjour ! 👋 Je suis <b>ALEX</b>, l'assistant commercial IA. Comment puis-je vous aider ?",MENU);}};
   window.AWclose=function(){document.getElementById('alexw-panel').classList.remove('open');};
   window.AWq=function(n){
@@ -1159,11 +1159,19 @@
   };
   window.AWgo=function(){AWclose();location.hash='#contact';};
   window.AWwa=function(){window.open('https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20veux%20une%20d%C3%A9mo%20d%27ALEX','_blank');};
+  // Calculateur de pertes (scripté, sans IA)
+  var _awm=10;
+  window.AWcalc=function(){user('Ce que vous perdez');bot("Estimons vite ce qu'un client raté vous coûte 👇 Environ combien de clients vous écrivent ou appellent <b>sans réponse</b> par semaine ?",[{l:'~5',a:'AWc1(5)'},{l:'~10',a:'AWc1(10)'},{l:'~20',a:'AWc1(20)'},{l:'Plus',a:'AWc1(35)'}]);};
+  window.AWc1=function(m){_awm=m;user('~'+m+' par semaine');bot("Et le <b>panier moyen</b> d'un client chez vous ?",[{l:'50 €',a:'AWc2(50)'},{l:'150 €',a:'AWc2(150)'},{l:'500 €',a:'AWc2(500)'},{l:'2000 €+',a:'AWc2(2000)'}]);};
+  window.AWc2=function(t){var lost=Math.round(_awm*4*0.3*t);user(t+' €');bot("Estimation : ~<b>"+_awm+" demandes/semaine sans réponse</b>. Si seulement 3 sur 10 seraient devenues clientes, à "+t+" € le panier → ≈ <b>"+lost.toLocaleString('fr-FR')+" € perdus par mois</b>.\n\nALEX répond à 100 % de ces demandes, 24h/24. À ~16 €/jour, il se rembourse dès le 1er client récupéré.",[{l:'📅 Réserver la démo',a:'AWgo()'},{l:'💬 WhatsApp',a:'AWwa()'}]);};
   window.AWsend=function(){var v=(input.value||'').trim();if(!v)return;user(v);input.value='';var n=v.toLowerCase();
-    if(/prix|tarif|co[uû]t|combien|cher/.test(n)){AWq(2);return;}
+    if(/\b(hello|hi|hey|how|price|cost|do you|languages?|english|book)\b/.test(n) && !/[àâçéèêîïô]/.test(n)){bot("Hi! I reply in your language — French, Spanish, Catalan and English. The quickest way to see ALEX in action is a free 20-min demo.",[{l:'📅 Book a demo',a:'AWgo()'},{l:'💬 WhatsApp',a:'AWwa()'}]);return;}
+    if(/\b(hola|cuanto|cuánto|precio|idioma|puedes|español|reserva)\b/.test(n)){bot("¡Hola! Respondo en tu idioma — francés, español, catalán e inglés. Lo mejor es una demo gratuita de 20 min para verlo en directo.",[{l:'📅 Reservar demo',a:'AWgo()'},{l:'💬 WhatsApp',a:'AWwa()'}]);return;}
+    if(/cher|trop|vaut le|perd|rentab|int[eé]r[eê]t/.test(n)){AWcalc();return;}
+    if(/prix|tarif|co[uû]t|combien/.test(n)){AWq(2);return;}
     if(/rdv|rendez|d[eé]mo|appel|contact|r[eé]serv/.test(n)){AWq(3);return;}
-    if(/langue|anglais|espagnol|english|catalan|espa/.test(n)){AWq(4);return;}
-    if(/quoi|c'est|comment|marche|fait|ALEX/i.test(n)){AWq(1);return;}
+    if(/langue|anglais|espagnol|catalan/.test(n)){AWq(4);return;}
+    if(/quoi|c'est|comment|marche|fait|alex/.test(n)){AWq(1);return;}
     bot("Bonne question ! Pour une réponse précise sur <b>votre activité</b>, le mieux est une démo de 20 min (gratuite) — Maxime vous montre ALEX en direct.",[{l:'📅 Réserver la démo',a:'AWgo()'},{l:'💬 WhatsApp direct',a:'AWwa()'}]);
   };
   input.addEventListener('keydown',function(e){if(e.key==='Enter')AWsend();});
