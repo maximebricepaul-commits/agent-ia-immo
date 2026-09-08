@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Autocentro Empuriabrava</title>
+<meta name="description" content="Asistente virtual de Autocentro Empuriabrava">
+<style>
+:root{
+  --navy:#0c3b4f;
+  --navy-dark:#082733;
+  --teal:#12617a;
+  --sand:#e0a45c;
+  --sand-dark:#c8873c;
+  --sea:#3a93a8;
+  --bg:#eef6f8;
+  --paper:#ffffff;
+  --ink:#123241;
+  --muted:#6b8894;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c6b86 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:
+    linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--navy-dark);}
+.row.user .bubble b{color:#fff;}
+.bubble .tag{
+  display:inline-block;background:var(--bg);color:var(--teal);
+  font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:4px;
+}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dfe9ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;}
+.spec{background:var(--bg);color:var(--navy);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.spec.lic-yes{background:#fde3d3;color:#a6480f;}
+.spec.lic-no{background:#d6f3e0;color:#127a3f;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--teal);
+  color:var(--teal);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--teal);color:#fff;}
+.qbtn.primary{background:var(--sand);border-color:var(--sand-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--sand-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e1eaed;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #dbe6ea;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(200,135,60,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c7d7dc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">⛵</div>
+    <div class="hinfo">
+      <div class="name">Alex · Autocentro Empuriabrava</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en línea · responde al instante</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Escribe tu mensaje..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demo privada para Autocentro Empuriabrava · powered by Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // Maxime (demo)
+
+const BOATS = [
+  {
+    id:"revision", key:["revision","revisión","mantenimiento","manteniment","entretien","service"],
+    name:"Revisión / Mantenimiento 🔧",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:89, priceUnit:{es:"servicio",fr:"service",en:"service"},
+    fuel:false,
+    img:"🔧",
+    d:{
+      ca:"Revisió completa del vehicle: oli, filtres, nivells, frens i punts de seguretat. Ideal abans d'un viatge llarg o de l'estiu.",
+      es:"Revisión completa del vehículo: aceite, filtros, niveles, frenos y puntos de seguridad. Ideal antes de un viaje largo o del verano.",
+      fr:"Révision complète du véhicule : vidange, filtres, niveaux, freins et points de sécurité. Idéal avant un long trajet ou l'été.",
+      en:"Full vehicle service: oil, filters, levels, brakes and safety checks. Ideal before a long trip or the summer."
+    },
+    inc:{
+      ca:["Diagnòstic previ","Pressupost abans de tocar res","Mà d'obra + materials","Garantia"],
+      es:["Diagnóstico previo","Presupuesto antes de tocar nada","Mano de obra + materiales","Garantía"],
+      fr:["Diagnostic préalable","Devis avant toute intervention","Main d'œuvre + pièces","Garantie"],
+      en:["Prior diagnosis","Quote before any work","Labour + parts","Warranty"]
+    }
+  },
+  {
+    id:"neumaticos", key:["neumaticos","neumáticos","ruedas","pneus","tyres","pneumatics"],
+    name:"Neumáticos 🛞",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:45, priceUnit:{es:"unidad",fr:"pneu",en:"tyre"},
+    fuel:false,
+    img:"🛞",
+    d:{
+      ca:"Canvi de pneumàtics de totes les marques, amb equilibrat i vàlvula. T'assessorem segons el teu ús i pressupost.",
+      es:"Cambio de neumáticos de todas las marcas, con equilibrado y válvula. Te asesoramos según tu uso y presupuesto.",
+      fr:"Changement de pneus toutes marques, avec équilibrage et valve. On vous conseille selon votre usage et budget.",
+      en:"Tyre replacement, all brands, with balancing and valve. We advise you based on your use and budget."
+    },
+    inc:{
+      ca:["Muntatge + equilibrat","Vàlvula nova","Gestió del pneumàtic usat","Pressupost a l'instant"],
+      es:["Montaje + equilibrado","Válvula nueva","Gestión del neumático usado","Presupuesto al instante"],
+      fr:["Montage + équilibrage","Valve neuve","Reprise du pneu usagé","Devis immédiat"],
+      en:["Fitting + balancing","New valve","Old tyre disposal","Instant quote"]
+    }
+  },
+  {
+    id:"itv", key:["itv","pre-itv","preitv","diagnostico","diagnóstico","controle","inspection"],
+    name:"Pre-ITV & Diagnóstico 🔎",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:39, priceUnit:{es:"servicio",fr:"service",en:"service"},
+    fuel:false,
+    img:"🔎",
+    d:{
+      ca:"Revisem el cotxe abans de la ITV per evitar sorpreses, i fem diagnòstic electrònic si s'ha encès un testimoni al quadre.",
+      es:"Revisamos el coche antes de la ITV para evitar sorpresas, y hacemos diagnóstico electrónico si se ha encendido un testigo en el cuadro.",
+      fr:"On vérifie la voiture avant le contrôle technique pour éviter les surprises, et on fait un diagnostic électronique si un voyant s'est allumé.",
+      en:"We check the car before the technical inspection to avoid surprises, plus electronic diagnosis if a warning light is on."
+    },
+    inc:{
+      ca:["Revisió de punts ITV","Lectura de la centraleta (OBD)","Informe clar","Recomanacions"],
+      es:["Revisión de puntos ITV","Lectura de la centralita (OBD)","Informe claro","Recomendaciones"],
+      fr:["Vérification des points CT","Lecture calculateur (OBD)","Rapport clair","Recommandations"],
+      en:["Inspection-point check","ECU scan (OBD)","Clear report","Recommendations"]
+    }
+  },
+  {
+    id:"aire", key:["aire","clima","climatizacion","climatización","aircon","ac"],
+    name:"Aire acondicionado ❄️",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:59, priceUnit:{es:"servicio",fr:"service",en:"service"},
+    fuel:false,
+    img:"❄️",
+    d:{
+      ca:"Recàrrega i manteniment del climatitzador perquè torni a refredar bé abans de l'estiu. Detecció de fuites inclosa.",
+      es:"Recarga y mantenimiento del climatizador para que vuelva a enfriar bien antes del verano. Detección de fugas incluida.",
+      fr:"Recharge et entretien de la climatisation pour qu'elle refroidisse à nouveau avant l'été. Détection de fuites incluse.",
+      en:"A/C recharge and maintenance so it cools properly again before summer. Leak detection included."
+    },
+    inc:{
+      ca:["Recàrrega de gas","Test de rendiment","Detecció de fuites","Desinfecció opcional"],
+      es:["Recarga de gas","Test de rendimiento","Detección de fugas","Desinfección opcional"],
+      fr:["Recharge de gaz","Test de performance","Détection de fuites","Désinfection en option"],
+      en:["Gas recharge","Performance test","Leak detection","Optional disinfection"]
+    }
+  },
+  {
+    id:"frenos", key:["frenos","frens","freins","brakes","pastillas","discos"],
+    name:"Frenos 🛑",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:89, priceUnit:{es:"servicio",fr:"service",en:"service"},
+    fuel:false,
+    img:"🛑",
+    d:{
+      ca:"Canvi de pastilles i/o discs, revisió del líquid de frens i del sistema complet. La teva seguretat primer.",
+      es:"Cambio de pastillas y/o discos, revisión del líquido de frenos y del sistema completo. Tu seguridad primero.",
+      fr:"Remplacement des plaquettes et/ou disques, contrôle du liquide de frein et du système complet. Votre sécurité d'abord.",
+      en:"Brake pad and/or disc replacement, brake fluid and full system check. Your safety first."
+    },
+    inc:{
+      ca:["Revisió del sistema","Pressupost abans de fer res","Materials de qualitat","Garantia"],
+      es:["Revisión del sistema","Presupuesto antes de hacer nada","Materiales de calidad","Garantía"],
+      fr:["Contrôle du système","Devis avant intervention","Pièces de qualité","Garantie"],
+      en:["System check","Quote before any work","Quality parts","Warranty"]
+    }
+  },
+  {
+    id:"chapa", key:["chapa","pintura","carroceria","carrosserie","bodywork","paint","abolladura"],
+    name:"Chapa y pintura 🎨",
+    pax:99, length:null, hp:null, location:"Empuriabrava",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"presupuesto",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"🎨",
+    d:{
+      ca:"Cop, ratllada o abonyegament? Reparem xapa i pintura amb acabat com de fàbrica. T'ho valorem amb fotos.",
+      es:"¿Golpe, arañazo o abolladura? Reparamos chapa y pintura con acabado como de fábrica. Te lo valoramos con fotos.",
+      fr:"Choc, rayure ou bosse ? On répare carrosserie et peinture avec une finition d'origine. On chiffre sur photos.",
+      en:"Dent, scratch or bump? We repair bodywork and paint with a factory-like finish. We quote from photos."
+    },
+    inc:{
+      ca:["Pressupost gratuït amb fotos","Acabat original","Gestió amb l'asseguran\u00e7a","Vehicle de cortesia segons disponibilitat"],
+      es:["Presupuesto gratis con fotos","Acabado original","Gestión con el seguro","Coche de cortesía según disponibilidad"],
+      fr:["Devis gratuit sur photos","Finition d'origine","Gestion avec l'assurance","Véhicule de courtoisie selon dispo"],
+      en:["Free quote from photos","Original finish","Insurance handling","Courtesy car subject to availability"]
+    }
+  }
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+ca:{
+  status:"en línia · respon a l'instant",
+  placeholder:"Escriu el teu missatge...",
+  welcome:"Hola! 👋 Sóc *Alex*, l'assistent virtual d'**Autocentro Empuriabrava**. T'ajudo a triar servei, veure preus i demanar cita en 1 minut. En què et puc ajudar?",
+  menu:["🔧 Veure serveis","💶 Preus","📅 Demanar cita","❓ Preguntes freqüents","💬 Parlar amb l'equip"],
+  boatsIntro:"Aquests són els nostres serveis 🔧 Toca'n un per veure'n el detall:",
+  askWhichBoat:"Sobre quin servei vols saber-ne més? Escriu el nom o tria'n un:",
+  notFound:"No he trobat aquest servei 🤔 Aquests són els que oferim:",
+  priceIntro:"Els preus són orientatius; el taller confirma el pressupost final abans de tocar res. Aquí tens el resum:",
+  licenseIntro:"Sempre et donem el pressupost abans de començar — sense sorpreses, i amb garantia. 🔧",
+  licenseNone:"🟢 Pressupost sense compromís",
+  licenseCaptain:"🟢 Pressupost sense compromís",
+  licenseOptional:"🟢 Pressupost sense compromís",
+  licenseRequired:"🟢 Pressupost sense compromís",
+  faqTitle:"Preguntes freqüents:",
+  faq:{
+    fuel:"✅ *Garantia*: totes les reparacions amb garantia i pressupost sempre abans de tocar res. Sense sorpreses.",
+    weather:"⏱️ *Quant triga?*: revisió i pneumàtics el mateix dia; les reparacions grans, amb termini quan confirmem el pressupost.",
+    cancel:"🕐 *Horaris*: dl-dv 08:30–13:00 / 15:00–19:00 · dissabte matí amb cita. Urgències, escriu-nos.",
+    calas:"🚗 *Extres*: recollida del vehicle i cotxe de cortesia segons disponibilitat. Pregunta'ns en demanar cita."
+  },
+  faqButtons:["✅ Garantia","⏱️ Terminis","🕐 Horaris","🚗 Extres","⬅️ Menú"],
+  bookStart:"Perfecte, demanem la teva cita 🙌",
+  askDate:"📅 Per a quin dia vols la cita?",
+  askPax:"🚗 Quin vehicle és?",
+  paxOpts:["Cotxe","SUV / 4x4","Furgoneta","Moto"],
+  askLicense:"🕐 Quan et va bé?",
+  licenseOpts:["Com abans millor","Aquesta setmana","Data concreta"],
+  suggestBoat:"Amb aquestes dades, et recomano:",
+  askBoatConfirm:"Demanem cita per a aquest servei, o en vols veure un altre?",
+  confirmBoat:"✅ Demanar aquest","otherBoat":"Veure altres serveis",
+  askName:"🙋 A nom de qui fem la cita?",
+  askContact:"📱 Perfecte {name}. Quin és el teu telèfon o email de contacte?",
+  summaryTitle:"📋 Resum de la teva sol·licitud",
+  summaryDate:"Dia", summaryPax:"Vehicle", summaryLicense:"Quan", summaryBoat:"Servei", summaryName:"Nom", summaryContact:"Contacte",
+  summaryFooter:"Aquest és un resum orientatiu — l'equip d'Autocentro Empuriabrava confirmarà la cita i el pressupost per WhatsApp. Encara no es cobra res!",
+  sendWa:"📲 Enviar sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Hola! Vull demanar cita a Autocentro Empuriabrava:",
+  humanHandoff:"Et poso en contacte directe amb l'equip humà d'Autocentro Empuriabrava 👇",
+  fallback:"Bona pregunta! Et connecto directament amb l'equip, o digues-me si vols veure *serveis*, *preus* o *demanar cita*.",
+  langSwitched:"Canviat a català",
+  personLabel:"vehicles"
+},
+es:{
+  status:"en línea · responde al instante",
+  placeholder:"Escribe tu mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Autocentro Empuriabrava**. Te ayudo a elegir servicio, ver precios y pedir cita en 1 minuto. ¿En qué te ayudo?",
+  menu:["🔧 Ver servicios","💶 Precios","📅 Pedir cita","❓ Preguntas frecuentes","💬 Hablar con el equipo"],
+  boatsIntro:"Estos son nuestros servicios 🔧 Toca uno para ver el detalle:",
+  askWhichBoat:"¿Sobre qué servicio quieres saber más? Escribe el nombre o elige uno:",
+  notFound:"No he encontrado ese servicio 🤔 Estos son los que ofrecemos:",
+  priceIntro:"Los precios son orientativos; el taller confirma el presupuesto final antes de tocar nada. Aquí tienes el resumen:",
+  licenseIntro:"Siempre te damos el presupuesto antes de empezar — sin sorpresas y con garantía. 🔧",
+  licenseNone:"🟢 Presupuesto sin compromiso",
+  licenseCaptain:"🟢 Presupuesto sin compromiso",
+  licenseOptional:"🟢 Presupuesto sin compromiso",
+  licenseRequired:"🟢 Presupuesto sin compromiso",
+  faqTitle:"Preguntas frecuentes:",
+  faq:{
+    fuel:"✅ *Garantía*: todas las reparaciones con garantía y presupuesto siempre antes de tocar nada. Sin sorpresas.",
+    weather:"⏱️ *¿Cuánto tarda?*: revisión y neumáticos el mismo día; las reparaciones grandes, con plazo al confirmar el presupuesto.",
+    cancel:"🕐 *Horarios*: L-V 08:30–13:00 / 15:00–19:00 · sábado mañana con cita. Urgencias, escríbenos.",
+    calas:"🚗 *Extras*: recogida del vehículo y coche de cortesía según disponibilidad. Pregúntanos al pedir cita."
+  },
+  faqButtons:["✅ Garantía","⏱️ Plazos","🕐 Horarios","🚗 Extras","⬅️ Menú"],
+  bookStart:"Perfecto, vamos a pedir tu cita 🙌",
+  askDate:"📅 ¿Para qué día quieres la cita?",
+  askPax:"🚗 ¿Qué vehículo es?",
+  paxOpts:["Coche","SUV / 4x4","Furgoneta","Moto"],
+  askLicense:"🕐 ¿Cuándo te viene bien?",
+  licenseOpts:["Lo antes posible","Esta semana","Fecha concreta"],
+  suggestBoat:"Con esos datos, te recomiendo:",
+  askBoatConfirm:"¿Pedimos cita para este servicio, o prefieres ver otro?",
+  confirmBoat:"✅ Pedir este","otherBoat":"Ver otros servicios",
+  askName:"🙋 ¿A nombre de quién hacemos la cita?",
+  askContact:"📱 Perfecto {name}. ¿Cuál es tu teléfono o email de contacto?",
+  summaryTitle:"📋 Resumen de tu solicitud",
+  summaryDate:"Día", summaryPax:"Vehículo", summaryLicense:"Cuándo", summaryBoat:"Servicio", summaryName:"Nombre", summaryContact:"Contacto",
+  summaryFooter:"Este es un resumen orientativo — el equipo de Autocentro Empuriabrava confirmará la cita y el presupuesto por WhatsApp. ¡No se cobra nada aún!",
+  sendWa:"📲 Enviar solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"Hola! Quiero pedir cita en Autocentro Empuriabrava:",
+  humanHandoff:"Te pongo en contacto directo con el equipo humano de Autocentro Empuriabrava 👇",
+  fallback:"¡Buena pregunta! Para eso te conecto directamente con el equipo, o si prefieres, dime si quieres ver *servicios*, *precios* o *pedir cita*.",
+  langSwitched:"Cambiado a español 🇪🇸",
+  personLabel:"vehículos"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel d'**Autocentro Empuriabrava**. Je vous aide à choisir une prestation, voir les prix et prendre rendez-vous en 1 minute. Que puis-je faire pour vous ?",
+  menu:["🔧 Voir les prestations","💶 Tarifs","📅 Prendre RDV","❓ Questions fréquentes","💬 Parler à l'équipe"],
+  boatsIntro:"Voici nos prestations 🔧 Touchez-en une pour le détail :",
+  askWhichBoat:"Sur quelle prestation voulez-vous plus d'infos ? Écrivez le nom ou choisissez :",
+  notFound:"Je n'ai pas trouvé cette prestation 🤔 Voici celles que nous proposons :",
+  priceIntro:"Les prix sont indicatifs ; le garage confirme le devis final avant toute intervention. Voici le résumé :",
+  licenseIntro:"On vous donne toujours le devis avant de commencer — sans surprise et avec garantie. 🔧",
+  licenseNone:"🟢 Devis sans engagement",
+  licenseCaptain:"🟢 Devis sans engagement",
+  licenseOptional:"🟢 Devis sans engagement",
+  licenseRequired:"🟢 Devis sans engagement",
+  faqTitle:"Questions fréquentes :",
+  faq:{
+    fuel:"✅ *Garantie* : toutes les réparations garanties et un devis toujours avant toute intervention. Aucune surprise.",
+    weather:"⏱️ *Combien de temps ?* : révision et pneus le jour même ; les grosses réparations, avec un délai donné à la validation du devis.",
+    cancel:"🕐 *Horaires* : lun-ven 08h30–13h00 / 15h00–19h00 · samedi matin sur RDV. Urgences, écrivez-nous.",
+    calas:"🚗 *Extras* : dépose du véhicule et voiture de courtoisie selon disponibilité. Demandez-nous en prenant RDV."
+  },
+  faqButtons:["✅ Garantie","⏱️ Délais","🕐 Horaires","🚗 Extras","⬅️ Menu"],
+  bookStart:"Parfait, prenons votre rendez-vous 🙌",
+  askDate:"📅 Pour quel jour souhaitez-vous le RDV ?",
+  askPax:"🚗 Quel véhicule est-ce ?",
+  paxOpts:["Voiture","SUV / 4x4","Utilitaire","Moto"],
+  askLicense:"🕐 Quand cela vous arrange-t-il ?",
+  licenseOpts:["Dès que possible","Cette semaine","Date précise"],
+  suggestBoat:"D'après ces infos, je vous recommande :",
+  askBoatConfirm:"On prend RDV pour cette prestation, ou vous préférez en voir une autre ?",
+  confirmBoat:"✅ Prendre celle-ci","otherBoat":"Voir d'autres prestations",
+  askName:"🙋 Au nom de qui prenons-nous le RDV ?",
+  askContact:"📱 Parfait {name}. Quel est votre téléphone ou email de contact ?",
+  summaryTitle:"📋 Résumé de votre demande",
+  summaryDate:"Jour", summaryPax:"Véhicule", summaryLicense:"Quand", summaryBoat:"Prestation", summaryName:"Nom", summaryContact:"Contact",
+  summaryFooter:"Ceci est un résumé indicatif — l'équipe d'Autocentro Empuriabrava confirmera le RDV et le devis par WhatsApp. Rien n'est débité pour l'instant !",
+  sendWa:"📲 Envoyer la demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite prendre RDV chez Autocentro Empuriabrava :",
+  humanHandoff:"Je vous mets en contact direct avec l'équipe d'Autocentro Empuriabrava 👇",
+  fallback:"Bonne question ! Je vous mets en contact avec l'équipe, ou dites-moi si vous voulez voir les *prestations*, les *tarifs* ou *prendre RDV*.",
+  langSwitched:"Changé en français 🇫🇷",
+  personLabel:"véhicules"
+},
+en:{
+  status:"online · replies instantly",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Autocentro Empuriabrava**. I can help you pick a service, check prices and book an appointment in under a minute. How can I help?",
+  menu:["🔧 See services","💶 Prices","📅 Book appointment","❓ FAQ","💬 Talk to the team"],
+  boatsIntro:"Here are our services 🔧 Tap one for details:",
+  askWhichBoat:"Which service would you like to know more about? Type the name or pick one:",
+  notFound:"I couldn't find that service 🤔 Here's what we offer:",
+  priceIntro:"Prices are indicative; the garage confirms the final quote before any work. Here's the summary:",
+  licenseIntro:"We always give you the quote before starting — no surprises, with a warranty. 🔧",
+  licenseNone:"🟢 Free no-obligation quote",
+  licenseCaptain:"🟢 Free no-obligation quote",
+  licenseOptional:"🟢 Free no-obligation quote",
+  licenseRequired:"🟢 Free no-obligation quote",
+  faqTitle:"Frequently asked questions:",
+  faq:{
+    fuel:"✅ *Warranty*: all repairs come with a warranty, and a quote always before any work. No surprises.",
+    weather:"⏱️ *How long?*: service and tyres same day; larger repairs with a lead time given when the quote is confirmed.",
+    cancel:"🕐 *Hours*: Mon-Fri 08:30–13:00 / 15:00–19:00 · Saturday morning by appointment. Urgent? Message us.",
+    calas:"🚗 *Extras*: vehicle pick-up and courtesy car subject to availability. Just ask when booking."
+  },
+  faqButtons:["✅ Warranty","⏱️ Timing","🕐 Hours","🚗 Extras","⬅️ Menu"],
+  bookStart:"Great, let's book your appointment 🙌",
+  askDate:"📅 What day would you like the appointment?",
+  askPax:"🚗 What vehicle is it?",
+  paxOpts:["Car","SUV / 4x4","Van","Motorbike"],
+  askLicense:"🕐 When suits you?",
+  licenseOpts:["As soon as possible","This week","Specific date"],
+  suggestBoat:"Based on that, I'd recommend:",
+  askBoatConfirm:"Shall we book this service, or would you like to see others?",
+  confirmBoat:"✅ Book this one","otherBoat":"See other services",
+  askName:"🙋 Who should we put the appointment under?",
+  askContact:"📱 Great, {name}. What's the best phone number or email to reach you?",
+  summaryTitle:"📋 Your request summary",
+  summaryDate:"Day", summaryPax:"Vehicle", summaryLicense:"When", summaryBoat:"Service", summaryName:"Name", summaryContact:"Contact",
+  summaryFooter:"This is an indicative summary — the Autocentro Empuriabrava team will confirm the appointment and quote over WhatsApp. Nothing is charged yet!",
+  sendWa:"📲 Send request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like to book an appointment at Autocentro Empuriabrava:",
+  humanHandoff:"Connecting you directly with the Autocentro Empuriabrava team 👇",
+  fallback:"Good question! Let me connect you with the team — or tell me if you'd like to see *services*, *prices*, or *book*.",
+  langSwitched:"Switched to English 🇬🇧",
+  personLabel:"vehicles"
+}
+};
+
+const LIC_LABEL_KEY = {none:"licenseNone",captain:"licenseCaptain",optional:"licenseOptional",required:"licenseRequired"};
+const LIC_CLASS = {none:"lic-no",captain:"lic-no",optional:"lic-yes",required:"lic-yes"};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, date, pax, license, boat, name, contact}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"showBoats()"},
+    {label:m[1], onclick:"showPrices()"},
+    {label:m[2], onclick:"startBooking()"},
+    {label:m[3], onclick:"showFaq()"},
+    {label:m[4], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function boatButtons(extraFirst){
+  const btns = BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`showBoatDetail('${b.id}')`}));
+  if(extraFirst) btns.unshift(extraFirst);
+  return btns;
+}
+
+function boatCardHtml(b){
+  const licKey = LIC_LABEL_KEY[b.license];
+  const licTxt = t(licKey);
+  const priceLabel = b.priceFrom ? `~ ${b.priceFrom}€` : `${b.priceHalf}–${b.priceFull}€`;
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">${b.img} ${b.name}</span><span class="cprice">${priceLabel}</span></div>
+    <div class="cardbody">
+      <div>${md(b.d[lang])}</div>
+      <div class="spec-row">
+        <span class="spec">👥 ${b.pax} pax</span>
+        ${b.length ? `<span class="spec">📏 ${b.length}</span>` : ''}
+        ${b.hp ? `<span class="spec">⚙️ ${b.hp}</span>` : ''}
+        <span class="spec">📍 ${b.location}</span>
+        <span class="spec ${LIC_CLASS[b.license]}">${licTxt}</span>
+      </div>
+      <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">${b.inc[lang].map(i=>'• '+i).join('<br>')}</div>
+    </div>
+  </div>`;
+}
+
+function showBoats(){
+  addUser(t('menu')[0]);
+  addBotText(t('boatsIntro'), null, 400);
+  setTimeout(()=>{
+    BOATS.forEach((b,i)=>{
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+      chatEl.appendChild(row);
+    });
+    scrollBottom();
+    addBot(md(t('askWhichBoat')), [{label:t('menu')[2],onclick:"startBooking()"},{label:'⬅️ '+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}]);
+  }, 700);
+}
+
+function showBoatDetail(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('askBoatConfirm')), [
+      {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+      {label:t('otherBoat'), onclick:"showBoats()"}
+    ]);
+  }, 500);
+}
+
+function showPrices(){
+  addUser(t('menu')[1]);
+  addBotText(t('priceIntro'), null, 400);
+  setTimeout(()=>{
+    const lines = BOATS.map(b=>{
+      const fromWord = {es:'desde',ca:'des de',fr:'dès',en:'from'}[lang]||'desde';
+      const price = `${fromWord} ${b.priceFrom}€/${b.priceUnit[lang]||b.priceUnit.es}`;
+      return `<b>${b.name.split(' — ')[0]}</b> (${b.pax} pax) — ${price}`;
+    }).join('<br><br>');
+    addBot(lines, mainMenuButtons(), 400);
+  }, 500);
+}
+
+function showFaq(){
+  addUser(t('menu')[3]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas','menu'];
+    return {label, onclick: keys[i]==='menu' ? 'showMenu()' : `showFaqItem('${keys[i]}')`};
+  }), 400);
+}
+function showFaqItem(key){
+  addUser(t('faqButtons')[['fuel','weather','cancel','calas'].indexOf(key)]);
+  addBotText(t('faq')[key], [...t('faqButtons').slice(0,4).filter(l=>true).map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas'];
+    return {label, onclick:`showFaqItem('${keys[i]}')`};
+  }), {label:t('faqButtons')[4], onclick:"showMenu()"}], 400);
+}
+
+function showMenu(){
+  addBotText(t('welcome').split('\n')[1] || t('welcome'), mainMenuButtons(), 300);
+}
+
+function humanHandoff(){
+  addUser(t('menu')[4]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:"⬅️ "+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= BOOKING FLOW ================= */
+function startBooking(preselectBoatId){
+  addUser(t('menu')[2]);
+  booking = {step:'date', date:null, pax:null, license:null, boat: preselectBoatId ? BOATS.find(b=>b.id===preselectBoatId) : null, name:null, contact:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{ addBotText(t('askDate')); }, 700);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    addBotText(t('askPax'), t('paxOpts').map(l=>({label:l, onclick:`bookingPax('${l}')`})), 450);
+    booking.step='pax';
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    addBotText(t('askContact').replace('{name}', text), null, 400);
+    booking.step='contact';
+    return true;
+  }
+  if(booking.step==='contact'){
+    booking.contact = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function bookingPax(label){
+  addUser(label);
+  booking.pax = label;
+  if(booking.boat){
+    booking.license = 'preset';
+    afterLicenseKnown();
+  } else {
+    addBotText(t('askLicense'), t('licenseOpts').map(l=>({label:l, onclick:`bookingLicense('${l}')`})), 450);
+    booking.step='license';
+  }
+}
+
+function bookingLicense(label){
+  addUser(label);
+  booking.license = label;
+  afterLicenseKnown();
+}
+
+function suggestBoatFor(booking){
+  const maxPax = booking.pax && booking.pax.includes('12+') ? 12 : booking.pax && booking.pax.includes('Más') ? 13 : booking.pax && booking.pax.includes('Plus') ? 13 : parseInt((booking.pax||'').match(/\d+/g)?.slice(-1)[0]) || 4;
+  const noLic = booking.license && /no|non|not/i.test(booking.license) && !/sí|oui|yes/i.test(booking.license);
+  let candidates = BOATS.filter(b=>b.pax>=Math.min(maxPax,12));
+  if(candidates.length===0) candidates = [BOATS[BOATS.length-1]];
+  candidates.sort((a,b)=>a.pax-b.pax);
+  return candidates[0];
+}
+
+function afterLicenseKnown(){
+  if(!booking.boat){
+    const suggestion = suggestBoatFor(booking);
+    showTyping(()=>{
+      addBot(md(t('suggestBoat')));
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(suggestion)}</div>`;
+      chatEl.appendChild(row);
+      scrollBottom();
+      addBot(md(t('askBoatConfirm')), [
+        {label:t('confirmBoat'), onclick:`bookingChooseBoat('${suggestion.id}')`, cls:'primary'},
+        {label:t('otherBoat'), onclick:"showBoatsForBooking()"}
+      ]);
+    }, 500);
+  } else {
+    askNameStep();
+  }
+}
+
+function showBoatsForBooking(){
+  addUser(t('otherBoat'));
+  showTyping(()=>{
+    addBot(md(t('askWhichBoat')), BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`bookingChooseBoat('${b.id}')`})));
+  }, 300);
+}
+
+function bookingChooseBoat(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  booking.boat = b;
+  askNameStep();
+}
+
+function askNameStep(){
+  addBotText(t('askName'), null, 500);
+  booking.step='name';
+}
+
+function finishBooking(){
+  booking.step='done';
+  const licTxt = booking.license==='preset' ? '—' : booking.license;
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryDate')}:</b> ${esc(booking.date)}<br>
+          <b>${t('summaryPax')}:</b> ${esc(booking.pax)}<br>
+          <b>${t('summaryLicense')}:</b> ${esc(licTxt)}<br>
+          <b>${t('summaryBoat')}:</b> ${booking.boat.name}<br>
+          <b>${t('summaryName')}:</b> ${esc(booking.name)}<br>
+          <b>${t('summaryContact')}:</b> ${esc(booking.contact)}
+          <hr style="border:none;border-top:1px solid #e5edf0;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${t('summaryFooter')}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryDate')}: ${booking.date}\n${t('summaryPax')}: ${booking.pax}\n${t('summaryLicense')}: ${licTxt}\n${t('summaryBoat')}: ${booking.boat.name}\n${t('summaryName')}: ${booking.name}\n${t('summaryContact')}: ${booking.contact}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUAGE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bateau','reserver','reservation','prix','combien','merci','oui','non','permis','svp','bonsoir'];
+  const en = ['hello','hi ','hey','boat','book','price','how much','thanks','yes','no ','license','please'];
+  const es = ['hola','buenas','barco','reservar','precio','cuanto','gracias','si','no ','licencia','favor'];
+  const ca = ['hola','bona tarda','barca','vaixell','reservar','preu','quant','gracies','llicencia','sisplau','sisplau','voldria','quantes'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+/* ================= FREE TEXT HANDLING ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  // language auto-switch if very confident and different from current on first real message
+  const detected = detectLang(text);
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='contact')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  // boat name match
+  const boatMatch = BOATS.find(b=>b.key.some(k=>n.includes(normalize(k))));
+  if(boatMatch){ showTyping(()=>showBoatDetailInline(boatMatch), 350); return; }
+
+  if(normalizedIncludesAny(n,['servicio','servicios','servei','serveis','prestation','service','services','revision','revisión','coche','vehiculo','vehicule'])){ showBoats(); return; }
+  if(normalizedIncludesAny(n,['precio','precios','tarif','prix','price','prices','cuanto cuesta','coste','cout','presupuesto','devis','quote'])){ showPrices(); return; }
+  if(normalizedIncludesAny(n,['reserv','book','réserv','cita','rendez','rdv','appointment'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['garantia','garantía','garantie','warranty'])){
+    addBotText(t('licenseIntro'), mainMenuButtons(), 400); return;
+  }
+  if(normalizedIncludesAny(n,['horario','horaris','horaire','hours','abierto','ouvert','open'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['cortesia','courtesy','recogida','depannage','extra'])){ showFaqItem('calas'); return; }
+  if(normalizedIncludesAny(n,['horari','schedule','hour','heure','pesca','fishing','peche'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['tiempo','meteo','weather','lluvia','pluie','rain'])){ showFaqItem('weather'); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','human','equipo','equipe','llamar','appeler','call'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bonjour','salut','hello','hi','hey','bonsoir'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function showBoatDetailInline(b){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  addBot(md(t('askBoatConfirm')), [
+    {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+    {label:t('otherBoat'), onclick:"showBoats()"}
+  ]);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-autocentro-x7k3p9', {method:'POST', body:'Visite demo Autocentro · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'es';
+  document.querySelector('.langbtn[data-lang="es"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
