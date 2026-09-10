@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Alex · Stratton Bureautique</title>
+<meta name="description" content="Asistente virtual de Stratton Bureautique">
+<style>
+:root{
+  --navy:#0c3b4f;
+  --navy-dark:#082733;
+  --teal:#12617a;
+  --sand:#e0a45c;
+  --sand-dark:#c8873c;
+  --sea:#3a93a8;
+  --bg:#eef6f8;
+  --paper:#ffffff;
+  --ink:#123241;
+  --muted:#6b8894;
+  --wa:#25d366;
+  --wa-dark:#1ebe5b;
+  --radius:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1c6b86 0%, var(--navy) 55%, var(--navy-dark) 100%);
+  min-height:100%;
+  display:flex;
+  justify-content:center;
+  color:var(--ink);
+}
+#app{
+  width:100%;
+  max-width:480px;
+  min-height:100vh;
+  min-height:100dvh;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 0 60px rgba(0,0,0,.35);
+}
+
+/* HEADER */
+header{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--teal) 100%);
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 2px 10px rgba(0,0,0,.15);
+}
+.avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.4);
+}
+.hinfo{flex:1;min-width:0;}
+.hinfo .name{font-weight:700;font-size:15.5px;line-height:1.2;}
+.hinfo .status{font-size:12px;opacity:.85;display:flex;align-items:center;gap:5px;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 2px rgba(74,222,128,.3);}
+.langbar{display:flex;gap:4px;}
+.langbtn{
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  padding:5px 7px;
+  border-radius:8px;
+  cursor:pointer;
+  letter-spacing:.3px;
+}
+.langbtn.active{background:#fff;color:var(--navy);}
+
+/* CHAT */
+#chat{
+  flex:1;
+  overflow-y:auto;
+  padding:16px 12px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:
+    linear-gradient(var(--bg),var(--bg));
+}
+.row{display:flex;width:100%;}
+.row.bot{justify-content:flex-start;}
+.row.user{justify-content:flex-end;}
+.stack{display:flex;flex-direction:column;max-width:88%;}
+.row.bot .stack{align-items:flex-start;}
+.row.user .stack{align-items:flex-end;}
+.bubble{
+  max-width:84%;
+  padding:10px 13px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  line-height:1.45;
+  white-space:pre-wrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.06);
+}
+.row.bot .bubble{
+  background:var(--paper);
+  border-bottom-left-radius:4px;
+  color:var(--ink);
+}
+.row.user .bubble{
+  background:linear-gradient(135deg,var(--teal),var(--navy));
+  color:#fff;
+  border-bottom-right-radius:4px;
+}
+.bubble b{color:var(--navy-dark);}
+.row.user .bubble b{color:#fff;}
+.bubble .tag{
+  display:inline-block;background:var(--bg);color:var(--teal);
+  font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px;margin-bottom:4px;
+}
+
+.card{
+  background:var(--paper);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,.08);
+  border:1px solid #dfe9ec;
+}
+.card .cardhead{
+  background:linear-gradient(135deg,var(--navy),var(--teal));
+  color:#fff;padding:9px 12px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.card .cardhead .cname{font-weight:700;font-size:14.5px;}
+.card .cardhead .cprice{font-size:12.5px;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:20px;}
+.card .cardbody{padding:10px 12px;font-size:13.5px;color:var(--ink);}
+.spec-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0;}
+.spec{background:var(--bg);color:var(--navy);font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.spec.lic-yes{background:#fde3d3;color:#a6480f;}
+.spec.lic-no{background:#d6f3e0;color:#127a3f;}
+
+/* quick replies */
+.quick{display:flex;flex-wrap:wrap;gap:7px;margin-top:2px;}
+.qbtn{
+  background:#fff;
+  border:1.5px solid var(--teal);
+  color:var(--teal);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:.15s;
+}
+.qbtn:hover{background:var(--teal);color:#fff;}
+.qbtn.primary{background:var(--sand);border-color:var(--sand-dark);color:#fff;}
+.qbtn.primary:hover{background:var(--sand-dark);}
+.qbtn.wa{background:var(--wa);border-color:var(--wa-dark);color:#fff;}
+.qbtn.wa:hover{background:var(--wa-dark);}
+
+.typing{display:flex;gap:4px;padding:12px 14px;}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted);opacity:.5;animation:blink 1.2s infinite;}
+.typing span:nth-child(2){animation-delay:.2s;}
+.typing span:nth-child(3){animation-delay:.4s;}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+/* input bar */
+#inputbar{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:var(--paper);
+  border-top:1px solid #e1eaed;
+  position:sticky;
+  bottom:0;
+}
+#msgInput{
+  flex:1;
+  border:1.5px solid #dbe6ea;
+  background:var(--bg);
+  border-radius:22px;
+  padding:11px 16px;
+  font-size:14.5px;
+  outline:none;
+  color:var(--ink);
+}
+#msgInput:focus{border-color:var(--teal);}
+#sendBtn{
+  width:42px;height:42px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--sand),var(--sand-dark));
+  color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 6px rgba(200,135,60,.4);
+}
+#sendBtn:active{transform:scale(.93);}
+
+.footerbadge{
+  text-align:center;font-size:10.5px;color:var(--muted);padding:6px 0 2px;
+  background:var(--paper);
+}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:#c7d7dc;border-radius:3px;}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="avatar">💼</div>
+    <div class="hinfo">
+      <div class="name">Alex · Stratton Bureautique</div>
+      <div class="status"><span class="dot"></span><span id="statusTxt">en ligne · réponse immédiate</span></div>
+    </div>
+    <div class="langbar">
+      <button class="langbtn" data-lang="ca" onclick="forceLang('ca')">CA</button>
+      <button class="langbtn" data-lang="es" onclick="forceLang('es')">ES</button>
+      <button class="langbtn" data-lang="fr" onclick="forceLang('fr')">FR</button>
+      <button class="langbtn" data-lang="en" onclick="forceLang('en')">EN</button>
+    </div>
+  </header>
+  <div id="chat"></div>
+  <div id="inputbar">
+    <input id="msgInput" type="text" placeholder="Écrivez votre message..." autocomplete="off" />
+    <button id="sendBtn" onclick="handleSend()">➤</button>
+  </div>
+  <div class="footerbadge">🔒 Demo privada para Stratton Bureautique · powered by Alex AI</div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const WA_NUMBER = "33774602008"; // Maxime (demo)
+
+const BOATS = [
+  {
+    id:"impression", key:["impression","imprimante","copieur","photocopieur","print","impresion"],
+    name:"Solutions d'impression",
+    pax:99, length:null, hp:null, location:"Sur site ou à distance",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"devis",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"🖨️",
+    d:{
+      ca:"Copiadores i impressores multifunció, gestió del parc i contractes a mida per a la seva empresa.",
+      es:"Copiadoras e impresoras multifunción, gestión del parque y contratos a medida para su empresa.",
+      fr:"Copieurs et imprimantes multifonctions, gestion de votre parc et contrats sur mesure. On optimise vos coûts d'impression.",
+      en:"Multifunction copiers and printers, fleet management and tailored contracts to optimise your print costs."
+    },
+    inc:{
+      ca:["Audit gratuït","Contracte a mida","Manteniment réactif","Consumibles inclosos"],
+      es:["Auditoría gratuita","Contrato a medida","Mantenimiento reactivo","Consumibles incluidos"],
+      fr:["Audit gratuit","Contrat sur mesure","Maintenance réactive","Consommables inclus"],
+      en:["Free audit","Tailored contract","Reactive maintenance","Consumables included"]
+    }
+  },
+  {
+    id:"telephonie", key:["telephonie","téléphonie","telecom","standard","voip","telefonia"],
+    name:"Téléphonie d'entreprise",
+    pax:99, length:null, hp:null, location:"Sur site ou à distance",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"devis",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"☎️",
+    d:{
+      ca:"Standard telefònic, mòbils i solucions VoIP. Els millors outils de telecomunicació, seleccionats per vostè.",
+      es:"Centralita, móviles y soluciones VoIP. Las mejores herramientas de telecomunicación, seleccionadas para usted.",
+      fr:"Standard téléphonique, mobiles et solutions VoIP. On sélectionne pour vous les meilleurs outils télécom.",
+      en:"Phone system, mobiles and VoIP solutions — the best telecom tools, selected for you."
+    },
+    inc:{
+      ca:["Estudi gratuït","Migració sense tall","Números conservats","Suport dedicat"],
+      es:["Estudio gratuito","Migración sin corte","Números conservados","Soporte dedicado"],
+      fr:["Étude gratuite","Migration sans coupure","Numéros conservés","Support dédié"],
+      en:["Free assessment","Seamless migration","Keep your numbers","Dedicated support"]
+    }
+  },
+  {
+    id:"informatique", key:["informatique","it","ordinateur","serveur","reseau","réseau","infogerance","infogérance","informatica"],
+    name:"Informatique & infogérance",
+    pax:99, length:null, hp:null, location:"Sur site ou à distance",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"devis",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"💻",
+    d:{
+      ca:"Postos de treball, servidors, xarxa i infogestió. Qualsevol necessitat, una solució adaptada al seu pressupost.",
+      es:"Puestos de trabajo, servidores, red e infogestión. Cualquier necesidad, una solución adaptada a su presupuesto.",
+      fr:"Postes, serveurs, réseau et infogérance. Quel que soit votre besoin, une solution adaptée à votre budget.",
+      en:"Workstations, servers, network and managed IT — a solution adapted to any need and budget."
+    },
+    inc:{
+      ca:["Diagnòstic gratuït","Solucions a mida","Intervenció ràpida","Seguiment continu"],
+      es:["Diagnóstico gratuito","Soluciones a medida","Intervención rápida","Seguimiento continuo"],
+      fr:["Diagnostic gratuit","Solutions sur mesure","Intervention rapide","Suivi continu"],
+      en:["Free diagnosis","Tailored solutions","Fast response","Ongoing monitoring"]
+    }
+  },
+  {
+    id:"cybersecurite", key:["cybersecurite","cybersécurité","securite","sécurité","sauvegarde","backup","ciberseguridad"],
+    name:"Cybersécurité",
+    pax:99, length:null, hp:null, location:"Sur site ou à distance",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"devis",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"🔐",
+    d:{
+      ca:"Protecció, còpies de seguretat i auditoria de seguretat per protegir les seves dades i les dels seus clients.",
+      es:"Protección, copias de seguridad y auditoría para proteger sus datos y los de sus clientes.",
+      fr:"Protection, sauvegarde et audit de sécurité pour protéger vos données et celles de vos clients.",
+      en:"Protection, backup and security audits to safeguard your data and your clients' data."
+    },
+    inc:{
+      ca:["Auditoria de seguretat","Còpies automàtiques","Protecció anti-ransomware","Pla de continuïtat"],
+      es:["Auditoría de seguridad","Copias automáticas","Protección anti-ransomware","Plan de continuidad"],
+      fr:["Audit de sécurité","Sauvegardes automatiques","Protection anti-ransomware","Plan de continuité"],
+      en:["Security audit","Automatic backups","Anti-ransomware protection","Continuity plan"]
+    }
+  },
+  {
+    id:"assistantia", key:["ia","assistant","intelligence","chatbot","alex","robot","asistente"],
+    name:"Assistant IA 24/7 — Nouveau",
+    pax:99, length:null, hp:null, location:"WhatsApp, téléphone & site",
+    license:"none",
+    priceFrom:null, priceHalf:0, priceFull:0, priceUnit:{es:"devis",fr:"devis",en:"quote"},
+    fuel:false,
+    img:"🤖",
+    d:{
+      ca:"Un assistent que respon als seus clients 24/7, qualifica les demandes i agenda cites — fins i tot de nit i el cap de setmana, en la seva llengua.",
+      es:"Un asistente que responde a sus clientes 24/7, califica las solicitudes y agenda citas — incluso de noche y el fin de semana, en su idioma.",
+      fr:"Un assistant qui répond à vos clients 24/7, qualifie les demandes et prend les rendez-vous — même la nuit et le week-end, dans leur langue. Vos équipes se concentrent sur la vente.",
+      en:"An assistant that answers your clients 24/7, qualifies requests and books meetings — even nights and weekends, in their language."
+    },
+    inc:{
+      ca:["Respon en menys de 2 min","Qualifica i agenda","Multilingüe","Es configura al seu nom"],
+      es:["Responde en menos de 2 min","Califica y agenda","Multilingüe","Se configura a su nombre"],
+      fr:["Répond en moins de 2 min","Qualifie et prend les RDV","Multilingue","Configuré à votre nom"],
+      en:["Replies in under 2 min","Qualifies and books","Multilingual","Set up in your name"]
+    }
+  }
+];
+
+/* ================= I18N STRINGS ================= */
+const S = {
+ca:{
+  status:"en línia · resposta immediata",
+  placeholder:"Escriviu el vostre missatge...",
+  welcome:"Bon dia! 👋 Sóc *Alex*, l'assistent virtual de **Stratton Bureautique**. Us ajudo a trobar la solució adequada (impressió, telefonia, informàtica) i a concertar una cita en 1 minut. En què us puc ajudar?",
+  menu:["🗂️ Les nostres solucions","💶 Tarifes i pressupost","📅 Demanar una cita","❓ Preguntes freqüents","👤 Parlar amb un assessor"],
+  boatsIntro:"Aquestes són les nostres solucions per a la vostra empresa 👇 Toqueu-ne una per veure'n el detall:",
+  askWhichBoat:"Sobre quina solució voleu saber-ne més?",
+  notFound:"No he trobat això 🤔 Aquestes són les nostres solucions:",
+  priceIntro:"Totes les nostres prestacions són a mida, amb un audit gratuït. Us proposo concertar una cita perquè un assessor us faci una proposta precisa:",
+  licenseIntro:"Amb Stratton, sempre comencem per un audit gratuït i sense compromís del vostre parc actual.",
+  licenseNone:"🟢 Audit & pressupost gratuïts",
+  licenseCaptain:"🟢 Audit & pressupost gratuïts",
+  licenseOptional:"🟢 Audit & pressupost gratuïts",
+  licenseRequired:"🟢 Audit & pressupost gratuïts",
+  faqTitle:"Preguntes freqüents:",
+  faq:{
+    fuel:"✅ *Com funciona?*: comencem sempre per un audit gratuït del vostre parc/necessitat, després una proposta a mida. Sense compromís.",
+    weather:"⏱️ *Terminis*: un assessor us truca en 24-48 h; les intervencions es planifiquen segons la urgència.",
+    cancel:"🕐 *Horaris*: dl-dv 9h-18h · servei de manteniment reactiu per als clients amb contracte.",
+    calas:"🔐 *Dades*: allotjades a Europa, conformes RGPD. La seguretat de les vostres dades és prioritària."
+  },
+  faqButtons:["✅ Com funciona","⏱️ Terminis","🕐 Horaris","🔐 Dades","⬅️ Menú"],
+  bookStart:"Perfecte, concertem la vostra cita 🙌",
+  askDate:"📅 Per a quin dia voleu la cita (o la trucada d'un assessor)?",
+  askPax:"🏢 Quina mida té la vostra empresa?",
+  paxOpts:["1-5 persones","6-20","21-50","Més de 50"],
+  askLicense:"🕐 Per a quan és el vostre projecte?",
+  licenseOpts:["Al més aviat possible","Aquest mes","M'informo"],
+  suggestBoat:"Amb aquestes dades, un assessor us prepararà una proposta. Confirmem la cita?",
+  askBoatConfirm:"Reservem aquesta cita, o voleu veure una altra solució?",
+  confirmBoat:"✅ Reservar la cita","otherBoat":"Veure altres solucions",
+  askName:"🙋 A nom de quina empresa / persona?",
+  askContact:"📱 Perfecte {name}. Quin és el vostre telèfon o email professional?",
+  summaryTitle:"📋 Resum de la vostra sol·licitud",
+  summaryDate:"Data", summaryPax:"Efectiu", summaryLicense:"Termini", summaryBoat:"Necessitat", summaryName:"Empresa", summaryContact:"Contacte",
+  summaryFooter:"Aquest és un resum — l'equip de Stratton Bureautique us contactarà per confirmar la cita i preparar una proposta a mida. Cap compromís!",
+  sendWa:"📲 Enviar la sol·licitud per WhatsApp",
+  newQuery:"🔄 Nova consulta",
+  waPrefix:"Bon dia! Voldria una cita amb Stratton Bureautique:",
+  humanHandoff:"Us poso en contacte directe amb un assessor de Stratton Bureautique 👇",
+  fallback:"Bona pregunta! Us connecto amb un assessor, o digueu-me si voleu veure *les nostres solucions*, *fer una pregunta* o *demanar una cita*.",
+  langSwitched:"Canviat a català",
+  personLabel:"persones"
+},
+es:{
+  status:"en línea · respuesta inmediata",
+  placeholder:"Escriba su mensaje...",
+  welcome:"¡Hola! 👋 Soy *Alex*, el asistente virtual de **Stratton Bureautique**. Le ayudo a encontrar la solución adecuada (impresión, telefonía, informática) y a concertar una cita en 1 minuto. ¿En qué puedo ayudarle?",
+  menu:["🗂️ Nuestras soluciones","💶 Tarifas y presupuesto","📅 Pedir una cita","❓ Preguntas frecuentes","👤 Hablar con un asesor"],
+  boatsIntro:"Estas son nuestras soluciones para su empresa 👇 Toque una para ver el detalle:",
+  askWhichBoat:"¿Sobre qué solución quiere saber más?",
+  notFound:"No he encontrado eso 🤔 Estas son nuestras soluciones:",
+  priceIntro:"Todas nuestras prestaciones son a medida, con una auditoría gratuita. Le propongo concertar una cita para que un asesor le haga una propuesta precisa:",
+  licenseIntro:"Con Stratton, siempre empezamos por una auditoría gratuita y sin compromiso de su parque actual.",
+  licenseNone:"🟢 Auditoría y presupuesto gratis",
+  licenseCaptain:"🟢 Auditoría y presupuesto gratis",
+  licenseOptional:"🟢 Auditoría y presupuesto gratis",
+  licenseRequired:"🟢 Auditoría y presupuesto gratis",
+  faqTitle:"Preguntas frecuentes:",
+  faq:{
+    fuel:"✅ *¿Cómo funciona?*: empezamos siempre por una auditoría gratuita de su parque/necesidad, luego una propuesta a medida. Sin compromiso.",
+    weather:"⏱️ *Plazos*: un asesor le llama en 24-48 h; las intervenciones se planifican según la urgencia.",
+    cancel:"🕐 *Horarios*: L-V 9h-18h · servicio de mantenimiento reactivo para clientes con contrato.",
+    calas:"🔐 *Datos*: alojados en Europa, conformes RGPD. La seguridad de sus datos es prioritaria."
+  },
+  faqButtons:["✅ Cómo funciona","⏱️ Plazos","🕐 Horarios","🔐 Datos","⬅️ Menú"],
+  bookStart:"Perfecto, concertamos su cita 🙌",
+  askDate:"📅 ¿Para qué día quiere la cita (o la llamada de un asesor)?",
+  askPax:"🏢 ¿Qué tamaño tiene su empresa?",
+  paxOpts:["1-5 personas","6-20","21-50","Más de 50"],
+  askLicense:"🕐 ¿Para cuándo es su proyecto?",
+  licenseOpts:["Lo antes posible","Este mes","Me informo"],
+  suggestBoat:"Con estos datos, un asesor le preparará una propuesta. ¿Confirmamos la cita?",
+  askBoatConfirm:"¿Reservamos esta cita, o quiere ver otra solución?",
+  confirmBoat:"✅ Reservar la cita","otherBoat":"Ver otras soluciones",
+  askName:"🙋 ¿A nombre de qué empresa / persona?",
+  askContact:"📱 Perfecto {name}. ¿Cuál es su teléfono o email profesional?",
+  summaryTitle:"📋 Resumen de su solicitud",
+  summaryDate:"Fecha", summaryPax:"Plantilla", summaryLicense:"Plazo", summaryBoat:"Necesidad", summaryName:"Empresa", summaryContact:"Contacto",
+  summaryFooter:"Este es un resumen — el equipo de Stratton Bureautique le contactará para confirmar la cita y preparar una propuesta a medida. ¡Sin compromiso!",
+  sendWa:"📲 Enviar la solicitud por WhatsApp",
+  newQuery:"🔄 Nueva consulta",
+  waPrefix:"¡Hola! Quisiera una cita con Stratton Bureautique:",
+  humanHandoff:"Le pongo en contacto directo con un asesor de Stratton Bureautique 👇",
+  fallback:"¡Buena pregunta! Le conecto con un asesor, o dígame si quiere ver *nuestras soluciones*, *hacer una pregunta* o *pedir una cita*.",
+  langSwitched:"Cambiado a español 🇪🇸",
+  personLabel:"personas"
+},
+fr:{
+  status:"en ligne · réponse immédiate",
+  placeholder:"Écrivez votre message...",
+  welcome:"Bonjour ! 👋 Je suis *Alex*, l'assistant virtuel de **Stratton Bureautique**. Je vous aide à trouver la bonne solution (impression, téléphonie, informatique) et à prendre rendez-vous en 1 minute. Que puis-je faire pour vous ?",
+  menu:["🗂️ Nos solutions","💶 Tarifs & devis","📅 Prendre rendez-vous","❓ Questions fréquentes","👤 Parler à un conseiller"],
+  boatsIntro:"Voici nos solutions pour votre entreprise 👇 Touchez-en une pour le détail :",
+  askWhichBoat:"Sur quelle solution voulez-vous en savoir plus ?",
+  notFound:"Je n'ai pas trouvé ça 🤔 Voici nos solutions :",
+  priceIntro:"Toutes nos prestations sont sur mesure, avec un audit gratuit. Je vous propose de prendre rendez-vous pour qu'un conseiller vous fasse une proposition précise :",
+  licenseIntro:"Chez Stratton, on commence toujours par un audit gratuit et sans engagement de votre parc actuel.",
+  licenseNone:"🟢 Audit & devis gratuits",
+  licenseCaptain:"🟢 Audit & devis gratuits",
+  licenseOptional:"🟢 Audit & devis gratuits",
+  licenseRequired:"🟢 Audit & devis gratuits",
+  faqTitle:"Questions fréquentes :",
+  faq:{
+    fuel:"✅ *Comment ça marche ?* : on commence toujours par un audit gratuit de votre parc/besoin, puis une proposition sur mesure. Sans engagement.",
+    weather:"⏱️ *Délais* : un conseiller vous rappelle sous 24-48 h ; les interventions sont planifiées selon l'urgence.",
+    cancel:"🕐 *Horaires* : lun-ven 9h-18h · service de maintenance réactif pour les clients sous contrat.",
+    calas:"🔐 *Données* : hébergées en Europe, conformes RGPD. La sécurité de vos données est prioritaire."
+  },
+  faqButtons:["✅ Comment ça marche","⏱️ Délais","🕐 Horaires","🔐 Données","⬅️ Menu"],
+  bookStart:"Parfait, prenons votre rendez-vous 🙌",
+  askDate:"📅 Pour quel jour souhaitez-vous le rendez-vous (ou le rappel d'un conseiller) ?",
+  askPax:"🏢 Quelle est la taille de votre entreprise ?",
+  paxOpts:["1-5 personnes","6-20","21-50","Plus de 50"],
+  askLicense:"🕐 C'est pour quand, votre projet ?",
+  licenseOpts:["Dès que possible","Ce mois-ci","Je me renseigne"],
+  suggestBoat:"Avec ces infos, un conseiller vous préparera une proposition. On confirme le rendez-vous ?",
+  askBoatConfirm:"On réserve ce rendez-vous, ou vous voulez voir une autre solution ?",
+  confirmBoat:"✅ Réserver le RDV","otherBoat":"Voir d'autres solutions",
+  askName:"🙋 Au nom de quelle entreprise / personne ?",
+  askContact:"📱 Parfait {name}. Quel est votre téléphone ou email professionnel ?",
+  summaryTitle:"📋 Résumé de votre demande",
+  summaryDate:"Date", summaryPax:"Effectif", summaryLicense:"Échéance", summaryBoat:"Besoin", summaryName:"Entreprise", summaryContact:"Contact",
+  summaryFooter:"Ceci est un résumé — l'équipe de Stratton Bureautique vous recontacte pour confirmer le rendez-vous et préparer une proposition sur mesure. Sans engagement !",
+  sendWa:"📲 Envoyer la demande par WhatsApp",
+  newQuery:"🔄 Nouvelle demande",
+  waPrefix:"Bonjour ! Je souhaite un rendez-vous avec Stratton Bureautique :",
+  humanHandoff:"Je vous mets en contact direct avec un conseiller de Stratton Bureautique 👇",
+  fallback:"Bonne question ! Je vous connecte avec un conseiller, ou dites-moi si vous voulez voir *nos solutions*, *poser une question* ou *prendre rendez-vous*.",
+  langSwitched:"Changé en français 🇫🇷",
+  personLabel:"personnes"
+},
+en:{
+  status:"online · instant reply",
+  placeholder:"Type your message...",
+  welcome:"Hi! 👋 I'm *Alex*, the virtual assistant for **Stratton Bureautique**. I'll help you find the right solution (printing, telephony, IT) and book a meeting in under a minute. How can I help?",
+  menu:["🗂️ Our solutions","💶 Pricing & quote","📅 Book a meeting","❓ FAQ","👤 Talk to an advisor"],
+  boatsIntro:"Here are our solutions for your business 👇 Tap one for details:",
+  askWhichBoat:"Which solution would you like to know more about?",
+  notFound:"I couldn't find that 🤔 Here are our solutions:",
+  priceIntro:"All our services are tailor-made, with a free audit. Let's book a meeting so an advisor can prepare a precise proposal:",
+  licenseIntro:"At Stratton, we always start with a free, no-obligation audit of your current setup.",
+  licenseNone:"🟢 Free audit & quote",
+  licenseCaptain:"🟢 Free audit & quote",
+  licenseOptional:"🟢 Free audit & quote",
+  licenseRequired:"🟢 Free audit & quote",
+  faqTitle:"Frequently asked questions:",
+  faq:{
+    fuel:"✅ *How does it work?*: we always start with a free audit of your setup/need, then a tailor-made proposal. No commitment.",
+    weather:"⏱️ *Timing*: an advisor calls you back within 24-48h; interventions are scheduled by urgency.",
+    cancel:"🕐 *Hours*: Mon-Fri 9am-6pm · reactive maintenance for clients under contract.",
+    calas:"🔐 *Data*: hosted in Europe, GDPR-compliant. Your data security is a priority."
+  },
+  faqButtons:["✅ How it works","⏱️ Timing","🕐 Hours","🔐 Data","⬅️ Menu"],
+  bookStart:"Great, let's book your meeting 🙌",
+  askDate:"📅 What day would you like the meeting (or an advisor's callback)?",
+  askPax:"🏢 How big is your company?",
+  paxOpts:["1-5 people","6-20","21-50","50+"],
+  askLicense:"🕐 When is your project for?",
+  licenseOpts:["As soon as possible","This month","Just exploring"],
+  suggestBoat:"With this, an advisor will prepare a proposal. Shall we confirm the meeting?",
+  askBoatConfirm:"Shall we book this meeting, or see another solution?",
+  confirmBoat:"✅ Book the meeting","otherBoat":"See other solutions",
+  askName:"🙋 Under which company / name?",
+  askContact:"📱 Great, {name}. What's your work phone or email?",
+  summaryTitle:"📋 Your request summary",
+  summaryDate:"Date", summaryPax:"Headcount", summaryLicense:"Timing", summaryBoat:"Need", summaryName:"Company", summaryContact:"Contact",
+  summaryFooter:"This is a summary — the Stratton Bureautique team will contact you to confirm the meeting and prepare a tailored proposal. No commitment!",
+  sendWa:"📲 Send the request via WhatsApp",
+  newQuery:"🔄 New request",
+  waPrefix:"Hi! I'd like a meeting with Stratton Bureautique:",
+  humanHandoff:"Connecting you directly with a Stratton Bureautique advisor 👇",
+  fallback:"Good question! Let me connect you with an advisor, or tell me if you'd like to see *our solutions*, *ask a question* or *book a meeting*.",
+  langSwitched:"Switched to English 🇬🇧",
+  personLabel:"people"
+}
+};
+
+const LIC_LABEL_KEY = {none:"licenseNone",captain:"licenseCaptain",optional:"licenseOptional",required:"licenseRequired"};
+const LIC_CLASS = {none:"lic-no",captain:"lic-no",optional:"lic-yes",required:"lic-yes"};
+
+/* ================= STATE ================= */
+let lang = null;
+let booking = null; // {step, date, pax, license, boat, name, contact}
+const chatEl = document.getElementById('chat');
+const inputEl = document.getElementById('msgInput');
+
+function t(key){ return (S[lang]||S.es)[key]; }
+function esc(str){ return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(str){
+  return esc(str)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/\*(.+?)\*/g,'<b>$1</b>')
+    .replace(/\n/g,'<br>');
+}
+
+function scrollBottom(){ requestAnimationFrame(()=>{ chatEl.scrollTop = chatEl.scrollHeight; }); }
+
+function addUser(text){
+  const row = document.createElement('div');
+  row.className='row user';
+  row.innerHTML = `<div class="bubble">${md(text)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping(cb, delay){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.id='typingRow';
+  row.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  setTimeout(()=>{
+    row.remove();
+    cb();
+  }, delay || 550);
+}
+
+function addBot(html, buttons){
+  const row = document.createElement('div');
+  row.className='row bot';
+  let btnHtml = '';
+  if(buttons && buttons.length){
+    btnHtml = `<div class="quick">${buttons.map(b=>`<button class="qbtn ${b.cls||''}" onclick="${b.onclick}">${esc(b.label)}</button>`).join('')}</div>`;
+  }
+  row.innerHTML = `<div class="stack"><div class="bubble">${html}</div>${btnHtml ? `<div style="margin-top:6px">${btnHtml}</div>` : ''}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+}
+
+function addBotText(text, buttons, delay){
+  showTyping(()=>addBot(md(text), buttons), delay);
+}
+
+/* ================= MENU ================= */
+function mainMenuButtons(){
+  const m = t('menu');
+  return [
+    {label:m[0], onclick:"showBoats()"},
+    {label:m[1], onclick:"showPrices()"},
+    {label:m[2], onclick:"startBooking()"},
+    {label:m[3], onclick:"showFaq()"},
+    {label:m[4], onclick:"humanHandoff()", cls:"wa"}
+  ];
+}
+
+function boatButtons(extraFirst){
+  const btns = BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`showBoatDetail('${b.id}')`}));
+  if(extraFirst) btns.unshift(extraFirst);
+  return btns;
+}
+
+function boatCardHtml(b){
+  const licKey = LIC_LABEL_KEY[b.license];
+  const licTxt = t(licKey);
+  return `
+  <div class="card">
+    <div class="cardhead"><span class="cname">${b.img} ${b.name}</span></div>
+    <div class="cardbody">
+      <div>${md(b.d[lang])}</div>
+      <div class="spec-row">
+        ${b.location ? `<span class="spec">📍 ${b.location}</span>` : ''}
+        <span class="spec ${LIC_CLASS[b.license]}">${licTxt}</span>
+      </div>
+      <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">${b.inc[lang].map(i=>'• '+i).join('<br>')}</div>
+    </div>
+  </div>`;
+}
+
+function showBoats(){
+  addUser(t('menu')[0]);
+  addBotText(t('boatsIntro'), null, 400);
+  setTimeout(()=>{
+    BOATS.forEach((b,i)=>{
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+      chatEl.appendChild(row);
+    });
+    scrollBottom();
+    addBot(md(t('askWhichBoat')), [{label:t('menu')[2],onclick:"startBooking()"},{label:'⬅️ '+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}]);
+  }, 700);
+}
+
+function showBoatDetail(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    addBot(md(t('askBoatConfirm')), [
+      {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+      {label:t('otherBoat'), onclick:"showBoats()"}
+    ]);
+  }, 500);
+}
+
+function showPrices(){
+  addUser(t('menu')[1]);
+  addBotText(t('priceIntro'), [
+    {label:t('menu')[2], onclick:"startBooking()"},
+    {label:t('faqButtons')[4], onclick:"showMenu()"}
+  ], 400);
+}
+
+function showFaq(){
+  addUser(t('menu')[3]);
+  addBotText(t('faqTitle'), t('faqButtons').map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas','menu'];
+    return {label, onclick: keys[i]==='menu' ? 'showMenu()' : `showFaqItem('${keys[i]}')`};
+  }), 400);
+}
+function showFaqItem(key){
+  addUser(t('faqButtons')[['fuel','weather','cancel','calas'].indexOf(key)]);
+  addBotText(t('faq')[key], [...t('faqButtons').slice(0,4).filter(l=>true).map((label,i)=>{
+    const keys=['fuel','weather','cancel','calas'];
+    return {label, onclick:`showFaqItem('${keys[i]}')`};
+  }), {label:t('faqButtons')[4], onclick:"showMenu()"}], 400);
+}
+
+function showMenu(){
+  addBotText(t('welcome').split('\n')[1] || t('welcome'), mainMenuButtons(), 300);
+}
+
+function humanHandoff(){
+  addUser(t('menu')[4]);
+  addBotText(t('humanHandoff'), [
+    {label:"💬 WhatsApp", onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t('waPrefix'))}','_blank')`, cls:'wa'},
+    {label:"⬅️ "+ (lang==='en'?'Menu':lang==='fr'?'Menu':'Menú'), onclick:"showMenu()"}
+  ], 400);
+}
+
+/* ================= BOOKING FLOW ================= */
+function startBooking(preselectBoatId){
+  addUser(t('menu')[2]);
+  booking = {step:'date', date:null, pax:null, license:null, boat: preselectBoatId ? BOATS.find(b=>b.id===preselectBoatId) : null, name:null, contact:null};
+  addBotText(t('bookStart'), null, 300);
+  setTimeout(()=>{ addBotText(t('askDate')); }, 700);
+}
+
+function bookingHandleText(text){
+  if(!booking) return false;
+  if(booking.step==='date'){
+    booking.date = text;
+    addBotText(t('askPax'), t('paxOpts').map(l=>({label:l, onclick:`bookingPax('${l}')`})), 450);
+    booking.step='pax';
+    return true;
+  }
+  if(booking.step==='name'){
+    booking.name = text;
+    addBotText(t('askContact').replace('{name}', text), null, 400);
+    booking.step='contact';
+    return true;
+  }
+  if(booking.step==='contact'){
+    booking.contact = text;
+    finishBooking();
+    return true;
+  }
+  return false;
+}
+
+function bookingPax(label){
+  addUser(label);
+  booking.pax = label;
+  if(booking.boat){
+    booking.license = 'preset';
+    afterLicenseKnown();
+  } else {
+    addBotText(t('askLicense'), t('licenseOpts').map(l=>({label:l, onclick:`bookingLicense('${l}')`})), 450);
+    booking.step='license';
+  }
+}
+
+function bookingLicense(label){
+  addUser(label);
+  booking.license = label;
+  afterLicenseKnown();
+}
+
+function suggestBoatFor(booking){
+  const maxPax = booking.pax && booking.pax.includes('12+') ? 12 : booking.pax && booking.pax.includes('Más') ? 13 : booking.pax && booking.pax.includes('Plus') ? 13 : parseInt((booking.pax||'').match(/\d+/g)?.slice(-1)[0]) || 4;
+  const noLic = booking.license && /no|non|not/i.test(booking.license) && !/sí|oui|yes/i.test(booking.license);
+  let candidates = BOATS.filter(b=>b.pax>=Math.min(maxPax,12));
+  if(candidates.length===0) candidates = [BOATS[BOATS.length-1]];
+  candidates.sort((a,b)=>a.pax-b.pax);
+  return candidates[0];
+}
+
+function afterLicenseKnown(){
+  if(!booking.boat){
+    const suggestion = suggestBoatFor(booking);
+    showTyping(()=>{
+      addBot(md(t('suggestBoat')));
+      const row = document.createElement('div');
+      row.className='row bot';
+      row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(suggestion)}</div>`;
+      chatEl.appendChild(row);
+      scrollBottom();
+      addBot(md(t('askBoatConfirm')), [
+        {label:t('confirmBoat'), onclick:`bookingChooseBoat('${suggestion.id}')`, cls:'primary'},
+        {label:t('otherBoat'), onclick:"showBoatsForBooking()"}
+      ]);
+    }, 500);
+  } else {
+    askNameStep();
+  }
+}
+
+function showBoatsForBooking(){
+  addUser(t('otherBoat'));
+  showTyping(()=>{
+    addBot(md(t('askWhichBoat')), BOATS.map(b=>({label:b.name.split(' — ')[0], onclick:`bookingChooseBoat('${b.id}')`})));
+  }, 300);
+}
+
+function bookingChooseBoat(id){
+  const b = BOATS.find(x=>x.id===id);
+  addUser(b.name.split(' — ')[0]);
+  booking.boat = b;
+  askNameStep();
+}
+
+function askNameStep(){
+  addBotText(t('askName'), null, 500);
+  booking.step='name';
+}
+
+function finishBooking(){
+  booking.step='done';
+  const licTxt = booking.license==='preset' ? '—' : booking.license;
+  showTyping(()=>{
+    const row = document.createElement('div');
+    row.className='row bot';
+    row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">
+      <div class="card">
+        <div class="cardhead"><span class="cname">${t('summaryTitle')}</span></div>
+        <div class="cardbody">
+          <b>${t('summaryDate')}:</b> ${esc(booking.date)}<br>
+          <b>${t('summaryPax')}:</b> ${esc(booking.pax)}<br>
+          <b>${t('summaryLicense')}:</b> ${esc(licTxt)}<br>
+          <b>${t('summaryBoat')}:</b> ${booking.boat.name}<br>
+          <b>${t('summaryName')}:</b> ${esc(booking.name)}<br>
+          <b>${t('summaryContact')}:</b> ${esc(booking.contact)}
+          <hr style="border:none;border-top:1px solid #e5edf0;margin:8px 0">
+          <span style="font-size:12px;color:var(--muted)">${t('summaryFooter')}</span>
+        </div>
+      </div></div>`;
+    chatEl.appendChild(row);
+    scrollBottom();
+    const waText = `${t('waPrefix')}\n${t('summaryDate')}: ${booking.date}\n${t('summaryPax')}: ${booking.pax}\n${t('summaryLicense')}: ${licTxt}\n${t('summaryBoat')}: ${booking.boat.name}\n${t('summaryName')}: ${booking.name}\n${t('summaryContact')}: ${booking.contact}`;
+    addBot('', [
+      {label:t('sendWa'), onclick:`window.open('https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}','_blank')`, cls:'wa'},
+      {label:t('newQuery'), onclick:"resetChat()"}
+    ]);
+    chatEl.lastChild.querySelector('.bubble').style.display='none';
+  }, 600);
+}
+
+function resetChat(){
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 300);
+}
+
+/* ================= LANGUAGE ================= */
+function normalize(s){ return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+function detectLang(text){
+  const n = normalize(text);
+  const fr = ['bonjour','salut','bateau','reserver','reservation','prix','combien','merci','oui','non','permis','svp','bonsoir'];
+  const en = ['hello','hi ','hey','boat','book','price','how much','thanks','yes','no ','license','please'];
+  const es = ['hola','buenas','barco','reservar','precio','cuanto','gracias','si','no ','licencia','favor'];
+  const ca = ['hola','bona tarda','barca','vaixell','reservar','preu','quant','gracies','llicencia','sisplau','sisplau','voldria','quantes'];
+  let scores = {fr:0,en:0,es:0,ca:0};
+  fr.forEach(w=>{ if(n.includes(w)) scores.fr++; });
+  en.forEach(w=>{ if(n.includes(w)) scores.en++; });
+  es.forEach(w=>{ if(n.includes(w)) scores.es++; });
+  ca.forEach(w=>{ if(n.includes(w)) scores.ca++; });
+  const best = Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+  return best[1]>0 ? best[0] : null;
+}
+
+function forceLang(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+  chatEl.innerHTML = '';
+  booking = null;
+  addBotText(t('welcome'), mainMenuButtons(), 250);
+}
+
+/* ================= FREE TEXT HANDLING ================= */
+function normalizedIncludesAny(n, arr){ return arr.some(w=>n.includes(w)); }
+
+function handleFreeText(raw){
+  const text = raw.trim();
+  if(!text) return;
+  addUser(text);
+  inputEl.value='';
+
+  // language auto-switch if very confident and different from current on first real message
+  const detected = detectLang(text);
+
+  if(booking && (booking.step==='date'||booking.step==='name'||booking.step==='contact')){
+    bookingHandleText(text);
+    return;
+  }
+
+  const n = normalize(text);
+
+  // boat name match
+  const boatMatch = BOATS.find(b=>b.key.some(k=>n.includes(normalize(k))));
+  if(boatMatch){ showTyping(()=>showBoatDetailInline(boatMatch), 350); return; }
+
+  if(normalizedIncludesAny(n,['servicio','servicios','servei','serveis','prestation','service','services','revision','revisión','coche','vehiculo','vehicule'])){ showBoats(); return; }
+  if(normalizedIncludesAny(n,['precio','precios','tarif','prix','price','prices','cuanto cuesta','coste','cout','presupuesto','devis','quote'])){ showPrices(); return; }
+  if(normalizedIncludesAny(n,['reserv','book','réserv','cita','rendez','rdv','appointment'])){ startBooking(); return; }
+  if(normalizedIncludesAny(n,['garantia','garantía','garantie','warranty'])){
+    addBotText(t('licenseIntro'), mainMenuButtons(), 400); return;
+  }
+  if(normalizedIncludesAny(n,['horario','horaris','horaire','hours','abierto','ouvert','open'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['cortesia','courtesy','recogida','depannage','extra'])){ showFaqItem('calas'); return; }
+  if(normalizedIncludesAny(n,['horari','schedule','hour','heure','pesca','fishing','peche'])){ showFaqItem('cancel'); return; }
+  if(normalizedIncludesAny(n,['tiempo','meteo','weather','lluvia','pluie','rain'])){ showFaqItem('weather'); return; }
+  if(normalizedIncludesAny(n,['whatsapp','humano','human','equipo','equipe','llamar','appeler','call'])){ humanHandoff(); return; }
+  if(normalizedIncludesAny(n,['hola','buenas','bonjour','salut','hello','hi','hey','bonsoir'])){
+    addBotText(t('welcome'), mainMenuButtons(), 400); return;
+  }
+
+  addBotText(t('fallback'), mainMenuButtons(), 450);
+}
+
+function showBoatDetailInline(b){
+  const row = document.createElement('div');
+  row.className='row bot';
+  row.innerHTML = `<div class="bubble" style="padding:0;background:transparent;box-shadow:none;max-width:92%">${boatCardHtml(b)}</div>`;
+  chatEl.appendChild(row);
+  scrollBottom();
+  addBot(md(t('askBoatConfirm')), [
+    {label:t('confirmBoat'), onclick:`startBooking('${b.id}')`, cls:'primary'},
+    {label:t('otherBoat'), onclick:"showBoats()"}
+  ]);
+}
+
+function handleSend(){
+  const val = inputEl.value;
+  if(!val.trim()) return;
+  if(!lang){
+    const d = detectLang(val) || 'es';
+    forceLangSilent(d);
+  }
+  handleFreeText(val);
+}
+
+function forceLangSilent(l){
+  lang = l;
+  document.querySelectorAll('.langbtn').forEach(b=>b.classList.toggle('active', b.dataset.lang===l));
+  document.getElementById('statusTxt').textContent = t('status');
+  inputEl.placeholder = t('placeholder');
+}
+
+inputEl.addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+/* ================= VISIT PING ================= */
+try{
+  if(location.hash !== '#test'){
+    const device = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+    fetch('https://ntfy.sh/agentia-demo-stratton-x7k3p9', {method:'POST', body:'Visite demo Stratton · '+device+' · '+(navigator.language||'?')});
+  }
+}catch(e){}
+
+/* ================= INIT ================= */
+function init(){
+  lang = 'fr';
+  document.querySelector('.langbtn[data-lang="fr"]').classList.add('active');
+  addBotText(t('welcome'), mainMenuButtons(), 200);
+}
+init();
+</script>
+</body>
+</html>
