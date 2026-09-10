@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stratton × ALEX</title>
+<meta name="description" content="Proposition de partenariat : transformer un marché qui baisse en marge récurrente.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#eef2f3;
+    --surface:#ffffff;
+    --surface-2:#f5f8f9;
+    --ink:#14222b;
+    --ink-soft:#33474f;
+    --muted:#5f757f;
+    --line:#d7e0e3;
+    --accent:#0d6e78;
+    --accent-ink:#0a565e;
+    --gold:#b0722a;
+    --good:#1f7a4d;
+    --shadow:0 1px 2px rgba(20,34,43,.05),0 8px 30px rgba(20,34,43,.06);
+  }
+  :root:not([data-theme="light"]){}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#0d161b;
+      --surface:#121e24;
+      --surface-2:#16242b;
+      --ink:#eaf1f3;
+      --ink-soft:#c3d2d7;
+      --muted:#8ba1a9;
+      --line:#25373f;
+      --accent:#3aa9b3;
+      --accent-ink:#7fd3da;
+      --gold:#d79a4a;
+      --good:#4cc185;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0d161b;--surface:#121e24;--surface-2:#16242b;--ink:#eaf1f3;--ink-soft:#c3d2d7;--muted:#8ba1a9;--line:#25373f;--accent:#3aa9b3;--accent-ink:#7fd3da;--gold:#d79a4a;--good:#4cc185;--shadow:0 1px 2px rgba(0,0,0,.3),0 10px 34px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6;}
+  .wrap{max-width:760px;margin:0 auto;padding:clamp(28px,5vw,64px) clamp(18px,4vw,40px);}
+  .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(30px,6vw,46px);line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:.35em 0 .2em;}
+  h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(21px,3.6vw,27px);letter-spacing:-.01em;margin:0 0 .5em;text-wrap:balance;}
+  .lede{font-size:clamp(16px,2.4vw,19px);color:var(--ink-soft);max-width:60ch;}
+  section{margin-top:clamp(30px,5vw,52px);}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:clamp(18px,3vw,26px);box-shadow:var(--shadow);}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr;}}
+  .stat .n{font-family:"Fraunces",serif;font-size:clamp(30px,7vw,44px);font-weight:600;line-height:1;color:var(--gold);}
+  .stat .l{font-size:14px;color:var(--muted);margin-top:8px;}
+  .step{display:flex;gap:16px;align-items:flex-start;}
+  .step + .step{margin-top:14px;}
+  .num{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;font-family:"IBM Plex Mono",monospace;font-weight:600;display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .who{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+  ul{margin:.4em 0 0;padding-left:1.1em;}
+  li{margin:.3em 0;}
+  li::marker{color:var(--accent);}
+  .callout{border-left:3px solid var(--gold);background:var(--surface-2);border-radius:0 12px 12px 0;padding:16px 18px;}
+  .proof{display:flex;gap:14px;align-items:center;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px 18px;}
+  .proof .badge{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:var(--good);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;}
+  .cta{display:inline-block;background:var(--accent);color:#fff;font-weight:600;text-decoration:none;padding:13px 22px;border-radius:12px;margin-top:6px;}
+  .cta.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent);margin-left:8px;}
+  a{color:var(--accent-ink);}
+  .mono{font-family:"IBM Plex Mono",monospace;font-size:13px;}
+  .rule{height:1px;background:var(--line);border:0;margin:0;}
+  footer{margin-top:clamp(34px,6vw,58px);padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;}
+  strong{color:var(--ink);font-weight:600;}
+  .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:3px 10px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <p class="eyebrow">Proposition · confidentiel</p>
+  <h1>Transformer un marché qui baisse en marge récurrente.</h1>
+  <p class="lede">Une nouvelle ligne de revenu pour <strong>Stratton Bureautique</strong>, bâtie sur ce que vous avez déjà : vos clients, votre confiance, vos équipes. Vous vendez, je construis et je livre derrière.</p>
+
+  <section>
+    <h2>Le constat</h2>
+    <div class="grid2">
+      <div class="card stat">
+        <div class="n">−10&thinsp;%</div>
+        <div class="l">La demande de matériel d'impression recule chaque année. Le cœur du métier historique s'érode.</div>
+      </div>
+      <div class="card stat">
+        <div class="n">&lt;&nbsp;⅓</div>
+        <div class="l">La part du temps qu'un commercial du secteur passe réellement à vendre. Le reste : suivi, relances, admin, SAV.</div>
+      </div>
+    </div>
+    <p class="lede" style="margin-top:16px">La question n'est plus « comment vendre plus de copieurs », mais <strong>« quelle nouvelle marge récurrente on ajoute, et comment on rend du temps de vente à l'équipe ».</strong></p>
+  </section>
+
+  <section>
+    <h2>L'idée, en deux temps</h2>
+    <div class="card">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <strong>Stratton l'utilise en interne.</strong> ALEX — un assistant IA — répond à vos demandes entrantes 24/7, qualifie (impression&nbsp;? télécom&nbsp;? IT&nbsp;?), pose le RDV dans l'agenda et relance les devis tout seul. <span style="color:var(--ink-soft)">→ Vos commerciaux arrêtent le suivi et l'admin, et vendent. Vous ne perdez plus une demande hors horaires.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <strong>Stratton le revend.</strong> Une fois convaincus, vous ajoutez « l'assistant IA » à votre catalogue et le proposez à vos clients — qui vous le réclament déjà. <span style="color:var(--ink-soft)">Marge récurrente, zéro stock, zéro logistique. Je gère toute la technique en marque blanche.</span>
+        </div>
+      </div>
+    </div>
+    <p class="mono" style="color:var(--muted);margin-top:12px">Étape 1 = vous testez sans risque. Étape 2 = vous en faites du business.</p>
+  </section>
+
+  <section>
+    <h2>Ce que chacun y gagne</h2>
+    <div class="grid2">
+      <div class="card">
+        <div class="who">Pour la direction</div>
+        <ul>
+          <li>Une <strong>marge récurrente</strong> nouvelle, sur un portefeuille client déjà acquis.</li>
+          <li>Les demandes entrantes captées à 100&nbsp;% → <strong>plus de nouveaux clients, sans embaucher</strong>.</li>
+          <li>Stratton devient « ceux qui amènent l'IA aux entreprises » → différenciation.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="who">Pour David</div>
+        <ul>
+          <li>Un <strong>agenda qui se remplit</strong> de RDV qualifiés → il vend plus.</li>
+          <li>Ses devis <strong>relancés automatiquement</strong> → des deals récupérés.</li>
+          <li>C'est lui qui <strong>ramène l'innovation</strong> dans la boîte.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>En toute franchise</h2>
+    <div class="callout">
+      Ce n'est pas un produit magique. Tout repose sur une question à valider : <strong>est-ce que vos clients achètent des assistants IA&nbsp;?</strong> On la tranche sans risque — <strong>on teste sur 3 à 5 de vos clients</strong> avant de généraliser. Ça ne vous engage à rien et ça coûte zéro à essayer.
+    </div>
+  </section>
+
+  <section>
+    <h2>La preuve</h2>
+    <div class="proof">
+      <div class="badge">✓</div>
+      <div>
+        <strong>Urgences I-Tech (Roses)</strong> — client <strong>payant</strong>, assistant en production sur WhatsApp, avis Google obtenu. Le système tourne déjà en vrai, tous les jours.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Prochaine étape</h2>
+    <p class="lede">Un <strong>audit gratuit</strong> de 20 minutes, et une démo live de « Stratton IA » — vous voyez l'assistant répondre comme s'il était le vôtre.</p>
+    <p style="margin-top:14px">
+      <a class="cta" href="https://alexagent.io/demo/stratton-ia/">Tester la démo Stratton</a>
+      <a class="cta ghost" href="https://wa.me/33774602008">En parler avec Maxime</a>
+    </p>
+  </section>
+
+  <footer>
+    <span class="tag">Proposition confidentielle</span><br><br>
+    <strong>Maxime</strong> — ALEX · assistants IA pour entreprises<br>
+    <span class="mono">alexagent.io · WhatsApp 07 74 60 20 08</span>
+  </footer>
+
+</div>
+</body>
+</html>
