@@ -48,9 +48,9 @@
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "Web",
     "offers": [
-      {"@type": "Offer", "name": "Starter", "priceCurrency": "EUR", "price": "290"},
-      {"@type": "Offer", "name": "Pro", "priceCurrency": "EUR", "price": "390"},
-      {"@type": "Offer", "name": "Réseau", "priceCurrency": "EUR", "price": "790"}
+      {"@type": "Offer", "name": "ALEX Voix Pro", "priceCurrency": "EUR", "price": "299"},
+      {"@type": "Offer", "name": "ALEX Voix Premium", "priceCurrency": "EUR", "price": "490"},
+      {"@type": "Offer", "name": "ALEX Chat", "priceCurrency": "EUR", "price": "129"}
     ]
   }
   </script>
@@ -1480,16 +1480,55 @@
     </p>
     <div class="fade-in delay-3" style="background:linear-gradient(135deg, rgba(41,193,255,0.08), rgba(233,79,245,0.10));border:1px solid var(--border-m);border-radius:var(--radius);padding:24px;text-align:center">
       <p style="color:var(--accent2);font-size:0.75rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px">🎙️ Produit phare — ALEX Voix</p>
-      <p style="color:var(--white);font-weight:800;font-size:1.1rem;margin-bottom:6px">ALEX décroche aussi le téléphone de l'agence.</p>
-      <p style="color:var(--muted2);font-size:0.9rem">Il répond aux appels sur les annonces et confirme les visites avec une voix naturelle. Seul : <strong style="color:var(--white)">dès 299 €/mois</strong> + 390 € de mise en place · En option sur votre pack : <strong style="color:var(--white)">+290 €/mois</strong>.</p>
+      <p style="color:var(--white);font-weight:800;font-size:1.1rem;margin-bottom:6px">ALEX décroche le téléphone de l'agence — avec une vraie voix humaine.</p>
+      <p style="color:var(--muted2);font-size:0.9rem">Il répond aux appels sur les annonces et confirme les visites en 4 langues, 24h/24. <strong style="color:var(--white)">ALEX Voix Pro : dès 299 €/mois</strong> + 390 € de mise en place. Pas prêt pour la voix ? <strong style="color:var(--white)">ALEX Chat à 129 €/mois</strong>.</p>
     </div>
 
     <div class="pricing-grid">
 
-      <div class="pc fade-in delay-1">
-        <div class="pc-name">Starter</div>
-        <div class="pc-price">290 € <span>/mois</span></div>
-        <div class="pc-setup">+ 490 € de setup (une seule fois)</div>
+      <div class="pc featured fade-in delay-1">
+        <div class="pc-popular">🎙️ Produit phare</div>
+        <div class="pc-name">ALEX Voix Pro</div>
+        <div class="pc-price">299 € <span>/mois</span></div>
+        <div class="pc-setup">+ 390 € de mise en place (une seule fois)</div>
+        <ul class="pc-feats">
+          <li>Un vrai standard vocal qui <strong>décroche ET rappelle</strong></li>
+          <li>Voix humaine et naturelle, multilingue (FR / ES / CA / EN)</li>
+          <li>Prend vos rendez-vous et les confirme par téléphone</li>
+          <li>Rappels et relances par appel, sans que vous leviez le doigt</li>
+          <li>Configuré sur votre activité, testé avec vous avant la mise en ligne</li>
+        </ul>
+        <a href="#contact"
+           class="btn btn-primary"
+           onclick="trackEvent('click_demo_immo','CTA','offer_voix_pro',299)"
+           aria-label="Demander une démo pour l'offre ALEX Voix Pro à 299€/mois">
+          🔥 Demander une démo →
+        </a>
+      </div>
+
+      <div class="pc fade-in delay-2">
+        <div class="pc-name">ALEX Voix Premium</div>
+        <div class="pc-price">490 € <span>/mois</span></div>
+        <div class="pc-setup">+ 490 € de mise en place (une seule fois)</div>
+        <ul class="pc-feats">
+          <li>Tout ALEX Voix Pro, pensé pour les <strong>gros volumes d'appels</strong></li>
+          <li>Scénarios avancés et personnalisation poussée</li>
+          <li>Campagnes d'appels sortants (relances, anti no-show)</li>
+          <li>Intégration agenda / CRM + optimisations mensuelles</li>
+          <li>Suivi prioritaire — l'agent qui ne rate rien</li>
+        </ul>
+        <a href="#contact"
+           class="btn btn-outline"
+           onclick="trackEvent('click_demo_immo','CTA','offer_voix_premium',490)"
+           aria-label="Demander une démo pour l'offre ALEX Voix Premium à 490€/mois">
+          Demander une démo →
+        </a>
+      </div>
+
+      <div class="pc fade-in delay-3">
+        <div class="pc-name">ALEX Chat</div>
+        <div class="pc-price">129 € <span>/mois</span></div>
+        <div class="pc-setup">+ 150 € de mise en place (une seule fois)</div>
         <ul class="pc-feats">
           <li>1 canal (site ou WhatsApp)</li>
           <li>Qualification budget / type / délai</li>
@@ -1499,66 +1538,21 @@
         </ul>
         <a href="#contact"
            class="btn btn-outline"
-           aria-label="Demander une démo pour l'offre Starter à 290€/mois">
+           onclick="trackEvent('click_demo_immo','CTA','offer_chat',129)"
+           aria-label="Demander une démo pour l'offre ALEX Chat à 129€/mois">
           Demander une démo →
-        </a>
-      </div>
-
-      <div class="pc featured fade-in delay-2">
-        <div class="pc-popular">⚡ Recommandé</div>
-        <div class="pc-name">Pro</div>
-        <div class="pc-price">390 € <span>/mois</span></div>
-        <div class="pc-setup">Setup inclus · tarif de lancement agences</div>
-        <ul class="pc-feats">
-          <li>3 canaux au choix</li>
-          <li>Qualification complète + prise de RDV</li>
-          <li>Intégration CRM incluse</li>
-          <li>Dashboard en temps réel</li>
-          <li>Support prioritaire (réponse &lt; 4h)</li>
-          <li>Optimisations mensuelles incluses</li>
-          <li>🆕 <strong>Option Voix :</strong> ALEX décroche votre téléphone (+290 €/mois)</li>
-        </ul>
-        <a href="https://buy.stripe.com/4gM8wId6GcM3doNb319k400"
-           class="btn btn-primary"
-           target="_blank" rel="noopener"
-           onclick="trackEvent('click_stripe','CTA','stripe_button',390);lintrk&&lintrk('track',{conversion_id:'stripe_checkout'})"
-           aria-label="Souscrire à l'offre Pro ALEX à 390€/mois">
-          🔥 Souscrire — offre lancement 390€/mois
-        </a>
-      </div>
-
-      <div class="pc fade-in delay-3">
-        <div class="pc-name">Réseau</div>
-        <div class="pc-price">790 € <span>/mois</span></div>
-        <div class="pc-setup">Setup inclus pour 3 agences et plus</div>
-        <ul class="pc-feats">
-          <li>Jusqu'à 5 agences / points de vente</li>
-          <li>Tous les canaux inclus</li>
-          <li>Dashboard centralisé multi-agences</li>
-          <li>Rapport de performance mensuel</li>
-          <li>Interlocuteur dédié</li>
-          <li>Personnalisation avancée par agence</li>
-        </ul>
-        <a href="#contact"
-           class="btn btn-outline"
-           aria-label="Nous contacter pour l'offre Réseau">
-          Nous contacter →
         </a>
       </div>
 
     </div>
     <p class="pricing-note fade-in delay-1">
-      🎁 <strong>Offre de lancement :</strong> la toute première agence qui démarre avec Alex bénéficie de conditions préférentielles — aucune carte bancaire pour la démo. Les agences suivantes bénéficient du tarif Pro garanti 3 mois.
+      🎁 <strong>Offre de lancement :</strong> la toute première agence qui démarre avec ALEX bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.
     </p>
     <p class="pricing-note fade-in delay-2">
       🤝 <strong>Programme de parrainage :</strong> 150 € offerts pour chaque agence immobilière que vous me présentez et qui signe.
     </p>
     <p class="pricing-note fade-in delay-2" style="color:var(--white);font-weight:700">
-      💼 Moins de 13 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.
-    </p>
-    
-    <p class="pricing-note fade-in delay-3">
-      ⚡ <strong>Tarif de lancement agences :</strong> le Pack Pro à 390 €/mois est un tarif préférentiel réservé aux agences immobilières.
+      💼 Moins de 10 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.
     </p>
 
     <div class="fade-in delay-3" style="text-align:center;margin-top:36px;padding-top:32px;border-top:1px solid var(--border)">
@@ -2002,6 +1996,10 @@ document.querySelectorAll('.nav-links a').forEach(function(a){
       "📞 Je veux ALEX Voix":"📞 Quiero ALEX Voix",
       "Voir les offres — dès 299 €/mois":"Ver las ofertas — desde 299 €/mes",
       "299 € /mois":"299 € <span>/mes</span>",
+      "ALEX décroche le téléphone de l'agence — avec une vraie voix humaine.":"ALEX contesta el teléfono de la agencia — con una voz humana de verdad.",
+      "Il répond aux appels sur les annonces et confirme les visites en 4 langues, 24h/24. ALEX Voix Pro : dès 299 €/mois + 390 € de mise en place. Pas prêt pour la voix ? ALEX Chat à 129 €/mois.":"Responde a las llamadas sobre los anuncios y confirma las visitas en 4 idiomas, 24/7. <strong style=\"color:var(--white)\">ALEX Voz Pro: desde 299 €/mes</strong> + 390 € de instalación. ¿Aún no quiere la voz? <strong style=\"color:var(--white)\">ALEX Chat a 129 €/mes</strong>.",
+      "🎁 Offre de lancement : la toute première agence qui démarre avec ALEX bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.":"🎁 <strong>Oferta de lanzamiento:</strong> la primera agencia que empieza con ALEX obtiene condiciones preferentes — sin tarjeta bancaria para la demo.",
+      "💼 Moins de 10 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.":"💼 Menos de 10 €/día — un negociador que habla 4 idiomas, nunca duerme y no pierde ni un comprador.",
       "490 € /mois":"490 € <span>/mes</span>",
       "129 € /mois":"129 € <span>/mes</span>",
       "290 € /mois":"290 € <span>/mes</span>",
@@ -2213,6 +2211,10 @@ document.querySelectorAll('.nav-links a').forEach(function(a){
       "📞 Je veux ALEX Voix":"📞 I want ALEX Voix",
       "Voir les offres — dès 299 €/mois":"See the offers — from €299/mo",
       "299 € /mois":"299 € <span>/mo</span>",
+      "ALEX décroche le téléphone de l'agence — avec une vraie voix humaine.":"ALEX answers the agency's phone — with a real human voice.",
+      "Il répond aux appels sur les annonces et confirme les visites en 4 langues, 24h/24. ALEX Voix Pro : dès 299 €/mois + 390 € de mise en place. Pas prêt pour la voix ? ALEX Chat à 129 €/mois.":"It answers calls about your listings and confirms viewings in 4 languages, 24/7. <strong style=\"color:var(--white)\">ALEX Voice Pro: from €299/mo</strong> + €390 setup. Not ready for voice? <strong style=\"color:var(--white)\">ALEX Chat at €129/mo</strong>.",
+      "🎁 Offre de lancement : la toute première agence qui démarre avec ALEX bénéficie de conditions préférentielles — aucune carte bancaire pour la démo.":"🎁 <strong>Launch offer:</strong> the very first agency that starts with ALEX gets preferential terms — no credit card for the demo.",
+      "💼 Moins de 10 €/jour — un négociateur qui parle 4 langues, ne dort jamais et ne rate aucun acquéreur.":"💼 Less than €10/day — a negotiator who speaks 4 languages, never sleeps and never misses a buyer.",
       "490 € /mois":"490 € <span>/mo</span>",
       "129 € /mois":"129 € <span>/mo</span>",
       "290 € /mois":"290 € <span>/mo</span>",
