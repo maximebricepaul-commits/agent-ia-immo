@@ -1,18 +1,18 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-09-29T18:02:42",
+    "generatedAt":  "2026-09-29T21:02:24",
     "source":  "retell",
     "windows":  {
                     "7":  {
-                              "recus":  33,
+                              "recus":  30,
                               "manques":  1,
-                              "rdv":  3,
+                              "rdv":  2,
                               "heures":  0,
-                              "ca":  600,
+                              "ca":  400,
                               "zero":  0,
                               "cost":  "114 €",
-                              "ca_s":  "600 €",
-                              "mult":  "×5",
+                              "ca_s":  "400 €",
+                              "mult":  "×4",
                               "chart":  {
                                             "labels":  [
                                                            "22/09",
@@ -25,15 +25,15 @@
                                                        ],
                                             "app":  [
                                                         8,
-                                                        17,
-                                                        1,
-                                                        1,
+                                                        14,
+                                                        2,
+                                                        0,
                                                         0,
                                                         0,
                                                         6
                                                     ],
                                             "rdv":  [
-                                                        2,
+                                                        1,
                                                         1,
                                                         0,
                                                         0,
