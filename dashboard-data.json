@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-10-22T18:02:14",
+    "generatedAt":  "2026-10-22T21:02:16",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -50,14 +50,14 @@
                                           }
                           },
                     "30":  {
-                               "recus":  33,
+                               "recus":  30,
                                "manques":  1,
-                               "rdv":  3,
+                               "rdv":  2,
                                "heures":  0,
-                               "ca":  600,
+                               "ca":  400,
                                "zero":  0,
                                "cost":  "490 €",
-                               "ca_s":  "600 €",
+                               "ca_s":  "400 €",
                                "mult":  "×1",
                                "chart":  {
                                              "labels":  [
@@ -67,13 +67,13 @@
                                                             "Sem. 4"
                                                         ],
                                              "app":  [
-                                                         33,
+                                                         30,
                                                          0,
                                                          0,
                                                          0
                                                      ],
                                              "rdv":  [
-                                                         3,
+                                                         2,
                                                          0,
                                                          0,
                                                          0
@@ -104,13 +104,13 @@
                                                         ],
                                              "app":  [
                                                          127,
-                                                         1,
-                                                         33
+                                                         4,
+                                                         30
                                                      ],
                                              "rdv":  [
                                                          4,
-                                                         0,
-                                                         3
+                                                         1,
+                                                         2
                                                      ]
                                          },
                                "langues":  {
