@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-10-25T16:43:12",
+    "generatedAt":  "2026-10-25T18:02:50",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -50,7 +50,7 @@
                                           }
                           },
                     "30":  {
-                               "recus":  7,
+                               "recus":  6,
                                "manques":  0,
                                "rdv":  0,
                                "heures":  0,
@@ -67,7 +67,7 @@
                                                             "Sem. 4"
                                                         ],
                                              "app":  [
-                                                         7,
+                                                         6,
                                                          0,
                                                          0,
                                                          0
@@ -87,7 +87,7 @@
                                            }
                            },
                     "90":  {
-                               "recus":  144,
+                               "recus":  139,
                                "manques":  2,
                                "rdv":  3,
                                "heures":  2,
@@ -103,9 +103,9 @@
                                                             "Mois 3"
                                                         ],
                                              "app":  [
-                                                         110,
-                                                         27,
-                                                         7
+                                                         105,
+                                                         28,
+                                                         6
                                                      ],
                                              "rdv":  [
                                                          0,
@@ -114,8 +114,8 @@
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  67,
-                                               "ES":  16,
+                                               "FR":  65,
+                                               "ES":  17,
                                                "CA":  15,
                                                "EN":  3
                                            }
