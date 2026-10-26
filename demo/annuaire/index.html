@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annuaire Pro — Talents & Services (démo)</title>
+<meta name="description" content="Démo de conception d'un annuaire dynamique (recherche, filtres multicritères, fiches) par Maxime, développeur web freelance. Données fictives.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f7fb; --surface:#ffffff; --surface-2:#f1f2f8; --ink:#14152b; --ink-2:#4a4d68; --ink-3:#6b6e88;
+  --line:#e3e4ee; --brand:#4f46e5; --brand-ink:#ffffff; --brand-soft:#eceafe; --accent:#e8575a; --gold:#b7791f;
+  --ok:#0f7a4f; --radius:14px; --shadow:0 1px 2px rgba(20,21,43,.06),0 6px 24px rgba(20,21,43,.06);
+  --focus:0 0 0 3px #ffffff,0 0 0 5px #4f46e5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+img,svg{display:block}
+a{color:var(--brand)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:none;box-shadow:var(--focus);border-radius:8px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px;z-index:100}
+.skip:focus{left:8px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* demo banner */
+.demo-bar{background:#14152b;color:#e9e9f5;font-size:13.5px;position:sticky;top:0;z-index:50}
+.demo-bar .wrap{display:flex;gap:8px 16px;align-items:center;justify-content:center;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;text-align:center}
+.demo-bar a{color:#c7c3ff;font-weight:600;text-decoration:none}
+.demo-bar a:hover{text-decoration:underline}
+.demo-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#f6ad55;margin-right:6px;vertical-align:1px}
+
+/* header */
+header.site{background:var(--surface);border-bottom:1px solid var(--line);position:relative;z-index:40}
+header.site .wrap{display:flex;align-items:center;gap:16px;height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:700;letter-spacing:-.01em}
+.logo-mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#9333ea 60%,#e8575a);display:grid;place-items:center;color:#fff;font-family:Fraunces,serif;font-size:18px}
+.logo small{display:block;font-weight:500;color:var(--ink-3);font-size:12px;line-height:1}
+nav.main{margin-left:auto;display:flex;gap:4px;align-items:center}
+nav.main a{text-decoration:none;color:var(--ink-2);font-weight:500;padding:8px 12px;border-radius:10px;font-size:15px}
+nav.main a:hover,nav.main a[aria-current="page"]{background:var(--surface-2);color:var(--ink)}
+.lang{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-left:6px}
+.lang button{border:0;background:transparent;padding:6px 10px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink-2)}
+.lang button[aria-pressed="true"]{background:var(--ink);color:#fff}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .12s,background .12s}
+.btn-primary{background:var(--brand);color:var(--brand-ink)}
+.btn-primary:hover{background:#4338ca}
+.btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--surface-2)}
+.btn:active{transform:translateY(1px)}
+
+/* hero */
+.hero{background:radial-gradient(1200px 400px at 10% -10%,#e0dcff 0,transparent 60%),radial-gradient(900px 400px at 100% 0,#ffe1e1 0,transparent 55%),var(--bg);padding:64px 0 48px}
+.hero h1{font-family:Fraunces,Georgia,serif;font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.02em;margin:0 0 14px;max-width:820px}
+.hero p.lead{font-size:clamp(16px,2vw,19px);color:var(--ink-2);max-width:640px;margin:0 0 28px}
+.searchbox{display:flex;gap:8px;background:var(--surface);padding:8px;border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--line);max-width:760px}
+.searchbox .field{flex:1;display:flex;align-items:center;gap:10px;padding:0 10px;min-width:0}
+.searchbox input,.searchbox select{border:0;background:transparent;width:100%;padding:10px 0;font-size:16px;min-width:0}
+.searchbox input:focus,.searchbox select:focus{outline:none}
+.searchbox .field:focus-within{box-shadow:var(--focus);border-radius:10px}
+.searchbox .sep{width:1px;background:var(--line);margin:6px 0}
+.hero-stats{display:flex;gap:28px;margin-top:26px;color:var(--ink-2);font-size:14px;flex-wrap:wrap}
+.hero-stats b{color:var(--ink);font-size:20px;display:block}
+.suggest{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px;color:var(--ink-3)}
+
+/* sections */
+section.block{padding:48px 0}
+.sec-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.sec-head h2{font-family:Fraunces,Georgia,serif;font-size:clamp(24px,3vw,32px);margin:0;letter-spacing:-.01em}
+.sec-head p{margin:4px 0 0;color:var(--ink-3)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.tile{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s,border-color .15s}
+.tile:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#cfcdf7}
+.tile .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff}
+.tile b{font-weight:600}
+.tile span{font-size:13px;color:var(--ink-3)}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .15s,transform .15s}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+.card-cover{height:120px;position:relative}
+.card-cover .badges{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:6px}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink)}
+.badge.feat{background:#14152b;color:#fff}
+.card-body{padding:0 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.avatar{width:62px;height:62px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:21px;border:4px solid var(--surface);margin-top:-31px;position:relative;letter-spacing:.02em}
+.card h3{margin:2px 0 0;font-size:18px;line-height:1.3}
+.card h3 a{color:var(--ink);text-decoration:none}
+.card h3 a::after{content:"";position:absolute;inset:0}
+.card{position:relative}
+.card h3 a:focus-visible{box-shadow:none}
+.card:focus-within{box-shadow:var(--focus)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;color:var(--ink-3);font-size:14px;align-items:center}
+.meta span{display:inline-flex;align-items:center;gap:5px}
+.card p{margin:0;color:var(--ink-2);font-size:14.5px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:12.5px;padding:3px 9px;border-radius:999px;background:var(--surface-2);color:var(--ink-2);border:1px solid var(--line)}
+button.chip{cursor:pointer}
+button.chip:hover{border-color:#bdb9f5}
+button.chip[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.card-foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.stars{color:var(--gold);font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.price{font-weight:700;letter-spacing:.06em;color:var(--ink)}
+.price i{font-style:normal;color:#c9cad8}
+
+/* results layout */
+.results-top{background:var(--surface);border-bottom:1px solid var(--line);padding:22px 0}
+.results-top h1{font-family:Fraunces,Georgia,serif;font-size:clamp(24px,3vw,34px);margin:0 0 14px}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:28px;padding:28px 0 56px;align-items:start}
+aside.filters{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;position:sticky;top:64px;max-height:calc(100vh - 80px);overflow:auto}
+.filters h2{font-size:16px;margin:0 0 6px;display:flex;justify-content:space-between;align-items:center}
+.filters fieldset{border:0;border-top:1px solid var(--line);padding:14px 0 6px;margin:12px 0 0}
+.filters legend{font-weight:600;font-size:14px;padding:0;margin-bottom:8px}
+.check{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:14.5px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--brand);margin:0}
+.check .n{margin-left:auto;color:var(--ink-3);font-size:12.5px}
+.select,.input{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.select:focus,.input:focus{outline:none;box-shadow:var(--focus)}
+.linkbtn{background:none;border:0;color:var(--brand);font-weight:600;cursor:pointer;font-size:13.5px;padding:4px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.count{font-weight:600}
+.count span{color:var(--ink-3);font-weight:500}
+.sort{display:flex;align-items:center;gap:8px;font-size:14px}
+.sort select{width:auto}
+.active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.active-filters button{display:inline-flex;align-items:center;gap:6px;border:1px solid #cfcdf7;background:var(--brand-soft);color:#3730a3;border-radius:999px;padding:4px 10px;font-size:13px;cursor:pointer}
+.empty{background:var(--surface);border:1px dashed #cfd0de;border-radius:var(--radius);padding:48px 24px;text-align:center}
+.empty h2{margin:12px 0 6px}
+.empty p{color:var(--ink-3);margin:0 0 18px}
+.filter-toggle{display:none}
+
+/* detail */
+.crumbs{font-size:14px;color:var(--ink-3);padding:18px 0 0}
+.crumbs a{color:var(--ink-2);text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.detail-hero{height:220px;border-radius:20px;margin-top:14px;position:relative;overflow:hidden}
+.detail-head{display:flex;gap:20px;align-items:flex-end;margin-top:-56px;padding:0 24px;position:relative;flex-wrap:wrap}
+.detail-head .avatar{width:112px;height:112px;font-size:36px;border-radius:26px;margin:0;border-width:6px}
+.detail-head h1{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,3.6vw,40px);margin:0;line-height:1.1}
+.detail-head .meta{margin-top:6px}
+.detail-grid{display:grid;grid-template-columns:1fr 360px;gap:28px;padding:28px 0 56px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:20px}
+.panel h2{font-size:18px;margin:0 0 12px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gallery div{aspect-ratio:4/3;border-radius:12px;display:grid;place-items:center;color:rgba(255,255,255,.85);font-size:12px;font-weight:600}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fact{background:var(--surface-2);border-radius:12px;padding:12px}
+.fact small{display:block;color:var(--ink-3);font-size:12.5px}
+.fact b{font-size:15px}
+.contact-list{list-style:none;padding:0;margin:0 0 4px;display:grid;gap:10px;font-size:14.5px}
+.contact-list li{display:flex;gap:10px;align-items:center;color:var(--ink-2)}
+.form-row{display:grid;gap:6px;margin-bottom:12px}
+.form-row label{font-size:14px;font-weight:600}
+textarea.input{min-height:100px;resize:vertical}
+.notice{border-radius:12px;padding:12px 14px;font-size:14px;margin-top:12px}
+.notice.ok{background:#e7f6ef;color:var(--ok);border:1px solid #b9e4cf}
+.sticky-col{position:sticky;top:64px}
+.map svg{width:100%;height:auto;border-radius:12px}
+
+/* how */
+.how{background:#14152b;color:#e9e9f5;padding:60px 0}
+.how h2{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,3.4vw,38px);margin:0 0 10px;color:#fff}
+.how p.lead{color:#b9bad4;max-width:720px;margin:0 0 30px}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.how-card{background:#1f2140;border:1px solid #2e3160;border-radius:var(--radius);padding:20px}
+.how-card .ic{width:40px;height:40px;border-radius:10px;background:#2e2a7a;display:grid;place-items:center;color:#c7c3ff;margin-bottom:12px}
+.how-card h3{margin:0 0 6px;font-size:16.5px;color:#fff}
+.how-card p{margin:0;color:#b9bad4;font-size:14.5px}
+.how-card code{background:#2a2c55;color:#e0deff;padding:1px 6px;border-radius:6px;font-size:13px}
+.how .cta{margin-top:30px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.how .cta a.btn-ghost{background:transparent;color:#fff;border-color:#3b3e72}
+
+footer.site{padding:28px 0;color:var(--ink-3);font-size:14px;border-top:1px solid var(--line);background:var(--surface)}
+footer.site .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+@media (max-width:960px){
+  .layout{grid-template-columns:1fr}
+  aside.filters{position:static;max-height:none;display:none}
+  aside.filters.open{display:block}
+  .filter-toggle{display:inline-flex}
+  .detail-grid{grid-template-columns:1fr}
+  .sticky-col{position:static}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  header.site .wrap{height:58px;gap:8px}
+  nav.main a.hide-sm{display:none}
+  nav.main a{padding:8px}
+  .logo small{display:none}
+  .logo{white-space:nowrap;font-size:15px}
+  nav.main{gap:2px}
+  nav.main a{font-size:14px}
+  .demo-bar{font-size:12.5px}
+  .demo-bar .wrap{gap:2px 10px}
+  .hero{padding:40px 0 32px}
+  .searchbox{flex-direction:column}
+  .searchbox .sep{width:auto;height:1px;margin:0 6px}
+  .searchbox .btn{width:100%}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .gallery{grid-template-columns:repeat(2,1fr)}
+  .detail-head{padding:0 8px}
+  .detail-head .avatar{width:88px;height:88px;font-size:28px}
+  .detail-hero{height:160px}
+  .facts{grid-template-columns:1fr 1fr}
+  aside.filters{top:auto}
+}
+@media (max-width:430px){nav.main a[data-nav="how"]{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#app" data-i18n="skip">Aller au contenu</a>
+
+<div class="demo-bar" role="note">
+  <div class="wrap">
+    <span><span class="demo-dot" aria-hidden="true"></span><strong data-i18n="demoTitle">Démo de conception par Maxime — développeur web freelance · Données fictives</strong></span>
+    <span><span data-i18n="contact">Contact</span> : <a href="mailto:maximebricepaul@gmail.com">maximebricepaul@gmail.com</a></span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="#/" aria-label="Annuaire Pro — accueil">
+      <span class="logo-mark" aria-hidden="true">A</span>
+      <span>Annuaire Pro<small data-i18n="tagline">Talents & Services</small></span>
+    </a>
+    <nav class="main" aria-label="Navigation principale">
+      <a href="#/" data-nav="home" class="hide-sm" data-i18n="navHome">Accueil</a>
+      <a href="#/recherche" data-nav="search" data-i18n="navSearch">Annuaire</a>
+      <a href="#/wordpress" data-nav="how" data-i18n="navHow">WordPress</a>
+      <div class="lang" role="group" aria-label="Langue / Language">
+        <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer class="site">
+  <div class="wrap">
+    <span data-i18n="footerL">© Démo « Annuaire Pro » — toutes les fiches sont fictives, aucune donnée réelle.</span>
+    <span><span data-i18n="footerR">Conçu par Maxime, développeur web freelance</span> · <a href="mailto:maximebricepaul@gmail.com">maximebricepaul@gmail.com</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- i18n ---------- */
+var T = {
+fr:{
+  skip:'Aller au contenu', demoTitle:'Démo de conception par Maxime — développeur web freelance · Données fictives', contact:'Contact',
+  tagline:'Talents & Services', navHome:'Accueil', navSearch:'Annuaire', navHow:'WordPress',
+  footerL:'© Démo « Annuaire Pro » — toutes les fiches sont fictives, aucune donnée réelle.', footerR:'Conçu par Maxime, développeur web freelance',
+  heroTitle:'Trouvez le bon professionnel pour votre projet créatif',
+  heroLead:'Photographes, agences de talents, maquilleuses, lieux, traiteurs, webdesigners, coachs… Recherchez par mot-clé et affinez avec des filtres multicritères.',
+  kwLabel:'Mot-clé', kwPh:'Ex. mariage, portrait, vegan, Shopify…', cityLabel:'Ville', allCities:'Toutes les villes', searchBtn:'Rechercher',
+  popular:'Recherches populaires :', statListings:'fiches (démo)', statCats:'catégories', statCities:'villes',
+  catsTitle:'Parcourir par catégorie', catsSub:'Cliquez sur une catégorie pour voir les fiches filtrées.',
+  featTitle:'Fiches à la une', featSub:'Mise en avant gérée depuis l’administration WordPress (case « À la une »).', seeAll:'Voir tout l’annuaire',
+  listings:function(n){return n+(n>1?' fiches':' fiche');},
+  resultsTitle:'Annuaire des professionnels', results:function(n){return n+(n>1?' résultats':' résultat');}, of:'sur',
+  filters:'Filtres', showFilters:'Afficher les filtres', hideFilters:'Masquer les filtres', reset:'Réinitialiser',
+  fCats:'Catégories', fCity:'Ville', fTags:'Mots-clés', fPrice:'Gamme de prix', fRating:'Note minimale', fLang:'Langues parlées', fFeat:'Uniquement les fiches à la une',
+  anyRating:'Toutes les notes', ratingMin:function(r){return r+' ★ et plus';},
+  sortBy:'Trier par', sRel:'Pertinence', sRating:'Meilleure note', sPriceAsc:'Prix croissant', sPriceDesc:'Prix décroissant', sName:'Nom (A–Z)',
+  emptyTitle:'Aucun résultat', emptyText:'Aucune fiche ne correspond à ces critères. Essayez d’élargir la recherche ou de retirer un filtre.', emptyBtn:'Réinitialiser les filtres',
+  removeFilter:'Retirer le filtre', featured:'À la une', sample:'Exemple', reviews:'avis',
+  back:'Retour aux résultats', about:'Présentation', gallery:'Galerie', galleryPh:'Photo', infos:'Informations', location:'Localisation', mapNote:'Carte indicative (dans le vrai site : Google Maps / OpenStreetMap via le champ adresse ACF).',
+  langs:'Langues', priceRange:'Gamme de prix', rating:'Note', category:'Catégorie', city:'Ville', tags:'Mots-clés',
+  contactBlock:'Contact', phone:'Téléphone', email:'Email', web:'Site web', fake:'(fictif)',
+  quote:'Demander un devis', qName:'Votre nom', qEmail:'Votre email', qDate:'Date souhaitée', qMsg:'Votre message', qMsgPh:'Décrivez votre projet, budget, lieu…', qSend:'Envoyer la demande',
+  qDone:'Démo : message non envoyé. Dans le vrai site, la demande est envoyée par email au professionnel et enregistrée dans WordPress.',
+  required:'Champ obligatoire', notFound:'Fiche introuvable', notFoundText:'Cette fiche n’existe pas (ou plus).',
+  related:'Fiches similaires',
+  howTitle:'Comment ça marche dans WordPress', howLead:'Cette démo est statique, mais le vrai site est construit sur WordPress pour que vous puissiez gérer l’annuaire vous-même, sans développeur.',
+  h1t:'Type de contenu « Fiche »', h1p:'Un custom post type <code>listing</code> : chaque professionnel est une fiche avec sa propre page, son URL et son SEO.',
+  h2t:'Champs personnalisés (ACF)', h2p:'Ville, gamme de prix, langues, note, téléphone, email, galerie, adresse/carte, « à la une » : des champs simples à remplir dans l’admin.',
+  h3t:'Taxonomies', h3p:'Catégories et mots-clés sont des taxonomies WordPress : pages d’archive automatiques, filtres et liens internes.',
+  h4t:'Filtres AJAX', h4p:'Recherche par mot-clé et filtres multicritères instantanés via <code>WP_Query</code> + AJAX / REST API, sans rechargement de page.',
+  h5t:'Gestion autonome', h5p:'Vous ajoutez, modifiez ou masquez une fiche en 2 minutes depuis le tableau de bord. Rôles possibles : les pros gèrent leur propre fiche.',
+  h6t:'Formulaires & SEO', h6p:'Demande de devis envoyée au pro (et stockée), balisage schema.org, multilingue (FR/EN/ES…), site rapide et responsive.',
+  howCta:'Vous voulez un annuaire comme celui-ci ?', howMail:'Écrire à Maxime',
+  langNames:{fr:'Français',en:'Anglais',es:'Espagnol',ca:'Catalan',it:'Italien',de:'Allemand',ru:'Russe',pt:'Portugais'},
+  docTitle:'Annuaire Pro — Talents & Services (démo)'
+},
+en:{
+  skip:'Skip to content', demoTitle:'Design demo by Maxime — freelance web developer · Sample data', contact:'Contact',
+  tagline:'Talents & Services', navHome:'Home', navSearch:'Directory', navHow:'WordPress',
+  footerL:'© “Annuaire Pro” demo — all listings are fictitious, no real data.', footerR:'Built by Maxime, freelance web developer',
+  heroTitle:'Find the right professional for your creative project',
+  heroLead:'Photographers, talent agencies, make-up artists, venues, caterers, web designers, coaches… Search by keyword and refine with multi-criteria filters.',
+  kwLabel:'Keyword', kwPh:'E.g. wedding, portrait, vegan, Shopify…', cityLabel:'City', allCities:'All cities', searchBtn:'Search',
+  popular:'Popular searches:', statListings:'listings (demo)', statCats:'categories', statCities:'cities',
+  catsTitle:'Browse by category', catsSub:'Click a category to see the filtered listings.',
+  featTitle:'Featured listings', featSub:'Highlighting is managed from the WordPress admin (“Featured” checkbox).', seeAll:'See the whole directory',
+  listings:function(n){return n+(n>1?' listings':' listing');},
+  resultsTitle:'Professional directory', results:function(n){return n+(n>1?' results':' result');}, of:'of',
+  filters:'Filters', showFilters:'Show filters', hideFilters:'Hide filters', reset:'Reset',
+  fCats:'Categories', fCity:'City', fTags:'Keywords', fPrice:'Price range', fRating:'Minimum rating', fLang:'Languages spoken', fFeat:'Featured listings only',
+  anyRating:'Any rating', ratingMin:function(r){return r+' ★ & up';},
+  sortBy:'Sort by', sRel:'Relevance', sRating:'Top rated', sPriceAsc:'Price: low to high', sPriceDesc:'Price: high to low', sName:'Name (A–Z)',
+  emptyTitle:'No results', emptyText:'No listing matches these criteria. Try a broader search or remove a filter.', emptyBtn:'Reset filters',
+  removeFilter:'Remove filter', featured:'Featured', sample:'Sample', reviews:'reviews',
+  back:'Back to results', about:'About', gallery:'Gallery', galleryPh:'Photo', infos:'Details', location:'Location', mapNote:'Indicative map (on the real site: Google Maps / OpenStreetMap from the ACF address field).',
+  langs:'Languages', priceRange:'Price range', rating:'Rating', category:'Category', city:'City', tags:'Keywords',
+  contactBlock:'Contact', phone:'Phone', email:'Email', web:'Website', fake:'(fictitious)',
+  quote:'Request a quote', qName:'Your name', qEmail:'Your email', qDate:'Preferred date', qMsg:'Your message', qMsgPh:'Describe your project, budget, location…', qSend:'Send request',
+  qDone:'Demo: message not sent. On the real site, the request is emailed to the professional and saved in WordPress.',
+  required:'Required field', notFound:'Listing not found', notFoundText:'This listing does not exist (anymore).',
+  related:'Similar listings',
+  howTitle:'How it works in WordPress', howLead:'This demo is static, but the real site is built on WordPress so you can manage the directory yourself, without a developer.',
+  h1t:'“Listing” content type', h1p:'A <code>listing</code> custom post type: each professional is a listing with its own page, URL and SEO.',
+  h2t:'Custom fields (ACF)', h2p:'City, price range, languages, rating, phone, email, gallery, address/map, “featured”: simple fields to fill in from the admin.',
+  h3t:'Taxonomies', h3p:'Categories and tags are WordPress taxonomies: automatic archive pages, filters and internal links.',
+  h4t:'AJAX filters', h4p:'Keyword search and instant multi-criteria filters via <code>WP_Query</code> + AJAX / REST API, no page reload.',
+  h5t:'Self-managed', h5p:'Add, edit or hide a listing in 2 minutes from the dashboard. Optional roles: professionals manage their own listing.',
+  h6t:'Forms & SEO', h6p:'Quote requests emailed to the pro (and stored), schema.org markup, multilingual (FR/EN/ES…), fast and responsive.',
+  howCta:'Want a directory like this one?', howMail:'Email Maxime',
+  langNames:{fr:'French',en:'English',es:'Spanish',ca:'Catalan',it:'Italian',de:'German',ru:'Russian',pt:'Portuguese'},
+  docTitle:'Annuaire Pro — Talents & Services (demo)'
+}};
+
+/* ---------- categories / tags ---------- */
+var ICON = {
+  photo:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+  talent:'<path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+  makeup:'<path d="M9 21h6M10 21V11h4v10M11 11V6l2-3v8"/>',
+  venue:'<path d="M3 21h18M5 21V10l7-6 7 6v11M10 21v-6h4v6"/>',
+  catering:'<path d="M4 15h16M5 15a7 7 0 0 1 14 0M12 6V4M3 18h18"/>',
+  web:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 9l-2 2 2 2M17 9l2 2-2 2"/>',
+  coach:'<circle cx="12" cy="7" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/>',
+  video:'<rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/>',
+  music:'<path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/>',
+  flowers:'<circle cx="12" cy="9" r="2.5"/><path d="M12 6.5a2.5 2.5 0 1 1 0-.01M12 11.5V21M12 16c-3 0-5-2-5-4 2 0 5 1 5 4zM12 18c3 0 5-2 5-4-2 0-5 1-5 4z"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+  pin:'<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  star:'<path fill="currentColor" stroke="none" d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/>',
+  globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  filter:'<path d="M4 5h16l-6 8v6l-4-2v-4z"/>',
+  back:'<path d="M15 6l-6 6 6 6"/>',
+  db:'<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
+  fields:'<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+  tag:'<path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/>',
+  bolt:'<path d="M13 3L5 14h6l-1 7 8-11h-6z"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  form:'<path d="M4 4h16v12H8l-4 4z"/>'
+};
+function ic(name,size){size=size||18;return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+ICON[name]+'</svg>';}
+
+var CATS = [
+  {id:'photo',  fr:'Photographes',            en:'Photographers',       g:['#4f46e5','#7c3aed']},
+  {id:'talent', fr:'Agences de talents & mannequins', en:'Talent & model agencies', g:['#db2777','#f97316']},
+  {id:'makeup', fr:'Maquillage & coiffure',   en:'Make-up & hair',      g:['#e11d48','#fb7185']},
+  {id:'venue',  fr:'Lieux & salles',          en:'Venues',              g:['#0f766e','#14b8a6']},
+  {id:'catering',fr:'Traiteurs',              en:'Caterers',            g:['#b45309','#f59e0b']},
+  {id:'web',    fr:'Webdesign & sites',       en:'Web design',          g:['#0369a1','#38bdf8']},
+  {id:'coach',  fr:'Coachs',                  en:'Coaches',             g:['#15803d','#4ade80']},
+  {id:'video',  fr:'Vidéastes',               en:'Videographers',       g:['#1e293b','#6366f1']},
+  {id:'music',  fr:'DJ & musiciens',          en:'DJs & musicians',     g:['#7e22ce','#ec4899']},
+  {id:'flowers',fr:'Fleuristes & déco',       en:'Florists & decor',    g:['#be185d','#a3e635']}
+];
+var CAT = {}; CATS.forEach(function(c){CAT[c.id]=c;});
+
+var TAGS = {
+  wedding:{fr:'mariage',en:'wedding'}, portrait:{fr:'portrait',en:'portrait'}, fashion:{fr:'mode',en:'fashion'},
+  corporate:{fr:'entreprise',en:'corporate'}, events:{fr:'événementiel',en:'events'}, product:{fr:'produit',en:'product'},
+  outdoor:{fr:'extérieur',en:'outdoor'}, luxury:{fr:'luxe',en:'luxury'}, vegan:{fr:'végan',en:'vegan'},
+  ecommerce:{fr:'e-commerce',en:'e-commerce'}, wordpress:{fr:'WordPress',en:'WordPress'}, seo:{fr:'SEO',en:'SEO'},
+  branding:{fr:'branding',en:'branding'}, wellness:{fr:'bien-être',en:'wellness'}, business:{fr:'business',en:'business'},
+  drone:{fr:'drone',en:'drone'}, live:{fr:'live',en:'live'}, seaside:{fr:'bord de mer',en:'seaside'},
+  sustainable:{fr:'écoresponsable',en:'sustainable'}, film:{fr:'tournage',en:'film shoot'}, kids:{fr:'enfants',en:'kids'}
+};
+
+var CITIES = ['Barcelone|Barcelona','Madrid|Madrid','Valence|Valencia','Paris|Paris','Lyon|Lyon','Marseille|Marseille','Nice|Nice'];
+function cityName(i){var p=CITIES[i].split('|');return lang==='fr'?p[0]:p[1];}
+
+/* ---------- sample data (fictitious) ---------- */
+function L(id,name,cat,city,fr,en,tags,langs,price,rating,reviews,feat){return {id:id,name:name,cat:cat,city:city,desc:{fr:fr,en:en},tags:tags,langs:langs,price:price,rating:rating,reviews:reviews,featured:!!feat};}
+var DATA = [
+ L('studio-lumiere','Studio Lumière Exemple','photo',0,'Photographe de mariage et portrait, lumière naturelle et reportage discret. Albums imprimés et galerie en ligne.','Wedding and portrait photographer, natural light and discreet storytelling. Printed albums and online gallery.',['wedding','portrait','outdoor'],['fr','es','en'],3,4.9,128,1),
+ L('objectif-demo','Objectif Démo Photo','photo',3,'Shootings mode et lookbooks en studio à Paris, retouche haut de gamme incluse.','Fashion shoots and lookbooks in a Paris studio, high-end retouching included.',['fashion','portrait','luxury'],['fr','en'],4,4.7,64),
+ L('pixel-sample','Pixel & Sample','photo',4,'Photo produit pour e-commerce : packshots fond blanc, mise en scène et photos 360°.','Product photography for e-commerce: white-background packshots, styled scenes and 360° shots.',['product','ecommerce','corporate'],['fr','en'],2,4.6,41),
+ L('focale-fictive','Focale Fictive','photo',1,'Portraits corporate et photos d’équipe sur site, livraison en 48 h.','Corporate headshots and on-site team photos, 48-hour delivery.',['corporate','portrait','events'],['es','en'],2,4.4,29),
+ L('mer-et-image','Mer & Image (exemple)','photo',6,'Séances photo en bord de mer, couples et familles, au coucher du soleil.','Seaside photo sessions for couples and families at sunset.',['seaside','wedding','kids','outdoor'],['fr','en','it'],2,4.8,77),
+ L('agence-nova','Agence Nova Talents (démo)','talent',3,'Agence de mannequins et figurants fictive pour campagnes, défilés et publicités.','Fictitious model and extras agency for campaigns, fashion shows and commercials.',['fashion','film','luxury'],['fr','en'],4,4.5,52,1),
+ L('casting-exemple','Casting Exemple Madrid','talent',1,'Casting de profils variés pour tournages publicitaires et clips musicaux.','Casting of diverse profiles for commercial shoots and music videos.',['film','events'],['es','en'],3,4.3,36),
+ L('mini-modeles','Mini Modèles Sample','talent',2,'Agence de jeunes talents (enfants et ados) pour catalogues et e-commerce.','Young talent agency (kids and teens) for catalogues and e-commerce.',['kids','fashion','ecommerce'],['es','ca','en'],3,4.6,22),
+ L('glow-atelier','Glow Atelier Fictif','makeup',0,'Maquilleuse et coiffeuse mariage, essai inclus, déplacement à domicile.','Bridal make-up and hair artist, trial included, home visits.',['wedding','luxury'],['es','ca','en','fr'],3,4.9,143,1),
+ L('backstage-demo','Backstage Démo','makeup',3,'Maquillage pour shootings, défilés et plateaux TV. Équipe de 4 artistes.','Make-up for shoots, fashion shows and TV sets. Team of 4 artists.',['fashion','film','events'],['fr','en'],3,4.7,58),
+ L('nature-beaute','Nature Beauté Exemple','makeup',5,'Maquillage naturel avec produits bio et végans, pour mariages et séances photo.','Natural make-up with organic, vegan products for weddings and shoots.',['vegan','sustainable','wedding'],['fr'],2,4.5,31),
+ L('villa-sample','Villa Sample Méditerranée','venue',0,'Villa avec jardin et vue mer pour mariages, séminaires et tournages (jusqu’à 150 pers.).','Villa with garden and sea view for weddings, retreats and shoots (up to 150 guests).',['wedding','seaside','luxury','film'],['es','en','fr'],4,4.8,89,1),
+ L('loft-fictif','Le Loft Fictif','venue',4,'Loft industriel de 300 m² pour événements d’entreprise, lancements et shootings.','300 m² industrial loft for corporate events, launches and shoots.',['corporate','events','film'],['fr','en'],3,4.4,47),
+ L('jardin-demo','Jardin Démo','venue',2,'Domaine champêtre avec oliveraie, idéal pour mariages en extérieur.','Countryside estate with olive grove, ideal for outdoor weddings.',['wedding','outdoor','sustainable'],['es','en'],3,4.7,65),
+ L('rooftop-exemple','Rooftop Exemple','venue',1,'Terrasse sur les toits pour cocktails, afterworks et soirées privées.','Rooftop terrace for cocktails, afterworks and private parties.',['events','corporate','luxury'],['es','en'],4,4.2,38),
+ L('saveurs-sample','Saveurs Sample Traiteur','catering',3,'Traiteur événementiel : cocktails dînatoires, buffets et service à table.','Event caterer: cocktail receptions, buffets and plated service.',['events','corporate','wedding'],['fr','en'],3,4.6,94,1),
+ L('green-plate','Green Plate Démo','catering',0,'Cuisine 100 % végétale et locale pour événements et tournages.','100% plant-based, local food for events and film shoots.',['vegan','sustainable','film'],['es','ca','en'],2,4.8,56),
+ L('paella-exemple','Paella Exemple','catering',2,'Paellas géantes cuisinées sur place pour mariages et fêtes.','Giant paellas cooked on site for weddings and parties.',['wedding','events','outdoor'],['es','en'],1,4.5,73),
+ L('chef-fictif','Chef à Domicile Fictif','catering',6,'Chef privé pour dîners à domicile et yachts, menus sur mesure.','Private chef for home dinners and yachts, tailor-made menus.',['luxury','seaside'],['fr','en','it','ru'],4,4.9,27),
+ L('atelier-web','Atelier Web Exemple','web',3,'Création de sites WordPress sur mesure, rapides et faciles à gérer.','Custom WordPress websites, fast and easy to manage.',['wordpress','seo','branding'],['fr','en'],2,4.8,61,1),
+ L('shop-sample','Shop Sample Studio','web',1,'Boutiques en ligne WooCommerce et Shopify, de la maquette à la mise en ligne.','WooCommerce and Shopify online stores, from mock-up to launch.',['ecommerce','wordpress','branding'],['es','en'],3,4.5,33),
+ L('pixel-demo','Pixel Démo Design','web',4,'Identité visuelle et webdesign pour indépendants et petites marques.','Visual identity and web design for freelancers and small brands.',['branding','seo'],['fr'],1,4.3,19),
+ L('cap-coaching','Cap Coaching (exemple)','coach',3,'Coaching de carrière et prise de parole en public, en ligne ou en présentiel.','Career and public speaking coaching, online or in person.',['business','corporate'],['fr','en'],3,4.7,48),
+ L('zen-sample','Zen Sample Bien-être','coach',0,'Coach bien-être et yoga pour entreprises et retraites.','Wellness and yoga coach for companies and retreats.',['wellness','corporate','outdoor'],['es','en','fr','de'],2,4.9,84,1),
+ L('boost-demo','Boost Démo Business','coach',5,'Accompagnement des créateurs d’entreprise : offre, prix, acquisition.','Support for business founders: offer, pricing, acquisition.',['business','branding'],['fr'],2,4.4,26),
+ L('cinema-fictif','Cinéma Fictif Productions','video',1,'Films de mariage et vidéos corporate, prises de vue aériennes par drone.','Wedding films and corporate videos, aerial drone footage.',['wedding','corporate','drone'],['es','en'],3,4.6,57),
+ L('reel-exemple','Reel Exemple','video',0,'Vidéos courtes pour réseaux sociaux, tournage et montage en 72 h.','Short-form social videos, shot and edited in 72 hours.',['product','ecommerce','branding'],['es','ca','en'],2,4.5,44),
+ L('dj-sample','DJ Sample Night','music',2,'DJ pour mariages et soirées d’entreprise, sono et éclairage inclus.','DJ for weddings and corporate parties, sound and lighting included.',['wedding','events','live'],['es','en'],2,4.7,102,1),
+ L('quartet-demo','Quatuor Démo','music',3,'Quatuor à cordes pour cérémonies, cocktails et dîners de gala.','String quartet for ceremonies, cocktails and gala dinners.',['wedding','luxury','live'],['fr','en','de'],3,4.8,39),
+ L('fleurs-fictives','Fleurs Fictives Atelier','flowers',5,'Fleuriste événementiel : arches, centres de table et bouquets de saison.','Event florist: arches, centrepieces and seasonal bouquets.',['wedding','sustainable','events'],['fr','en'],2,4.6,51),
+ L('deco-exemple','Déco Exemple Events','flowers',0,'Scénographie et location de décor pour mariages et événements de marque.','Set design and decor rental for weddings and brand events.',['wedding','luxury','events'],['es','en','fr'],3,4.4,24)
+];
+var BY_ID = {}; DATA.forEach(function(d){BY_ID[d.id]=d;});
+
+/* ---------- state ---------- */
+var lang = 'fr';
+try{ var sl = localStorage.getItem('annuaire-lang'); if(sl==='en'||sl==='fr') lang=sl; }catch(e){}
+var st = defaultState();
+function defaultState(){return {q:'',cats:[],city:'',tags:[],prices:[],rating:0,langs:[],feat:false,sort:'rel'};}
+var filtersOpen = false;
+
+function t(k){return T[lang][k];}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function catName(id){return CAT[id][lang];}
+function tagName(k){return TAGS[k][lang];}
+function initials(n){var w=n.replace(/[()«»]/g,'').split(/\s+/).filter(function(x){return /^[A-Za-zÀ-ÿ]/.test(x)&&!/^(le|la|les|de|du|des|&|et|à)$/i.test(x);});return ((w[0]||'?')[0]+((w[1]||'')[0]||'')).toUpperCase();}
+function grad(c,deg){var g=CAT[c].g;return 'linear-gradient('+(deg||135)+'deg,'+g[0]+','+g[1]+')';}
+function priceHtml(p){var s='';for(var i=1;i<=4;i++){s+= i<=p?'€':'<i>€</i>';}return '<span class="price" aria-label="'+t('priceRange')+' '+p+'/4">'+s+'</span>';}
+function starsHtml(d){return '<span class="stars">'+ic('star',15)+d.rating.toFixed(1)+'</span> <span style="color:var(--ink-3)">('+d.reviews+' '+t('reviews')+')</span>';}
+
+/* ---------- search ---------- */
+function haystack(d){return norm([d.name,catName(d.cat),CAT[d.cat].fr,CAT[d.cat].en,CITIES[d.city],d.desc.fr,d.desc.en].concat(d.tags.map(function(k){return TAGS[k].fr+' '+TAGS[k].en;})).join(' '));}
+var HAY = {}; DATA.forEach(function(d){HAY[d.id]=haystack(d);});
+function score(d,terms){var s=0;var n=norm(d.name);terms.forEach(function(w){if(n.indexOf(w)>-1)s+=5;if(d.tags.some(function(k){return norm(TAGS[k].fr).indexOf(w)>-1||norm(TAGS[k].en).indexOf(w)>-1;}))s+=3;if(HAY[d.id].indexOf(w)>-1)s+=1;});return s;}
+function filterData(s, skip){
+  var terms = norm(s.q).split(/\s+/).filter(Boolean);
+  return DATA.filter(function(d){
+    if(terms.length && !terms.every(function(w){return HAY[d.id].indexOf(w)>-1;})) return false;
+    if(skip!=='cats' && s.cats.length && s.cats.indexOf(d.cat)<0) return false;
+    if(s.city!=='' && String(d.city)!==String(s.city)) return false;
+    if(s.tags.length && !s.tags.every(function(k){return d.tags.indexOf(k)>-1;})) return false;
+    if(s.prices.length && s.prices.indexOf(d.price)<0) return false;
+    if(s.rating && d.rating < s.rating) return false;
+    if(s.langs.length && !s.langs.every(function(l){return d.langs.indexOf(l)>-1;})) return false;
+    if(s.feat && !d.featured) return false;
+    return true;
+  }).map(function(d){return {d:d,s:score(d,terms)};});
+}
+function sortList(list,mode){
+  var cmp = {
+    rel:function(a,b){return (b.s-a.s)||(b.d.featured-a.d.featured)||(b.d.rating-a.d.rating);},
+    rating:function(a,b){return (b.d.rating-a.d.rating)||(b.d.reviews-a.d.reviews);},
+    priceAsc:function(a,b){return (a.d.price-b.d.price)||(b.d.rating-a.d.rating);},
+    priceDesc:function(a,b){return (b.d.price-a.d.price)||(b.d.rating-a.d.rating);},
+    name:function(a,b){return a.d.name.localeCompare(b.d.name,lang);}
+  }[mode]||function(){return 0;};
+  return list.sort(cmp).map(function(x){return x.d;});
+}
+
+/* ---------- URL <-> state ---------- */
+function stateToQuery(s){
+  var p=[];
+  if(s.q)p.push('q='+encodeURIComponent(s.q));
+  if(s.cats.length)p.push('cat='+s.cats.join(','));
+  if(s.city!=='')p.push('city='+s.city);
+  if(s.tags.length)p.push('tags='+s.tags.join(','));
+  if(s.prices.length)p.push('price='+s.prices.join(','));
+  if(s.rating)p.push('rating='+s.rating);
+  if(s.langs.length)p.push('lang='+s.langs.join(','));
+  if(s.feat)p.push('feat=1');
+  if(s.sort!=='rel')p.push('sort='+s.sort);
+  return p.length?'?'+p.join('&'):'';
+}
+function queryToState(qs){
+  var s=defaultState(); if(!qs) return s;
+  qs.split('&').forEach(function(kv){
+    var i=kv.indexOf('='); if(i<0)return; var k=kv.slice(0,i), v=decodeURIComponent(kv.slice(i+1));
+    if(k==='q')s.q=v;
+    else if(k==='cat')s.cats=v.split(',').filter(function(x){return CAT[x];});
+    else if(k==='city'&&CITIES[+v])s.city=String(+v);
+    else if(k==='tags')s.tags=v.split(',').filter(function(x){return TAGS[x];});
+    else if(k==='price')s.prices=v.split(',').map(Number).filter(function(x){return x>=1&&x<=4;});
+    else if(k==='rating')s.rating=parseFloat(v)||0;
+    else if(k==='lang')s.langs=v.split(',').filter(function(x){return T.fr.langNames[x];});
+    else if(k==='feat')s.feat=v==='1';
+    else if(k==='sort')s.sort=v;
+  });
+  return s;
+}
+function searchHref(s){return '#/recherche'+stateToQuery(s);}
+
+/* ---------- views ---------- */
+var app = document.getElementById('app');
+
+function cardHtml(d){
+  return '<article class="card">'+
+    '<div class="card-cover" style="background:'+grad(d.cat,120)+'"><div class="badges"><span class="badge">'+esc(catName(d.cat))+'</span>'+(d.featured?'<span class="badge feat">'+ic('star',12)+t('featured')+'</span>':'')+'</div></div>'+
+    '<div class="card-body">'+
+      '<div class="avatar" style="background:'+grad(d.cat,200)+'" aria-hidden="true">'+initials(d.name)+'</div>'+
+      '<h3><a href="#/fiche/'+d.id+'">'+esc(d.name)+'</a></h3>'+
+      '<div class="meta"><span>'+ic('pin',15)+esc(cityName(d.city))+'</span><span>'+ic('globe',15)+d.langs.map(function(x){return x.toUpperCase();}).join(' · ')+'</span></div>'+
+      '<p>'+esc(d.desc[lang])+'</p>'+
+      '<div class="chips">'+d.tags.slice(0,3).map(function(k){return '<span class="chip">'+esc(tagName(k))+'</span>';}).join('')+'</div>'+
+      '<div class="card-foot"><span>'+starsHtml(d)+'</span>'+priceHtml(d.price)+'</div>'+
+    '</div></article>';
+}
+
+function viewHome(){
+  var cityOpts = CITIES.map(function(c,i){return '<option value="'+i+'">'+esc(cityName(i))+'</option>';}).join('');
+  var counts={}; DATA.forEach(function(d){counts[d.cat]=(counts[d.cat]||0)+1;});
+  var tiles = CATS.map(function(c){var s=defaultState();s.cats=[c.id];return '<a class="tile" href="'+searchHref(s)+'"><span class="ic" style="background:'+grad(c.id)+'">'+ic(c.id,22)+'</span><b>'+esc(c[lang])+'</b><span>'+t('listings')(counts[c.id]||0)+'</span></a>';}).join('');
+  var feat = DATA.filter(function(d){return d.featured;}).sort(function(a,b){return b.rating-a.rating;}).slice(0,6).map(cardHtml).join('');
+  var pop = ['wedding','vegan','wordpress','drone','seaside'].map(function(k){var s=defaultState();s.tags=[k];return '<a class="chip" style="text-decoration:none" href="'+searchHref(s)+'">'+esc(tagName(k))+'</a>';}).join('');
+  app.innerHTML =
+  '<section class="hero"><div class="wrap">'+
+    '<h1>'+t('heroTitle')+'</h1><p class="lead">'+t('heroLead')+'</p>'+
+    '<form class="searchbox" id="homeSearch" role="search">'+
+      '<div class="field">'+ic('search',20)+'<label for="hq" class="sr-only">'+t('kwLabel')+'</label><input id="hq" type="search" placeholder="'+esc(t('kwPh'))+'" autocomplete="off"></div>'+
+      '<div class="sep" aria-hidden="true"></div>'+
+      '<div class="field">'+ic('pin',20)+'<label for="hc" class="sr-only">'+t('cityLabel')+'</label><select id="hc"><option value="">'+t('allCities')+'</option>'+cityOpts+'</select></div>'+
+      '<button class="btn btn-primary" type="submit">'+t('searchBtn')+'</button>'+
+    '</form>'+
+    '<div class="suggest"><span>'+t('popular')+'</span>'+pop+'</div>'+
+    '<div class="hero-stats"><div><b>'+DATA.length+'</b>'+t('statListings')+'</div><div><b>'+CATS.length+'</b>'+t('statCats')+'</div><div><b>'+CITIES.length+'</b>'+t('statCities')+'</div></div>'+
+  '</div></section>'+
+  '<section class="block"><div class="wrap"><div class="sec-head"><div><h2>'+t('catsTitle')+'</h2><p>'+t('catsSub')+'</p></div></div><div class="tiles">'+tiles+'</div></div></section>'+
+  '<section class="block" style="padding-top:8px"><div class="wrap"><div class="sec-head"><div><h2>'+t('featTitle')+'</h2><p>'+t('featSub')+'</p></div><a class="btn btn-ghost" href="#/recherche">'+t('seeAll')+' →</a></div><div class="grid">'+feat+'</div></div></section>'+
+  howHtml();
+  document.getElementById('homeSearch').addEventListener('submit',function(e){
+    e.preventDefault(); var s=defaultState(); s.q=document.getElementById('hq').value.trim(); s.city=document.getElementById('hc').value; location.hash=searchHref(s);
+  });
+}
+
+function howHtml(){
+  var items=[['db','h1'],['fields','h2'],['tag','h3'],['bolt','h4'],['user','h5'],['form','h6']];
+  return '<section class="how" id="wordpress" aria-labelledby="howT"><div class="wrap"><h2 id="howT">'+t('howTitle')+'</h2><p class="lead">'+t('howLead')+'</p><div class="how-grid">'+
+    items.map(function(x){return '<div class="how-card"><div class="ic">'+ic(x[0],20)+'</div><h3>'+t(x[1]+'t')+'</h3><p>'+t(x[1]+'p')+'</p></div>';}).join('')+
+    '</div><div class="cta"><strong>'+t('howCta')+'</strong><a class="btn btn-primary" href="mailto:maximebricepaul@gmail.com?subject=Annuaire%20WordPress">'+ic('mail',18)+t('howMail')+'</a><a class="btn btn-ghost" href="#/recherche">'+t('seeAll')+'</a></div></div></section>';
+}
+
+function viewSearch(){
+  var cityOpts = CITIES.map(function(c,i){return '<option value="'+i+'">'+esc(cityName(i))+'</option>';}).join('');
+  app.innerHTML =
+  '<div class="results-top"><div class="wrap"><h1>'+t('resultsTitle')+'</h1>'+
+    '<form class="searchbox" id="resSearch" role="search" style="max-width:none">'+
+      '<div class="field">'+ic('search',20)+'<label for="rq" class="sr-only">'+t('kwLabel')+'</label><input id="rq" type="search" placeholder="'+esc(t('kwPh'))+'" autocomplete="off" value="'+esc(st.q)+'"></div>'+
+      '<button class="btn btn-ghost filter-toggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">'+ic('filter',18)+'<span>'+t('showFilters')+'</span></button>'+
+    '</form></div></div>'+
+  '<div class="wrap"><div class="layout">'+
+    '<aside class="filters" id="filters" aria-label="'+t('filters')+'">'+
+      '<h2>'+t('filters')+' <button type="button" class="linkbtn" data-reset>'+t('reset')+'</button></h2>'+
+      '<fieldset><legend>'+t('fCats')+'</legend><div id="fCats"></div></fieldset>'+
+      '<fieldset><legend><label for="fCity">'+t('fCity')+'</label></legend><select class="select" id="fCity"><option value="">'+t('allCities')+'</option>'+cityOpts+'</select></fieldset>'+
+      '<fieldset><legend>'+t('fTags')+'</legend><div class="chips" id="fTags"></div></fieldset>'+
+      '<fieldset><legend>'+t('fPrice')+'</legend><div id="fPrice"></div></fieldset>'+
+      '<fieldset><legend><label for="fRating">'+t('fRating')+'</label></legend><select class="select" id="fRating"><option value="0">'+t('anyRating')+'</option>'+[4.8,4.5,4].map(function(r){return '<option value="'+r+'">'+t('ratingMin')(r.toFixed(1))+'</option>';}).join('')+'</select></fieldset>'+
+      '<fieldset><legend>'+t('fLang')+'</legend><div id="fLang"></div></fieldset>'+
+      '<fieldset><label class="check"><input type="checkbox" id="fFeat"> '+t('fFeat')+'</label></fieldset>'+
+    '</aside>'+
+    '<section aria-labelledby="countT">'+
+      '<div class="toolbar"><div class="count" id="countT" aria-live="polite"></div>'+
+      '<div class="sort"><label for="sortSel">'+t('sortBy')+'</label><select class="select" id="sortSel">'+
+        [['rel','sRel'],['rating','sRating'],['priceAsc','sPriceAsc'],['priceDesc','sPriceDesc'],['name','sName']].map(function(o){return '<option value="'+o[0]+'">'+t(o[1])+'</option>';}).join('')+
+      '</select></div></div>'+
+      '<div class="active-filters" id="activeF"></div>'+
+      '<div id="results"></div>'+
+    '</section>'+
+  '</div></div>';
+
+  var rq=document.getElementById('rq');
+  rq.addEventListener('input',function(){st.q=rq.value;update(true);});
+  document.getElementById('resSearch').addEventListener('submit',function(e){e.preventDefault();update(true);});
+  document.getElementById('fCity').addEventListener('change',function(e){st.city=e.target.value;update(true);});
+  document.getElementById('fRating').addEventListener('change',function(e){st.rating=parseFloat(e.target.value)||0;update(true);});
+  document.getElementById('sortSel').addEventListener('change',function(e){st.sort=e.target.value;update(true);});
+  document.getElementById('fFeat').addEventListener('change',function(e){st.feat=e.target.checked;update(true);});
+  var ft=document.getElementById('fToggle');
+  ft.addEventListener('click',function(){filtersOpen=!filtersOpen;applyToggle();});
+  applyToggle();
+  app.addEventListener('click',onSearchClick);
+  app.addEventListener('change',onSearchChange);
+  update(false);
+}
+function applyToggle(){
+  var f=document.getElementById('filters'), b=document.getElementById('fToggle'); if(!f||!b)return;
+  f.classList.toggle('open',filtersOpen); b.setAttribute('aria-expanded',filtersOpen); b.querySelector('span').textContent=filtersOpen?t('hideFilters'):t('showFilters');
+}
+function toggleIn(arr,v){var i=arr.indexOf(v);if(i>-1)arr.splice(i,1);else arr.push(v);}
+function onSearchClick(e){
+  var el=e.target.closest('[data-tag],[data-reset],[data-remove]'); if(!el)return;
+  if(el.hasAttribute('data-tag')){toggleIn(st.tags,el.getAttribute('data-tag'));update(true);}
+  else if(el.hasAttribute('data-reset')){st=defaultState();var rq=document.getElementById('rq');if(rq)rq.value='';update(true);}
+  else if(el.hasAttribute('data-remove')){
+    var p=el.getAttribute('data-remove').split(':'),k=p[0],v=p[1];
+    if(k==='q'){st.q='';document.getElementById('rq').value='';}
+    else if(k==='cat')toggleIn(st.cats,v); else if(k==='tag')toggleIn(st.tags,v); else if(k==='price')toggleIn(st.prices,+v); else if(k==='lang')toggleIn(st.langs,v);
+    else if(k==='city')st.city=''; else if(k==='rating')st.rating=0; else if(k==='feat')st.feat=false;
+    update(true);
+  }
+}
+function onSearchChange(e){
+  var el=e.target;
+  if(el.matches('[data-cat]')){toggleIn(st.cats,el.getAttribute('data-cat'));update(true);}
+  else if(el.matches('[data-price]')){toggleIn(st.prices,+el.getAttribute('data-price'));update(true);}
+  else if(el.matches('[data-lng]')){toggleIn(st.langs,el.getAttribute('data-lng'));update(true);}
+}
+
+function update(pushUrl){
+  // facets (category counts ignore the category filter itself)
+  var forCats=filterData(st,'cats'), cc={}; forCats.forEach(function(x){cc[x.d.cat]=(cc[x.d.cat]||0)+1;});
+  var fc=document.getElementById('fCats'); if(!fc)return;
+  var focusId=document.activeElement&&document.activeElement.id;
+  fc.innerHTML=CATS.map(function(c){var on=st.cats.indexOf(c.id)>-1;return '<label class="check"><input type="checkbox" id="c-'+c.id+'" data-cat="'+c.id+'"'+(on?' checked':'')+'> '+esc(c[lang])+'<span class="n">'+(cc[c.id]||0)+'</span></label>';}).join('');
+  document.getElementById('fTags').innerHTML=Object.keys(TAGS).sort(function(a,b){return tagName(a).localeCompare(tagName(b),lang);}).map(function(k){return '<button type="button" class="chip" id="t-'+k+'" data-tag="'+k+'" aria-pressed="'+(st.tags.indexOf(k)>-1)+'">'+esc(tagName(k))+'</button>';}).join('');
+  document.getElementById('fPrice').innerHTML=[1,2,3,4].map(function(p){return '<label class="check"><input type="checkbox" id="p-'+p+'" data-price="'+p+'"'+(st.prices.indexOf(p)>-1?' checked':'')+'> '+priceHtml(p)+'</label>';}).join('');
+  document.getElementById('fLang').innerHTML=['fr','en','es','ca','it','de','ru'].map(function(l){return '<label class="check"><input type="checkbox" id="l-'+l+'" data-lng="'+l+'"'+(st.langs.indexOf(l)>-1?' checked':'')+'> '+T[lang].langNames[l]+'</label>';}).join('');
+  document.getElementById('fCity').value=st.city;
+  document.getElementById('fRating').value=String(st.rating||0);
+  document.getElementById('sortSel').value=st.sort;
+  document.getElementById('fFeat').checked=st.feat;
+  if(focusId&&focusId!=='rq'){var f=document.getElementById(focusId);if(f)f.focus();}
+
+  var list=sortList(filterData(st),st.sort);
+  document.getElementById('countT').innerHTML=t('results')(list.length)+' <span>'+t('of')+' '+DATA.length+'</span>';
+
+  var af=[];
+  if(st.q)af.push(['q:','« '+st.q+' »']);
+  st.cats.forEach(function(c){af.push(['cat:'+c,catName(c)]);});
+  if(st.city!=='')af.push(['city:',cityName(+st.city)]);
+  st.tags.forEach(function(k){af.push(['tag:'+k,'#'+tagName(k)]);});
+  st.prices.forEach(function(p){af.push(['price:'+p,'€'.repeat(p)]);});
+  if(st.rating)af.push(['rating:',t('ratingMin')(st.rating.toFixed(1))]);
+  st.langs.forEach(function(l){af.push(['lang:'+l,T[lang].langNames[l]]);});
+  if(st.feat)af.push(['feat:',t('featured')]);
+  document.getElementById('activeF').innerHTML=af.map(function(a){return '<button type="button" data-remove="'+esc(a[0])+'" aria-label="'+t('removeFilter')+' : '+esc(a[1])+'">'+esc(a[1])+ic('x',13)+'</button>';}).join('');
+
+  document.getElementById('results').innerHTML = list.length ? '<div class="grid">'+list.map(cardHtml).join('')+'</div>' :
+    '<div class="empty"><div style="display:inline-grid;place-items:center;width:56px;height:56px;border-radius:16px;background:var(--brand-soft);color:var(--brand)">'+ic('search',26)+'</div><h2>'+t('emptyTitle')+'</h2><p>'+t('emptyText')+'</p><button type="button" class="btn btn-primary" data-reset>'+t('emptyBtn')+'</button></div>';
+
+  if(pushUrl){ suppressRoute=true; history.replaceState(null,'',searchHref(st)); }
+}
+
+function mapSvg(d){
+  var x=60+(d.city*53)%260, y=50+(d.city*37)%90;
+  return '<svg viewBox="0 0 400 220" role="img" aria-label="'+esc(t('location')+' : '+cityName(d.city))+'"><defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f0ff"/><stop offset="1" stop-color="#eef7f1"/></linearGradient></defs>'+
+  '<rect width="400" height="220" fill="url(#mg)"/>'+
+  '<path d="M0 170 C80 150 120 190 200 165 S330 140 400 160 V220 H0z" fill="#cfe3ff"/>'+
+  '<g stroke="#ffffff" stroke-width="7" fill="none" stroke-linecap="round"><path d="M-10 60 L410 110"/><path d="M120 -10 L170 230"/><path d="M290 -10 C270 80 300 140 260 230"/></g>'+
+  '<g stroke="#dfe3ee" stroke-width="2" fill="none"><path d="M0 30 L400 70"/><path d="M40 0 L80 220"/><path d="M220 0 L230 220"/><path d="M0 120 L400 150"/></g>'+
+  '<rect x="30" y="80" width="50" height="34" rx="6" fill="#d9f0df"/><rect x="310" y="30" width="60" height="40" rx="6" fill="#d9f0df"/>'+
+  '<circle cx="'+x+'" cy="'+y+'" r="26" fill="#4f46e5" opacity=".14"/>'+
+  '<path transform="translate('+(x-14)+','+(y-34)+')" d="M14 34s-12-11-12-20a12 12 0 0 1 24 0c0 9-12 20-12 20z" fill="#4f46e5"/><circle cx="'+x+'" cy="'+(y-20)+'" r="4.5" fill="#fff"/>'+
+  '<text x="'+(x+18)+'" y="'+(y-18)+'" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#14152b">'+esc(cityName(d.city))+'</text></svg>';
+}
+
+function viewDetail(id){
+  var d=BY_ID[id];
+  if(!d){app.innerHTML='<div class="wrap" style="padding:60px 20px"><div class="empty"><h2>'+t('notFound')+'</h2><p>'+t('notFoundText')+'</p><a class="btn btn-primary" href="#/recherche">'+t('seeAll')+'</a></div></div>';return;}
+  var slug=d.id.replace(/-/g,'');
+  var related=DATA.filter(function(x){return x.cat===d.cat&&x.id!==d.id;}).slice(0,3);
+  var catState=defaultState(); catState.cats=[d.cat];
+  app.innerHTML='<div class="wrap">'+
+    '<nav class="crumbs" aria-label="Fil d’Ariane"><a href="#/">'+t('navHome')+'</a> › <a href="'+(lastSearch||'#/recherche')+'">'+t('navSearch')+'</a> › <a href="'+searchHref(catState)+'">'+esc(catName(d.cat))+'</a> › <span aria-current="page">'+esc(d.name)+'</span></nav>'+
+    '<div class="detail-hero" style="background:'+grad(d.cat,120)+'"><svg width="100%" height="100%" aria-hidden="true" style="position:absolute;inset:0;opacity:.18"><defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2" fill="#fff"/></pattern></defs><rect width="100%" height="100%" fill="url(#dots)"/></svg></div>'+
+    '<div class="detail-head"><div class="avatar" style="background:'+grad(d.cat,200)+'" aria-hidden="true">'+initials(d.name)+'</div>'+
+      '<div style="padding-bottom:6px;min-width:0"><div class="chips" style="margin-bottom:8px"><span class="chip">'+esc(catName(d.cat))+'</span>'+(d.featured?'<span class="chip" style="background:#14152b;color:#fff;border-color:#14152b">'+t('featured')+'</span>':'')+'<span class="chip">'+t('sample')+'</span></div>'+
+      '<h1>'+esc(d.name)+'</h1><div class="meta"><span>'+ic('pin',15)+esc(cityName(d.city))+'</span><span>'+starsHtml(d)+'</span><span>'+priceHtml(d.price)+'</span></div></div></div>'+
+    '<div class="detail-grid"><div>'+
+      '<section class="panel"><h2>'+t('about')+'</h2><p style="margin:0 0 14px;color:var(--ink-2)">'+esc(d.desc[lang])+'</p>'+
+        '<div class="facts"><div class="fact"><small>'+t('category')+'</small><b>'+esc(catName(d.cat))+'</b></div><div class="fact"><small>'+t('city')+'</small><b>'+esc(cityName(d.city))+'</b></div><div class="fact"><small>'+t('langs')+'</small><b>'+d.langs.map(function(l){return T[lang].langNames[l];}).join(', ')+'</b></div><div class="fact"><small>'+t('rating')+'</small><b>'+d.rating.toFixed(1)+' / 5 · '+d.reviews+' '+t('reviews')+'</b></div></div>'+
+        '<h2 style="margin-top:18px;font-size:15px">'+t('tags')+'</h2><div class="chips">'+d.tags.map(function(k){var s=defaultState();s.tags=[k];return '<a class="chip" style="text-decoration:none" href="'+searchHref(s)+'">#'+esc(tagName(k))+'</a>';}).join('')+'</div></section>'+
+      '<section class="panel"><h2>'+t('gallery')+'</h2><div class="gallery">'+[0,1,2,3,4,5].map(function(i){return '<div style="background:linear-gradient('+(120+i*40)+'deg,'+CAT[d.cat].g[i%2]+','+CAT[d.cat].g[(i+1)%2]+')" role="img" aria-label="'+t('galleryPh')+' '+(i+1)+'">'+t('galleryPh')+' '+(i+1)+'</div>';}).join('')+'</div></section>'+
+      '<section class="panel map"><h2>'+t('location')+'</h2>'+mapSvg(d)+'<p style="font-size:13px;color:var(--ink-3);margin:10px 0 0">'+t('mapNote')+'</p></section>'+
+      (related.length?'<section><h2 style="font-family:Fraunces,serif;font-size:24px;margin:8px 0 14px">'+t('related')+'</h2><div class="grid">'+related.map(cardHtml).join('')+'</div></section>':'')+
+    '</div><div class="sticky-col">'+
+      '<section class="panel"><h2>'+t('contactBlock')+'</h2><ul class="contact-list">'+
+        '<li>'+ic('phone',17)+'<span>+00 000 000 000 <small style="color:var(--ink-3)">'+t('fake')+'</small></span></li>'+
+        '<li>'+ic('mail',17)+'<span>contact@'+slug+'.example</span></li>'+
+        '<li>'+ic('link',17)+'<span>www.'+slug+'.example</span></li>'+
+      '</ul></section>'+
+      '<section class="panel" id="devis"><h2>'+t('quote')+'</h2><form id="quoteForm" novalidate>'+
+        '<div class="form-row"><label for="qn">'+t('qName')+' *</label><input class="input" id="qn" name="name" required autocomplete="name" aria-describedby="qn-e"><small id="qn-e" class="err" style="color:#b42318" hidden>'+t('required')+'</small></div>'+
+        '<div class="form-row"><label for="qe">'+t('qEmail')+' *</label><input class="input" id="qe" name="email" type="email" required autocomplete="email" aria-describedby="qe-e"><small id="qe-e" class="err" style="color:#b42318" hidden>'+t('required')+'</small></div>'+
+        '<div class="form-row"><label for="qd">'+t('qDate')+'</label><input class="input" id="qd" name="date" type="date"></div>'+
+        '<div class="form-row"><label for="qm">'+t('qMsg')+'</label><textarea class="input" id="qm" name="msg" placeholder="'+esc(t('qMsgPh'))+'"></textarea></div>'+
+        '<button class="btn btn-primary" type="submit" style="width:100%">'+t('qSend')+'</button>'+
+        '<div id="qRes" role="status" aria-live="polite"></div>'+
+      '</form></section>'+
+      '<a class="btn btn-ghost" href="'+(lastSearch||'#/recherche')+'" style="width:100%">'+ic('back',18)+t('back')+'</a>'+
+    '</div></div></div>';
+  document.getElementById('quoteForm').addEventListener('submit',function(e){
+    e.preventDefault(); var ok=true;
+    [['qn',function(v){return v.trim().length>0;}],['qe',function(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}]].forEach(function(f){
+      var el=document.getElementById(f[0]), good=f[1](el.value); document.getElementById(f[0]+'-e').hidden=good; el.setAttribute('aria-invalid',!good); if(!good&&ok){el.focus();ok=false;}
+    });
+    if(!ok)return;
+    document.getElementById('qRes').innerHTML='<div class="notice ok">'+t('qDone')+'</div>'; e.target.reset();
+  });
+}
+
+function viewHow(){app.innerHTML=howHtml();}
+
+/* ---------- router ---------- */
+var suppressRoute=false, lastSearch='', lastRoute='';
+function route(){
+  if(suppressRoute){suppressRoute=false;return;}
+  var h=location.hash.replace(/^#/,'')||'/';
+  var qi=h.indexOf('?'), path=qi>-1?h.slice(0,qi):h, qs=qi>-1?h.slice(qi+1):'';
+  app.removeEventListener('click',onSearchClick); app.removeEventListener('change',onSearchChange);
+  var nav='home';
+  if(path.indexOf('/recherche')===0||path.indexOf('/search')===0){st=queryToState(qs);viewSearch();nav='search';}
+  else if(path.indexOf('/fiche/')===0||path.indexOf('/listing/')===0){viewDetail(path.split('/')[2]);nav='search';}
+  else if(path.indexOf('/wordpress')===0){viewHow();nav='how';}
+  else viewHome();
+  document.querySelectorAll('[data-nav]').forEach(function(a){if(a.getAttribute('data-nav')===nav)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  if(lastRoute&&lastRoute!==path){window.scrollTo(0,0);app.focus({preventScroll:true});}
+  lastRoute=path;
+}
+window.addEventListener('hashchange',function(){suppressRoute=false;route();});
+// remember last search URL for "back to results"
+var _rs=history.replaceState.bind(history);
+history.replaceState=function(a,b,url){if(url&&String(url).indexOf('#/recherche')===0)lastSearch=String(url);return _rs(a,b,url);};
+window.addEventListener('hashchange',function(){if(location.hash.indexOf('#/recherche')===0)lastSearch=location.hash;});
+
+/* ---------- language ---------- */
+function applyLang(){
+  document.documentElement.lang=lang;
+  document.title=t('docTitle');
+  document.querySelectorAll('[data-i18n]').forEach(function(el){var v=t(el.getAttribute('data-i18n'));if(typeof v==='string')el.textContent=v;});
+  document.querySelectorAll('[data-lang]').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-lang')===lang);});
+}
+document.querySelectorAll('[data-lang]').forEach(function(b){b.addEventListener('click',function(){
+  lang=b.getAttribute('data-lang'); try{localStorage.setItem('annuaire-lang',lang);}catch(e){}
+  applyLang(); var y=window.scrollY; suppressRoute=false; lastRoute=''; route(); window.scrollTo(0,y);
+});});
+
+if(location.hash.indexOf('#/recherche')===0)lastSearch=location.hash;
+applyLang(); route();
+})();
+</script>
+<script>(function(){try{var d=/Mobi|Android/i.test(navigator.userAgent)?'mobile':'desktop';fetch('https://ntfy.sh/alex-demo-annuaire-p5q2w9',{method:'POST',body:'Visite demo annuaire · '+d+' · '+(navigator.language||'?')});}catch(e){}})();</script>
+</body>
+</html>
