@@ -1,6 +1,6 @@
 {
     "client":  "ALEX - vos appels en direct",
-    "generatedAt":  "2026-11-01T12:02:40",
+    "generatedAt":  "2026-11-01T15:02:40",
     "source":  "retell",
     "windows":  {
                     "7":  {
@@ -87,10 +87,10 @@
                                            }
                            },
                     "90":  {
-                               "recus":  113,
+                               "recus":  108,
                                "manques":  1,
                                "rdv":  3,
-                               "heures":  2,
+                               "heures":  1,
                                "ca":  600,
                                "zero":  0,
                                "cost":  "1 470 €",
@@ -103,7 +103,7 @@
                                                             "Mois 3"
                                                         ],
                                              "app":  [
-                                                         79,
+                                                         74,
                                                          34,
                                                          0
                                                      ],
@@ -114,8 +114,8 @@
                                                      ]
                                          },
                                "langues":  {
-                                               "FR":  58,
-                                               "ES":  20,
+                                               "FR":  56,
+                                               "ES":  21,
                                                "CA":  19,
                                                "EN":  4
                                            }
