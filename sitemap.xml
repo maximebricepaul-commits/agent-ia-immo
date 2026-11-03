@@ -44,9 +44,15 @@
   </url>
   <url>
     <loc>https://alexagent.io/blog/</loc>
-    <lastmod>2026-10-30</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alexagent.io/blog/rgpd-assistant-ia-entreprise/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://alexagent.io/blog/mise-en-place-assistant-ia-etapes/</loc>

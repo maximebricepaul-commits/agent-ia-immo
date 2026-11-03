@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#080d18">
+
+  <!-- SEO -->
+  <title>RGPD, chatbot et assistant IA : le guide entreprise</title>
+  <meta name="description" content="RGPD et assistant IA ou chatbot : données collectées, transparence, hébergement, questions au prestataire. Le guide pour bien démarrer.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://alexagent.io/blog/rgpd-assistant-ia-entreprise/">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="RGPD et assistant IA : ce que vous devez savoir avant de vous lancer">
+  <meta property="og:description" content="Finalité, minimisation, transparence, données sensibles, choix du prestataire : les repères RGPD avant d'installer un assistant IA dans votre entreprise.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://alexagent.io/blog/rgpd-assistant-ia-entreprise/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="ALEX">
+  <meta property="og:image" content="https://alexagent.io/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RGPD et assistant IA : ce que vous devez savoir avant de vous lancer">
+  <meta name="twitter:image" content="https://alexagent.io/og-image.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "RGPD et assistant IA : ce que vous devez savoir avant de vous lancer",
+    "description": "RGPD et assistant IA ou chatbot : données collectées, transparence, hébergement, questions au prestataire. Le guide pour bien démarrer.",
+    "datePublished": "2026-11-03",
+    "dateModified": "2026-11-03",
+    "inLanguage": "fr",
+    "author": { "@type": "Person", "name": "Maxime" },
+    "publisher": { "@type": "Organization", "name": "ALEX — Votre Agent IA", "url": "https://alexagent.io/" },
+    "mainEntityOfPage": "https://alexagent.io/blog/rgpd-assistant-ia-entreprise/",
+    "image": "https://alexagent.io/og-image.png"
+  }
+  </script>
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XEMBBR76SN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XEMBBR76SN', { anonymize_ip: true });
+    window.trackEvent = function(a,c,l,v){ gtag('event',a,{event_category:c,event_label:l,value:v||0}); };
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/blog/blog.css">
+</head>
+<body>
+
+<nav id="main-nav" role="navigation" aria-label="Navigation principale">
+  <a href="/" class="nav-logo" aria-label="ALEX — Accueil">
+    <img src="/alex-logo.png" alt="" aria-hidden="true">
+    <span>ALEX</span><span class="nav-sub">Votre Agent IA</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#secteurs">Secteurs</a></li>
+    <li><a href="/#offres">Offres</a></li>
+    <li><a href="/blog/">Blog</a></li>
+    <li><a href="/immo/">Immobilier</a></li>
+    <li><a href="/nautique/">Nautique</a></li>
+  </ul>
+  <button class="burger" aria-label="Ouvrir le menu" aria-expanded="false"
+    onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="/#contact" class="btn btn-primary">Demander une démo →</a>
+</nav>
+<main>
+  <header class="article-head">
+    <div class="container">
+      <span class="post-meta">3 novembre 2026 · Conformité · 6 min de lecture</span>
+      <h1>RGPD et assistant IA : ce que vous devez savoir avant de vous lancer</h1>
+      <p class="lede">Un assistant IA qui répond à vos clients va forcément manipuler des données personnelles : un prénom, un numéro de téléphone, une date de rendez-vous, parfois davantage. Beaucoup de dirigeants s'arrêtent là, par peur de mal faire. C'est compréhensible, mais le RGPD n'interdit pas ces outils : il demande de les utiliser avec méthode.</p>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="container">
+
+      <p>Que vous parliez de chatbot, d'agent conversationnel ou d'assistant commercial, la question <strong>RGPD et assistant IA</strong> se pose dans les mêmes termes : quelles données sont collectées, pourquoi, où elles sont stockées, combien de temps, et qui y a accès. Voici les points essentiels à vérifier avant de vous lancer, expliqués sans jargon. Cet article donne des repères pratiques ; il ne remplace pas un conseil juridique adapté à votre situation, et la CNIL publie des fiches détaillées sur chacun de ces sujets.</p>
+
+      <h2>Le RGPD s'applique dès qu'un client vous écrit</h2>
+      <p>Dès qu'une personne laisse son nom, son téléphone ou son adresse e-mail dans une conversation, vous traitez des données personnelles. Peu importe que la réponse vienne d'un collaborateur ou d'un assistant automatisé : c'est votre entreprise qui reste <strong>responsable du traitement</strong>. Le prestataire qui fournit l'outil agit, lui, en tant que <strong>sous-traitant</strong>, pour votre compte et selon vos instructions.</p>
+      <p>Cette répartition a une conséquence concrète : vous ne pouvez pas vous contenter de dire « c'est l'outil qui gère ». Vous devez savoir ce que fait l'assistant avec les données, et pouvoir l'expliquer à un client qui vous pose la question. La bonne nouvelle, c'est que les règles de base sont les mêmes que pour votre formulaire de contact ou votre agenda en ligne : un assistant IA n'invente pas de nouvelles obligations, il rend simplement visibles celles qui existaient déjà.</p>
+
+      <h2>Les 5 principes RGPD à appliquer à votre assistant IA</h2>
+      <p>Le RGPD repose sur quelques principes simples. Appliqués à un assistant conversationnel, ils se traduisent ainsi :</p>
+      <ul>
+        <li><strong>Une finalité claire</strong> : l'assistant collecte des données pour une raison précise (prendre un rendez-vous, répondre à une demande de devis, confirmer une réservation), et pas « au cas où ».</li>
+        <li><strong>La minimisation</strong> : il ne demande que ce qui est utile à la demande. Pour réserver une table, un prénom, un numéro et un nombre de couverts suffisent ; la date de naissance n'a rien à faire là.</li>
+        <li><strong>L'information</strong> : le client sait qui traite ses données, pourquoi, et comment exercer ses droits. Un lien vers votre politique de confidentialité, accessible depuis la conversation, est le minimum.</li>
+        <li><strong>Une durée de conservation limitée</strong> : les conversations et les contacts ne sont pas gardés indéfiniment. Fixez une durée cohérente avec votre activité et appliquez-la.</li>
+        <li><strong>La sécurité</strong> : accès limité aux personnes qui en ont besoin, communications chiffrées, prestataire capable de vous dire où sont hébergées les données.</li>
+      </ul>
+      <p>Il faut aussi une <strong>base légale</strong> pour chaque traitement. Pour répondre à une demande qu'un client vous adresse lui-même, il s'agit en général des mesures précontractuelles ou de votre intérêt légitime. En revanche, si vous voulez réutiliser ses coordonnées pour lui envoyer des offres commerciales, les règles sur la prospection s'appliquent, et le consentement est souvent nécessaire, notamment pour les SMS et les e-mails envoyés à des particuliers.</p>
+
+      <h2>Transparence : le client doit savoir qu'il parle à une IA</h2>
+      <p>C'est un point de confiance avant d'être un point juridique. Un client qui découvre après coup qu'il échangeait avec un programme se sent trompé, même si la réponse était juste. Le règlement européen sur l'intelligence artificielle (AI Act) va dans le même sens : il prévoit une obligation d'informer les personnes lorsqu'elles interagissent avec un système d'IA, sauf si c'est évident.</p>
+      <p>Concrètement, l'assistant se présente dès le premier message comme un assistant automatisé, au nom de votre entreprise. Cela vaut aussi au téléphone : une version vocale doit indiquer clairement à l'appelant qu'il parle à un assistant. Cette transparence ne fait pas fuir les clients ; ce qui les fait fuir, c'est l'absence de réponse. Nous l'expliquons dans notre article sur la <a href="/blog/mise-en-place-assistant-ia-etapes/">mise en place d'un assistant IA</a>, où les règles de transmission à l'humain font partie des étapes indispensables.</p>
+      <p>Prévoyez enfin une porte de sortie : à tout moment, le client doit pouvoir demander à parler à une personne de votre équipe. L'assistant transmet alors la conversation avec son contexte, pour que personne n'ait à tout répéter.</p>
+
+      <h2>Données sensibles : la vigilance des métiers de santé</h2>
+      <p>Certaines données sont dites « sensibles » par le RGPD : les données de santé en font partie. Un cabinet dentaire, un kinésithérapeute ou un ostéopathe doit donc être particulièrement prudent. L'assistant peut proposer un créneau, rappeler un rendez-vous ou répondre aux questions pratiques sans jamais recueillir le détail des symptômes ou des antécédents.</p>
+      <p>La règle la plus simple : l'assistant oriente, il ne diagnostique pas, et il ne demande pas d'informations médicales dont la prise de rendez-vous n'a pas besoin. En cas d'urgence vitale, il renvoie vers les numéros d'urgence. Notre article sur l'<a href="/blog/assistant-ia-cabinet-dentaire/">assistant IA pour cabinet dentaire</a> détaille ces limites, et la page <a href="/sante/">Santé</a> précise que les données sont hébergées en Europe et qu'aucune donnée médicale sensible n'est stockée sans votre accord.</p>
+      <p>D'autres métiers manipulent des informations délicates sans qu'elles soient « sensibles » au sens du RGPD : situation financière d'un acquéreur dans une <a href="/immo/">agence immobilière</a>, par exemple. Le même réflexe s'applique : ne collecter que ce qui sert à qualifier la demande, et réserver les échanges détaillés au conseiller.</p>
+
+      <h2>Les questions à poser à votre prestataire</h2>
+      <p>Avant de signer, posez ces questions. Un prestataire sérieux doit pouvoir y répondre clairement, par écrit :</p>
+      <ul>
+        <li><strong>Où sont hébergées les données</strong> des conversations et des contacts ? Dans l'Union européenne, ou ailleurs avec quelles garanties ?</li>
+        <li><strong>Existe-t-il un contrat de sous-traitance</strong> (ou des clauses équivalentes) qui précise ce que le prestataire peut faire et ne pas faire avec vos données ?</li>
+        <li><strong>Les données sont-elles réutilisées</strong> pour entraîner des modèles ou revendues à des tiers ?</li>
+        <li><strong>Qui a accès aux conversations</strong>, et comment ces accès sont-ils protégés ?</li>
+        <li><strong>Combien de temps les données sont-elles conservées</strong>, et pouvez-vous les supprimer ou les récupérer à la demande d'un client ?</li>
+        <li><strong>Comment un client exerce-t-il ses droits</strong> d'accès, de rectification ou d'effacement ?</li>
+      </ul>
+      <p>De votre côté, pensez à ajouter le traitement à votre registre (un simple tableau suffit pour une petite structure) et à mettre à jour votre politique de confidentialité. Si vous traitez des données sensibles à grande échelle, une analyse d'impact peut être requise : c'est le moment de demander conseil.</p>
+
+      <h2>Notre approche chez ALEX</h2>
+      <p>ALEX n'est pas un simple chatbot branché sur votre site : c'est un vrai assistant commercial et marketing, configuré pour votre métier. La protection des données fait partie de cette configuration, au même titre que vos horaires ou votre ton. Comme indiqué sur notre <a href="/">page d'accueil</a>, les données sont traitées conformément au RGPD, hébergées en Europe, les communications sont chiffrées, et vos contacts ne sont jamais revendus : vous en restez propriétaire.</p>
+      <p>Lors de la mise en route, nous définissons avec vous ce que l'assistant demande, ce qu'il ne demande jamais, et à quel moment il passe la main à votre équipe. C'est vrai pour un <a href="/restaurants/">restaurant</a> qui prend des réservations, un <a href="/beaute/">salon de beauté</a> qui envoie des rappels de rendez-vous, une activité de <a href="/nautique/">location nautique</a> qui répond aux touristes en plusieurs langues, ou une entreprise qui veut répondre sur <a href="/blog/whatsapp-business-ia-clients/">WhatsApp Business</a>.</p>
+      <p>Pour aller plus loin, découvrez la <a href="/blog/chatbot-vs-assistant-commercial-ia/">différence entre un chatbot et un assistant commercial IA</a>, consultez <a href="/blog/combien-coute-agent-ia-commerce/">combien coûte un agent IA pour un commerce</a>, ou parcourez tous nos articles sur le <a href="/blog/">blog</a>.</p>
+
+      <div class="cta-box">
+        <h3>Vous voulez un assistant IA qui respecte vos clients ?</h3>
+        <p>Démo personnalisée de 20 minutes, sans engagement. On regarde ensemble quelles données votre assistant a vraiment besoin de recueillir, et comment ALEX répond, qualifie et transmet à votre équipe.</p>
+        <a href="/#contact" class="btn btn-primary" onclick="trackEvent('click_demo','CTA','blog_rgpd',0)">🎯 Demander ma démo</a>
+        &nbsp;
+        <a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20j%27ai%20une%20question%20sur%20le%20RGPD%20et%20un%20assistant%20IA%20pour%20mon%20entreprise" class="btn btn-outline" target="_blank" rel="noopener">💬 WhatsApp direct</a>
+      </div>
+
+      <p style="color:var(--muted2);font-size:0.85rem">Article rédigé par l'équipe ALEX — <a href="https://alexagent.io/">services IA pour entreprises et commerces</a>, basée à Roses (Costa Brava). Cet article est informatif et ne constitue pas un avis juridique. Dernière mise à jour : 3 novembre 2026.</p>
+
+    </div>
+  </article>
+</main>
+
+
+
+
+<!-- FOOTER -->
+<footer role="contentinfo">
+  <p style="font-weight:800;font-size:1.05rem;color:var(--white);margin-bottom:6px"><span class="brand-gradient">ALEX</span> — Votre Agent IA</p>
+  <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px">
+    Services IA pour entreprises &amp; commerces · Assistant commercial IA 24h/24 · RDV, relances &amp; automatisations
+  </p>
+  <nav aria-label="Liens du pied de page" style="display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+    <a href="/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Accueil</a>
+    <a href="/blog/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Blog</a>
+    <a href="/immo/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Immobilier</a>
+    <a href="/nautique/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Nautique</a>
+    <a href="/beaute/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Beauté</a>
+    <a href="/sante/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Santé</a>
+    <a href="/restaurants/" style="color:var(--muted2);font-size:0.85rem;text-decoration:none">Restaurants</a>
+    <a href="mailto:contact@alexagent.io" style="color:var(--accent);font-size:0.85rem;text-decoration:none">contact@alexagent.io</a>
+  </nav>
+  <p style="color:var(--muted);font-size:0.78rem">
+    © 2026 ALEX · <a href="mailto:contact@alexagent.io" style="color:var(--muted);text-decoration:none">Contact</a>
+  </p>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/33774602008?text=Bonjour%20Maxime%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20ALEX%20pour%20mon%20commerce"
+   target="_blank" rel="noopener" aria-label="Discuter sur WhatsApp" class="wa-float"
+   onclick="trackEvent('click_whatsapp','CTA','blog_float',0)">
+  💬 WhatsApp
+</a>
+
+<!-- VOICEFLOW WIDGET -->
+<script type="text/javascript">
+(function(d, t) {
+  var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+  v.onload = function() {
+    var userLang = navigator.language || navigator.userLanguage || 'fr-FR';
+    var langCode = userLang.toLowerCase().startsWith('en') ? 'en'
+                 : userLang.toLowerCase().startsWith('es') ? 'es'
+                 : userLang.toLowerCase().startsWith('ca') ? 'es'
+                 : 'fr';
+
+    window.voiceflow.chat.load({
+      verify: { projectID: '6a50f720a304d092f7166812' },
+      url: 'https://general-runtime.voiceflow.com',
+      userID: (function(){
+        var sec = (location.pathname.split('/')[1] || 'accueil');
+        var k = 'alex-uid-' + sec;
+        var v = localStorage.getItem(k);
+        if (!v) { v = 'web-' + sec + '-' + Math.random().toString(36).slice(2,10); localStorage.setItem(k, v); }
+        return v;
+      })(),
+      versionID: 'main',
+      allowedOrigins: ['https://maximebricepaul-commits.github.io', 'https://alexagent.io', 'https://www.alexagent.io'],
+      stylesheet: 'https://alexagent.io/vf-custom.css',
+      assistant: {
+        color: '#29c1ff',
+        header: { title: 'Alex' },
+        banner: {
+          title: 'Alex',
+          description: langCode === 'en' ? 'Hi! I\'m Alex, your AI sales assistant. How can I help?'
+                      : langCode === 'es' ? '¡Hola! Soy Alex, tu asistente comercial IA. ¿Cómo puedo ayudarte?'
+                      : 'Bonjour ! Je suis Alex, votre assistant commercial IA. Comment puis-je vous aider ?'
+        },
+      },
+      launch: { event: { type: 'launch', payload: { language: langCode, pageUrl: window.location.href, referrer: document.referrer || 'direct' } } },
+    });
+
+    // --- Rebrand widget-next : le bundle ignore les clés stylesheet/launcher.
+    //     On injecte la charte (couleurs) dans le shadow root ET on réécrit le
+    //     libellé du lanceur en JS (le texte JS gagne toujours sur le CDN). ---
+    (function alexRebrand(){
+      var label = langCode === 'en' ? 'Talk to ALEX'
+                : langCode === 'es' ? 'Hablar con ALEX'
+                : 'Parler à ALEX';
+      function fix(sr){
+        if (!sr) return;
+        if (!sr.querySelector('link[data-alex]')) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = 'https://alexagent.io/vf-custom.css?v=2';
+          l.setAttribute('data-alex', '1');
+          sr.appendChild(l);
+        }
+        var lab = sr.querySelector('.vfrc-launcher__label,[class*=launcher__label]');
+        if (lab && lab.textContent !== label) lab.textContent = label;
+      }
+      var n = 0;
+      var iv = setInterval(function(){
+        n++;
+        var host = document.getElementById('voiceflow-chat');
+        var sr = host && host.shadowRoot;
+        if (sr) {
+          fix(sr);
+          if (!host.__alexMO) {
+            host.__alexMO = new MutationObserver(function(){ fix(host.shadowRoot); });
+            host.__alexMO.observe(sr, { childList: true, subtree: true });
+          }
+        }
+        if (n > 60) clearInterval(iv); // ~30s de sécurité
+      }, 500);
+    })();
+  };
+  v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+  v.type = "text/javascript";
+  s.parentNode.insertBefore(v, s);
+})(document, 'script');
+</script>
+
+<script>
+document.querySelectorAll('.nav-links a').forEach(function(a){
+  a.addEventListener('click', function(){
+    var n = document.querySelector('.nav-links'); if (n) n.classList.remove('open');
+    var b = document.querySelector('.burger'); if (b) b.setAttribute('aria-expanded','false');
+  });
+});
+</script>
+
+</body>
+</html>
